@@ -8,16 +8,15 @@ using MudBlazor.Services;
 using SyncExcel.Services;
 using Syncfusion.Blazor;
 using static System.Formats.Asn1.AsnWriter;
-using System;
-using CTMS.Business.Services;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http.Features;
-using CTMS.Services;
-using CTMS.Middlewares;
 using NLog.Web;
 using NLog;
-using CTMS.Business.Events;
 using Prism.Events;
+using CTMS.Services;
+using CTMS.Middlewares;
+using CTMS.Business.Events;
+using CTMS.Business.Services;
 using CTMS.Helper;
 using CTMS.ViewModels;
 using CTMS.AdapterModels;
@@ -64,10 +63,10 @@ namespace CTMS
                 builder.Services.AddSyncfusionBlazor();
 
                 #region EF Core «Å§i
-                var CTMSSettings = builder.Configuration
+                var ctmsSettings = builder.Configuration
                     .GetSection(nameof(CTMSSettings))
                     .Get<CTMSSettings>();
-                var SQLiteDefaultConnection = CTMSSettings.ConnectionStrings.SQLiteDefaultConnection;
+                var SQLiteDefaultConnection = ctmsSettings.ConnectionStrings.SQLiteDefaultConnection;
 
                 builder.Services.AddDbContext<BackendDBContext>(options =>
                     options.UseSqlite(SQLiteDefaultConnection),
