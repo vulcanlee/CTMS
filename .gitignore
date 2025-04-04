@@ -398,3 +398,21 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# -----------------------------------------------
+
+/src/CTMS/CTMS/BackendDB.db
+/src/CTMS/CTMS/BackendDB.db-shm
+/src/CTMS/CTMS/BackendDB.db-wal
+/src/CTMS/CTMS/UploadTemp/*.xlsx
+/src/CTMS/CTMS/UploadTemp/*.png
+/src/CTMS/CTMS/UploadTemp/*.xlsx
+/src/CTMS/CTMS/UploadTemp/*_photo_*
+/src/CTMS/CTMS/UploadFiles/
+!/src/CTMS/CTMS/UploadFiles/readme.md
+/src/CTMS/CTMS/DownloadFiles/*
+/src/CTMS/CTMS/DecompressFiles/*
+/src/CTMS/CTMS/UploadTemp/*.pdf
+/src/CTMS/CTMS/UploadTemp/*.zip
+/src/CTMS/CTMS/PdfFiles/*.pdf
+/src/CTMS/CTMS/DawnCache
