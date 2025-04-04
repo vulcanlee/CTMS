@@ -1,0 +1,108 @@
+﻿@page "/UserManagement"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@inject IJSRuntime JSRuntime
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@inject DeleteFileService DeleteFileService
+@inject NavigationManager NavigationManager
+@inject GeneratePdfService GeneratePdfService
+@inject RequestInfoService RequestInfoService
+@inject ILogger<BrowseCardPage> logger
+@inject RequestInformation RequestInformation
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+<PageTitle>使用者管理</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+    <div>
+        <div class="page-top">
+            <span class="page-title">使用者管理111</span>
+        </div>
+
+        <div class="header pt-4">
+            <h1>
+                <span class="mx-3 btn btn-outline-primary"
+                      @onclick='()=>OnChange("")'>首頁</span>
+                <span class="mx-3 btn btn-primary fw-bolder"
+                      @onclick='()=>OnChange("UserManagement")'>使用者管理</span>
+                <span class="mx-3 btn btn-outline-primary"
+                      @onclick='()=>OnChange("Project")'>專案管理</span>
+                <span class="mx-3 btn btn-outline-primary"
+                      @onclick='()=>OnChange("RoleView")'>角色管理</span>
+
+            </h1>
+        </div>
+
+        <div class="container mw-100">
+            <MyUserView />
+        </div>
+    </div>
+}
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    List<Athlete> Athletes = new List<Athlete>();
+    bool Maintaining = false;
+    string FullUrl = "";
+    int index = 0;
+    bool showMask = false;
+    bool completion = false;
+    string Message = "";
+    string fileNamePdf = "";
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var checkResult = await AuthenticationStateHelper
+            .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckIsAdmin() == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+                Athletes = await UploadFileService.GetAsync();
+                // await base.OnInitializedAsync();
+                // FullUrl = RequestInfoService.GetFullUrl();
+                FullUrl = RequestInformation.Url;
+            }
+        }
+    }
+
+    public async Task OnChange(string page)
+    {
+        NavigationManager.NavigateTo($"/{page}", true);
+    }
+}

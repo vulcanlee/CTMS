@@ -1,0 +1,328 @@
+﻿@page "/BrowseCard"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.DropDowns
+@inject IJSRuntime JSRuntime
+@layout EmptyLayout
+@inject AuthenticationStateProvider authStateProvider
+@inject BrowseAthleteService BrowseAthleteService
+@inject DeleteFileService DeleteFileService
+@inject NavigationManager NavigationManager
+@inject GeneratePdfService GeneratePdfService
+@inject RequestInfoService RequestInfoService
+@inject ILogger<BrowseCardPage> logger
+@inject RequestInformation RequestInformation
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject CurrentProject currentProject
+
+<PageTitle>瀏覽清單</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+    <div>
+        <div class="page-top">
+            <span class="page-title">瀏覽清單</span>
+            <div class="horizontal-container">
+                @if (CurrentUserService.CurrentUser.IsAdmin == true)
+                {
+                    <button @onclick=OnUserManagement>使用者管理</button>
+                }
+                <button @onclick=OnMaintain>@(Maintaining ? "關閉" : "開啟")_維護模式</button>
+                <button @onclick=OnUpload>上傳</button>
+            </div>
+        </div>
+        <div class="container py-5 mw-100">
+            <div class="m-3 form-group">
+                <label >專案：</label>
+                <SfDropDownList TValue="ProjectNode" TItem="ProjectNode"
+                    
+                            Placeholder="選擇一個專案" DataSource="@LocalData"
+                            @bind-Value="@CurrentProject">
+                    <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                    <DropDownListEvents TItem="ProjectNode" TValue="ProjectNode"
+                                        ValueChange="@ValueChangeHandler"></DropDownListEvents>
+                </SfDropDownList>
+            </div>
+            <div class="row row-cols-6 g-3">
+                @{
+                    index = 0;
+                }
+                @foreach (var athlete in Athletes)
+                {
+                    var bgNo = (index++ % 2) + 1;
+                    string bgColorClass = $"card-bg-color{bgNo}";
+                    <div class="col">
+                        <div class="card shadow-sm @bgColorClass">
+                            <div class="card-body">
+                                <h5 class="card-title need-clicked" @onclick="async()=>await ShowAsync(athlete)"><strong>@athlete.Name</strong></h5>
+                                @if (Maintaining == true)
+                                {
+                                    var fileList = JsonConvert
+                                    .DeserializeObject<List<FileListNodeModel>>(athlete.FilesData);
+                                    var xslxfile = FileListHelper.GetXlsx(fileList);
+
+                                    <div>
+                                        <div>
+                                            <a href="@xslxfile" download>下載</a>
+                                        </div>
+                                    </div>
+                                }
+                                @* <h5 class="title-hidden need-clicked" @onclick="async()=>await ShowAsync(athlete)">_</h5> *@
+                                @if (Maintaining == true)
+                                {
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-danger"
+                                        @onclick="async()=>
+                                        await DeleteAsync(athlete.Id)">全部刪除</button>
+                                    </div>
+                                    @if(athlete.Examine.Count>1)
+                                    {
+                                        var examineList = athlete.Examine.Skip(1);
+                                        foreach (var examine in examineList)
+                                        {
+                                            <div class="d-flex justify-content-between">
+                                                <button class="btn btn-danger my-1"
+                                                        @onclick="async()=>
+                                                await DeleteByExamineIdAsync(examine.Id)">
+                                                    刪除後側:@examine.ExamineTime
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    @* <button class="btn btn-primary" @onclick="async()=>await GptAsync(athlete)">實驗</button> *@
+                                    <button class="btn btn-primary view-button" @onclick="async()=>await ShowAsync(athlete)">查看</button>
+                                    <button class="btn btn-primary view-button" @onclick="async()=>await GeneratePdfAsync(athlete)">PDF</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+}
+<SfDialog @bind-Visible="@showMask" CssClass="message-box-width"
+          Width="95%" Height="95%" ShowCloseIcon="false" IsModal="true">
+    <DialogTemplates>
+        <Header>產生 PDF 檔案</Header>
+        <Content>@Message</Content>
+        <FooterTemplate>
+            <div>
+                @if (completion)
+                {
+                    <SfButton @onclick="@OnDownload" CssClass='e-success'>下載</SfButton>
+                    <SfButton @onclick="@OnOK" CssClass='e-primary'>關閉</SfButton>
+                }
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+</SfDialog>
+
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+<style>
+</style>
+
+@code {
+    List<Athlete> Athletes = new List<Athlete>();
+    bool Maintaining = false;
+    string FullUrl = "";
+    int index = 0;
+    bool showMask = false;
+    bool completion = false;
+    string Message = "";
+    string fileNamePdf = "";
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    public class ProjectNode
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    List<ProjectNode> LocalData = new List<ProjectNode>();
+    ProjectNode CurrentProject = new ProjectNode();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var checkResult = await AuthenticationStateHelper
+                .Check(authStateProvider, NavigationManager);
+            if (checkResult == true)
+            {
+                if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE瀏覽) == false)
+                {
+                    RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+                }
+                else
+                {
+                    var allProjects = await AuthenticationStateHelper.GetProjectListAsync(authStateProvider);
+
+                    LocalData = allProjects.Select(x => new ProjectNode
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        }).ToList();
+
+                    if (LocalData.Count > 0)
+                    {
+                        if (currentProject.ProjectId == null)
+                        {
+                            CurrentProject = LocalData.FirstOrDefault();
+                            currentProject.ProjectId = CurrentProject.Id;
+                        }
+                        else
+                        {
+                            CurrentProject = LocalData.FirstOrDefault(x => 
+                                x.Id == currentProject.ProjectId);
+                        }
+                    }
+                }
+                Athletes = await BrowseAthleteService
+                .GetByProjectIdAsync(currentProject.ProjectId.Value);
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task ValueChangeHandler(ChangeEventArgs<ProjectNode, ProjectNode> args)
+    {
+        currentProject.ProjectId = args.Value.Id;
+        Athletes = await BrowseAthleteService.GetByProjectIdAsync(args.Value.Id);
+        // await base.OnInitializedAsync();
+        // FullUrl = RequestInfoService.GetFullUrl();
+        FullUrl = RequestInformation.Url;
+    }
+   
+    void OnOK()
+    {
+        showMask = false;
+    }
+
+    Stream GetFileStream()
+    {
+        MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(fileNamePdf));
+        return memoryStream;
+    }
+
+    async Task OnDownload()
+    {
+        var fileStream = GetFileStream();
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", Path.GetFileName(fileNamePdf), streamRef);
+        showMask = false;
+    }
+
+    async Task ShowAsync(Athlete athlete)
+    {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE主頁) == false)
+        {
+            var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 MagicObjectHelper.你沒有權限存取此頁面, ConfirmMessageBox.HiddenAsync);
+            return;
+        }
+
+        NavigationManager.NavigateTo($"/DashboardHome/{athlete.Code}");
+    }
+
+    async Task GeneratePdfAsync(Athlete athlete)
+    {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE下載PDF) == false)
+        {
+            var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 MagicObjectHelper.你沒有權限存取此頁面, ConfirmMessageBox.HiddenAsync);
+            return;
+        }
+
+        showMask = true;
+        completion = false;
+        Message = "";
+        await Task.Delay(100);
+        StateHasChanged();
+        await Task.Delay(1000);
+        fileNamePdf = await GeneratePdfService.Make(UpdateMessage, athlete.Code, FullUrl);
+        Message = "PDF 檔案已經產生";
+        completion = true;
+        StateHasChanged();
+    }
+
+    void UpdateMessage(string msg)
+    {
+        Message = msg;
+        StateHasChanged();
+    }
+
+    async Task GptAsync(Athlete athlete)
+    {
+        NavigationManager.NavigateTo($"/GptExperiment/{athlete.Code}");
+    }
+
+    async Task DeleteAsync(int id)
+    {
+        await BrowseAthleteService.DeleteByAthleteIdAsync(id);
+        Athletes = await BrowseAthleteService
+        .GetByProjectIdAsync(currentProject.ProjectId.Value);
+    }
+
+    async Task DeleteByExamineIdAsync(int id)
+    {
+        await BrowseAthleteService.DeleteByExamineIdAsync(id);
+        Athletes = await BrowseAthleteService
+        .GetByProjectIdAsync(currentProject.ProjectId.Value);
+    }
+
+    void OnBack()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    void OnMaintain()
+    {
+        Maintaining = !Maintaining;
+    }
+    void OnUpload()
+    {
+        NavigationManager.NavigateTo("/Upload/NA");
+    }
+    void OnUserManagement()
+    {
+        NavigationManager.NavigateTo("/UserManagement");
+    }
+}

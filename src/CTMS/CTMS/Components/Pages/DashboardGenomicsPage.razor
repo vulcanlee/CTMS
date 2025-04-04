@@ -1,0 +1,91 @@
+﻿@page "/Genomics/{code}"
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+<PageTitle>基因體分析</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+<div>
+    <div class="page-top">
+        <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
+        <span class="page-title">基因體分析 儀錶板</span>
+    </div>
+
+    <div class="page-body">
+        <MudTabs PanelClass="pa-6">
+            <MudTabPanel Text="基因體分析">
+                <GenomicsView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="基因體細項">
+                <GenomicsRadarView Code="@Code" />
+            </MudTabPanel>
+        </MudTabs>
+    </div>
+
+</div>
+}
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+IsVisible="@MessageBox.IsVisible"
+Title="@MessageBox.Title" Message="@MessageBox.Body"
+Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+IsVisible="@ConfirmMessageBox.IsVisible"
+Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    Athlete Athlete = new();
+
+    protected override void OnInitialized()
+    {
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var checkResult = await AuthenticationStateHelper
+            .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE基因體分析) == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+            }
+            StateHasChanged();
+        }
+    }
+
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/DashboardHome/{Code}");
+    }
+
+}

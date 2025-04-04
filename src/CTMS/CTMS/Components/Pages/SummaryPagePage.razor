@@ -1,0 +1,39 @@
+﻿@page "/SummaryPag1e/{code}"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+@inject ExcleService ExcleService
+
+<PageTitle>報告摘要</PageTitle>
+
+<div>
+    <div class="page-top">
+        <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
+        <span class="page-title">報告摘要</span>
+    </div>
+
+    <div class="page-body">
+        <SummaryView Code="@Code" />
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Code: {Code}");
+    }
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/DashboardHome/{Code}");
+    }
+    async Task OnUpdate()
+    {
+        NavigationManager.NavigateTo($"/Upload/{Code}");
+    }
+
+}

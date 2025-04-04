@@ -1,0 +1,126 @@
+﻿@using Newtonsoft.Json
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+
+<style>
+    /* 調整整體 CheckBox 大小 */
+    .e-checkbox-wrapper {
+        transform: scale(1.5); /* 整體放大 1.5 倍 */
+        margin: 10px; /* 增加間距避免重疊 */
+    }
+
+        /* 調整文字大小 */
+        .e-checkbox-wrapper .e-label {
+            font-size: 20px; /* 設定文字大小 */
+            padding-left: -10px; /* 調整文字與勾選框的間距 */
+        }
+
+        /* 調整勾選框本身的大小 */
+        .e-checkbox-wrapper .e-checkbox {
+            height: 20px;
+            width: 20px;
+        }
+
+    .title-header {
+        width: 400px;
+    }
+</style>
+<div class="w-100">
+    <div class="header">
+        <img src="/Images/team.png" alt="TSG Hawks Logo">
+        <div class="title">
+            <div class="title-header">台鋼雄鷹健康檢查專案</div>
+            <div class="title-header-bold">
+                @if (data.前測結果摘要)
+                {
+                    <span class="">前測</span>
+                }
+                else
+                {
+                    <span class="">後測</span>
+                }
+                <span class="">結果摘要</span>
+            </div>
+        </div>
+        <img src="/Images/nckuh.png" alt="NCKU Logo">
+    </div>
+
+    <table>
+        <tr>
+            <th rowspan="2" class="green-bg w-25">姓名</th>
+            <td rowspan="2" class="w-25 green-bg-value">@CTMSModel.Home首頁2.姓名</td>
+            <th class="green-bg w-25">年齡</th>
+            <td class="green-bg-value">@CTMSModel.Home首頁2.真實年齡</td>
+        </tr>
+        <tr>
+            <th class="green-bg w-25">身高</th>
+            <td class="green-bg-value">@CTMSModel.Home首頁2.身高 公分</td>
+        </tr>
+        <tr>
+            <th rowspan="2" class="green-bg w-25">守備位置</th>
+            <td rowspan="2" class="w-25 green-bg-value">@CTMSModel.Home首頁2.擔任位置</td>
+            <th class="green-bg w-25">體重</th>
+            <td class="green-bg-value">@CTMSModel.Home首頁2.體重 公斤</td>
+        </tr>
+        <tr>
+            <th class="green-bg w-25">BMI</th>
+            <td class="green-bg-value">@CTMSModel.Home首頁2.BMI</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th class="green-bg-item">項目</th>
+            <th class="green-bg-item">分析結果</th>
+            <th class="green-bg-item">建議</th>
+        </tr>
+        <tr>
+            <td>基因體學檢查</td>
+            <td>@data.基因體學檢查分析結果</td>
+            <td>@data.基因體學檢查建議</td>
+        </tr>
+        <tr>
+            <td>肌肉組成檢查</td>
+            <td>@data.肌肉組成檢查分析結果</td>
+            <td> @data.肌肉組成檢查建議</td>
+        </tr>
+        <tr>
+            <td>代謝失調風險</td>
+            <td>@data.代謝失調風險分析結果</td>
+            <td>@data.代謝失調風險建議</td>
+        </tr>
+        <tr>
+            <td>運動代謝體</td>
+            <td>@data.運動代謝體分析結果</td>
+            <td>@data.運動代謝體建議</td>
+        </tr>
+        <tr>
+            <td>生化檢查結果</td>
+            <td>@data.生化檢查結果分析結果</td>
+            <td>@data.生化檢查結果建議</td>
+        </tr>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+    [Parameter]
+    public NextGenerationSportsCTMSModel CTMSModel { get; set; } = new();
+    報告摘要Model data = new();
+
+    bool isSmallChecked = true;
+    protected override async Task OnInitializedAsync()
+    {
+        var Athlete = await UploadFileService.GetAsync(Code);
+        CTMSModel = JsonConvert
+        .DeserializeObject<NextGenerationSportsCTMSModel>(Athlete.ExcelData);
+        data = CTMSModel.報告摘要Model;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+    }
+}

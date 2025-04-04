@@ -1,0 +1,92 @@
+﻿@page "/Cardiop"
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+<PageTitle>心肺功能</PageTitle>
+
+<div class="container-custom">
+    <div class="header">
+        <h1>
+            心肺功能
+            @foreach (var item in CurrentAthleteExamine.ExamineList)
+            {
+            string selected = "";
+            if (item == CurrentAthleteExamine.ExamineTime)
+            {
+            selected = "btn-primary fw-bolder";
+            }
+            else
+            {
+            selected = "btn-outline-primary";
+            }
+            <span class="mx-3 btn @selected"
+                  @onclick="async () => await OnChangeExamineAsync(item)">@item</span>
+            }
+        </h1>
+    </div>
+    <div class="metrics">
+        <div class="metric-box dark-blue">
+            <div class="metric-title">用力呼氣肺活量</div>
+            <div class="metric-value">@data.用力呼氣肺活量<span>L</span></div>
+            <div class="metric-title-hidden">_</div>
+        </div>
+        <div class="metric-box dark-blue">
+            <div class="metric-title">用力呼氣肺活量百分比</div>
+            <div class="metric-value">@data.用力呼氣肺活量百分比<span>%</span></div>
+            <div class="metric-title-hidden">_</div>
+        </div>
+    </div>
+    <div class="metrics">
+        <div class="metric-box dark-blue">
+            <div class="metric-title">每公斤最大耗氧量</div>
+            <div class="metric-value">@data.每公斤最大耗氧量</div>
+            <div class="metric-title">(ml/kg/min)</div>
+        </div>
+        <div class="metric-box dark-blue">
+            <div class="metric-title">同齡標準化<br />每公斤最大耗氧量</div>
+            <div class="metric-value">@data.同齡標準化每公斤最大耗氧量</div>
+        </div>
+        <div class="metric-box dark-blue">
+            <div class="metric-title">每公斤最大耗氧量<br />百分比</div>
+            <div class="metric-value">@data.每公斤最大耗氧量百分比</div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    NextGenerationSportsCTMSModel CTMSModel = new();
+    心肺功能Model data = new();
+
+    Athlete Athlete = new();
+    List<FileListNodeModel> fileList = new List<FileListNodeModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+        data = CTMSModel.心肺功能;
+        StateHasChanged();
+    }
+
+    async Task OnChangeExamineAsync(string examineTime)
+    {
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .ChangeCurrentDataAsync(Athlete, CurrentAthleteExamine, examineTime);
+
+        StateHasChanged();
+    }
+}

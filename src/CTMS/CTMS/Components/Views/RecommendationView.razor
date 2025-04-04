@@ -1,0 +1,131 @@
+﻿@using Newtonsoft.Json
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+<PageTitle>綜合評估建議</PageTitle>
+
+<div class="container-custom">
+    <div class="header">
+        <h1>
+            綜合評估建議
+            @foreach (var item in CurrentAthleteExamine.ExamineList)
+            {
+                string selected = "";
+                if (item == CurrentAthleteExamine.ExamineTime)
+                {
+                    selected = "btn-primary fw-bolder";
+                }
+                else
+                {
+                    selected = "btn-outline-primary";
+                }
+                <span class="mx-3 btn @selected"
+                      @onclick="async () => await OnChangeExamineAsync(item)">@item</span>
+            }
+        </h1>
+    </div>
+    <div class="metrics">
+        <div class="metric-box dark-blue">
+            <div class="metric-title">內臟脂肪百分位</div>
+            <div class="metric-value">@RecommendationModel.VisceralFatPercentile內臟脂肪百分位</div>
+        </div>
+        <div class="metric-box dark-blue">
+            <div class="metric-title">皮下脂肪百分位</div>
+            <div class="metric-value">@RecommendationModel.SubcutaneousFatPercentile皮下脂肪百分位</div>
+        </div>
+        <div class="metric-box dark-blue">
+            <div class="metric-title">代謝失調風險</div>
+            <div class="metric-value">@RecommendationModel.MetabolicDisorderRisk代謝失調風險</div>
+        </div>
+        <div class="metric-box dark-blue">
+            <div class="metric-title">腰圍百分位</div>
+            <div class="metric-value">@RecommendationModel.WaistCircumferencePercentile腰圍百分位</div>
+        </div>
+    </div>
+    <div class="metrics">
+        <div class="metric-box pink">
+            <div class="metric-title">肌肉健康度</div>
+            <div class="metric-value">@RecommendationModel.MuscleHealth肌肉健康度</div>
+        </div>
+        <div class="metric-box pink">
+            <div class="metric-title">核心肌群校正肌力</div>
+            <div class="metric-value">@RecommendationModel.核心肌群校正肌力</div>
+        </div>
+        <div class="metric-box pink">
+            <div class="metric-title">心肺能力</div>
+            <div class="metric-value">@RecommendationModel.心肺能力</div>
+        </div>
+        <div class="metric-box pink">
+            <div class="metric-title">核心均衡力</div>
+            <div class="metric-value">@RecommendationModel.CoreBalance核心均衡力</div>
+        </div>
+    </div>
+    <div class="recommendations">
+        <div class="recommendation-box green">
+            <div class="recommend-title">飲食補充</div>
+            <div class="recommend-text">@RecommendationModel.飲食補充簡短建議</div>
+        </div>
+        <div class="recommendation-box green">
+            <div class="recommend-title">體能訓練</div>
+            <div class="recommend-text">@RecommendationModel.體能訓練簡短建議</div>
+        </div>
+        <div class="recommendation-box green">
+            <div class="recommend-title">運動潛能</div>
+            <div class="recommend-text">@RecommendationModel.運動潛能簡短建議</div>
+        </div>
+        <div class="recommendation-box green">
+            <div class="recommend-title">健康風險</div>
+            <div class="recommend-text">@RecommendationModel.健康風險簡短建議</div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    NextGenerationSportsCTMSModel CTMSModel = new();
+    ComprehensiveAssessmentRecommendation綜合評估建議Model RecommendationModel = new();
+
+    Athlete Athlete = new();
+    List<FileListNodeModel> fileList = new List<FileListNodeModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+        RecommendationModel = CTMSModel.ComprehensiveAssessmentRecommendation綜合評估建議Model;
+        var strValue = RecommendationModel.心肺能力.Replace('%', ' ');
+        if (double.TryParse(strValue, out double valueX))
+        {
+            double value = Convert.ToDouble(strValue);
+            double roundedValue = Math.Round(value);
+            strValue = roundedValue.ToString() + "";
+        }
+        else
+        {
+            strValue = $"{RecommendationModel.心肺能力}";
+            strValue = $"";
+        }
+        RecommendationModel.心肺能力 = strValue;
+        StateHasChanged();
+    }
+
+    async Task OnChangeExamineAsync(string examineTime)
+    {
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .ChangeCurrentDataAsync(Athlete, CurrentAthleteExamine, examineTime);
+
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,112 @@
+﻿.container-custom {
+    background-color: #fff;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.header {
+    background-color: #e0e0e0;
+    text-align: left;
+    padding: 10px;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+        padding-left: 10px;
+    }
+
+.main-content {
+    display: flex;
+    justify-content: stretch;
+    margin: 20px 0;
+    flex-direction: row;
+    width:100%;
+}
+
+.left-middle-outside-panel {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+.left-middle-inside-panel {
+    display: flex;
+    flex-direction: row;
+}
+
+.left-panel {
+    flex: 1;
+    width: 320px;
+    margin-top: auto;
+}
+
+.middle-panel {
+    flex: 1;
+    text-align: center;
+    width:500px;
+}
+
+.right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+}
+
+.info-table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    width: 550px;
+}
+
+    .info-table td {
+        background-color: #f39c12;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid black;
+        color: #333;
+        font-size: 40px;
+    }
+
+.chart-img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.ct-scan-img {
+    /*height: 170px;*/
+    border-radius: 5px;
+}
+
+.metrics {
+    display: flex;
+    justify-content: space-between;
+}
+
+.metric-box {
+    flex: 1;
+    background-color: #074737;
+    color: #ebeaf1;
+    text-align: center;
+    border-radius: 8px;
+    margin: 0 10px;
+}
+
+.metric-title {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.metric-chart img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+}

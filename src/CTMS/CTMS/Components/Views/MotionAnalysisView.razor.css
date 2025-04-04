@@ -1,0 +1,76 @@
+﻿.container-custom {
+    background-color: #fff;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.header {
+    background-color: #e0e0e0;
+    text-align: left;
+    padding: 10px;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+        padding-left: 10px;
+    }
+
+.metrics {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.metric-box {
+    flex: 1;
+    background-color: #074737;
+    color: #ebeaf1;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 0 10px;
+}
+
+.metric-title {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-around;
+}
+
+.charts-center {
+    display: flex;
+    justify-content: center;
+}
+
+.chart-box {
+    flex: 1;
+    text-align: center;
+    margin: 0 10px;
+}
+
+    .chart-box img {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+.chart-label {
+    background-color: #074737;
+    color: #ebeaf1;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 40px;
+    width: 650px;
+    margin: 0 auto; /* Add this line to center horizontally */
+}

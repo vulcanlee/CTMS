@@ -1,0 +1,143 @@
+﻿@page "/UpdateData"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+@inject ExcleService ExcleService
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+<PageTitle>Excel重新計算</PageTitle>
+
+<div>
+    <div class="page-top">
+        <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
+        <span class="page-title">Excel重新計算</span>
+        <button class="upload-btn" @onclick=OnUpdate>更新資料</button>
+    </div>
+
+    <div class="mt-5">
+
+        @foreach (var athlete in athletesDone)
+        {
+            <div>
+                @athlete
+            </div>
+        }
+    </div>
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+IsVisible="@MessageBox.IsVisible"
+Title="@MessageBox.Title" Message="@MessageBox.Body"
+Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+IsVisible="@ConfirmMessageBox.IsVisible"
+Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    List<string> athletesDone = new();
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+    }
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/");
+    }
+    async Task OnUpdate()
+    {
+        List<Athlete> athletes = await UploadFileService.GetAsync();
+        List<Examine> allExamine = new();
+        foreach (var athlete in athletes)
+        {
+            var firstExamineTime = athlete.ExamineTime;
+            allExamine.Clear();
+            allExamine.AddRange(athlete.Examine.ToList());
+            foreach (var examine in allExamine)
+            {
+                await OnUploadV2(athlete, examine);
+            }
+        }
+        athletesDone.Insert(0, "更新完成");
+    }
+
+    async Task OnUploadV2(Athlete athlete, Examine examine)
+    {
+        var fileList = JsonConvert
+        .DeserializeObject<List<FileListNodeModel>>(examine.FilesData);
+        var filename = FileListHelper.GetXlsx(fileList);
+
+        var CTMSModel = ExcleService.ReadExcel(filename);
+
+        #region 還原原先設定文字
+        var tempCTMSModel = JsonConvert
+        .DeserializeObject<NextGenerationSportsCTMSModel>(examine.ExcelData);
+
+        CTMSModel.ComprehensiveAssessmentRecommendation綜合評估建議Model
+        .CopyFrom(tempCTMSModel.ComprehensiveAssessmentRecommendation綜合評估建議Model);
+
+        CTMSModel.報告摘要Model
+        .CopyFrom(tempCTMSModel.報告摘要Model);
+
+        #endregion
+
+        examine.ExcelData = JsonConvert.SerializeObject(CTMSModel);
+        await UploadFileService.UpdateExamineAsync(examine);
+        athletesDone.Insert(0, $"更新 人員 {athlete.Name} 的檢測 {examine.ExamineTime}");
+        StateHasChanged();
+        await Task.Yield();
+
+        if (athlete.ExamineTime == examine.ExamineTime)
+        {
+            athlete.ExcelData = examine.ExcelData;
+            await UploadFileService.UpdateAthleteAsync(athlete);
+            athletesDone.Insert(0, $"更新 人員 {athlete.Name}");
+        }
+
+        StateHasChanged();
+        await Task.Yield();
+    }
+
+    async Task OnUpload(Athlete athlete)
+    {
+        var fileList = JsonConvert
+        .DeserializeObject<List<FileListNodeModel>>(athlete.FilesData);
+        var filename = FileListHelper.GetXlsx(fileList);
+
+        filename = Path.Combine(Directory.GetCurrentDirectory(), filename);
+
+        var CTMSModel = ExcleService.ReadExcel(filename);
+
+        #region 還原原先設定文字
+        var tempCTMSModel = JsonConvert
+        .DeserializeObject<NextGenerationSportsCTMSModel>(athlete.ExcelData);
+
+        CTMSModel.ComprehensiveAssessmentRecommendation綜合評估建議Model
+        .CopyFrom(tempCTMSModel.ComprehensiveAssessmentRecommendation綜合評估建議Model);
+
+        CTMSModel.報告摘要Model
+        .CopyFrom(tempCTMSModel.報告摘要Model);
+
+        #endregion
+
+        athlete.ExcelData = JsonConvert.SerializeObject(CTMSModel);
+        await UploadFileService.UpdateAsync(athlete.Code, athlete);
+        athletesDone.Insert(0, athlete.Code);
+        StateHasChanged();
+        await Task.Yield();
+    }
+
+}

@@ -1,0 +1,126 @@
+﻿.diagram-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+}
+
+    .header img {
+        height: 100px;
+    }
+
+.title {
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+}
+
+.title-header {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+}
+
+.title-header-bold {
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+}
+.div-row-fix-heigh{
+    height:440px;
+}
+.text-container-outter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+/*.text-container {
+    display: flex;
+    text-align: left;
+    align-self: flex-end;*/ /* 強制讓文字對齊到底部 */
+/*}*/
+.text-container {
+}
+.date-to-leftr {
+    text-align: start;
+    font-size: 36px;
+}
+
+.date-to-right {
+    text-align: end;
+    font-size: 36px;
+}
+
+.checkbox-section {
+    margin-top: 10px;
+}
+
+.checkbox {
+    font-size: 18px;
+    margin: 0 10px;
+}
+
+table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 18px;
+}
+
+th, td {
+    border: 1px solid #333;
+    padding: 10px;
+}
+
+th {
+    background-color: #004d00;
+    color: white;
+}
+
+.highlight {
+    background-color: #ffc107;
+    font-weight: bold;
+}
+
+.green-bg {
+    background-color: #004d00;
+    color: #ffc107;
+    font-size: 20px;
+    text-align: center;
+}
+
+.green-bg-value {
+    font-size: 20px;
+    text-align: center;
+}
+
+.green-bg-item {
+    background-color: #004d00;
+    color: #ffc107;
+    font-size: 20px;
+    text-align: center;
+}
+
+.img-size {
+    width: 350px;
+}
+
+
+.custom-checkbox .e-checkbox-wrapper {
+    transform: scale(1.5); /* 調整核取方塊大小 */
+    margin: 10px;
+}
+
+    .custom-checkbox .e-checkbox-wrapper .e-label {
+        font-size: 18px; /* 調整字體大小 */
+        margin-left: 12px; /* 調整文字和核取方塊的間距 */
+    }

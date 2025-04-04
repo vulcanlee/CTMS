@@ -1,0 +1,117 @@
+﻿@page "/temp1"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+@inject ExcleService ExcleService
+@inject DownloadFileService DownloadFileService
+@inject RestoreFileService RestoreFileService
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using CTMS.Business.Extensions
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@inject MigrationExamineService MigrationExamineService
+
+<PageTitle>轉移具多階段測試系統</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+    <div>
+        <div class="page-top">
+            <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
+            <span class="page-title">轉移具多階段測試系統</span>
+        </div>
+
+        <div class="m-5">
+            <div class="btn btn-primary" @onclick="OnreparationAsync">轉移</div>
+        </div>
+        <br />
+        <hr />
+        <br />
+
+        <div class="m-5">
+            @foreach (var item in ProcessingMessing)
+            {
+                <div>@item</div>
+            }
+        </div>
+    </div>
+}
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    SfUploader upload1;
+    List<string> athletesDone = new();
+    List<string> ProcessingMessing = new();
+    string zipFilename = "";
+    string UploadingMessage = "　";
+    bool canDownload = false;
+    string path = MagicObjectHelper.UploadTempPath;
+    string pathZip = MagicObjectHelper.UploadTempPath;
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        zipFilename = Path.Combine(MagicObjectHelper.DownloadPath, "MyDownload.zip");
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var checkResult = await AuthenticationStateHelper
+            .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE備份還原) == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+            }
+        }
+    }
+
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/");
+    }
+    async Task OnreparationAsync()
+    {
+        ProcessingMessing.Clear();
+
+        await MigrationExamineService.MigrateExamineAsync(ProcessingMessing, RefreshMessages);
+        canDownload = true;
+    }
+
+    void RefreshMessages()
+    {
+        StateHasChanged();
+    }
+
+}

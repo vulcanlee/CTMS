@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="PdfFiles\readme.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="PdfFiles\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="MudBlazor" Version="7.7.0" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="5.3.15" />
+		<PackageReference Include="Syncfusion.Blazor" Version="26.2.13" />
+		<PackageReference Include="Syncfusion.Blazor.Themes" Version="26.2.13" />
+		<PackageReference Include="AutoMapper" Version="14.0.0" />
+		<PackageReference Include="Syncfusion.HtmlToPdfConverter.Net.Windows" Version="28.1.39" />
+		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="26.2.13" />-->
+		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.Cef.Net.Windows" Version="28.1.39" />-->
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CTMS.Business\CTMS.Business.csproj" />
+		<ProjectReference Include="..\CTMS.EntityModel\CTMS.EntityModel.csproj" />
+		<ProjectReference Include="..\CTMS.ExcelUtility\CTMS.ExcelUtility.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="Components\Pages\DashboardMetabolitePage.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Components\Pages\DashboardGenomicsPage.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Components\Pages\DashboardRecommendationEditorPage.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Components\Pages\UpdateDataPage.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="Components\Views\DescriptionView.razor">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Data\readme.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Data\Test for PE dashboard.xlsx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="DawnCache\readme.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="DownloadFiles\readme.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="UploadFiles\readme.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="DecompressFiles\readme.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="UploadTemp\readme.md">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

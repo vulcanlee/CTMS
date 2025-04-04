@@ -1,0 +1,193 @@
+﻿@using Newtonsoft.Json
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+<PageTitle>基因體分析</PageTitle>
+
+<div class="container-custom">
+    <div class="header">
+        <h1>
+            基因體分析
+            @foreach (var item in CurrentAthleteExamine.ExamineList)
+            {
+                string selected = "";
+                if (item == CurrentAthleteExamine.ExamineTime)
+                {
+                    selected = "btn-primary fw-bolder";
+                }
+                else
+                {
+                    selected = "btn-outline-primary";
+                }
+                <span class="mx-3 btn @selected"
+                      @onclick="async () => await OnChangeExamineAsync(item)">@item</span>
+            }
+        </h1>
+    </div>
+
+    <div class="container-data">
+        <div class="left-panel">
+            <div class="metric-box">
+                <div class="metric-title">心臟單基因</div>
+                <div class="metric-value"><strong>@基因體分析.心臟單基因</strong></div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">肌功能多基因</div>
+                <div class="metric-value"><strong>@基因體分析.肌功能多基因</strong></div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">心理韌性基因</div>
+                <div class="metric-value"><strong>@基因體分析.心理韌性基因</strong></div>
+            </div>
+
+        </div>
+
+        <div class="right-panel">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>名稱</th>
+                            <th>疾病</th>
+                            <th>基因變異</th>
+                            <th>致病性</th>
+                            <th>基因頻率</th>
+                            <th>遺傳模式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@基因體分析.名稱</td>
+                            <td>@基因體分析.疾病</td>
+                            <td>@基因體分析.基因變異</td>
+                            <td>@基因體分析.致病性</td>
+                            <td>@基因體分析.基因頻率</td>
+                            <td>@基因體分析.遺傳模式</td>
+                        </tr>
+                        @if (string.IsNullOrEmpty(基因體分析.名稱1) == false ||
+                        string.IsNullOrEmpty(基因體分析.疾病1) == false ||
+                        string.IsNullOrEmpty(基因體分析.基因變異1) == false ||
+                        string.IsNullOrEmpty(基因體分析.致病性1) == false ||
+                        string.IsNullOrEmpty(基因體分析.基因頻率1) == false ||
+                        string.IsNullOrEmpty(基因體分析.遺傳模式1) == false)
+                        {
+                            <tr>
+                                <td>@基因體分析.名稱1</td>
+                                <td>@基因體分析.疾病1</td>
+                                <td>@基因體分析.基因變異1</td>
+                                <td>@基因體分析.致病性1</td>
+                                <td>@基因體分析.基因頻率1</td>
+                                <td>@基因體分析.遺傳模式1</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="radar-chart m-auto">
+                <SfChart Width="750px" Height="650px" EnableAnimation="false">
+                    <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                       LabelPlacement="LabelPlacement.OnTicks"
+                                       LabelPosition="AxisPosition.Outside"
+                                       Coefficient="80"
+                                       LabelIntersectAction="LabelIntersectAction.Rotate90">
+                        <ChartAxisLabelStyle Size="28" />
+                    </ChartPrimaryXAxis>
+                    <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                       Maximum="100" Minimum="0">
+                        <ChartAxisLabelStyle Size="18" />
+                    </ChartPrimaryYAxis>
+                    <ChartTooltipSettings Enable="true">
+                        <ChartTooltipTextStyle Size="20px" />
+                    </ChartTooltipSettings>
+                    <ChartSeriesCollection>
+                        <ChartSeries DataSource="@ChartDatas1" XName="X" YName="Y" Width="3"
+                                     Fill="Red"
+                                     Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                            <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                            <ChartMarker IsFilled="true" Visible="true"
+                                         Height="7" Width="7" Shape="ChartShape.Rectangle">
+                            </ChartMarker>
+                        </ChartSeries>
+                    </ChartSeriesCollection>
+                </SfChart>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    NextGenerationSportsCTMSModel CTMSModel = new();
+    GenomeAnalysis基因體分析Model 基因體分析 = new();
+
+    public class ChartData
+    {
+        public string X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public List<ChartData> ChartDatas1 = new List<ChartData>();
+
+    Athlete Athlete = new();
+    List<FileListNodeModel> fileList = new List<FileListNodeModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+        基因體分析 = CTMSModel.基因體分析;
+        BuildChart();
+        StateHasChanged();
+    }
+
+    async Task OnChangeExamineAsync(string examineTime)
+    {
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .ChangeCurrentDataAsync(Athlete, CurrentAthleteExamine, examineTime);
+
+        StateHasChanged();
+    }
+
+    void BuildChart()
+    {
+        string temp, tv1, tv2 = "";
+        float v耐力 = 0, v爆發力 = 0, v肌力 = 0, v協調性與敏捷性 = 0,
+        v得獎狀況 = 0, v受傷狀態 = 0, v正向復原力 = 0, v負向復原力 = 0;
+        v耐力 = 基因體分析.基因體分析Radar.耐力.ToFloat();
+        v爆發力 = 基因體分析.基因體分析Radar.爆發力.ToFloat();
+        v肌力 = 基因體分析.基因體分析Radar.肌力.ToFloat();
+        v協調性與敏捷性 = 基因體分析.基因體分析Radar.協調性與敏捷性.ToFloat();
+        v得獎狀況 = 基因體分析.基因體分析Radar.得獎狀況.ToFloat();
+        v受傷狀態 = 基因體分析.基因體分析Radar.受傷狀態.ToFloat();
+        v正向復原力 = 基因體分析.基因體分析Radar.正向復原力.ToFloat();
+        v負向復原力 = 基因體分析.基因體分析Radar.負向復原力.ToFloat();
+
+        var foo = 基因體分析.基因體分析Radar;
+
+        ChartDatas1 = new List<ChartData>()
+        {
+            new ChartData{ X= "耐力", Y= v耐力 },
+            new ChartData{ X= "爆發力", Y= v爆發力 },
+            new ChartData{ X= "肌力", Y= v肌力 },
+            new ChartData{ X= "協調捷性", Y= v協調性與敏捷性 },
+            // new ChartData{ X= "得獎狀況", Y= v得獎狀況 },
+            new ChartData{ X= "受傷狀態", Y= v受傷狀態 },
+            // new ChartData{ X= "正向復原力", Y= v正向復原力 },
+            // new ChartData{ X= "負向復原力", Y= v負向復原力 },
+        };
+    }
+}

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="26.2.12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,121 @@
+﻿.page-top {
+    background-color: black;
+    color: white;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the title */
+    padding: 0 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.back-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: auto; /* Push the button to the left */
+    font-size: 14px;
+    position: absolute;
+    left: 15px;
+}
+
+.upload-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    right: 15px; /* Push button to the far right */
+}
+
+    .upload-btn:hover {
+        background-color: #555;
+    }
+
+.back-btn:hover {
+    background-color: #555;
+}
+
+.container-custom {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.header {
+    background-color: #e0e0e0;
+    text-align: left;
+    padding: 10px;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+.metrics {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.metric-box {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+.metric-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 18px;
+    text-align: left;
+}
+
+.dark-blue {
+    background-color: #0b3e61;
+    color: #ffc107;
+}
+
+.pink {
+    background-color: #f8b4b4;
+    color: #ff5c5c;
+}
+
+.recommendations {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.recommendation-box {
+    flex: 1;
+    text-align: center;
+    background-color: #a4d85c;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+.recommend-title {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #2e7d32;
+}
+
+.recommend-text {
+    font-size: 48px;
+    color: #2e7d32;
+}

@@ -1,0 +1,25 @@
+﻿@page "/Genomics2/{code}"
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+
+<PageTitle>基因體分析</PageTitle>
+
+<div>
+    <GenomicsRadarView Code="@Code" />
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Code: {Code}");
+    }
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/DashboardHome/{Code}");
+    }
+
+}

@@ -1,0 +1,271 @@
+﻿@page "/Mass"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+<PageTitle>身體組成-肌肉質量</PageTitle>
+
+<div class="container-custom">
+    <div class="header">
+        <h1>
+            身體組成-肌肉質量
+            @foreach (var item in CurrentAthleteExamine.ExamineList)
+            {
+                string selected = "";
+                if (item == CurrentAthleteExamine.ExamineTime)
+                {
+                    selected = "btn-primary fw-bolder";
+                }
+                else
+                {
+                    selected = "btn-outline-primary";
+                }
+                <span class="mx-3 btn @selected"
+                      @onclick="async () => await OnChangeExamineAsync(item)">@item</span>
+            }
+        </h1>
+    </div>
+    <div class="main-content">
+        <div class="left-panel">
+            <table class="info-table">
+                <tr>
+                    <td>腰圍</td>
+                    <td>@MassModel.Waistline腰圍 cm</td>
+                </tr>
+                <tr>
+                    <td>椎體</td>
+                    <td>@MassModel.VertebralBody椎體 cm<sup>2</sup></td>
+                </tr>
+                <tr>
+                    <td>骨架</td>
+                    <td>@MassModel.Skeleton骨架</td>
+                </tr>
+            </table>
+        </div>
+        <div class="image-panel">
+            <img src="@image"/>
+        </div>
+        <div class="right-panel">
+            <table class="info-table">
+                <tr>
+                    <td>面積</td>
+                    <td>@MassModel.Area面積 cm<sup>2</sup></td>
+                </tr>
+                <tr>
+                    <td>密度</td>
+                    <td>@MassModel.Density密度 HU</td>
+                </tr>
+                <tr>
+                    <td>指標</td>
+                    <td>@MassModel.Index指標</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="metrics">
+        <div>
+            <div class="metric-box">
+                <div class="metric-title">核心肌群肌肉量</div>
+                <div class="metric-value">@MassModel.CoreMuscleMass核心肌群肌肉量</div>
+                <div class="metric-chart">
+                </div>
+            </div>
+            <div class="chart-item-style">
+                <div class="w-100">
+                    <SfChart Width="600px" Height="650px" EnableAnimation="false">
+                        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                           LabelPlacement="LabelPlacement.OnTicks" 
+                                           LabelPosition="AxisPosition.Outside"
+                                           Coefficient="70" 
+                                           LabelIntersectAction="LabelIntersectAction.Rotate90">
+                            <ChartAxisLabelStyle Size="28" />
+                        </ChartPrimaryXAxis>
+                        <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                           Maximum="100" Minimum="0">
+                            <ChartAxisLabelStyle Size="18" />
+                        </ChartPrimaryYAxis>
+                        <ChartTooltipSettings Enable="true">
+                            <ChartTooltipTextStyle Size="20px" />
+                        </ChartTooltipSettings>
+                        <ChartSeriesCollection>
+                            <ChartSeries DataSource="@ChartDatas1" XName="X" YName="Y" Width="3"
+                                         Fill="Red" 
+                                         Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                            </ChartSeries>
+                        </ChartSeriesCollection>
+                    </SfChart>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="metric-box">
+                <div class="metric-title">核心肌群肌肉品質</div>
+                <div class="metric-value">@MassModel.CoreMuscleEndurance核心肌群肌肉品質</div>
+                <div class="metric-chart">
+                </div>
+            </div>
+            <div class="chart-item-style">
+                <div class="w-100">
+                    <SfChart Width="600px" Height="650px" EnableAnimation="false">
+                        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                           LabelPlacement="LabelPlacement.OnTicks" 
+                                           LabelPosition="AxisPosition.Outside"
+                                           Coefficient="70"
+                                           LabelIntersectAction="LabelIntersectAction.Rotate90">
+                            <ChartAxisLabelStyle Size="28" />
+                        </ChartPrimaryXAxis>
+                        <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                           Maximum="100" Minimum="0" >
+                            <ChartAxisLabelStyle Size="18" />
+                        </ChartPrimaryYAxis>
+                        <ChartTooltipSettings Enable="true">
+                            <ChartTooltipTextStyle Size="20px" />
+                        </ChartTooltipSettings>
+                        <ChartSeriesCollection>
+                            <ChartSeries DataSource="@ChartDatas2" XName="X" YName="Y" Width="3"
+                                         Fill="Red"
+                                         Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                            </ChartSeries>
+                        </ChartSeriesCollection>
+                    </SfChart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="metrics-center">
+        <div>
+            <div class="metric-box">
+                <div class="metric-title">核心肌群校正肌力</div>
+                <div class="metric-value">@MassModel.CorrectCoreMuscleStrength校正肌力</div>
+                <div class="metric-chart">
+                </div>
+            </div>
+            <div class="chart-item-style">
+                <div class="w-100">
+                    <SfChart Width="600px" Height="650px" EnableAnimation="false">
+                        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                           LabelPlacement="LabelPlacement.OnTicks"
+                                           LabelPosition="AxisPosition.Outside"
+                                           Coefficient="70"
+                                           LabelIntersectAction="LabelIntersectAction.Rotate90">
+                            <ChartAxisLabelStyle Size="28" />
+                        </ChartPrimaryXAxis>
+                        <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                           Maximum="100" Minimum="0"
+                                           >
+                            <ChartAxisLabelStyle Size="18" />
+                        </ChartPrimaryYAxis>
+                        <ChartTooltipSettings Enable="true">
+                            <ChartTooltipTextStyle Size="20px" />
+                        </ChartTooltipSettings>
+                        <ChartSeriesCollection>
+                            <ChartSeries DataSource="@ChartDatas3" XName="X" YName="Y" Width="3"
+                                         Fill="Red"
+                                         Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                            </ChartSeries>
+                        </ChartSeriesCollection>
+                    </SfChart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    public class ChartData
+    {
+        public string X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public List<ChartData> ChartDatas1 = new List<ChartData>();
+    public List<ChartData> ChartDatas2 = new List<ChartData>();
+    public List<ChartData> ChartDatas3 = new List<ChartData>();
+
+    NextGenerationSportsCTMSModel CTMSModel = new();
+    BodyMuscleMassModel肌肉質量Model MassModel = new();
+    string image = "";
+
+    Athlete Athlete = new();
+    List<FileListNodeModel> fileList = new List<FileListNodeModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
+
+        image = FileListHelper.GetMuscle5(fileList); 
+        if(string.IsNullOrEmpty(image))
+        {
+            image = FileListHelper.GetMuscleFat(fileList);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+        MassModel = CTMSModel.BodyMuscleMassModel肌肉質量Model;
+        image = FileListHelper.GetMuscle5(fileList);
+        if (string.IsNullOrEmpty(image))
+        {
+            image = FileListHelper.GetMuscleFat(fileList);
+        }
+
+        BuildChart();
+        StateHasChanged();
+    }
+
+    async Task OnChangeExamineAsync(string examineTime)
+    {
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .ChangeCurrentDataAsync(Athlete, CurrentAthleteExamine, examineTime);
+
+        StateHasChanged();
+    }
+
+    void BuildChart()
+    {
+        var mass1Model = MassModel.CoreMuscleMass核心肌群肌肉量RadarChartModel;
+        ChartDatas1 = new List<ChartData>()
+        {
+            new ChartData{ X= "內斜肌 外斜肌 腹橫肌", Y= mass1Model.InternalObliqueExternalObliqueTransversusAbdominis內斜肌_外斜肌_腹橫肌.ToDouble() },
+            new ChartData{ X= "腹直肌", Y= mass1Model.RectusAbdominis腹直肌.ToDouble() },
+            new ChartData{ X= "腰方肌", Y= mass1Model.QuadratusLumborum腰方肌.ToDouble() },
+            new ChartData{ X= "豎脊肌 多裂肌", Y= mass1Model.ErectorSpinaeMultifidus豎脊肌_多裂肌.ToDouble() },
+            new ChartData{ X= "腰肌", Y= mass1Model.PsoasMuscle腰肌.ToDouble() },
+        };
+        mass1Model = MassModel.CoreMuscleEndurance核心肌群肌耐力RadarChartModel;
+        ChartDatas2 = new List<ChartData>()
+        {
+            new ChartData{ X= "內斜肌 外斜肌 腹橫肌", Y= mass1Model.InternalObliqueExternalObliqueTransversusAbdominis內斜肌_外斜肌_腹橫肌.ToDouble() },
+            new ChartData{ X= "腹直肌", Y= mass1Model.RectusAbdominis腹直肌.ToDouble() },
+            new ChartData{ X= "腰方肌", Y= mass1Model.QuadratusLumborum腰方肌.ToDouble() },
+            new ChartData{ X= "豎脊肌 多裂肌", Y= mass1Model.ErectorSpinaeMultifidus豎脊肌_多裂肌.ToDouble() },
+            new ChartData{ X= "腰肌", Y= mass1Model.PsoasMuscle腰肌.ToDouble() },
+        };
+        mass1Model = MassModel.CorrectCoreMuscleStrength核心肌群校正肌力強度RadarChartModel;
+        ChartDatas3 = new List<ChartData>()
+        {
+            new ChartData{ X= "內斜肌 外斜肌 腹橫肌", Y= mass1Model.InternalObliqueExternalObliqueTransversusAbdominis內斜肌_外斜肌_腹橫肌.ToDouble() },
+            new ChartData{ X= "腹直肌", Y= mass1Model.RectusAbdominis腹直肌.ToDouble() },
+            new ChartData{ X= "腰方肌", Y= mass1Model.QuadratusLumborum腰方肌.ToDouble() },
+            new ChartData{ X= "豎脊肌 多裂肌", Y= mass1Model.ErectorSpinaeMultifidus豎脊肌_多裂肌.ToDouble() },
+            new ChartData{ X= "腰肌", Y= mass1Model.PsoasMuscle腰肌.ToDouble() },
+        };
+    }
+}

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="14.0.0" />
+		<PackageReference Include="Azure.AI.OpenAI" Version="2.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Syncfusion.HtmlToPdfConverter.Net.Windows" Version="28.1.39" />
+		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="26.2.13" />-->
+		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.Cef.Net.Windows" Version="28.1.39" />-->
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
+		<ProjectReference Include="..\CTMS.EntityModel\CTMS.EntityModel.csproj" />
+		<ProjectReference Include="..\CTMS.ExcelUtility\CTMS.ExcelUtility.csproj" />
+		<ProjectReference Include="..\CTMS.Share\CTMS.Share.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Interfaces\" />
+	</ItemGroup>
+
+</Project>

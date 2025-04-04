@@ -1,0 +1,107 @@
+﻿.page-top {
+    background-color: black;
+    color: white;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the title */
+    padding: 0 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.back-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: auto; /* Push the button to the left */
+    font-size: 14px;
+    position: absolute;
+    left: 15px;
+}
+
+.upload-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    right: 15px; /* Push button to the far right */
+}
+
+    .upload-btn:hover {
+        background-color: #555;
+    }
+
+.back-btn:hover {
+    background-color: #555;
+}
+
+.page-title {
+    font-size: 16px;
+    text-align: center; /* Center the text inside its container */
+}
+
+.page-content {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    padding-top:40px;
+}
+
+.upload-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    height: 50vh;
+}
+
+.upload-item-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.text-field-name {
+    width: 50%;
+    background-color: #d7ffe4;
+    margin-left: 10px;
+}
+
+.upload-files-control {
+    /*flex-grow: 1;*/
+    overflow-y: auto; /* Add scrolling if content exceeds height */
+    padding: 10px;
+    background-color: #fff;
+}
+
+.upload-files-list {
+    flex-grow: 1;
+    overflow-y: auto; /* Add scrolling if content exceeds height */
+    padding: 10px;
+    background-color: #fff;
+}
+
+.upload-commands {
+    height: 40px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* Prevents shrinking */
+    cursor: pointer;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}

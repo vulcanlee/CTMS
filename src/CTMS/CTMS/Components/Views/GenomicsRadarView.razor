@@ -1,0 +1,333 @@
+﻿@using Newtonsoft.Json
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@using CTMS.Share.Helpers
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+<PageTitle>基因體細項</PageTitle>
+
+<div>
+    <div class="header">
+        <h1>
+            基因體細項
+            @foreach (var item in CurrentAthleteExamine.ExamineList)
+            {
+                string selected = "";
+                if (item == CurrentAthleteExamine.ExamineTime)
+                {
+                    selected = "btn-primary fw-bolder";
+                }
+                else
+                {
+                    selected = "btn-outline-primary";
+                }
+                <span class="mx-3 btn @selected"
+                      @onclick="async () => await OnChangeExamineAsync(item)">@item</span>
+            }
+        </h1>
+    </div>
+
+    <div class="container-custom">
+        <div class="container m-auto mw-100">
+            <div class="row">
+                <div class="col-4">
+                    <div class="metric-title">Omega-3 吸收</div>
+                    <div>
+                        <SfChart EnableAnimation="false">
+                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                               LabelPlacement="LabelPlacement.OnTicks"
+                                               LabelPosition="AxisPosition.Outside"
+                                               Coefficient="65"
+                                               LabelIntersectAction="LabelIntersectAction.Rotate90">
+                                <ChartAxisLabelStyle Size="22" />
+                            </ChartPrimaryXAxis>
+                            <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                               Maximum="100" Minimum="0">
+                                <ChartAxisLabelStyle Size="18" />
+                            </ChartPrimaryYAxis>
+                            <ChartTooltipSettings Enable="true">
+                                <ChartTooltipTextStyle Size="20px" />
+                            </ChartTooltipSettings>
+                            <ChartSeriesCollection>
+                                <ChartSeries DataSource="@ChartDatas1" XName="X" YName="Y" Width="3"
+                                             Fill="Red"
+                                             Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                    <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                    <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7"
+                                                 Shape="ChartShape.Rectangle">
+                                    </ChartMarker>
+                                </ChartSeries>
+                            </ChartSeriesCollection>
+
+                        </SfChart>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="metric-title">非胺基酸代謝體吸收</div>
+                    <div>
+                        <SfChart EnableAnimation="false">
+                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                               LabelPlacement="LabelPlacement.OnTicks"
+                                               LabelPosition="AxisPosition.Outside"
+                                               Coefficient="65"
+                                               LabelIntersectAction="LabelIntersectAction.Rotate90">
+                                <ChartAxisLabelStyle Size="20" />
+                            </ChartPrimaryXAxis>
+                            <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                               Maximum="100" Minimum="0">
+                                <ChartAxisLabelStyle Size="18" />
+                            </ChartPrimaryYAxis>
+                            <ChartTooltipSettings Enable="true">
+                                <ChartTooltipTextStyle Size="20px" />
+                            </ChartTooltipSettings>
+                            <ChartSeriesCollection>
+                                <ChartSeries DataSource="@ChartDatas2" XName="X" YName="Y" Width="3"
+                                             Fill="Red"
+                                             Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                    <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                    <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                                </ChartSeries>
+                            </ChartSeriesCollection>
+                        </SfChart>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="metric-title">胺基酸代謝體吸收</div>
+                    <div>
+                        <SfChart EnableAnimation="false">
+                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                               LabelPlacement="LabelPlacement.OnTicks"
+                                               LabelPosition="AxisPosition.Outside"
+                                               Coefficient="65"
+                                               LabelIntersectAction="LabelIntersectAction.Rotate90">
+                                <ChartAxisLabelStyle Size="20" />
+                            </ChartPrimaryXAxis>
+                            <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                               Maximum="100" Minimum="0">
+                                <ChartAxisLabelStyle Size="18" />
+                            </ChartPrimaryYAxis>
+                            <ChartTooltipSettings Enable="true">
+                                <ChartTooltipTextStyle Size="20px" />
+                            </ChartTooltipSettings>
+                            <ChartSeriesCollection>
+                                <ChartSeries DataSource="@ChartDatas3" XName="X" YName="Y" Width="3"
+                                             Fill="Red"
+                                             Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                    <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                    <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                                </ChartSeries>
+                            </ChartSeriesCollection>
+                        </SfChart>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="metric-title">微量元素吸收</div>
+                    <div>
+                        <SfChart EnableAnimation="false">
+                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                               LabelPlacement="LabelPlacement.OnTicks"
+                                               LabelPosition="AxisPosition.Outside"
+                                               Coefficient="65"
+                                               LabelIntersectAction="LabelIntersectAction.Rotate90">
+                                <ChartAxisLabelStyle Size="14" />
+                            </ChartPrimaryXAxis>
+                            <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                               Maximum="100" Minimum="0">
+                                <ChartAxisLabelStyle Size="18" />
+                            </ChartPrimaryYAxis>
+                            <ChartTooltipSettings Enable="true">
+                                <ChartTooltipTextStyle Size="20px" />
+                            </ChartTooltipSettings>
+                            <ChartSeriesCollection>
+                                <ChartSeries DataSource="@ChartDatas4" XName="X" YName="Y" Width="3"
+                                             Fill="Red"
+                                             Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                    <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                    <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                                </ChartSeries>
+                            </ChartSeriesCollection>
+                        </SfChart>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="metric-title">維生素吸收</div>
+                    <div>
+                        <SfChart EnableAnimation="false">
+                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                               LabelPlacement="LabelPlacement.OnTicks"
+                                               LabelPosition="AxisPosition.Outside"
+                                               Coefficient="65"
+                                               LabelIntersectAction="LabelIntersectAction.Rotate90">
+                                <ChartAxisLabelStyle Size="14" />
+                            </ChartPrimaryXAxis>
+                            <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                               Maximum="100" Minimum="0">
+                                <ChartAxisLabelStyle Size="18" />
+                            </ChartPrimaryYAxis>
+                            <ChartTooltipSettings Enable="true">
+                                <ChartTooltipTextStyle Size="20px" />
+                            </ChartTooltipSettings>
+                            <ChartSeriesCollection>
+                                <ChartSeries DataSource="@ChartDatas5" XName="X" YName="Y" Width="3"
+                                             Fill="Red"
+                                             Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                    <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                    <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                                </ChartSeries>
+                            </ChartSeriesCollection>
+                        </SfChart>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="metric-title">運動相關</div>
+                    <div>
+                        <SfChart EnableAnimation="false">
+                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                                               LabelPlacement="LabelPlacement.OnTicks"
+                                               LabelPosition="AxisPosition.Outside"
+                                               Coefficient="70"
+                                               LabelIntersectAction="LabelIntersectAction.Rotate90">
+                                <ChartAxisLabelStyle Size="14" />
+                            </ChartPrimaryXAxis>
+                            <ChartPrimaryYAxis LabelIntersectAction="LabelIntersectAction.Rotate90"
+                                               Maximum="100" Minimum="0">
+                                <ChartAxisLabelStyle Size="18" />
+                            </ChartPrimaryYAxis>
+                            <ChartTooltipSettings Enable="true">
+                                <ChartTooltipTextStyle Size="20px" />
+                            </ChartTooltipSettings>
+                            <ChartSeriesCollection>
+                                <ChartSeries DataSource="@ChartDatas6" XName="X" YName="Y" Width="3"
+                                             Fill="Red"
+                                             Type="ChartSeriesType.Radar" DrawType="ChartDrawType.Line">
+                                    <ChartSeriesAnimation Enable="false"></ChartSeriesAnimation>
+                                    <ChartMarker IsFilled="true" Visible="true" Height="7" Width="7" Shape="ChartShape.Rectangle"></ChartMarker>
+                                </ChartSeries>
+                            </ChartSeriesCollection>
+                        </SfChart>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    NextGenerationSportsCTMSModel CTMSModel = new();
+    GenomeDetail基因體細項Model 基因體細項 = new();
+
+    public class ChartData
+    {
+        public string X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public List<ChartData> ChartDatas1 = new List<ChartData>();
+    public List<ChartData> ChartDatas2 = new List<ChartData>();
+    public List<ChartData> ChartDatas3 = new List<ChartData>();
+    public List<ChartData> ChartDatas4 = new List<ChartData>();
+    public List<ChartData> ChartDatas5 = new List<ChartData>();
+    public List<ChartData> ChartDatas6 = new List<ChartData>();
+
+    Athlete Athlete = new();
+    List<FileListNodeModel> fileList = new List<FileListNodeModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+        基因體細項 = CTMSModel.基因體細項;
+        BuildChart();
+        StateHasChanged();
+    }
+
+    async Task OnChangeExamineAsync(string examineTime)
+    {
+        (CTMSModel, fileList) = await BrowseAthleteService
+        .ChangeCurrentDataAsync(Athlete, CurrentAthleteExamine, examineTime);
+
+        StateHasChanged();
+    }
+
+    void BuildChart()
+    {
+        ChartDatas1 = new List<ChartData>()
+        {
+            new ChartData{ X= "ALA", Y= 基因體細項.Omega3_ALA.ToDouble() },
+            new ChartData{ X= "DHA", Y= 基因體細項.Omega3_DHA.ToDouble() },
+            new ChartData{ X= "DPA", Y= 基因體細項.Omega3_DPA.ToDouble() },
+            new ChartData{ X= "EPA", Y= 基因體細項.Omega3_EPA.ToDouble() },
+        };
+
+        ChartDatas2 = new List<ChartData>()
+        {
+            new ChartData{ X= "Glycerophospholipid", Y= 基因體細項.Glycerophospholipid.ToDouble() },
+            new ChartData{ X= "Carotene", Y= 基因體細項.Carotene.ToDouble() },
+            new ChartData{ X= "Lycopene", Y= 基因體細項.Lycopene.ToDouble() },
+            new ChartData{ X= "Lecithin", Y= 基因體細項.Lecithin.ToDouble() },
+        };
+
+        ChartDatas3 = new List<ChartData>()
+        {
+            new ChartData{ X= "Glycine", Y= 基因體細項.Glycine.ToDouble() },
+            new ChartData{ X= "Leucine", Y= 基因體細項.Leucine.ToDouble() },
+            new ChartData{ X= "Phenylalanine", Y= 基因體細項.Phenylalanine.ToDouble() },
+            new ChartData{ X= "Proline", Y= 基因體細項.Proline.ToDouble() },
+            new ChartData{ X= "Serine", Y= 基因體細項.Serine.ToDouble() },
+            new ChartData{ X= "Arginine", Y= 基因體細項.Arginine.ToDouble() },
+            new ChartData{ X= "Valine", Y= 基因體細項.Valine.ToDouble() },
+        };
+
+        ChartDatas4 = new List<ChartData>()
+        {
+            new ChartData{ X= "Selenium", Y= 基因體細項.Selenium.ToDouble() },
+            new ChartData{ X= "Calcium", Y= 基因體細項.Calcium.ToDouble() },
+            new ChartData{ X= "Copper", Y= 基因體細項.Copper.ToDouble() },
+            new ChartData{ X= "Zinc", Y= 基因體細項.Zinc.ToDouble() },
+            new ChartData{ X= "Phosphorus", Y= 基因體細項.Phosphorus.ToDouble() },
+            new ChartData{ X= "Magnesium", Y= 基因體細項.Magnesium.ToDouble() },
+            new ChartData{ X= "Iron", Y= 基因體細項.Iron.ToDouble() },
+        };
+
+        ChartDatas5 = new List<ChartData>()
+        {
+            new ChartData{ X= "Folic_acid", Y= 基因體細項.Folic_acid.ToDouble() },
+            new ChartData{ X= "VitaminsA", Y= 基因體細項.VitaminsA.ToDouble() },
+            new ChartData{ X= "VitaminsB1", Y= 基因體細項.VitaminsB1.ToDouble() },
+            new ChartData{ X= "VitaminsB12", Y= 基因體細項.VitaminsB12.ToDouble() },
+            new ChartData{ X= "VitaminsB6", Y= 基因體細項.VitaminsB6.ToDouble() },
+            new ChartData{ X= "VitaminsD", Y= 基因體細項.VitaminsD.ToDouble() },
+            new ChartData{ X= "VitaminsE", Y= 基因體細項.VitaminsE.ToDouble() },
+            new ChartData{ X= "VitaminsK", Y= 基因體細項.VitaminsK.ToDouble() },
+        };
+        ChartDatas6 = new List<ChartData>()
+        {
+
+            new ChartData{ X= "Exercise_performance", Y= 基因體細項.Exercise_performance.ToDouble() },
+            new ChartData{ X= "Muscle_strength", Y= 基因體細項.Muscle_strength.ToDouble() },
+            new ChartData{ X= "Ankle_injury", Y= 基因體細項.Ankle_injury.ToDouble() },
+            new ChartData{ X= "Calorie_expenditure", Y= 基因體細項.Calorie_expenditure.ToDouble() },
+            new ChartData{ X= "Lower_body_strength", Y= 基因體細項.Lower_body_strength.ToDouble() },
+            new ChartData{ X= "Post-exercise", Y= 基因體細項.Post_Exercise_performance.ToDouble() },
+            new ChartData{ X= "Bone_density", Y= 基因體細項.Bone_density.ToDouble() },
+            new ChartData{ X= "Metabolic_capacity", Y= 基因體細項.Metabolic_capacity.ToDouble() },
+        };
+
+    }
+}

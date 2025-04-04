@@ -1,0 +1,335 @@
+﻿@page "/Upload/{Code}"
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+@inject NavigationManager NavigationManager
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+@using CTMS.Business.Extensions
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+<div>
+    <div class="page-top">
+        <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
+        @if (Code.ToUpper() != MagicObjectHelper.NoUpdateSymbol)
+        {
+            <PageTitle>更新全部/部分/Excel檔案</PageTitle>
+            <span class="page-title">更新檔案</span>
+        }
+        else
+        {
+            <PageTitle>上傳檔案</PageTitle>
+            <span class="page-title">上傳檔案</span>
+        }
+    </div>
+
+    <div class="page-content">
+        <div class="upload-area">
+            <div class="m-2">
+                <div>
+                    <div class="form-group">
+                        <label>專案：</label>
+                        <SfDropDownList TValue="ProjectNode" TItem="ProjectNode"
+                                        Placeholder="選擇一個專案" DataSource="@LocalData"
+                                        @bind-Value="@CurrentProject">
+                            <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                            <DropDownListEvents TItem="ProjectNode" TValue="ProjectNode"></DropDownListEvents>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <div class="my-4">
+                    檢測日期 :<span>
+                        <input @bind=@itemTime class="text-field-name"
+                               placeholder="請在此輸入該運動員進行檢測日期 (格式 : YYYY-MM-DD)" />
+                    </span>
+                </div>
+                <div>
+                    名稱 :<span>
+                        <input @bind=@itemName class="text-field-name"
+                               placeholder="請在此輸入代表該運動員的名稱" />
+                    </span>
+                </div>
+            </div>
+            <div class="m-2">
+                請將所有的檔案拖拉到這裡，或者點選 Browser 選取所有要上傳的檔案
+            </div>
+            <div class="upload-files-control">
+                <SfUploader @ref="upload1" AutoUpload="false" AllowMultiple="true"
+                            ShowProgressBar="true">
+                    <UploaderEvents ValueChange="UploaderChange"></UploaderEvents>
+                </SfUploader>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="text-info h2 m-2">
+                    @UploadingMessage
+                    @if (UploadingMessage != " ")
+                    {
+                    }
+                </div>
+            </div>
+            <div class="upload-item-info">
+                @foreach (var item in processedFile)
+                {
+                    <div class="@item.ClassName m-1">@item.Title</div>
+                }
+            </div>
+            <div>
+                @if (preCheckMessage != "")
+                {
+                    <div class="alert alert-warning h2 m-2">
+                        @preCheckMessage
+                    </div>
+                }
+            </div>
+            <div>
+                @if (Code.ToUpper() != MagicObjectHelper.NoUpdateSymbol)
+                {
+                    <div class="alert alert-primary h2 m-2">
+                        可以進行部分/所有檔案或單獨 Excel 檔案更新
+                    </div>
+                }
+            </div>
+        </div>
+        @if (showSaveButton)
+        {
+            <div class="upload-commands" @onclick=OkCommandAsync>
+                儲存
+            </div>
+        }
+    </div>
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public string? Code { get; set; }
+    SfUploader upload1;
+    string path = MagicObjectHelper.UploadTempPath;
+    string prefixFileName = Guid.NewGuid().ToString();
+    List<FileListNodeModel> currentUploadFileList = new List<FileListNodeModel>();
+    string itemName = string.Empty;
+    string itemTime = string.Empty;
+    // string itemTime = DateTime.Now.ToString("yyyy-MM-dd");
+    List<ProcessedFile> processedFile = new List<ProcessedFile>();
+    string preCheckMessage = "";
+    string UploadingMessage = "　";
+    bool showSaveButton = true;
+    Athlete originalAthlete = new Athlete();
+    List<FileListNodeModel> originalFileList = new List<FileListNodeModel>();
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    int hasProjectId = 0;
+    string hasCode = string.Empty;
+
+    public class ProjectNode
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    List<ProjectNode> LocalData = new List<ProjectNode>();
+    ProjectNode CurrentProject = new ProjectNode();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var allProjects = await AuthenticationStateHelper.GetProjectListAsync(authStateProvider);
+
+        LocalData = allProjects.Select(x => new ProjectNode
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToList();
+
+        if (LocalData.Count > 0)
+        {
+            CurrentProject = LocalData.FirstOrDefault();
+        }
+
+        processedFile = ProcessedFile.Build();
+
+        if (Code.ToUpper() != MagicObjectHelper.NoUpdateSymbol)
+        {
+            originalAthlete = await UploadFileService.GetAsync(Code);
+            originalFileList = JsonConvert
+            .DeserializeObject<List<FileListNodeModel>>(originalAthlete.FilesData);
+            itemName = originalAthlete.Name;
+            prefixFileName = originalAthlete.Code;
+        }
+    }
+
+    public async Task OnSuccess(SuccessEventArgs args)
+    {
+        await Task.Yield();
+        var items = new List<FileInfo>() { args.File };
+        await upload1.RemoveAsync(items.ToArray());
+    }
+
+    public async Task UploaderChange(UploadChangeEventArgs args)
+    {
+        UploadingMessage = "檔案上傳中，請稍後...";
+        foreach (var uploadFile in args.Files)
+        {
+            var file = uploadFile.File;
+            using (var inputStream = file.OpenReadStream())
+            {
+                var inputFileName = $"{prefixFileName} {uploadFile.FileInfo.Name}";
+
+                // 將 inputFileName 內容複製到指定 path 目錄下，檔案名稱要相同
+                var fileTargetPath = Path.Combine(path, inputFileName);
+                using (var fileStream = new FileStream(fileTargetPath, FileMode.Create, FileAccess.Write))
+                {
+                    await inputStream.CopyToAsync(fileStream);
+                }
+                var fileListNode = new FileListNodeModel
+                    {
+                        Filename = inputFileName,
+                        Path = fileTargetPath
+                    };
+                currentUploadFileList.Add(fileListNode);
+            }
+            // var items = new List<FileInfo>() { uploadFile.FileInfo };
+            // await upload1.RemoveAsync(items.ToArray());
+            // await upload1.ClearAllAsync();
+        }
+        if (FileListHelper.CheckFileType(currentUploadFileList))
+        {
+
+        }
+
+        foreach (var item in processedFile)
+        {
+            item.IsUpload = false;
+            item.Count = 0;
+        }
+
+        foreach (var file in currentUploadFileList)
+        {
+            var processedFileItem = processedFile
+            .FirstOrDefault(x => x.FileType == file.FileType);
+            if (processedFileItem != null)
+            {
+                processedFileItem.Count++;
+                processedFileItem.IsUpload = true;
+            }
+        }
+
+        preCheckMessage = "";
+        if (Code.ToUpper() == MagicObjectHelper.NoUpdateSymbol)
+        {
+            preCheckMessage = processedFile.Check();
+        }
+        UploadingMessage = "　";
+    }
+
+    async Task OkCommandAsync()
+    {
+        int projectId = CurrentProject.Id;
+        if (itemTime.Trim().Length == 0)
+        {
+            preCheckMessage = "請輸入檢測日期";
+            return;
+        }
+        if (itemName.Trim().Length == 0)
+        {
+            preCheckMessage = "請輸入名稱";
+            return;
+        }
+        itemName = itemName.Replace(".", "").Trim();
+
+        if (Code.ToUpper() == MagicObjectHelper.NoUpdateSymbol)
+        {
+            showSaveButton = false;
+            preCheckMessage = "檢查資料完整性中...";
+            await Task.Delay(100);
+            preCheckMessage = processedFile.Check(true);
+            if (string.IsNullOrEmpty(preCheckMessage))
+            {
+                preCheckMessage = UploadFileService.PreCheck(currentUploadFileList);
+                if (string.IsNullOrEmpty(preCheckMessage))
+                {
+                    preCheckMessage = "儲存紀錄中，請稍後...";
+                    await Task.Delay(1000);
+                    (hasProjectId, hasCode) = await UploadFileService
+                    .VerifyNameAsync(itemName, itemTime);
+                    if (hasProjectId < 0)
+                    {
+                        preCheckMessage = hasCode;
+                        showSaveButton = true;
+                        return;
+                    }
+                    if (hasProjectId > 0 && hasCode != "")
+                    {
+                        await UploadFileService.AddAsync(currentUploadFileList, itemName,
+                            hasProjectId, itemTime, hasCode);
+                    }
+                    else
+                    {
+                        await UploadFileService.AddAsync(currentUploadFileList, itemName,
+                        projectId, itemTime, prefixFileName);
+                    }
+                    NavigationManager.NavigateTo("/");
+                }
+            }
+            showSaveButton = true;
+        }
+        else
+        {
+            // showSaveButton = false;
+            // preCheckMessage = "檢查資料完整性中...";
+            // await Task.Delay(100);
+            // preCheckMessage = processedFile.Check(true);
+
+            // var filename = FileListHelper.GetXlsx(currentUploadFileList);
+            // if (string.IsNullOrEmpty(filename) == false)
+            // {
+            //     preCheckMessage = UploadFileService.PreCheck(currentUploadFileList);
+
+            //     if (string.IsNullOrEmpty(preCheckMessage) == false)
+            //     {
+            //         showSaveButton = true;
+            //         return;
+            //     }
+            // }
+
+            // preCheckMessage = "儲存紀錄中，請稍後...";
+            // await Task.Delay(1000);
+            // await UploadFileService.AddAdditionalAsync(itemName, projectId, Code,
+            // originalFileList, currentUploadFileList);
+            // NavigationManager.NavigateTo($"/Body/{Code}");
+
+            // showSaveButton = true;
+        }
+    }
+
+    void OnBack()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+}

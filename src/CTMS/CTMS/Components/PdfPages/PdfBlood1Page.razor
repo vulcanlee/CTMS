@@ -1,0 +1,30 @@
+﻿@page "/Blood1/{code}"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+@inject ExcleService ExcleService
+
+<div>
+    <BloodfView Code="@Code" />
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Code: {Code}");
+    }
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/DashboardHome/{Code}");
+    }
+    async Task OnUpdate()
+    {
+        NavigationManager.NavigateTo($"/Upload/{Code}");
+    }
+
+}
