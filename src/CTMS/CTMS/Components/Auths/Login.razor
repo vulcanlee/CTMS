@@ -8,7 +8,7 @@
 @inject MyUserServiceLogin MyUserServiceLogin
 
 @layout EmptyLayout
-@inject ILogger<Login1> Logger
+@inject ILogger<Login> Logger
 
 @inject NavigationManager NavigationManager
 
@@ -91,15 +91,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (HttpMethods.IsGet(HttpContext.Request.Method))
+        try
         {
-            Logger.LogInformation("Cookie : Login: OnInitializedAsync Need SignOut");
-            // Clear the existing external cookie to ensure a clean login process
-            // await HttpContext.SignOutAsync("CookieAuthenticationScheme");
+            if (HttpMethods.IsGet(HttpContext.Request.Method))
+            {
+                Logger.LogInformation("Cookie : Login: OnInitializedAsync Need SignOut");
+                // Clear the existing external cookie to ensure a clean login process
+                // await HttpContext.SignOutAsync("CookieAuthenticationScheme");
+            }
+            else
+            {
+                Logger.LogInformation("Cookie : Login: OnInitializedAsync No SignOut");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            Logger.LogInformation("Cookie : Login: OnInitializedAsync No SignOut");
+            Logger.LogDebug(ex,"登入初始化發生例外異常");
+
         }
     }
 
