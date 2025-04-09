@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CTMS.EntityModel.Migrations
 {
     [DbContext(typeof(BackendDBContext))]
-    [Migration("20250329170319_AddAthleteExamine")]
-    partial class AddAthleteExamine
+    [Migration("20250409062256_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,6 +131,37 @@ namespace CTMS.EntityModel.Migrations
                     b.HasIndex("RoleViewId");
 
                     b.ToTable("MyUser");
+                });
+
+            modelBuilder.Entity("CTMS.EntityModel.Models.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JsonData")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("癌別")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("醫院")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patient");
                 });
 
             modelBuilder.Entity("CTMS.EntityModel.Models.Project", b =>

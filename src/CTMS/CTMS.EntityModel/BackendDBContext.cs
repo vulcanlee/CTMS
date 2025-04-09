@@ -16,6 +16,7 @@ namespace CTMS.EntityModel
         {
         }
 
+        public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<Athlete> Athlete { get; set; }
         public virtual DbSet<Examine> Examine { get; set; }
         public virtual DbSet<MyUser> MyUser { get; set; }

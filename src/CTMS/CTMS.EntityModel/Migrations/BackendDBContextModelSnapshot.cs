@@ -130,6 +130,37 @@ namespace CTMS.EntityModel.Migrations
                     b.ToTable("MyUser");
                 });
 
+            modelBuilder.Entity("CTMS.EntityModel.Models.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JsonData")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("癌別")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("醫院")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patient");
+                });
+
             modelBuilder.Entity("CTMS.EntityModel.Models.Project", b =>
                 {
                     b.Property<int>("Id")
