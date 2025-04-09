@@ -1,0 +1,116 @@
+﻿<PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
+
+<div>
+    <div class="header">
+        <h1>Basic clinical presentation 臨床資訊</h1>
+    </div>
+
+    <div class="view-container">
+        <!-- Left Table -->
+        <div class="left-table">
+            <table>
+                <tr>
+                    <td colspan="2">
+                        病人編號 Subject No <span class="highlight">@patientData.臨床資訊.SubjectNo</span><br>
+                        <span class="small-info">(E代表內膜癌, O代表卵巢癌)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">臨床資訊 癌別 @patientData.臨床資訊.ECOrOCC</td>
+                </tr>
+                <tr>
+                    <td>年齡 (Age)</td>
+                    <td>@patientData.臨床資訊.Age</td>
+                </tr>
+                <tr>
+                    <td>月經狀態</td>
+                    <td>@patientData.臨床資訊.MenstrualStatus</td>
+                </tr>
+                <tr>
+                    <td>身高(Height) cm</td>
+                    <td>@patientData.臨床資訊.Height</td>
+                </tr>
+                <tr>
+                    <td>體重(BW) Kg</td>
+                    <td>@patientData.臨床資訊.Weight</td>
+                </tr>
+                <tr>
+                    <td>BMI (Kg/m²)</td>
+                    <td>@patientData.臨床資訊.BMI</td>
+                </tr>
+                <tr>
+                    <td>體表面積(BSA) m²</td>
+                    <td>@patientData.臨床資訊.BSA</td>
+                </tr>
+                <tr>
+                    <td>腰圍 (AC) cm</td>
+                    <td>@patientData.臨床資訊.AbdominalCircumference</td>
+                </tr>
+                <tr>
+                    <td>日常體能狀態(PS)</td>
+                    <td>@patientData.臨床資訊.PerformanceStatus</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Middle Table -->
+        <div class="right-table">
+            <table>
+                <tr>
+                    <td colspan="2">癌症狀態 癌別 @patientData.臨床資訊.CancerType</td>
+                </tr>
+                <tr>
+                    <td>癌症分期(2023 FIGO)</td>
+                    <td class="self-filled">@patientData.臨床資訊.FIGOStaging</td>
+                </tr>
+                <tr>
+                    <td>AJCC c stage</td>
+                    <td class="self-filled">@patientData.臨床資訊.AJCCClinicalStage</td>
+                </tr>
+                <tr>
+                    <td>AJCC p stage</td>
+                    <td class="self-filled">@patientData.臨床資訊.AJCCPathologicalStage</td>
+                </tr>
+                <tr>
+                    <td>組織型態</td>
+                    <td class="self-filled">@patientData.臨床資訊.HistologicalType</td>
+                </tr>
+                <tr>
+                    <td>MMR protein</td>
+                    <td class="self-filled">@patientData.臨床資訊.MMRProtein</td>
+                </tr>
+                <tr>
+                    <td>p53</td>
+                    <td class="self-filled">@patientData.臨床資訊.P53</td>
+                </tr>
+                <tr>
+                    <td>Hormon status</td>
+                    <td class="self-filled">@patientData.臨床資訊.HormonStatus</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Right Section - CT Image and Report -->
+        <div class="ct-section">
+            <div class="ct-header">CT Image</div>
+            <div class="ct-image">
+                <img src="/api/placeholder/400/320" alt="CT Scan Image showing abdominal cross-section">
+            </div>
+            <div class="report-section">Report</div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="container nav-buttons">
+        <div class="nav-button btn-clinical">臨床資料</div>
+        <div class="nav-button btn-image">影像資料</div>
+        <div class="nav-button btn-blood">抽血資料</div>
+        <div class="nav-button btn-ctcae">CTCAE 5.0</div>
+        <div class="nav-button btn-questionnaire">問卷</div>
+        <div class="nav-button btn-followup">追蹤資料</div>
+    </div>
+</div>
+
+@code {
+    PatientData patientData = new();
+}

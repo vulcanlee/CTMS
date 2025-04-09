@@ -1,6 +1,12 @@
+﻿.header {
+    background-color: #e0e0e0;
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
 .view-container {
-    max-width: 1200px;
-    margin: 20px auto;
+    margin: 20px ;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 10px;
@@ -14,7 +20,7 @@ table {
 th, td {
     padding: 8px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 3px solid #ddd;
 }
 
 th {
