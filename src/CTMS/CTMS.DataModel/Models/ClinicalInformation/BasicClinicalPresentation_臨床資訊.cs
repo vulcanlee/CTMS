@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CTMS.Share.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,35 +21,35 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         /// <summary>
         /// 年齡 (Age) 20歲-80歲
         /// </summary>
-        public int Age { get; set; }   
+        public string Age { get; set; }   
         /// <summary>
         /// 月經狀態 (0停經, 1未停經)
         /// </summary>
-        public int MenstrualStatus { get; set; }   
+        public string MenstrualStatus { get; set; }   
         /// <summary>
         /// 身高(cm) 140cm-180cm
         /// </summary>
-        public double Height { get; set; }     
+        public string Height { get; set; }     
         /// <summary>
         /// 體重(kg) 30kg-120kg
         /// </summary>
-        public double Weight { get; set; }
+        public string Weight { get; set; }
         /// <summary>
         /// BMI (Kg/m²)
         /// </summary>
-        public double BMI { get; set; }
+        public string BMI { get; set; }
         /// <summary>
         /// 體表面積(BSA) m²
         /// </summary>
-        public double BSA { get; set; }
+        public string BSA { get; set; }
         /// <summary>
         /// 腰圍 (AC) cm
         /// </summary>
-        public double AbdominalCircumference { get; set; }  
+        public string AbdominalCircumference { get; set; }  
         /// <summary>
         /// 日常體能狀態(PS) 0, 1, 2
         /// </summary>
-        public int PerformanceStatus { get; set; }
+        public string PerformanceStatus { get; set; }
         // 右側欄位
 
         /// <summary>
@@ -87,19 +88,19 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         // 計算BMI和BSA的方法
         public void CalculateBMI()
         {
-            if (Height > 0 && Weight > 0)
+            if (Height.ToDouble() > 0 && Weight.ToDouble() > 0)
             {
                 // BMI = 體重(kg) / 身高(m)²
-                BMI = Weight / Math.Pow(Height / 100, 2);
+                BMI = (Weight.ToDouble() / Math.Pow(Height.ToDouble() / 100, 2)).ToString();
             }
         }
 
         public void CalculateBSA()
         {
-            if (Height > 0 && Weight > 0)
+            if (Height.ToDouble() > 0 && Weight.ToDouble() > 0)
             {
                 // BSA = (體重(kg) × 身高(cm)) ÷ 3600 的開根號
-                BSA = Math.Sqrt((Weight * Height) / 3600);
+                BSA = Math.Sqrt((Weight.ToDouble() * Height.ToDouble()) / 3600).ToString();
             }
         }
     }
