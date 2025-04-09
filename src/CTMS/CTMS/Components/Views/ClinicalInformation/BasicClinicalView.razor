@@ -1,4 +1,15 @@
-﻿<PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Buttons
+
+<PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
 <div>
     <div class="header">
@@ -11,7 +22,16 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        病人編號 Subject No <span class="highlight">@patientData.臨床資訊.SubjectNo</span><br>
+                        病人編號 Subject No <span class="highlight">
+                            @if(editMode)
+                            {
+                                <SfTextBox @bind-Value="patientData.臨床資訊.SubjectNo"/>
+                            }
+                            else
+                            {
+                            @patientData.臨床資訊.SubjectNo
+                            }
+                        </span><br>
                         <span class="small-info">(E代表內膜癌, O代表卵巢癌)</span>
                     </td>
                 </tr>
@@ -113,4 +133,5 @@
 
 @code {
     PatientData patientData = new();
+    bool editMode = true;
 }
