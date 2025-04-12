@@ -21,7 +21,22 @@
 
     <div class="header" style="display: flex; align-items: center;">
         <h1 style="margin: 0; flex-grow: 1;">Basic clinical presentation 臨床資訊</h1>
-        <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"></span>
+        @if (editMode)
+        {
+            <div class="btn-group" role="group" aria-label="按鈕組">
+                <button type="button" class="btn btn-primary save-button"
+                @onclick=OnSave>儲存</button>
+                <button type="button" class="btn btn-danger cancle-button"
+                        @onclick=OnCancel>
+                    取消
+                </button>
+            </div>
+        }
+        else
+        {
+            <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
+                  @onclick=OnChangeEditMode></span>
+        }
     </div>
     <div class="view-container">
         <!-- Left Table -->
@@ -292,5 +307,20 @@
 
 @code {
     PatientData patientData = new();
-    bool editMode = true;
+    bool editMode = false;
+
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        editMode = false;
+    }
 }

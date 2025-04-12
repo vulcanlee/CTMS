@@ -122,3 +122,13 @@ th {
 .small-info {
     font-size: 12px;
 }
+
+
+.save-button{
+    width: 160px;
+}
+
+
+.cancle-button {
+    width: 80px;
+}
