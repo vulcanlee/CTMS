@@ -6,6 +6,7 @@ using CTMS.DataModel.Interfaces;
 using CTMS.DataModel.Models;
 using CTMS.EntityModel;
 using CTMS.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Navigations;
@@ -18,13 +19,15 @@ public class PatientViewModel
     public PatientViewModel(PatientService CurrentService,
        BackendDBContext context, IMapper Mapper,
        TranscationResultHelper transcationResultHelper,
-       RolePermissionService rolePermissionService)
+       RolePermissionService rolePermissionService,
+       NavigationManager navigationManager)
     {
         this.CurrentService = CurrentService;
         this.context = context;
         mapper = Mapper;
         TranscationResultHelper = transcationResultHelper;
         this.rolePermissionService = rolePermissionService;
+        this.navigationManager = navigationManager;
 
         #region 工具列按鈕初始化
         Toolbaritems.Add(new ItemModel()
@@ -70,6 +73,7 @@ public class PatientViewModel
     private readonly BackendDBContext context;
     private readonly IMapper mapper;
     private readonly RolePermissionService rolePermissionService;
+    private readonly NavigationManager navigationManager;
     DataModel.Interfaces.IRazorPage thisView;
     IDataGrid dataGrid;
     public List<object> Toolbaritems = new List<object>();
@@ -114,11 +118,15 @@ public class PatientViewModel
         PatientAdapterModel item = args.RowData as PatientAdapterModel;
         if (args.CommandColumn.ButtonOption.IconCss == ButtonIdHelper.ButtonIdEdit)
         {
-            CurrentRecord = item.Clone();
-            EditRecordDialogTitle = "修改紀錄";
-            IsShowEditRecord = true;
-            isNewRecordMode = false;
+            //CurrentRecord = item.Clone();
+            //EditRecordDialogTitle = "修改紀錄";
+            //IsShowEditRecord = true;
+            //isNewRecordMode = false;
 
+            await thisView.NeedInvokeAsync(() =>
+              {
+                  navigationManager.NavigateTo($"/BasicClinical/{item.Code}", forceLoad: true);
+              });
         }
         else if (args.CommandColumn.ButtonOption.IconCss == ButtonIdHelper.ButtonIdDelete)
         {

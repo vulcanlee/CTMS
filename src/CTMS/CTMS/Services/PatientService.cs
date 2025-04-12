@@ -6,6 +6,7 @@ using CTMS.AdapterModels;
 using AutoMapper;
 using CTMS.Business.Helpers;
 using CTMS.Business.Factories;
+using CTMS.DataModel.Models.ClinicalInformation;
 
 namespace CTMS.Services;
 
@@ -93,17 +94,38 @@ public class PatientService
         }
     }
 
+    public async Task<PatientAdapterModel> GetAsync(string code)
+
+    {
+        Patient item = await context.Patient
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Code == code);
+        if (item != null)
+        {
+            PatientAdapterModel result = Mapper.Map<PatientAdapterModel>(item);
+            await OhterDependencyData(result);
+            return result;
+        }
+        else
+        {
+            return new PatientAdapterModel() { };
+        }
+    }
+
     public async Task<VerifyRecordResult> AddEmptyAsync()
     {
         try
         {
             CleanTrackingHelper.Clean<Patient>(context);
+            PatientData patientData = new();
+            string name = "0-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            patientData.臨床資訊.SubjectNo = name;
             Patient itemParameter = new()
             {
                 Id = 0,
                 Code = Guid.NewGuid().ToString(),
-                Name = "0-" + DateTime.Now.ToString("yyyyMMddHHmmss"),
-                JsonData = "{}",
+                Name = name,
+                JsonData = patientData.ToJson(),
                 醫院 = "NA",
                 癌別 = "NA",
             };
