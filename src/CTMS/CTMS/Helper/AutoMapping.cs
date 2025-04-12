@@ -48,6 +48,15 @@ public class AutoMapping : Profile
         CreateMap<MyUserAdapterModel, MyUserDto>();
         CreateMap<MyUserDto, MyUserAdapterModel>();
         #endregion
+
+        #region Patient
+        CreateMap<Patient, PatientAdapterModel>();
+        CreateMap<PatientAdapterModel, Patient>();
+        CreateMap<Patient, PatientDto>();
+        CreateMap<PatientDto, Patient>();
+        CreateMap<PatientAdapterModel, PatientDto>();
+        CreateMap<PatientDto, PatientAdapterModel>();
+        #endregion
         #endregion
     }
 }

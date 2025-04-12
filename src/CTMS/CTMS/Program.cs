@@ -144,6 +144,13 @@ namespace CTMS
                 builder.Services.AddTransient<RoleViewDetailDto>();
                 #endregion
 
+                #region Patient
+                builder.Services.AddTransient<PatientService>();
+                builder.Services.AddTransient<PatientViewModel>();
+                builder.Services.AddTransient<PatientAdapterModel>();
+                builder.Services.AddTransient<Patient>();
+                builder.Services.AddTransient<PatientDto>();
+                #endregion
                 #endregion
 
                 #region 加入設定強型別注入宣告
