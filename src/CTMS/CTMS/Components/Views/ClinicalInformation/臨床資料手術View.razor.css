@@ -26,6 +26,13 @@ th {
     background-color: #f2f2f2;
 }
 
+table tr:nth-child(odd) {
+    background-color: #E6F0F7;
+}
+
+table tr:nth-child(even) {
+    background-color: #33A1DE;
+}
 .left-table {
     background-color: #f8e6f3;
 }
