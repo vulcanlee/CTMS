@@ -78,8 +78,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>年齡 (Age)</td>
-                    <td>
+                    <td class="table-title">年齡 (Age)</td>
+                    <td class="table-value">
                         @if (editMode)
                         {
                             <SfTextBox @bind-Value="patientData.臨床資訊.Age" CssClass="w-100" />
@@ -191,8 +191,8 @@
                     <td colspan="2">癌症狀態 癌別 @patientData.臨床資訊.CancerType</td>
                 </tr>
                 <tr>
-                    <td>癌症分期(2023 FIGO)</td>
-                    <td class="self-filled">
+                    <td class="table-title">癌症分期(2023 FIGO)</td>
+                    <td class="self-filled table-value">
                         @if (editMode)
                         {
                             <SfTextBox @bind-Value="patientData.臨床資訊.FIGOStaging" CssClass="w-100" />
@@ -310,13 +310,14 @@
     public string Code { get; set; }
 
     PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
     protected override async Task OnInitializedAsync()
     {
         // Simulate fetching data from a service
-        var patientItem = await PatientService.GetAsync(Code);
-        patientData.FromJson(patientItem.JsonData);
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
     }
 
     void OnChangeEditMode()
@@ -326,11 +327,14 @@
 
     async Task OnSave()
     {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
     }
 
     async Task OnCancel()
     {
+        patientData.FromJson(patientAdapterModel.JsonData);
         editMode = false;
     }
 }
