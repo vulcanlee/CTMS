@@ -497,11 +497,33 @@
                         }
                     </td>
                     <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.ExtrapelvicPeritonealCavity" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料手術.ExtrapelvicPeritonealCavity
+                            </div>
+                        }
                     </td>
                 </tr>
                 <tr>
                     <td class="w-25 data-title">
                         【Other organ involvement (gross looking)】
+                    </td>
+                    <td class="w-25 data-title">
+                        【Optimal】
+                    </td>
+                    <td class="w-25 data-title">
+                        【Residual tumor】
+                    </td>
+                    <td class="w-25 data-title">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 data-title">
                         @if (editMode)
                         {
                             <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking" />
@@ -530,50 +552,13 @@
                         【Residual tumor】
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.ResidualTumor" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.ResidualTumor
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        【Other organ involvement (gross looking)】
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        【Optimal】
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.Optimal" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Optimal
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        【Residual tumor】
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.ResidualTumor" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@ListResidualTumor"
+                                            @bind-Value="@SelectResidualTumor" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@OnResidualTumorChanged"></DropDownListEvents>
+                            </SfDropDownList>
                         }
                         else
                         {
@@ -639,9 +624,20 @@
     DropDownListDataModel SelectRightAdnexaTumorNumber = new DropDownListDataModel();
     List<DropDownListDataModel> ListPelvicPeritonealCavity = new List<DropDownListDataModel>();
     DropDownListDataModel SelectPelvicPeritonealCavity = new DropDownListDataModel();
+    List<DropDownListDataModel> ListResidualTumor = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectResidualTumor = new DropDownListDataModel();
 
     void DropDownListDataInit()
     {
+        #region ResidualTumor
+        {
+            ListResidualTumor = DropDownListDataService.GetResidualTumor();
+            var item = ListResidualTumor.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.ResidualTumor);
+            if (item != null)
+                SelectResidualTumor = item;
+        }
+        #endregion
+
         #region PelvicPeritonealCavity
         {
             ListPelvicPeritonealCavity = DropDownListDataService.GetPelvicPeritonealCavity();
@@ -780,6 +776,11 @@
     }
 
     #region 下拉選單的事件
+    private async Task OnResidualTumorChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料手術.ResidualTumor = args.Value.Key;
+    }
+
     private async Task OnRightAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         patientData.臨床資料.臨床資料手術.RightAdnexa = args.Value.Key;
