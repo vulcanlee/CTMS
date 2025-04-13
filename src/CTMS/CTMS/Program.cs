@@ -23,6 +23,7 @@ using CTMS.AdapterModels;
 using CTMS.DataModel.Dtos;
 using CTMS.EntityModel.Models;
 using CTMS.Business.Helpers;
+using CTMS.Business.Services.ClinicalInformation;
 
 namespace CTMS
 {
@@ -111,6 +112,7 @@ namespace CTMS
                 builder.Services.AddScoped<IEventAggregator, EventAggregator>();
 
                 builder.Services.AddTransient<MyUserServiceLogin>();
+                builder.Services.AddTransient<DropDownListDataService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

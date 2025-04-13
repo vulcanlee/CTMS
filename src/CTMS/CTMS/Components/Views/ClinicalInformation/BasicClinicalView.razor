@@ -8,11 +8,12 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 @inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
 
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
 <div>
-@*     <div class="header">
+    @*     <div class="header">
         <h1>Basic clinical presentation 臨床資訊</h1>
         <span class="mdi mdi-36px mdi-square-edit-outline command-icon-width  cursor-pointer"
         ></span>
@@ -25,7 +26,9 @@
         {
             <div class="btn-group" role="group" aria-label="按鈕組">
                 <button type="button" class="btn btn-primary save-button"
-                @onclick=OnSave>儲存</button>
+                        @onclick=OnSave>
+                    儲存
+                </button>
                 <button type="button" class="btn btn-danger cancle-button"
                         @onclick=OnCancel>
                     取消
@@ -67,11 +70,18 @@
                             <div class="flex-grow-1 ms-2">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="patientData.臨床資訊.ECOrOCC" CssClass="w-100" />
+                                    @* <SfTextBox @bind-Value="patientData.臨床資訊.ECOrOCC" CssClass="w-100" /> *@
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListECOrOCC"
+                                                    @bind-Value="@SelectECOrOCC" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnECOrOCCChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                 }
                                 else
                                 {
-                                    @patientData.臨床資訊.ECOrOCC
+                                    @patientData.臨床資訊.ECorOC
                                 }
                             </div>
                         </div>
@@ -82,7 +92,13 @@
                     <td class="table-value">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資訊.Age" CssClass="w-100" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@List年齡Age"
+                                            @bind-Value="@Select年齡Age" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@On年齡AgeChanged"></DropDownListEvents>
+                            </SfDropDownList>
                         }
                         else
                         {
@@ -95,7 +111,13 @@
                     <td>
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資訊.MenstrualStatus" CssClass="w-100" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@List月經狀態"
+                                            @bind-Value="@Select月經狀態" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@On月經狀態Changed"></DropDownListEvents>
+                            </SfDropDownList>
                         }
                         else
                         {
@@ -108,7 +130,13 @@
                     <td>
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資訊.Height" CssClass="w-100" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@List身高Height"
+                                            @bind-Value="@Select身高Height" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@On身高HeightChanged"></DropDownListEvents>
+                            </SfDropDownList>
                         }
                         else
                         {
@@ -121,7 +149,13 @@
                     <td>
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資訊.Weight" CssClass="w-100" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@List體重BW"
+                                            @bind-Value="@Select體重BW" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@On體重BWChanged"></DropDownListEvents>
+                            </SfDropDownList>
                         }
                         else
                         {
@@ -173,7 +207,13 @@
                     <td>
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資訊.PerformanceStatus" CssClass="w-100" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@List日常體能狀態PS"
+                                            @bind-Value="@Select日常體能狀態PS" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@On日常體能狀態PSChanged"></DropDownListEvents>
+                            </SfDropDownList>
                         }
                         else
                         {
@@ -318,8 +358,115 @@
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
+        patientData.臨床資訊.CalculateCancerType();
+        DropDownListDataInit();
     }
 
+
+    List<DropDownListDataModel> ListECOrOCC = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectECOrOCC = new DropDownListDataModel();
+    List<DropDownListDataModel> List年齡Age = new List<DropDownListDataModel>();
+    DropDownListDataModel Select年齡Age = new DropDownListDataModel();
+    List<DropDownListDataModel> List月經狀態 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select月經狀態 = new DropDownListDataModel();
+    List<DropDownListDataModel> List身高Height = new List<DropDownListDataModel>();
+    DropDownListDataModel Select身高Height = new DropDownListDataModel();
+    List<DropDownListDataModel> List體重BW = new List<DropDownListDataModel>();
+    DropDownListDataModel Select體重BW = new DropDownListDataModel();
+    List<DropDownListDataModel> List日常體能狀態PS = new List<DropDownListDataModel>();
+    DropDownListDataModel Select日常體能狀態PS = new DropDownListDataModel();
+
+    void DropDownListDataInit()
+    {
+        #region 癌別
+        {
+            ListECOrOCC = DropDownListDataService.Get癌別();
+            var item = ListECOrOCC.FirstOrDefault(x => x.Key == patientData.臨床資訊.ECorOC);
+            if (item != null)
+                SelectECOrOCC = item;
+        }
+        #endregion
+
+        #region 年齡Age
+        {
+            List年齡Age = DropDownListDataService.GetAge();
+            var item = List年齡Age.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            if (item != null)
+                Select年齡Age = item;
+        }
+        #endregion
+
+        #region 月經狀態
+        {
+            List月經狀態 = DropDownListDataService.Get月經狀態();
+            var item = List月經狀態.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            if (item != null)
+                Select月經狀態 = item;
+        }
+        #endregion
+
+        #region 身高Height
+        {
+            List身高Height = DropDownListDataService.Get身高Height();
+            var item = List身高Height.FirstOrDefault(x => x.Key == patientData.臨床資訊.Height);
+            if (item != null)
+                Select身高Height = item;
+        }
+        #endregion
+
+        #region 體重BW
+        {
+            List體重BW = DropDownListDataService.Get體重BW();
+            var item = List體重BW.FirstOrDefault(x => x.Key == patientData.臨床資訊.Weight);
+            if (item != null)
+                Select體重BW = item;
+        }
+        #endregion
+
+        #region 日常體能狀態PS
+        {
+            List日常體能狀態PS = DropDownListDataService.Get日常體能狀態PS();
+            var item = List日常體能狀態PS.FirstOrDefault(x => x.Key == patientData.臨床資訊.PerformanceStatus);
+            if (item != null)
+                Select日常體能狀態PS = item;
+        }
+        #endregion
+
+    }
+
+    #region 下拉選單的事件
+    private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.PerformanceStatus = args.Value.Key;
+    }
+
+    private async Task On體重BWChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Weight = args.Value.Key;
+    }
+
+    private async Task On身高HeightChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Height = args.Value.Key;
+    }
+
+    private async Task On月經狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.MenstrualStatus = args.Value.Key;
+    }
+
+    private async Task On年齡AgeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Age = args.Value.Key;
+    }
+
+    private async Task OnECOrOCCChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.ECorOC = args.Value.Key;
+        patientData.臨床資訊.CalculateCancerType();
+    }
+
+    #endregion
     void OnChangeEditMode()
     {
         editMode = !editMode;

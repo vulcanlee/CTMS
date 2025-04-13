@@ -17,7 +17,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         /// <summary>
         /// 臨床資訊 癌別 EC or OCC(自填)
         /// </summary>
-        public string ECOrOCC { get; set; }  
+        public string ECorOC { get; set; }  
         /// <summary>
         /// 年齡 (Age) 20歲-80歲
         /// </summary>
@@ -85,6 +85,21 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         /// </summary>
         public string HormonStatus { get; set; }
 
+        public void CalculateCancerType()
+        {
+            if (ECorOC == "EC")
+            {
+                CancerType = "子宮內膜癌";
+            }
+            else if (ECorOC == "OC")
+            {
+                CancerType = "卵巢癌";
+            }
+            else
+            {
+                CancerType = "未知";
+            }
+        }
         // 計算BMI和BSA的方法
         public void CalculateBMI()
         {
