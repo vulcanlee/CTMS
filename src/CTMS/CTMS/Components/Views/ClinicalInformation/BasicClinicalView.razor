@@ -7,6 +7,7 @@
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
 
@@ -336,7 +337,7 @@
 
     <!-- Navigation Buttons -->
     <div class="container nav-buttons">
-        <div class="nav-button btn-clinical">臨床資料</div>
+        <div class="nav-button btn-clinical" @onclick=On臨床資料>臨床資料</div>
         <div class="nav-button btn-image">影像資料</div>
         <div class="nav-button btn-blood">抽血資料</div>
         <div class="nav-button btn-ctcae">CTCAE 5.0</div>
@@ -483,5 +484,11 @@
     {
         patientData.FromJson(patientAdapterModel.JsonData);
         editMode = false;
+    }
+
+    void On臨床資料()
+    {
+        var url = $"/ClinicalInformation/{Code}";
+        NavigationManager.NavigateTo(url);
     }
 }
