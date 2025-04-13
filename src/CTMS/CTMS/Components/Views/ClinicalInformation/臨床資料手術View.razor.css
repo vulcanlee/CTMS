@@ -26,6 +26,10 @@ th {
     background-color: #f2f2f2;
 }
 
+table td, table th {
+    vertical-align: top;
+}
+
 table tr:nth-child(odd) {
     background-color: #E6F0F7;
 }
