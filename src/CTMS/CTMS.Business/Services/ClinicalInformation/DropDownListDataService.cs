@@ -185,6 +185,32 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> GetLeftAdnexa()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "normal", "abnormal"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetRightAdnexa()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "normal", "abnormal"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
         public List<DropDownListDataModel> GetPelvicPeritonealCavity()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();

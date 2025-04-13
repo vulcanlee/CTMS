@@ -378,41 +378,121 @@
                 </tr>
                 <tr>
                     <td class="w-25 data-title">
-                        【Other organ involvement (gross looking)】
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@ListLeftAdnexa"
+                                            @bind-Value="@SelectLeftAdnexa" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@OnLeftAdnexaChanged"></DropDownListEvents>
+                            </SfDropDownList>
+                            @if (patientData.臨床資料.臨床資料手術.LeftAdnexa == "abnormal")
+                            {
+                                <div>
+                                    Tumor number
+                                </div>
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListLeftAdnexaTumorNumber"
+                                                @bind-Value="@SelectLeftAdnexaTumorNumber" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnLeftAdnexaTumorNumberChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                                <div>
+                                    Tumor size
+                                </div>
+                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.LeftAdnexaTumorSize" />
+                            }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking
+                                @patientData.臨床資料.臨床資料手術.LeftAdnexa
+                                @if (patientData.臨床資料.臨床資料手術.LeftAdnexa == "abnormal")
+                                {
+                                    <div>
+                                        Tumor number: @patientData.臨床資料.臨床資料手術.LeftAdnexaTumorNumber
+                                    </div>
+                                    <div>
+                                        Tumor size: @patientData.臨床資料.臨床資料手術.LeftAdnexaTumorSize
+                                    </div>
+                                }
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
-                        【Optimal】
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.Optimal" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@ListRightAdnexa"
+                                            @bind-Value="@SelectRightAdnexa" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@OnRightAdnexaChanged"></DropDownListEvents>
+                            </SfDropDownList>
+                            @if (patientData.臨床資料.臨床資料手術.RightAdnexa == "abnormal")
+                            {
+                                <div>
+                                    Tumor number
+                                </div>
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListRightAdnexaTumorNumber"
+                                                @bind-Value="@SelectRightAdnexaTumorNumber" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnRightAdnexaTumorNumberChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                                <div>
+                                    Tumor size
+                                </div>
+                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.RightAdnexaTumorSize" />
+                            }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Optimal
+                                @patientData.臨床資料.臨床資料手術.RightAdnexa
+                                @if (patientData.臨床資料.臨床資料手術.RightAdnexa == "abnormal")
+                                {
+                                    <div>
+                                        Tumor number: @patientData.臨床資料.臨床資料手術.RightAdnexaTumorNumber
+                                    </div>
+                                    <div>
+                                        Tumor size: @patientData.臨床資料.臨床資料手術.RightAdnexaTumorSize
+                                    </div>
+                                }
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
-                        【Residual tumor】
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.ResidualTumor" />
+                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                            Placeholder="選擇一個值" DataSource="@ListPelvicPeritonealCavity"
+                                            @bind-Value="@SelectPelvicPeritonealCavity" class="flex-grow-1">
+                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                    ValueChange="@OnPelvicPeritonealCavityChanged"></DropDownListEvents>
+                            </SfDropDownList>
+                            @if (patientData.臨床資料.臨床資料手術.PelvicPeritonealCavity == "abnormal")
+                            {
+                                <div>
+                                    Tumor size
+                                </div>
+                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.PelvicPeritonealCavityTumorSize" />
+                            }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.ResidualTumor
+                                @patientData.臨床資料.臨床資料手術.RightAdnexa
+                                @if (patientData.臨床資料.臨床資料手術.RightAdnexa == "abnormal")
+                                {
+                                    <div>
+                                        Tumor size: @patientData.臨床資料.臨床資料手術.RightAdnexaTumorSize
+                                    </div>
+                                }
                             </div>
                         }
                     </td>
@@ -549,9 +629,64 @@
     DropDownListDataModel SelectOvarianSurfaceRuptureOrNotRightOvary = new DropDownListDataModel();
     List<DropDownListDataModel> ListOvarianSurfaceRuptureOrNotLeftOvary = new List<DropDownListDataModel>();
     DropDownListDataModel SelectOvarianSurfaceRuptureOrNotLeftOvary = new DropDownListDataModel();
+    List<DropDownListDataModel> ListLeftAdnexa = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectLeftAdnexa = new DropDownListDataModel();
+    List<DropDownListDataModel> ListLeftAdnexaTumorNumber = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectLeftAdnexaTumorNumber = new DropDownListDataModel();
+    List<DropDownListDataModel> ListRightAdnexa = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectRightAdnexa = new DropDownListDataModel();
+    List<DropDownListDataModel> ListRightAdnexaTumorNumber = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectRightAdnexaTumorNumber = new DropDownListDataModel();
+    List<DropDownListDataModel> ListPelvicPeritonealCavity = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectPelvicPeritonealCavity = new DropDownListDataModel();
 
     void DropDownListDataInit()
     {
+        #region PelvicPeritonealCavity
+        {
+            ListPelvicPeritonealCavity = DropDownListDataService.GetPelvicPeritonealCavity();
+            var item = ListPelvicPeritonealCavity.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.PelvicPeritonealCavity);
+            if (item != null)
+                SelectPelvicPeritonealCavity = item;
+        }
+        #endregion
+
+        #region RightAdnexa
+        {
+            ListRightAdnexa = DropDownListDataService.GetRightAdnexa();
+            var item = ListRightAdnexa.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.RightAdnexa);
+            if (item != null)
+                SelectRightAdnexa = item;
+        }
+        #endregion
+
+        #region RightAdnexaTumorNumber
+        {
+            ListRightAdnexaTumorNumber = DropDownListDataService.GetTumorNumber();
+            var item = ListRightAdnexaTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.RightAdnexaTumorNumber);
+            if (item != null)
+                SelectRightAdnexaTumorNumber = item;
+        }
+        #endregion
+
+        #region LeftAdnexa
+        {
+            ListLeftAdnexa = DropDownListDataService.GetLeftAdnexa();
+            var item = ListLeftAdnexa.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.LeftAdnexa);
+            if (item != null)
+                SelectLeftAdnexa = item;
+        }
+        #endregion
+
+        #region LeftAdnexaTumorNumber
+        {
+            ListLeftAdnexaTumorNumber = DropDownListDataService.GetTumorNumber();
+            var item = ListLeftAdnexaTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.LeftAdnexaTumorNumber);
+            if (item != null)
+                SelectLeftAdnexaTumorNumber = item;
+        }
+        #endregion
+
         #region OvarianSurfaceRuptureOrNotLeftOvary
         {
             ListOvarianSurfaceRuptureOrNotLeftOvary = DropDownListDataService.GetOvarianSurfaceRuptureOrNotLeftOvary();
@@ -624,15 +759,6 @@
         }
         #endregion
 
-        #region UterusTumorNumber
-        {
-            ListUterusTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListUterusTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.UterusTumorNumber);
-            if (item != null)
-                SelectUterusTumorNumber = item;
-        }
-        #endregion
-
         #region Ascites
         {
             ListAscites = DropDownListDataService.GetAscites();
@@ -654,6 +780,31 @@
     }
 
     #region 下拉選單的事件
+    private async Task OnRightAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料手術.RightAdnexa = args.Value.Key;
+    }
+
+    private async Task OnPelvicPeritonealCavityChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料手術.PelvicPeritonealCavity = args.Value.Key;
+    }
+
+    private async Task OnRightAdnexaTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料手術.RightAdnexaTumorNumber = args.Value.Key;
+    }
+
+    private async Task OnLeftAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料手術.LeftAdnexa = args.Value.Key;
+    }
+
+    private async Task OnLeftAdnexaTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料手術.LeftAdnexaTumorNumber = args.Value.Key;
+    }
+
     private async Task OnOvarianSurfaceRuptureOrNotLeftOvaryChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotLeftOvary = args.Value.Key;
