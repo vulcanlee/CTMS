@@ -13,7 +13,11 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 
         public string ToJson()
         {
-            return System.Text.Json.JsonSerializer.Serialize(this);
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
+            };
+            return System.Text.Json.JsonSerializer.Serialize(this, options);
         }
 
         public void FromJson(string json)
@@ -22,6 +26,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             if (data != null)
             {
                 this.臨床資訊 = data.臨床資訊;
+                this.臨床資料 = data.臨床資料;
             }
             SyncData();
         }

@@ -141,10 +141,10 @@ table tr:nth-child(even) {
 
 .data-title {
     font-size: 20px;
-    width: 100px;
+    width: 100%;
 }
 
 .data-value {
     font-size: 24px;
-    width: 100px;
+    width: 100%;
 }

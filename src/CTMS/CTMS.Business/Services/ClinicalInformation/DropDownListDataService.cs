@@ -10,12 +10,13 @@ namespace CTMS.Business.Services.ClinicalInformation
 {
     public class DropDownListDataService
     {
+        #region Basic clinical presentation 臨床資訊
         public List<DropDownListDataModel> GetAge()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             for (int i = 20; i <= 80; i++)
             {
-                result.Add(new DropDownListDataModel() { Key= $"{i}", Name=$"{i}" });
+                result.Add(new DropDownListDataModel() { Key = $"{i}", Name = $"{i}" });
             }
             return result;
         }
@@ -65,5 +66,181 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        #endregion
+        #region 臨床資料 手術
+        public List<DropDownListDataModel> GetVisitCode()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "Baseline", "FU1(3M)", "FU2(6M)", "FU3(9M)", "FU4(12M)", "FU5(15M)", "FU6(18M)", "FU7(21M)", "FU8(24M)"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetAscites()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "Yes", "No"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetUterus()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "normal", "abnormal"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetSite()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "cervix", "Endometrium", "myometrium"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetTumorNumber()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "1", "2", "more"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetCervix()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "normal", "abnormal"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetEndometrium()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "normal", "abnormal"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetOvarianSurfaceRuptureOrNotRightOvary()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "no rupture", "rupture during the operation", "rupture before operation"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetOvarianSurfaceRuptureOrNotLeftOvary()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "no rupture", "rupture during the operation", "rupture before operation"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetPelvicPeritonealCavity()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "free of tumor", "Not free"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetExtrapelvicPeritonealCavity()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "free of tumor", "other finding"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetExtrapelvicPeritonealCavityOtherFinding()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "adhesion between spleen and abdominal wall",
+                "adhesion between liver and abdominal wall",
+                "adhesion between omentum and small intestine"
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetResidualTumor()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<string> list = new() {
+                "No visible residual (R0)",
+                "residual tumor <1 cm (R1)",
+                "gross tumor >1 cm (R2)",
+            };
+            foreach (var item in list)
+            {
+                result.Add(new DropDownListDataModel() { Key = $"{item}", Name = $"{item}" });
+            }
+            return result;
+        }
+
+        #endregion
     }
 }
