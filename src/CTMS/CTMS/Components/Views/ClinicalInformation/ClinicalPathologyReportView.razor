@@ -53,7 +53,19 @@
                 }
                 else
                 {
-                    @patientData.臨床資料.臨床資料手術.VisitCode
+                    @patientData.臨床資料.臨床資料病理報告.VisitCode
+                }
+            </div>
+            <div>Assessment date</div>
+            <div class="flex-grow-1 ms-2">
+                @if (editMode)
+                {
+                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                  @bind-Value="@patientData.臨床資料.臨床資料病理報告.AssessmentDate"></SfDatePicker>
+                }
+                else
+                {
+                    @patientData.臨床資料.臨床資料病理報告.AssessmentDate.ToString("yyyy-MM-dd")
                 }
             </div>
         </div>

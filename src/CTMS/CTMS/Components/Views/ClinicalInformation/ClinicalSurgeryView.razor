@@ -93,12 +93,13 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.手術日期" />
+                            <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                          @bind-Value="@patientData.臨床資料.臨床資料手術.手術日期"></SfDatePicker>
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.手術日期
+                                @patientData.臨床資料.臨床資料手術.手術日期.ToString("yyyy-MM-dd")
                             </div>
                         }
                     </td>
@@ -536,7 +537,6 @@
                         }
                     </td>
                     <td class="w-25 data-title">
-                        【Optimal】
                         @if (editMode)
                         {
                             <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.Optimal" />
@@ -716,6 +716,15 @@
             var item = ListCervix.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.Cervix);
             if (item != null)
                 SelectCervix = item;
+        }
+        #endregion
+
+        #region UterusTumorNumber
+        {
+            ListUterusTumorNumber = DropDownListDataService.GetTumorNumber();
+            var item = ListUterusTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.UterusTumorNumber);
+            if (item != null)
+                SelectUterusTumorNumber = item;
         }
         #endregion
 

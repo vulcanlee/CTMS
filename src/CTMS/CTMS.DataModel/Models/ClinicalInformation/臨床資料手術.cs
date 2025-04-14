@@ -12,7 +12,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     {
         public string VisitCode { get; set; }
         public string SubjectNo { get; set; }
-        public string 手術日期 { get; set; }
+        public DateTime 手術日期 { get; set; }
         public string 術式 { get; set; }
         public string OPOutcome { get; set; }
         public string Ascites { get; set; }
