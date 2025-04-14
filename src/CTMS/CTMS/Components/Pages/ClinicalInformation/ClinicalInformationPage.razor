@@ -28,13 +28,14 @@ else
             <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
             <span class="page-title">臨床資料 儀錶板</span>
         </div>
-
+        ClinicalSurgeryView
         <div class="page-body">
             <MudTabs PanelClass="pa-6">
                 <MudTabPanel Text="手術">
-                    <臨床資料手術View Code="@Code" />
+                    <ClinicalSurgeryView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="病理報告">
+                    <ClinicalPathologyReportView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="化學治療">
                 </MudTabPanel>

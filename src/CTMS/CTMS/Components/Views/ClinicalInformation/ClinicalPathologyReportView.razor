@@ -1,0 +1,437 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+
+<PageTitle>臨床資料 病理報告</PageTitle>
+
+<div>
+
+    <div class="header" style="display: flex; align-items: center;">
+        <h1 style="margin: 0; flex-grow: 1;">臨床資料 病理報告</h1>
+        @if (editMode)
+        {
+            <div class="btn-group" role="group" aria-label="按鈕組">
+                <button type="button" class="btn btn-primary save-button"
+                        @onclick=OnSave>
+                    儲存
+                </button>
+                <button type="button" class="btn btn-danger cancle-button"
+                        @onclick=OnCancel>
+                    取消
+                </button>
+            </div>
+        }
+        else
+        {
+            <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
+                  @onclick=OnChangeEditMode></span>
+        }
+    </div>
+
+    <div>
+        <div class="d-flex align-items-center">
+            <div>Visit code</div>
+            <div class="flex-grow-1 ms-2">
+                @if (editMode)
+                {
+                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                    Placeholder="選擇一個值" DataSource="@ListVisitCode"
+                                    @bind-Value="@SelectVisitCode" class="flex-grow-1">
+                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                            ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
+                    </SfDropDownList>
+                }
+                else
+                {
+                    @patientData.臨床資料.臨床資料手術.VisitCode
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="view-container">
+        <!-- Left Table -->
+        <div class="left-table">
+            <table>
+                <tr>
+                    <td class="w-25 data-title">
+                        Subject No.
+                    </td>
+                    <td class="w-25 data-title">
+                        切片日期
+                    </td>
+                    <td class="w-25 data-title">
+                        Histology
+                    </td>
+                    <td class="w-25 data-title">
+                        TNM Stage
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.SubjectNo" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.SubjectNo
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.切片日期" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.切片日期
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Histology" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.Histology
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.TnmStage" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.TnmStage
+                            </div>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="w-25 data-title">
+                        Myometrium
+                    </td>
+                    <td class="w-25 data-title">
+                        Uterine Serosa Involvement
+                    </td>
+                    <td class="w-25 data-title">
+                        Blood/lymphatic vessel invasion
+                    </td>
+                    <td class="w-25 data-title">
+                        Cervix
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Myometrium" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.Myometrium
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.UterineSerosaInvolvement" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.UterineSerosaInvolvement
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.BloodLymphaticVesselInvasion" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.BloodLymphaticVesselInvasion
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Cervix" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.Cervix
+                            </div>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="w-25 data-title">
+                        Parametrium
+                    </td>
+                    <td class="w-25 data-title">
+                        Ovary- Right
+                    </td>
+                    <td class="w-25 data-title">
+                        Ovary- Left
+                    </td>
+                    <td class="w-25 data-title">
+                        Fallopian tube - Right
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Parametrium" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.Parametrium
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.OvaryRight" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.OvaryRight
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.OvaryLeft" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.OvaryLeft
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.FallopianTubeLeft" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.FallopianTubeLeft
+                            </div>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="w-25 data-title">
+                        Fallopian tube - Left
+                    </td>
+                    <td class="w-25 data-title">
+                        Vagina
+                    </td>
+                    <td class="w-25 data-title">
+                        Regional Lymph Nodes
+                    </td>
+                    <td class="w-25 data-title">
+                        Isolated tumor cells
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.FallopianTubeLeft" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.FallopianTubeLeft
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Vagina" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.Vagina
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.RegionalLymphNodes" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.RegionalLymphNodes
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.IsolatedTumorCells" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.IsolatedTumorCells
+                            </div>
+                        }
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="w-25 data-title">
+                        Additional pathological findings
+                    </td>
+                    <td class="w-25 data-title">
+                        Immunohistochemical test
+                    </td>
+                    <td class="w-25 data-title">
+                    </td>
+                    <td class="w-25 data-title">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.AdditionalPathologicalFindings" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.AdditionalPathologicalFindings
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                        @if (editMode)
+                        {
+                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.ImmunohistochemicalTest" />
+                        }
+                        else
+                        {
+                            <div class="data-value">
+                                @patientData.臨床資料.臨床資料病理報告.ImmunohistochemicalTest
+                            </div>
+                        }
+                    </td>
+                    <td class="w-25 data-title">
+                    </td>
+                    <td class="w-25 data-title">
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate fetching data from a service
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        DropDownListDataInit();
+    }
+
+
+    List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
+
+    void DropDownListDataInit()
+    {
+        #region VisitCode
+        {
+            ListVisitCode = DropDownListDataService.GetVisitCode();
+            var item = ListVisitCode.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料病理報告.VisitCode);
+            if (item != null)
+                SelectVisitCode = item;
+        }
+        #endregion
+
+    }
+
+    #region 下拉選單的事件
+    private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資料.臨床資料病理報告.VisitCode = args.Value.Key;
+    }
+
+    #endregion
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        editMode = false;
+    }
+
+    void On臨床資料()
+    {
+        var url = $"/ClinicalInformation/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+}
