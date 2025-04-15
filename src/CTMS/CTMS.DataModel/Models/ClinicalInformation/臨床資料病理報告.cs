@@ -10,10 +10,10 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 {
     public class 臨床資料病理報告
     {
-        public string VisitCode { get; set; }
+        public string VisitCode { get; set; } 
         public DateTime AssessmentDate { get; set; }
         public string SubjectNo { get; set; }
-        public string 切片日期 { get; set; }
+        public DateTime 切片日期 { get; set; }
         public string Histology { get; set; }
         public string TnmStage { get; set; }
         public string Myometrium { get; set; }
