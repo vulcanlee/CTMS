@@ -1,4 +1,4 @@
-﻿@page "/ClinicalInformation/{code}"
+﻿@page "/Questionnaire/{code}"
 @using CTMS.Share.Helpers
 @using Newtonsoft.Json
 @layout EmptyLayout
@@ -13,7 +13,7 @@
 @inject BrowseAthleteService BrowseAthleteService
 @inject CurrentAthleteExamine CurrentAthleteExamine
 
-<PageTitle>臨床資料 儀錶板</PageTitle>
+<PageTitle>問卷資料 儀錶板</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -26,22 +26,13 @@ else
     <div>
         <div class="page-top">
             <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
-            <span class="page-title">問卷 儀錶板</span>
+            <span class="page-title">問卷資料 儀錶板</span>
         </div>
         ClinicalSurgeryView
         <div class="page-body">
             <MudTabs PanelClass="pa-6">
-                <MudTabPanel Text="手術">
-                    <ClinicalSurgeryView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="病理報告">
-                    <ClinicalPathologyReportView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="化學治療">
-                </MudTabPanel>
-                <MudTabPanel Text="合併用藥 common medication">
-                </MudTabPanel>
-                <MudTabPanel Text="Baseline-Medical History Form">
+                <MudTabPanel Text="生活品質問卷">
+                    <WhooqolView Code="@Code" />
                 </MudTabPanel>
             </MudTabs>
         </div>

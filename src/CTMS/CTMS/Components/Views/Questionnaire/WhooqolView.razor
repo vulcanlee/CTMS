@@ -1,0 +1,177 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+
+<PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
+
+<div>
+    @*     <div class="header">
+        <h1>Basic clinical presentation 臨床資訊</h1>
+        <span class="mdi mdi-36px mdi-square-edit-outline command-icon-width  cursor-pointer"
+        ></span>
+    </div>
+ *@
+
+    <div class="header" style="display: flex; align-items: center;">
+        <h1 style="margin: 0; flex-grow: 1;">台灣簡明版世界衛生組織生活品質問卷</h1>
+    </div>
+    <div class="view-container">
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate fetching data from a service
+        // patientAdapterModel = await PatientService.GetAsync(Code);
+        // patientData.FromJson(patientAdapterModel.JsonData);
+        // patientData.臨床資訊.CalculateCancerType();
+        // DropDownListDataInit();
+    }
+
+
+    List<DropDownListDataModel> ListECOrOCC = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectECOrOCC = new DropDownListDataModel();
+    List<DropDownListDataModel> List年齡Age = new List<DropDownListDataModel>();
+    DropDownListDataModel Select年齡Age = new DropDownListDataModel();
+    List<DropDownListDataModel> List月經狀態 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select月經狀態 = new DropDownListDataModel();
+    List<DropDownListDataModel> List身高Height = new List<DropDownListDataModel>();
+    DropDownListDataModel Select身高Height = new DropDownListDataModel();
+    List<DropDownListDataModel> List體重BW = new List<DropDownListDataModel>();
+    DropDownListDataModel Select體重BW = new DropDownListDataModel();
+    List<DropDownListDataModel> List日常體能狀態PS = new List<DropDownListDataModel>();
+    DropDownListDataModel Select日常體能狀態PS = new DropDownListDataModel();
+
+    void DropDownListDataInit()
+    {
+        #region 癌別
+        {
+            ListECOrOCC = DropDownListDataService.Get癌別();
+            var item = ListECOrOCC.FirstOrDefault(x => x.Key == patientData.臨床資訊.ECorOC);
+            if (item != null)
+                SelectECOrOCC = item;
+        }
+        #endregion
+
+        #region 年齡Age
+        {
+            List年齡Age = DropDownListDataService.GetAge();
+            var item = List年齡Age.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            if (item != null)
+                Select年齡Age = item;
+        }
+        #endregion
+
+        #region 月經狀態
+        {
+            List月經狀態 = DropDownListDataService.Get月經狀態();
+            var item = List月經狀態.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            if (item != null)
+                Select月經狀態 = item;
+        }
+        #endregion
+
+        #region 身高Height
+        {
+            List身高Height = DropDownListDataService.Get身高Height();
+            var item = List身高Height.FirstOrDefault(x => x.Key == patientData.臨床資訊.Height);
+            if (item != null)
+                Select身高Height = item;
+        }
+        #endregion
+
+        #region 體重BW
+        {
+            List體重BW = DropDownListDataService.Get體重BW();
+            var item = List體重BW.FirstOrDefault(x => x.Key == patientData.臨床資訊.Weight);
+            if (item != null)
+                Select體重BW = item;
+        }
+        #endregion
+
+        #region 日常體能狀態PS
+        {
+            List日常體能狀態PS = DropDownListDataService.Get日常體能狀態PS();
+            var item = List日常體能狀態PS.FirstOrDefault(x => x.Key == patientData.臨床資訊.PerformanceStatus);
+            if (item != null)
+                Select日常體能狀態PS = item;
+        }
+        #endregion
+
+    }
+
+    #region 下拉選單的事件
+    private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.PerformanceStatus = args.Value.Key;
+    }
+
+    private async Task On體重BWChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Weight = args.Value.Key;
+    }
+
+    private async Task On身高HeightChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Height = args.Value.Key;
+    }
+
+    private async Task On月經狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.MenstrualStatus = args.Value.Key;
+    }
+
+    private async Task On年齡AgeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Age = args.Value.Key;
+    }
+
+    private async Task OnECOrOCCChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.ECorOC = args.Value.Key;
+        patientData.臨床資訊.CalculateCancerType();
+    }
+
+    #endregion
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        editMode = false;
+    }
+
+    void On臨床資料()
+    {
+        var url = $"/ClinicalInformation/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+}
