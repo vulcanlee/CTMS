@@ -1,0 +1,359 @@
+{
+  "title": "台灣簡明版世界衛生組織生活品質問卷(WHOQOL-BREF)",
+  "formLabel": "表單",
+  "code": "WHOOQOL-BREF",
+  "questionLabel": "題號",
+  "questions": [
+    {
+      "id": "1",
+      "type": "single-choice",
+      "text": "整體來說，您如何評價您的生活品質？",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不好"
+        },
+        {
+          "value": 2,
+          "label": "不好"
+        },
+        {
+          "value": 3,
+          "label": "中等程度好"
+        },
+        {
+          "value": 4,
+          "label": "好"
+        },
+        {
+          "value": 5,
+          "label": "極好"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "type": "single-choice",
+      "text": "整體來說，您滿意自己的健康嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "type": "single-choice",
+      "text": "您覺得身體疼痛會妨礙您處理需要做的事情嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有妨礙"
+        },
+        {
+          "value": 2,
+          "label": "有一點妨礙"
+        },
+        {
+          "value": 3,
+          "label": "中等程度妨礙"
+        },
+        {
+          "value": 4,
+          "label": "很妨礙"
+        },
+        {
+          "value": 5,
+          "label": "極妨礙"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "type": "single-choice",
+      "text": "您需要靠醫療的幫助應付日常生活嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有需要"
+        },
+        {
+          "value": 2,
+          "label": "有一點需要"
+        },
+        {
+          "value": 3,
+          "label": "中等程度需要"
+        },
+        {
+          "value": 4,
+          "label": "很需要"
+        },
+        {
+          "value": 5,
+          "label": "極需要"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "type": "single-choice",
+      "text": "您享受生活嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有享受"
+        },
+        {
+          "value": 2,
+          "label": "有一點享受"
+        },
+        {
+          "value": 3,
+          "label": "中等程度享受"
+        },
+        {
+          "value": 4,
+          "label": "很享受"
+        },
+        {
+          "value": 5,
+          "label": "極享受"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "type": "single-choice",
+      "text": "您覺得自己的生命有意義嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點有"
+        },
+        {
+          "value": 3,
+          "label": "中等程度有"
+        },
+        {
+          "value": 4,
+          "label": "很有"
+        },
+        {
+          "value": 5,
+          "label": "極有"
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "type": "single-choice",
+      "text": "您集中精神（含思考、學習、記憶）的能力有多好？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不好"
+        },
+        {
+          "value": 2,
+          "label": "有一點好"
+        },
+        {
+          "value": 3,
+          "label": "中等程度好"
+        },
+        {
+          "value": 4,
+          "label": "很好"
+        },
+        {
+          "value": 5,
+          "label": "極好"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "type": "single-choice",
+      "text": "在日常生活中，您感到安全嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不安全"
+        },
+        {
+          "value": 2,
+          "label": "有一點安全"
+        },
+        {
+          "value": 3,
+          "label": "中等程度安全"
+        },
+        {
+          "value": 4,
+          "label": "很安全"
+        },
+        {
+          "value": 5,
+          "label": "極安全"
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "type": "single-choice",
+      "text": "您所處的環境健康嗎? (如污染、噪音、氣候、景觀等)",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不健康"
+        },
+        {
+          "value": 2,
+          "label": "有一點健康"
+        },
+        {
+          "value": 3,
+          "label": "中等程度健康"
+        },
+        {
+          "value": 4,
+          "label": "很健康"
+        },
+        {
+          "value": 5,
+          "label": "極健康"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "type": "single-choice",
+      "text": "您每天的生活有足夠的精力嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不足夠"
+        },
+        {
+          "value": 2,
+          "label": "少許足夠"
+        },
+        {
+          "value": 3,
+          "label": "中等程度足夠"
+        },
+        {
+          "value": 4,
+          "label": "很足夠"
+        },
+        {
+          "value": 5,
+          "label": "完全足夠"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "type": "single-choice",
+      "text": "您能接受自己的外表嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不能夠"
+        },
+        {
+          "value": 2,
+          "label": "少許能夠"
+        },
+        {
+          "value": 3,
+          "label": "中等程度能夠"
+        },
+        {
+          "value": 4,
+          "label": "很能夠"
+        },
+        {
+          "value": 5,
+          "label": "完全能夠"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "type": "single-choice",
+      "text": "您有足夠的金錢應付所需嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不足夠"
+        },
+        {
+          "value": 2,
+          "label": "少許足夠"
+        },
+        {
+          "value": 3,
+          "label": "中等程度足夠"
+        },
+        {
+          "value": 4,
+          "label": "很足夠"
+        },
+        {
+          "value": 5,
+          "label": "完全足夠"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "type": "single-choice",
+      "text": "您能方便得到每日生活所需的資訊嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不方便"
+        },
+        {
+          "value": 2,
+          "label": "少許方便"
+        },
+        {
+          "value": 3,
+          "label": "中等程度方便"
+        },
+        {
+          "value": 4,
+          "label": "很方便"
+        },
+        {
+          "value": 5,
+          "label": "完全方便"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,702 @@
+{
+  "title": "化療副作用自填問卷",
+  "questions": [
+    {
+      "id": "1.0",
+      "type": "single-choice",
+      "text": "請問您是否感到噁心？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "有噁心感，但飲食習慣未改變"
+        },
+        {
+          "value": 3,
+          "label": "由於噁心感，飲食量下降，但體重沒有變輕或脫水"
+        },
+        {
+          "value": 4,
+          "label": "由於噁心感，導致飲食及飲水量大量減少，被給予靜脈輸液或住院治療"
+        }
+      ]
+    },
+    {
+      "id": "1.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "1.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "1.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "1.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "2.0",
+      "type": "single-choice",
+      "text": "請問您是否有嘔吐情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "一天之中發生1~2次嘔吐(每次間隔超過5分鐘)"
+        },
+        {
+          "value": 3,
+          "label": "一天之中發生3~5次嘔吐(每次間隔超過5分鐘)"
+        },
+        {
+          "value": 4,
+          "label": "一天之中發生6次以上嘔吐或需住院治療"
+        },
+        {
+          "value": 5,
+          "label": "持續嘔吐，或使用止吐劑仍無法控制"
+        }
+      ]
+    },
+    {
+      "id": "2.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "2.0",
+        "anyOf": [ 2, 3, 4, 5 ]
+      }
+    },
+    {
+      "id": "2.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "2.0",
+        "anyOf": [ 2, 3, 4, 5 ]
+      }
+    },
+    {
+      "id": "3.0",
+      "type": "single-choice",
+      "text": "請問您是否有發生口腔黏膜炎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "輕度，僅感不適／輕微紅腫"
+        },
+        {
+          "value": 3,
+          "label": "中度，口腔潰瘍但可進食"
+        },
+        {
+          "value": 4,
+          "label": "重度，口腔潰瘍合併出血或需住院治療"
+        }
+      ]
+    },
+    {
+      "id": "3.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "3.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "3.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "3.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "4.0",
+      "type": "single-choice",
+      "text": "請問您是否有腹瀉情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "輕度，排便次數比平日多1-3次"
+        },
+        {
+          "value": 3,
+          "label": "中度，排便次數比平日多4-6次"
+        },
+        {
+          "value": 4,
+          "label": "重度，排便次數比平日多7次以上"
+        }
+      ]
+    },
+    {
+      "id": "4.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "4.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "4.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "4.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "5.0",
+      "type": "single-choice",
+      "text": "請問您是否有便秘情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "與平日相比，排便次數減少1-2次"
+        },
+        {
+          "value": 3,
+          "label": "排便次數減少3-4次或需使用軟便劑"
+        },
+        {
+          "value": 4,
+          "label": "無法排便，需灌腸或住院治療"
+        }
+      ]
+    },
+    {
+      "id": "5.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "5.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "5.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "5.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "6.0",
+      "type": "single-choice",
+      "text": "請問您是否有疲倦感？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "輕度，僅感疲倦但不影響日常"
+        },
+        {
+          "value": 3,
+          "label": "中度，疲倦影響部分日常活動"
+        },
+        {
+          "value": 4,
+          "label": "重度，無法自行完成日常活動"
+        }
+      ]
+    },
+    {
+      "id": "6.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "6.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "6.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "6.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "7.0",
+      "type": "single-choice",
+      "text": "請問您是否有發生周邊感覺神經異常情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "感覺輕微異常，但沒有影響到日常生活功能"
+        },
+        {
+          "value": 3,
+          "label": "因感覺異常，輕微疼痛或刺痛"
+        },
+        {
+          "value": 4,
+          "label": "嚴重疼痛影響活動，需用藥治療"
+        }
+      ]
+    },
+    {
+      "id": "7.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "7.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "7.2",
+      "type": "single-choice",
+      "text": "症狀持續天數或從未間斷",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "7.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "8.0",
+      "type": "single-choice",
+      "text": "請問您是否有口乾舌燥情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "感覺微乾，但可忍受"
+        },
+        {
+          "value": 3,
+          "label": "口乾需頻繁飲水"
+        },
+        {
+          "value": 4,
+          "label": "乾燥嚴重影響說話或進食"
+        }
+      ]
+    },
+    {
+      "id": "8.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "8.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "8.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "8.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "9.0",
+      "type": "single-choice",
+      "text": "請問您是否有口腔潰瘍情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "潰瘍或疼痛但可忍受"
+        },
+        {
+          "value": 3,
+          "label": "潰瘍疼痛影響飲食"
+        },
+        {
+          "value": 4,
+          "label": "潰瘍嚴重需用藥或住院"
+        }
+      ]
+    },
+    {
+      "id": "9.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "9.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "9.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "9.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "10.0",
+      "type": "single-choice",
+      "text": "請問您是否有紅斑或脫皮情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "紅斑／脫皮輕微"
+        },
+        {
+          "value": 3,
+          "label": "紅斑疼痛或脫皮大片"
+        },
+        {
+          "value": 4,
+          "label": "需治療或住院"
+        }
+      ]
+    },
+    {
+      "id": "10.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "10.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "10.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "10.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "11.0",
+      "type": "single-choice",
+      "text": "請問您是否有神經痛或刺痛情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "輕微刺痛或麻木"
+        },
+        {
+          "value": 3,
+          "label": "疼痛影響日常"
+        },
+        {
+          "value": 4,
+          "label": "嚴重疼痛需用藥"
+        }
+      ]
+    },
+    {
+      "id": "11.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "11.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    },
+    {
+      "id": "11.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ],
+      "visibilityCondition": {
+        "questionId": "11.0",
+        "anyOf": [ 2, 3, 4 ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,893 @@
+{
+  "title": "放療副作用自填問卷",
+  "questions": [
+    {
+      "id": "1.0",
+      "type": "single-choice",
+      "text": "請問您是否會感到疲倦？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "有時感到疲倦，但休息後可緩解"
+        },
+        {
+          "value": 3,
+          "label": "感到疲倦時，無法透過休息緩解／已影響日常家務活動(穿衣、洗澡等)"
+        },
+        {
+          "value": 4,
+          "label": "疲倦程度已經影響生活無法自理"
+        }
+      ]
+    },
+    {
+      "id": "1.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "1.0",
+        "anyOf": [
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "1.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "1.0",
+        "anyOf": [
+          2,
+          3,
+          4
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "2.0",
+      "type": "single-choice",
+      "text": "請問您是否發生放射性皮膚炎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "皮膚發生些微紅斑／或肌膚乾燥、脫屑"
+        },
+        {
+          "value": 3,
+          "label": "皮膚發生中度紅斑；片狀潮濕脫皮，皮膚皺褶增加；中度水腫"
+        },
+        {
+          "value": 4,
+          "label": "在皺褶以外的皮膚有濕性脫屑情形，或接受放射線部位皮膚輕微擦傷會引起出血"
+        },
+        {
+          "value": 5,
+          "label": "皮膚發生潰瘍或壞死／皮膚會自發性出血"
+        }
+      ]
+    },
+    {
+      "id": "2.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "2.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "2.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "2.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "3.0",
+      "type": "single-choice",
+      "text": "請問您是否有腹瀉情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "與平日相比，每天增加次數1-3次／或造口排泄少量增加"
+        },
+        {
+          "value": 3,
+          "label": "與平日相比，每天增加次數4-6次／或造口排泄中量增加／已輕度影響日常生活"
+        },
+        {
+          "value": 4,
+          "label": "與平日相比，每天增加次數>7次／或造口排泄多量增加／已嚴重影響日常生活或需住院治療"
+        },
+        {
+          "value": 5,
+          "label": "因嚴重腹瀉需緊急住院治療"
+        }
+      ]
+    },
+    {
+      "id": "3.1",
+      "type": "number",
+      "text": "症狀自化療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "3.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "3.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "3.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "4.0",
+      "type": "single-choice",
+      "text": "請問您是否有直腸炎情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "直腸不適；不需介入治療"
+        },
+        {
+          "value": 3,
+          "label": "有症狀(如:直腸不適，或解便的性質為出血或黏液)／需藥物治療／因不適造成日常生活能力受到影響"
+        },
+        {
+          "value": 4,
+          "label": "嚴重症狀；尿失禁或大便失禁；自我日常生活照顧受限"
+        },
+        {
+          "value": 5,
+          "label": "因直腸炎太嚴重需緊急住院治療"
+        }
+      ]
+    },
+    {
+      "id": "4.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "4.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "4.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "4.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "5.0",
+      "type": "single-choice",
+      "text": "請問您是否有腸炎或結腸炎情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "有輕微不適，觀察即可。"
+        },
+        {
+          "value": 3,
+          "label": "有腹痛情形／解便性質為出血或黏液"
+        },
+        {
+          "value": 4,
+          "label": "腹痛情形較嚴重，需使用藥物"
+        },
+        {
+          "value": 5,
+          "label": "因腸痛需緊急住院治療"
+        }
+      ]
+    },
+    {
+      "id": "5.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "5.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "5.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "5.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "6.0",
+      "type": "single-choice",
+      "text": "請問您是否有吞嚥困難情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "有輕微吞嚥困難情形，但仍可正常飲食"
+        },
+        {
+          "value": 3,
+          "label": "有輕微吞嚥困難情形，並且進食及吞嚥習慣改變"
+        },
+        {
+          "value": 4,
+          "label": "有嚴重吞嚥困難情形，且進食及吞嚥習慣改變／需管灌餵食、接受靜脈輸液或住院治療"
+        },
+        {
+          "value": 5,
+          "label": "因極度嚴重的吞嚥困難需緊急住院治療"
+        }
+      ]
+    },
+    {
+      "id": "6.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "6.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "6.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "6.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "7.0",
+      "type": "single-choice",
+      "text": "請問您是否有咳嗽情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "輕微咳嗽，不需藥物治療"
+        },
+        {
+          "value": 3,
+          "label": "中度咳嗽，需接受藥物治療"
+        },
+        {
+          "value": 4,
+          "label": "嚴重咳嗽，且影響日常生活 (例如 睡眠、進食)"
+        }
+      ]
+    },
+    {
+      "id": "7.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "7.0",
+        "anyOf": [
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "7.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "7.0",
+        "anyOf": [
+          2,
+          3,
+          4
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "8.0",
+      "type": "single-choice",
+      "text": "請問您是否有呼吸困難情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "否"
+        },
+        {
+          "value": 2,
+          "label": "在適度的活動下(如穿衣、短距離行走等)，會呼吸困難且急促"
+        },
+        {
+          "value": 3,
+          "label": "在進行靜態或輕度活動時(例說話、進食等)，也會呼吸困難且急促"
+        },
+        {
+          "value": 4,
+          "label": "連休息時都感到會呼吸困難且急促"
+        },
+        {
+          "value": 5,
+          "label": "嚴重的呼吸困難需緊急住院治療"
+        }
+      ]
+    },
+    {
+      "id": "8.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "8.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "8.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "8.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "9.0",
+      "type": "single-choice",
+      "text": "請問您是否有發生口腔黏膜炎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "症狀或輕微症狀，無須介入治療"
+        },
+        {
+          "value": 3,
+          "label": "中等疼痛，但不影響進食"
+        },
+        {
+          "value": 4,
+          "label": "嚴重疼痛，已影響進食"
+        },
+        {
+          "value": 5,
+          "label": "因極度嚴重的口腔黏膜炎需緊急住院治療"
+        }
+      ]
+    },
+    {
+      "id": "9.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "9.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "9.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "9.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "10.0",
+      "type": "single-choice",
+      "text": "請問您是否有發生口乾情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "發生口乾或唾液黏稠情形，無飲食習慣改變／未刺激尚有唾液分泌(分泌量每分鐘>0.2ml)"
+        },
+        {
+          "value": 3,
+          "label": "飲食習慣改變 (如攝取大量水份、潤滑劑，或只能食用果泥或軟質飲食等較為濕潤的食物)／未刺激下唾液分泌減少許多(分泌量每分鐘0.1-0.2ml)"
+        },
+        {
+          "value": 4,
+          "label": "因口乾導致無法由口攝取足夠飲食，需靜脈輸液、管灌或中心靜脈營養／未刺激下唾液分泌很少(分泌量每分鐘<0.1ml)"
+        }
+      ]
+    },
+    {
+      "id": "10.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "10.0",
+        "anyOf": [
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "10.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "10.0",
+        "anyOf": [
+          2,
+          3,
+          4
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "11.0",
+      "type": "single-choice",
+      "text": "請問您是否有排尿困難情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "有"
+        }
+      ]
+    },
+    {
+      "id": "11.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "11.0",
+        "anyOf": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "11.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "11.0",
+        "anyOf": [
+          2
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    },
+    {
+      "id": "12.0",
+      "type": "single-choice",
+      "text": "請問您是否有尿失禁情形？",
+      "options": [
+        {
+          "value": 1,
+          "label": "無"
+        },
+        {
+          "value": 2,
+          "label": "因咳嗽或打噴嚏等造成尿失禁，但不須使用護墊"
+        },
+        {
+          "value": 3,
+          "label": "持續性尿失禁情形，需使用護墊"
+        },
+        {
+          "value": 4,
+          "label": "尿失禁情形須接受治療，如：膠原蛋白注射或輔助夾／影響日常生活活動"
+        },
+        {
+          "value": 5,
+          "label": "尿失禁情形須手術治療，如：膀胱切除手術或永久尿流改道手術"
+        }
+      ]
+    },
+    {
+      "id": "12.1",
+      "type": "number",
+      "text": "症狀自放射線治療後第幾天開始",
+      "visibilityCondition": {
+        "questionId": "12.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "12.2",
+      "type": "single-choice",
+      "text": "症狀持續天數",
+      "visibilityCondition": {
+        "questionId": "12.0",
+        "anyOf": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "options": [
+        {
+          "value": 1,
+          "label": "小於一天"
+        },
+        {
+          "value": 2,
+          "label": "1~3天"
+        },
+        {
+          "value": 3,
+          "label": "4~7天"
+        },
+        {
+          "value": 4,
+          "label": "大於7天"
+        },
+        {
+          "value": 5,
+          "label": "從未間斷"
+        }
+      ]
+    }
+  ]
+}
