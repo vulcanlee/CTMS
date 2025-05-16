@@ -1,0 +1,222 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+
+<PageTitle>臨床資料 化學治療</PageTitle>
+
+<div>
+
+    <div class="header" style="display: flex; align-items: center;">
+        <h1 style="margin: 0; flex-grow: 1;">臨床資料 化學治療</h1>
+        @if (editMode)
+        {
+            <div class="btn-group" role="group" aria-label="按鈕組">
+                <button type="button" class="btn btn-primary save-button"
+                        @onclick=OnSave>
+                    儲存
+                </button>
+                <button type="button" class="btn btn-danger cancel-button"
+                        @onclick=OnCancel>
+                    取消
+                </button>
+            </div>
+        }
+        else
+        {
+            <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
+                  @onclick=OnChangeEditMode></span>
+        }
+    </div>
+
+    <div>
+        <div class="d-flex align-items-center">
+            <div>Visit code</div>
+            <div class="flex-grow-1 ms-2">
+                @if (editMode)
+                {
+                    <SfTextBox @bind-Value="patientData.臨床資料.臨床資料化學治療.VisitCode" />
+                }
+                else
+                {
+                    @patientData.臨床資料.臨床資料化學治療.VisitCode
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="view-container">
+        <div>
+            @* 新增一筆紀錄按鈕 *@
+            <button class="btn btn-primary add-button" @onclick="async () =>await OnAddAsync()">
+                新增一筆紀錄
+            </button>
+        </div>
+        <div class="left-table">
+            <table>
+                <tr>
+                    <td class="w-20 data-title">
+                        Subject No.
+                    </td>
+                    <td class="w-16 data-title">
+                        BSA
+                    </td>
+                    <td class="w-16 data-title">
+                        Regimen<br />
+                        Paclitaxel 175 mg/m2
+                    </td>
+                    <td class="w-16 data-title">
+                        Regimen<br />
+                        Carboplatin AUC 5
+                    </td>
+                    <td class="w-16 data-title">
+                        Reduction
+                    </td>
+                    <td class="w-16 data-title">
+                        Bevacizumab<br />
+                        Kg/mg
+
+                    </td>
+                </tr>
+                @foreach (var item in patientData.臨床資料.臨床資料化學治療.Items)
+                {
+                    <tr>
+                        <td class="w-20 data-title">
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                              @bind-Value="@item.TreatmentDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
+                                          @onclick="async()=> await OnDeleteAsync(item)"></span>
+                                    @item.TreatmentDate.ToString("yyyy-MM-dd")
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.BSA" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.RegimenPaclitaxel
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.RegimenPaclitaxel" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.RegimenPaclitaxel
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.RegimenCarboplatin" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.RegimenCarboplatin
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.Reduction" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.Reduction
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.Bevacizumab" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.Bevacizumab
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+    }
+
+
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        editMode = false;
+    }
+
+    async Task OnAddAsync()
+    {
+        patientData.臨床資料.臨床資料化學治療.Items.Add(new());
+        await OnSave();
+    }
+    async Task OnDeleteAsync(臨床資料化學治療Item item)
+    {
+        // Assuming we need to remove the last item for deletion
+        if (patientData.臨床資料.臨床資料化學治療.Items.Count > 0)
+        {
+            patientData.臨床資料.臨床資料化學治療.Items.Remove(item);
+            await OnSave();
+        }
+    }
+}

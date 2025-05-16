@@ -43,17 +43,11 @@
             <div class="flex-grow-1 ms-2">
                 @if (editMode)
                 {
-                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                    Placeholder="選擇一個值" DataSource="@ListVisitCode"
-                                    @bind-Value="@SelectVisitCode" class="flex-grow-1">
-                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                            ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
-                    </SfDropDownList>
+                    <SfTextBox @bind-Value="data.VisitCode" />
                 }
                 else
                 {
-                    @patientData.臨床資料.臨床資料病理報告.VisitCode
+                    @data.VisitCode
                 }
             </div>
             <div>Assessment date</div>
@@ -61,11 +55,11 @@
                 @if (editMode)
                 {
                     <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                  @bind-Value="@patientData.臨床資料.臨床資料病理報告.AssessmentDate"></SfDatePicker>
+                                  @bind-Value="data.AssessmentDate"></SfDatePicker>
                 }
                 else
                 {
-                    @patientData.臨床資料.臨床資料病理報告.AssessmentDate.ToString("yyyy-MM-dd")
+                    @data.AssessmentDate.ToString("yyyy-MM-dd")
                 }
             </div>
         </div>
@@ -93,48 +87,49 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.SubjectNo" />
+                            <SfTextBox @bind-Value="data.SubjectNo" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.SubjectNo
+                                @data.SubjectNo
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            @* <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.切片日期" /> *@
+                            <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                          @bind-Value="data.切片日期"></SfDatePicker>
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.切片日期
+                                @data.切片日期.ToString("yyyy-MM-dd")
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Histology" />
+                            <SfTextBox @bind-Value="data.Histology" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.Histology
+                                @data.Histology
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.TnmStage" />
+                            <SfTextBox @bind-Value="data.TnmStage" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.TnmStage
+                                @data.TnmStage
                             </div>
                         }
                     </td>
@@ -158,48 +153,48 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Myometrium" />
+                            <SfTextBox @bind-Value="data.Myometrium" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.Myometrium
+                                @data.Myometrium
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.UterineSerosaInvolvement" />
+                            <SfTextBox @bind-Value="data.UterineSerosaInvolvement" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.UterineSerosaInvolvement
+                                @data.UterineSerosaInvolvement
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.BloodLymphaticVesselInvasion" />
+                            <SfTextBox @bind-Value="data.BloodLymphaticVesselInvasion" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.BloodLymphaticVesselInvasion
+                                @data.BloodLymphaticVesselInvasion
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Cervix" />
+                            <SfTextBox @bind-Value="data.Cervix" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.Cervix
+                                @data.Cervix
                             </div>
                         }
                     </td>
@@ -210,10 +205,10 @@
                         Parametrium
                     </td>
                     <td class="w-25 data-title">
-                        Ovary- Right
+                        Ovary-Right
                     </td>
                     <td class="w-25 data-title">
-                        Ovary- Left
+                        Ovary-Left
                     </td>
                     <td class="w-25 data-title">
                         Fallopian tube - Right
@@ -223,48 +218,48 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Parametrium" />
+                            <SfTextBox @bind-Value="data.Parametrium" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.Parametrium
+                                @data.Parametrium
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.OvaryRight" />
+                            <SfTextBox @bind-Value="data.OvaryRight" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.OvaryRight
+                                @data.OvaryRight
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.OvaryLeft" />
+                            <SfTextBox @bind-Value="data.OvaryLeft" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.OvaryLeft
+                                @data.OvaryLeft
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.FallopianTubeRight" />
+                            <SfTextBox @bind-Value="data.FallopianTubeRight" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.FallopianTubeRight
+                                @data.FallopianTubeRight
                             </div>
                         }
                     </td>
@@ -288,48 +283,48 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.FallopianTubeLeft" />
+                            <SfTextBox @bind-Value="data.FallopianTubeLeft" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.FallopianTubeLeft
+                                @data.FallopianTubeLeft
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.Vagina" />
+                            <SfTextBox @bind-Value="data.Vagina" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.Vagina
+                                @data.Vagina
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.RegionalLymphNodes" />
+                            <SfTextBox @bind-Value="data.RegionalLymphNodes" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.RegionalLymphNodes
+                                @data.RegionalLymphNodes
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.IsolatedTumorCells" />
+                            <SfTextBox @bind-Value="data.IsolatedTumorCells" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.IsolatedTumorCells
+                                @data.IsolatedTumorCells
                             </div>
                         }
                     </td>
@@ -351,24 +346,24 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.AdditionalPathologicalFindings" />
+                            <SfTextBox @bind-Value="data.AdditionalPathologicalFindings" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.AdditionalPathologicalFindings
+                                @data.AdditionalPathologicalFindings
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料病理報告.ImmunohistochemicalTest" />
+                            <SfTextBox @bind-Value="data.ImmunohistochemicalTest" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料病理報告.ImmunohistochemicalTest
+                                @data.ImmunohistochemicalTest
                             </div>
                         }
                     </td>
@@ -390,39 +385,15 @@
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
-
+    臨床資料病理報告 data = new();
     protected override async Task OnInitializedAsync()
     {
-        // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        DropDownListDataInit();
+        data = patientData.臨床資料.臨床資料病理報告; 
     }
 
 
-    List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
-    DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
-
-    void DropDownListDataInit()
-    {
-        #region VisitCode
-        {
-            ListVisitCode = DropDownListDataService.GetVisitCode();
-            var item = ListVisitCode.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料病理報告.VisitCode);
-            if (item != null)
-                SelectVisitCode = item;
-        }
-        #endregion
-
-    }
-
-    #region 下拉選單的事件
-    private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
-    {
-        patientData.臨床資料.臨床資料病理報告.VisitCode = args.Value.Key;
-    }
-
-    #endregion
     void OnChangeEditMode()
     {
         editMode = !editMode;
@@ -439,11 +410,5 @@
     {
         patientData.FromJson(patientAdapterModel.JsonData);
         editMode = false;
-    }
-
-    void On臨床資料()
-    {
-        var url = $"/ClinicalInformation/{Code}";
-        NavigationManager.NavigateTo(url);
     }
 }

@@ -32,12 +32,13 @@ else
         <div class="page-body">
             <MudTabs PanelClass="pa-6">
                 <MudTabPanel Text="手術">
-                    <ClinicalSurgeryView Code="@Code" />
+                    <SurgeryView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="病理報告">
-                    <ClinicalPathologyReportView Code="@Code" />
+                    <PathologyReportView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="化學治療">
+                    <ChemotherapyView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="合併用藥 common medication">
                 </MudTabPanel>

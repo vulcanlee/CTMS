@@ -11,5 +11,6 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     {
         public 臨床資料手術 臨床資料手術 { get; set; } = new();
         public 臨床資料病理報告 臨床資料病理報告 { get; set; } = new();
+        public 臨床資料化學治療 臨床資料化學治療 { get; set; } = new();
     }
 }
