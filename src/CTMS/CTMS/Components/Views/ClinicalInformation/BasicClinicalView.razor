@@ -339,7 +339,7 @@
     <div class="container nav-buttons">
         <div class="nav-button btn-clinical" @onclick=On臨床資料>臨床資料</div>
         <div class="nav-button btn-image">影像資料</div>
-        <div class="nav-button btn-blood">抽血資料</div>
+        <div class="nav-button btn-blood" @onclick=On抽血資料>抽血資料</div>
         <div class="nav-button btn-ctcae">CTCAE 5.0</div>
         <div class="nav-button btn-questionnaire">問卷</div>
         <div class="nav-button btn-followup">追蹤資料</div>
@@ -489,6 +489,12 @@
     void On臨床資料()
     {
         var url = $"/ClinicalInformation/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    void On抽血資料()
+    {
+        var url = $"/BloodTest/{Code}";
         NavigationManager.NavigateTo(url);
     }
 }
