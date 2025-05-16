@@ -39,21 +39,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="Components\Pages\DashboardMetabolitePage.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
-		<Content Update="Components\Pages\DashboardGenomicsPage.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
-		<Content Update="Components\Pages\DashboardRecommendationEditorPage.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
-		<Content Update="Components\Pages\UpdateDataPage.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
-		<Content Update="Components\Views\DescriptionView.razor">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</Content>
 		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
