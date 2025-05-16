@@ -1,0 +1,233 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+
+<PageTitle>臨床資料 合併用藥</PageTitle>
+
+<div>
+
+    <div class="header" style="display: flex; align-items: center;">
+        <h1 style="margin: 0; flex-grow: 1;">臨床資料 合併用藥</h1>
+        @if (editMode)
+        {
+            <div class="btn-group" role="group" aria-label="按鈕組">
+                <button type="button" class="btn btn-primary save-button"
+                        @onclick=OnSave>
+                    儲存
+                </button>
+                <button type="button" class="btn btn-danger cancel-button"
+                        @onclick=OnCancel>
+                    取消
+                </button>
+            </div>
+        }
+        else
+        {
+            <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
+                  @onclick=OnChangeEditMode></span>
+        }
+    </div>
+
+    <div>
+        <div class="d-flex align-items-center">
+            <div>Visit code</div>
+            <div class="flex-grow-1 ms-2">
+                @if (editMode)
+                {
+                    <SfTextBox @bind-Value="data.VisitCode" />
+                }
+                else
+                {
+                    @data.VisitCode
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="view-container">
+        <div>
+            @* 新增一筆紀錄按鈕 *@
+            <button class="btn btn-primary add-button" @onclick="async () =>await OnAddAsync()">
+                新增一筆紀錄
+            </button>
+        </div>
+        <div class="left-table">
+            <table>
+                <tr>
+                    <td class="w-20 data-title">
+                        @data.SubjectNo
+                    </td>
+                    <td class="w-16 data-title">
+                        Treatment Date
+                    </td>
+                    <td class="w-16 data-title">
+                        Durg
+                    </td>
+                    <td class="w-16 data-title">
+                        Dose
+                    </td>
+                    <td class="w-16 data-title">
+                        Route Code
+                    </td>
+                    <td class="w-16 data-title">
+                        Unit Code
+                    </td>
+                </tr>
+                @foreach (var item in data.Items)
+                {
+                    <tr>
+                        <td class="w-20 data-title">
+                            @if (editMode)
+                            {
+                                <span> No.</span>
+                                @item.Index
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
+                                          @onclick="async()=> await OnDeleteAsync(item)"></span>
+                                    <span> No.</span>@item.Index
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                              @bind-Value="@item.TreatmentDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.TreatmentDate.ToString("yyyy-MM-dd")
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.Durg" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.Durg
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.Dose" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.Dose
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.RouteCode" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.RouteCode
+                                </div>
+                            }
+                        </td>
+                        <td class="w-16 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.UnitCode" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @item.UnitCode
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+    臨床資料合併用藥 data = new();
+    protected override async Task OnInitializedAsync()
+    {
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        data = patientData.臨床資料.臨床資料合併用藥; 
+    }
+
+
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        ReIndexItems();
+        editMode = false;
+    }
+
+    void ReIndexItems()
+    {
+        data = patientData.臨床資料.臨床資料合併用藥;
+        for (int i = 0; i < data.Items.Count; i++)
+        {
+            data.Items[i].Index = i + 1;
+        }
+    }
+
+    async Task OnAddAsync()
+    {
+        patientData.臨床資料.臨床資料合併用藥.Items.Add(new());
+        ReIndexItems();
+        await OnSave();
+    }
+    
+    async Task OnDeleteAsync(臨床資料合併用藥Item item)
+    {
+        // Assuming we need to remove the last item for deletion
+        if (patientData.臨床資料.臨床資料合併用藥.Items.Count > 0)
+        {
+            patientData.臨床資料.臨床資料合併用藥.Items.Remove(item);
+            ReIndexItems();
+            await OnSave();
+        }
+    }
+}

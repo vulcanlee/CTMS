@@ -37,6 +37,22 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> GetYesNo()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"Yes", Name = $"Yes" });
+            result.Add(new DropDownListDataModel() { Key = $"No", Name = $"No" });
+            return result;
+        }
+
+        public List<string> GetStringYesNo()
+        {
+            List<string> result = new List<string>();
+            result.Add("Yes");
+            result.Add("No");
+            return result;
+        }
+
         public List<DropDownListDataModel> Get身高Height()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();

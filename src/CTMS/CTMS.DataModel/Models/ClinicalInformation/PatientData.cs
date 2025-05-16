@@ -36,6 +36,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             this.臨床資料.臨床資料手術.SubjectNo = this.臨床資訊.SubjectNo;
             this.臨床資料.臨床資料病理報告.SubjectNo = this.臨床資訊.SubjectNo;
             this.臨床資料.臨床資料化學治療.SubjectNo = this.臨床資訊.SubjectNo;
+            this.臨床資料.臨床資料合併用藥.SubjectNo = this.臨床資訊.SubjectNo;
+            this.臨床資料.臨床資料BaselineMedicalHistoryForm.SubjectNo = this.臨床資訊.SubjectNo;
         }
     }
 }
