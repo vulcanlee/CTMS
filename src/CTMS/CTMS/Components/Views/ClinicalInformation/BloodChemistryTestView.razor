@@ -1,0 +1,153 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject BloodExameService BloodExameService
+
+<PageTitle>臨床資料 抽血檢驗(生化)</PageTitle>
+
+<div>
+
+    <div class="header" style="display: flex; align-items: center;">
+        <h1 style="margin: 0; flex-grow: 1;">臨床資料 抽血檢驗(生化)</h1>
+        @if (editMode)
+        {
+            <div class="btn-group" role="group" aria-label="按鈕組">
+                <button type="button" class="btn btn-primary save-button"
+                        @onclick=OnSave>
+                    儲存
+                </button>
+                <button type="button" class="btn btn-danger cancel-button"
+                        @onclick=OnCancel>
+                    取消
+                </button>
+            </div>
+        }
+        else
+        {
+            <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
+                  @onclick=OnChangeEditMode></span>
+        }
+    </div>
+
+    <div>
+        <div class="d-flex align-items-center">
+            <div>Visit code</div>
+@*             <div class="flex-grow-1 ms-2">
+                @if (editMode)
+                {
+                    <SfTextBox @bind-Value="data.VisitCode" />
+                }
+                else
+                {
+                    @data.VisitCode
+                }
+            </div>
+ *@        </div>
+
+    </div>
+    <div class="view-container">
+        <div class="left-table">
+            <table>
+                <tr>
+                    <td class="w-40 data-title">檢驗項目</td>
+                    <td class="w-20 data-title">參考區間</td>
+                    <td class="w-20 data-title">檢驗數據</td>
+                    <td class="w-20 data-title">Samplin</td>
+                </tr>
+                @foreach (var item in data)
+                {
+                    <tr>
+                        <td class="w-40 data-title">
+                            <div class="data-value @item.TextClassName">
+                                @item.項目名稱
+                            </div>
+                        </td>
+                        <td class="w-20 data-title">
+                            <div class="data-value @item.TextClassName">
+                                @item.參考區間
+                            </div>
+                        </td>
+                        <td class="w-20 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="item.檢驗數值" />
+                            }
+                            else
+                            {
+                                <div class="data-value @item.TextClassName">
+                                    @item.檢驗數值
+                                </div>
+                            }
+                        </td>
+                        <td class="w-20 data-title">
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@item.SamplingDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                <div class="data-value @item.TextClassName">
+                                    @if (item.SamplingDate.HasValue)
+                                    {
+                                        @item.SamplingDate.Value.ToString("yyyy-MM-dd")
+                                    }
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+    List<TestItem檢驗項目> data = new();
+    protected override async Task OnInitializedAsync()
+    {
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        data = patientData.臨床資料.抽血檢驗.抽血檢驗生化;
+        BloodExameService.CheckBloodExame(data);
+    }
+
+
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        BloodExameService.CheckBloodExame(data);
+        data = patientData.臨床資料.抽血檢驗.抽血檢驗生化;
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        editMode = false;
+        data = patientData.臨床資料.抽血檢驗.抽血檢驗生化;
+        BloodExameService.CheckBloodExame(data);
+    }
+}
