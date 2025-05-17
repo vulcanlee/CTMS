@@ -68,8 +68,16 @@
                             foreach (var itemOption in item.Options)
                             {
                                 string title = $"{itemOption.Value} {itemOption.Label}";
-                                <p class="card-text my-2">@title</p>
+
+                                <div @onclick="() =>
+                                    OnOptionChange(item, item.Options, itemOption)">
+                                    <span class="mx-3 mdi mdi-24px @itemOption.CheckBoxIcon command-icon-width cursor-pointer"
+                                    ></span>
+                                    <span class="card-text my-2">@title</span>
+                                </div>
                             }
+
+                            <div>@item.Answer</div>
                         }
                         else
                         {
@@ -121,5 +129,17 @@
         editMode = false;
         data = patientData.臨床資料.問卷.化療副作用;
         // BloodExameService.CheckBloodExame(data);
+    }
+
+    void OnOptionChange(Question question, List<Option> options, Option option)
+    {
+        question.Answer = "";
+        foreach (var item in options)
+        {
+            item.CheckBoxIcon = MagicObjectHelper.CheckBoxBlankIcon;
+        }
+
+        option.CheckBoxIcon = MagicObjectHelper.CheckBoxIcon;
+        question.Answer = option.Value.ToString();
     }
 }

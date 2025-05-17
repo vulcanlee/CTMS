@@ -96,6 +96,8 @@ namespace CTMS.Share.Helpers
         #endregion
 
         public static readonly string 角色明細之專案清單管理功能名稱 = "角色明細之專案清單";
+        public const string CheckBoxIcon = "mdi-checkbox-marked-outline";
+        public const string CheckBoxBlankIcon = "mdi-checkbox-blank-outline";
 
     }
 }

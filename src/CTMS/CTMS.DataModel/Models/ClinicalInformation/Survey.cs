@@ -1,4 +1,5 @@
 ﻿using CTMS.Share.Extensions;
+using CTMS.Share.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     {
         public int Value { get; set; }
         public string Label { get; set; }
+        public bool HasCheck { get; set; } = false;
+        public string CheckBoxIcon { get; set; } = MagicObjectHelper.CheckBoxBlankIcon;
     }
 
     public class VisibilityCondition
