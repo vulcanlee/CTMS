@@ -3,11 +3,9 @@ using CTMS.DataModel.Models;
 using CTMS.EntityModel;
 using CTMS.Share.Helpers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using MudBlazor.Services;
 using SyncExcel.Services;
 using Syncfusion.Blazor;
-using static System.Formats.Asn1.AsnWriter;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http.Features;
 using NLog.Web;
@@ -113,6 +111,7 @@ namespace CTMS
 
                 builder.Services.AddTransient<MyUserServiceLogin>();
                 builder.Services.AddTransient<DropDownListDataService>();
+                builder.Services.AddTransient<BloodExameService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();
