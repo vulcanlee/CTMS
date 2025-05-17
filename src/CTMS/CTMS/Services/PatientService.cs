@@ -8,6 +8,7 @@ using CTMS.Business.Helpers;
 using CTMS.Business.Factories;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Business.Services.ClinicalInformation;
+using CTMS.DataModel.Models.Questionnaire;
 
 namespace CTMS.Services;
 
@@ -16,6 +17,7 @@ public class PatientService
     #region 欄位與屬性
     private readonly BackendDBContext context;
     private readonly BloodExameService bloodExameService;
+    private readonly SurveyService survey;
 
     public IMapper Mapper { get; }
     public IConfiguration Configuration { get; }
@@ -25,13 +27,14 @@ public class PatientService
     #region 建構式
     public PatientService(BackendDBContext context, IMapper mapper,
         IConfiguration configuration, ILogger<PatientService> logger,
-        BloodExameService bloodExameService)
+        BloodExameService bloodExameService, SurveyService survey)
     {
         this.context = context;
         Mapper = mapper;
         Configuration = configuration;
         Logger = logger;
         this.bloodExameService = bloodExameService;
+        this.survey = survey;
     }
     #endregion
 
@@ -124,6 +127,7 @@ public class PatientService
             PatientData patientData = new();
             string name = "0-" + DateTime.Now.ToString("yyyyMMddHHmmss");
             patientData.臨床資訊.SubjectNo = name;
+            survey.Read(patientData.臨床資料.問卷);
             bloodExameService.Read(patientData.臨床資料.抽血檢驗);
             Patient itemParameter = new()
             {
