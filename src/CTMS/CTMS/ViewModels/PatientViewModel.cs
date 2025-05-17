@@ -2,6 +2,7 @@
 using CTMS.AdapterModels;
 using CTMS.Business.Helpers;
 using CTMS.Business.Services;
+using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Interfaces;
 using CTMS.DataModel.Models;
 using CTMS.EntityModel;
@@ -20,7 +21,8 @@ public class PatientViewModel
        BackendDBContext context, IMapper Mapper,
        TranscationResultHelper transcationResultHelper,
        RolePermissionService rolePermissionService,
-       NavigationManager navigationManager)
+       NavigationManager navigationManager,
+       BloodExameService bloodExameService)
     {
         this.CurrentService = CurrentService;
         this.context = context;
@@ -28,6 +30,7 @@ public class PatientViewModel
         TranscationResultHelper = transcationResultHelper;
         this.rolePermissionService = rolePermissionService;
         this.navigationManager = navigationManager;
+        this.bloodExameService = bloodExameService;
 
         #region 工具列按鈕初始化
         Toolbaritems.Add(new ItemModel()
@@ -74,6 +77,7 @@ public class PatientViewModel
     private readonly IMapper mapper;
     private readonly RolePermissionService rolePermissionService;
     private readonly NavigationManager navigationManager;
+    private readonly BloodExameService bloodExameService;
     DataModel.Interfaces.IRazorPage thisView;
     IDataGrid dataGrid;
     public List<object> Toolbaritems = new List<object>();

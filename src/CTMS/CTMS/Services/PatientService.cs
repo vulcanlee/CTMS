@@ -7,6 +7,7 @@ using AutoMapper;
 using CTMS.Business.Helpers;
 using CTMS.Business.Factories;
 using CTMS.DataModel.Models.ClinicalInformation;
+using CTMS.Business.Services.ClinicalInformation;
 
 namespace CTMS.Services;
 
@@ -14,6 +15,7 @@ public class PatientService
 {
     #region 欄位與屬性
     private readonly BackendDBContext context;
+    private readonly BloodExameService bloodExameService;
 
     public IMapper Mapper { get; }
     public IConfiguration Configuration { get; }
@@ -22,12 +24,14 @@ public class PatientService
 
     #region 建構式
     public PatientService(BackendDBContext context, IMapper mapper,
-        IConfiguration configuration, ILogger<PatientService> logger)
+        IConfiguration configuration, ILogger<PatientService> logger,
+        BloodExameService bloodExameService)
     {
         this.context = context;
         Mapper = mapper;
         Configuration = configuration;
         Logger = logger;
+        this.bloodExameService = bloodExameService;
     }
     #endregion
 
@@ -120,6 +124,7 @@ public class PatientService
             PatientData patientData = new();
             string name = "0-" + DateTime.Now.ToString("yyyyMMddHHmmss");
             patientData.臨床資訊.SubjectNo = name;
+            bloodExameService.Read(patientData.臨床資料.抽血檢驗);
             Patient itemParameter = new()
             {
                 Id = 0,

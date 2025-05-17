@@ -14,9 +14,9 @@ namespace CTMS.Business.Services.ClinicalInformation
     {
         public void Read(BloodTest抽血檢驗 bloodTest)
         {
-            bloodTest.抽血檢驗血液 = ReadFile("抽血檢驗生化.json");
+            bloodTest.抽血檢驗血液 = ReadFile("抽血檢驗血液.json");
             bloodTest.抽血檢驗生化 = ReadFile("抽血檢驗生化.json");
-            bloodTest.抽血檢驗生化2 = ReadFile("抽血檢驗血液.json");
+            //bloodTest.抽血檢驗生化2 = ReadFile("抽血檢驗血液.json");
         }
 
         public List<TestItem檢驗項目> ReadFile(string filename)
