@@ -161,3 +161,10 @@ table tr:nth-child(even) {
     width: 40%;
 }
 
+.blood-black {
+    color: black;
+}
+
+.blood-red {
+    color: red;
+}

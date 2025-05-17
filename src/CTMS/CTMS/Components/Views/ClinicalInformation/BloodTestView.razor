@@ -125,6 +125,7 @@
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
         data = patientData.臨床資料.抽血檢驗.抽血檢驗血液;
+        BloodExameService.CheckBloodExame(data);
     }
 
 
@@ -135,6 +136,8 @@
 
     async Task OnSave()
     {
+        BloodExameService.CheckBloodExame(data);
+        data = patientData.臨床資料.抽血檢驗.抽血檢驗血液;
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
@@ -143,30 +146,8 @@
     async Task OnCancel()
     {
         patientData.FromJson(patientAdapterModel.JsonData);
-        ReIndexItems();
         editMode = false;
-    }
-
-    void ReIndexItems()
-    {
         data = patientData.臨床資料.抽血檢驗.抽血檢驗血液;
-    }
-
-    async Task OnAddAsync()
-    {
-        patientData.臨床資料.臨床資料合併用藥.Items.Add(new());
-        ReIndexItems();
-        await OnSave();
-    }
-
-    async Task OnDeleteAsync(臨床資料合併用藥Item item)
-    {
-        // Assuming we need to remove the last item for deletion
-        if (patientData.臨床資料.臨床資料合併用藥.Items.Count > 0)
-        {
-            patientData.臨床資料.臨床資料合併用藥.Items.Remove(item);
-            ReIndexItems();
-            await OnSave();
-        }
+        BloodExameService.CheckBloodExame(data);
     }
 }
