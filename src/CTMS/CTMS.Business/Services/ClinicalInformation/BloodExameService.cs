@@ -12,6 +12,21 @@ namespace CTMS.Business.Services.ClinicalInformation
 {
     public class BloodExameService
     {
+        public void Read(BloodTest抽血檢驗 bloodTest)
+        {
+            bloodTest.抽血檢驗血液 = ReadFile("抽血檢驗生化.json");
+            bloodTest.抽血檢驗生化 = ReadFile("抽血檢驗生化.json");
+            bloodTest.抽血檢驗生化2 = ReadFile("抽血檢驗血液.json");
+        }
+
+        public List<TestItem檢驗項目> ReadFile(string filename)
+        {
+            string path = Path.Combine("Data", filename);
+            string content = File.ReadAllText(path);
+            var bloodTest = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TestItem檢驗項目>>(content);
+            return bloodTest;
+        }
+
         public void CheckBloodExame(List<TestItem檢驗項目> bloodExame)
         {
             // 3.4-9.5 參考區間類型 = MagicObjectHelper.參考區間類型_區間
