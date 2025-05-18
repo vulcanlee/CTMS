@@ -102,5 +102,9 @@ namespace CTMS.Share.Helpers
         public const string VisitCodeB = "B";
         public const string VisitCodeC = "C";
 
+        public const string TimelineBaseline = "Baseline";
+        public const string TimelineSurgery = "Surgery";
+        public const string TimelineChemotherapyDate = "Chemotherapy Date";
+        public const string TimelinePostChemotherapy = "Post Chemotherapy";
     }
 }

@@ -2,16 +2,97 @@
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject DropDownListDataService DropDownListDataService
 
 <SfDialog @bind-Visible="@OpenPicker" IsModal="true"
           Width="95%" Height="100%" CssClass="dialogSize">
     <DialogTemplates>
         <Header>@DialogTitle</Header>
         <Content>
-            <VisitCodeAssessmentDateView />
+
+            <div>
+
+                <div class="card my-4">
+                    <div class="card-header">
+                        <h3>所有的Visit code</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="">
+                            <div>
+                                <div class="h4">
+                                    選日期
+                                </div>
+                                <div>
+                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                                  @bind-Value="@data.AssessmentDate"></SfDatePicker>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div>
+                                <div class="h4">
+                                    追蹤 Timeline
+                                </div>
+                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelineBaseline)">
+                                    @{
+                                        string icon1 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineBaseline);
+                                    }
+                                    <span class="mx-3 mdi mdi-24px @icon1 command-icon-width cursor-pointer"
+                                          ></span>
+                                    <span class="cursor-pointer">Baseline</span>
+                                </div>
+                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelineSurgery)">
+                                    @{
+                                        string icon2 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineSurgery);
+                                    }
+                                    <span class="mx-3 mdi mdi-24px @icon2 command-icon-width cursor-pointer"
+                                          ></span>
+                                    <span class="cursor-pointer">Surgery</span>
+                                </div>
+                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelineChemotherapyDate)">
+                                    @{
+                                        string icon3 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineChemotherapyDate);
+                                    }
+                                    <span class="mx-3 mdi mdi-24px @icon3 command-icon-width cursor-pointer"
+                                          ></span>
+                                    <span class="cursor-pointer">Chemotherapy Date</span>
+                                </div>
+                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelinePostChemotherapy)">
+                                    @{
+                                        string icon4 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelinePostChemotherapy);
+                                    }
+                                    <span class="mx-3 mdi mdi-24px @icon4 command-icon-width cursor-pointer"
+                                          ></span>
+                                    <span class="cursor-pointer">Post Chemotherapy</span>
+                                </div>
+
+                            </div>
+
+                            <hr />
+
+                            <div>
+                                <div class="h4">
+                                    Cycle (Months)
+                                </div>
+                                <div>
+                                    <SfDropDownList TValue="int" TItem="int"
+                                                    Placeholder="選擇一個值" DataSource="@ListCycleVisitCode"
+                                                    @bind-Value="@data.CycleMonth">
+                                    </SfDropDownList>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </Content>
         <FooterTemplate>
             <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
@@ -21,25 +102,48 @@
     <DialogPositionData X="center" Y="center"></DialogPositionData>
 </SfDialog>
 
-<MessageBox Height="400" Width="600" IsVisible="@ShowMessageBox"
-            Title="@MessageBoxTitle" Message="@MessageBoxBody"
-            Callback="x=>ShowMessageBox =false" />
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
 
 <DialogBackground />
-<DataGridCss />
 
 @code {
     [Parameter]
     public bool OpenPicker { get; set; } = false;
     [Parameter]
     public EventCallback<ProjectAdapterModel> OnConfirmCallback { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
     string DialogTitle = "設定 Visit Code";
     public bool ShowMessageBox { get; set; } = false;
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";
 
-    protected override void OnInitialized()
+    bool editMode = false;
+    VisitCodeModel data = new();
+    List<int> ListCycleVisitCode = new List<int>();
+
+    protected override async Task OnInitializedAsync()
     {
+        InitBuildSource();
+    }
+
+    void InitBuildSource()
+    {
+        ListCycleVisitCode = new List<int>();
+        for (int i = 1; i <= 60; i++)
+        {
+            ListCycleVisitCode.Add(i);
+        }
     }
 
     public void ShowDialog()
@@ -57,4 +161,15 @@
         // await OnConfirmCallback.InvokeAsync(null);
         OpenPicker = false;
     }
+
+    void OnTimelineChanged(string item)
+    {
+        if (data.Timeline == item)
+        {
+            data.Timeline = "";
+            return;
+        }
+        data.Timeline = item;
+    }
+
 }
