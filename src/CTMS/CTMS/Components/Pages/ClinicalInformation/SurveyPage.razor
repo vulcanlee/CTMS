@@ -35,10 +35,13 @@ else
                     <ChemotherapySideEffectsSurveyView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="標靶副作用">
+                    <TargetedTherapySideEffectsView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="放療副作用">
+                    <RadiotherapySideEffectsView Code="@Code" />
                 </MudTabPanel>
-                <MudTabPanel Text="whooqol問卷">
+                <MudTabPanel Text="WHOQOL 問卷">
+                    <WhoqolQuestionnaireView Code="@Code" />
                 </MudTabPanel>
             </MudTabs>
         </div>

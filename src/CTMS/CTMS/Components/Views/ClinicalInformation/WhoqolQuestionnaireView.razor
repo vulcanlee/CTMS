@@ -12,12 +12,12 @@
 @inject DropDownListDataService DropDownListDataService
 @inject SurveyService SurveyService
 
-<PageTitle>臨床資料 化療副作用</PageTitle>
+<PageTitle>臨床資料 WHOQOL 問卷</PageTitle>
 
 <div>
 
     <div class="header" style="display: flex; align-items: center;">
-        <h1 style="margin: 0; flex-grow: 1;">臨床資料 化療副作用</h1>
+        <h1 style="margin: 0; flex-grow: 1;">臨床資料 WHOQOL 問卷</h1>
         @* @if (editMode)
         {
             <div class="btn-group" role="group" aria-label="按鈕組">
@@ -129,7 +129,7 @@
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        data = patientData.臨床資料.問卷.化療副作用;
+        data = patientData.臨床資料.問卷.whooqol問卷;
         SurveyService.Reset(data);
         foreach (var item in data.Questions)
         {
@@ -148,7 +148,7 @@
     async Task OnSaveAsync()
     {
         // BloodExameService.CheckBloodExame(data);
-        // data = patientData.臨床資料.問卷.化療副作用;
+        // data = patientData.臨床資料.問卷.whooqol問卷;
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
@@ -164,7 +164,7 @@
     {
         patientData.FromJson(patientAdapterModel.JsonData);
         editMode = false;
-        data = patientData.臨床資料.問卷.化療副作用;
+        data = patientData.臨床資料.問卷.whooqol問卷;
         // BloodExameService.CheckBloodExame(data);
     }
 
