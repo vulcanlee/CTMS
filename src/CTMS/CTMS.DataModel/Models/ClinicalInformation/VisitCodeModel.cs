@@ -11,22 +11,21 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 {
     public class VisitCodeModel
     {
-        public string VisitCode { get; set; } = string.Empty;
         public DateTime? AssessmentDate { get; set; }
         public string Timeline { get; set; }
         public int CycleMonth { get; set; }
-        public string VisitCodeIconA { get; set; } = MagicObjectHelper.CheckBoxBlankIcon;
-        public string VisitCodeIconB { get; set; } = MagicObjectHelper.CheckBoxBlankIcon;
-        public string VisitCodeIconC { get; set; } = MagicObjectHelper.CheckBoxBlankIcon;
 
-        public void UpdateIcon()
+        public string GetVisitCodeTitle()
         {
-            VisitCodeIconA = MagicObjectHelper.CheckBoxBlankIcon;
-            VisitCodeIconB = MagicObjectHelper.CheckBoxBlankIcon;
-            VisitCodeIconC = MagicObjectHelper.CheckBoxBlankIcon;
-            if (VisitCode == "A") VisitCodeIconA = MagicObjectHelper.CheckBoxIcon;
-            else if (VisitCode == "B") VisitCodeIconB = MagicObjectHelper.CheckBoxIcon;
-            else if (VisitCode == "C") VisitCodeIconC = MagicObjectHelper.CheckBoxIcon;
+            // 這個病人來的visit code 
+            // Visit code 最後會顯示 ABC 比如說這個病人是2025 / -5 - 17 來: A: 5 - 17 - 2025, B: baseline C cycle 0
+            string result = string.Empty;
+            if (AssessmentDate.HasValue)
+                result = "A: " + AssessmentDate.Value.ToString("yyyy-MM-dd") + " ";
+            else
+                result = "A: ";
+            result = result + $"B: {Timeline} C: Cycle {CycleMonth}";
+            return result;
         }
 
         public string GetTimelineCheckboxIcon(string usingTimeline)
