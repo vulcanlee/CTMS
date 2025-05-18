@@ -22,6 +22,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public string Answer { get; set; }=string.Empty;
         public List<Option> Options { get; set; }= new();
         public VisibilityCondition? VisibilityCondition { get; set; } = new();
+        public bool IsVisible { get; set; } = true;
     }
 
     public class Option

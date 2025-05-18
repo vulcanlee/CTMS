@@ -18,7 +18,7 @@
 
     <div class="header" style="display: flex; align-items: center;">
         <h1 style="margin: 0; flex-grow: 1;">臨床資料 化療副作用</h1>
-        @if (editMode)
+        @* @if (editMode)
         {
             <div class="btn-group" role="group" aria-label="按鈕組">
                 <button type="button" class="btn btn-primary save-button"
@@ -35,7 +35,7 @@
         {
             <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
             @onclick=OnChangeEditMode></span>
-        }
+        } *@
     </div>
 
     <div>
@@ -58,6 +58,11 @@
         <div class="">
             @foreach (var item in data.Questions)
             {
+                if (item.IsVisible == false)
+                {
+                    continue;
+                }
+
                 <div class="card my-4">
                     <div class="card-header">
                         <h3><span>@item.Id </span>@item.Text</h3>
@@ -88,14 +93,34 @@
                 <div>
                 </div>
             }
+        
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" @onclick=OnSaveAsync>儲存</button>
         </div>
     </div>
 </div>
+
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
 
 @code {
     [Parameter]
     public string Code { get; set; }
 
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+ 
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
@@ -105,6 +130,12 @@
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
         data = patientData.臨床資料.問卷.化療副作用;
+        SurveyService.Reset(data);
+        foreach (var item in data.Questions)
+        {
+            SurveyService.RefreshByQuestionChanged(data, item);
+
+        }
         // BloodExameService.CheckBloodExame(data);
     }
 
@@ -114,13 +145,19 @@
         editMode = !editMode;
     }
 
-    async Task OnSave()
+    async Task OnSaveAsync()
     {
         // BloodExameService.CheckBloodExame(data);
-        data = patientData.臨床資料.問卷.化療副作用;
+        // data = patientData.臨床資料.問卷.化療副作用;
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+        // <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+        //             IsVisible="@MessageBox.IsVisible"
+        //             Title="@MessageBox.Title" Message="@MessageBox.Body"
+        //             Callback="MessageBox.MessageDelegate" />
+
+        MessageBox.Show("400px", "200px", "資訊", "儲存成功", MessageBox.HiddenAsync);
     }
 
     async Task OnCancel()
@@ -141,5 +178,7 @@
 
         option.CheckBoxIcon = MagicObjectHelper.CheckBoxIcon;
         question.Answer = option.Value.ToString();
+
+        SurveyService.RefreshByQuestionChanged(data, question);
     }
 }

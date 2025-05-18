@@ -20,4 +20,44 @@ public class SurveyService
         var surveryItems = Newtonsoft.Json.JsonConvert.DeserializeObject<Survey>(content);
         return surveryItems;
     }
+
+    public void Reset(Survey survey)
+    {
+        var hasAnyOfQuestions = survey.Questions
+            .Where(q => q.VisibilityCondition != null && q.VisibilityCondition.AnyOf.Count > 0)
+            .ToList();
+        foreach (var q in hasAnyOfQuestions)
+        {
+            q.IsVisible = false;
+        }
+
+    }
+
+    public void RefreshByQuestionChanged(Survey survey, Question question)
+    {
+        if (survey?.Questions == null || question == null)
+            return;
+
+        // 找出所有 VisibilityCondition.QuestionId 等於 question.Id 的題目
+        var relatedQuestions = survey.Questions
+            .Where(q => q.VisibilityCondition != null && q.VisibilityCondition.QuestionId == question.Id)
+            .ToList();
+
+        // 將 answer 轉為 int，若無法轉換則設為 null
+        bool parsed = int.TryParse(question.Answer, out int answerValue);
+
+        foreach (var q in relatedQuestions)
+        {
+            if (parsed && q.VisibilityCondition.AnyOf != null)
+            {
+                // 若 answer 出現在 AnyOf，則 IsVisible = true，否則 false
+                q.IsVisible = q.VisibilityCondition.AnyOf.Contains(answerValue);
+            }
+            else
+            {
+                // 若無法比對，預設為顯示
+                q.IsVisible = false;
+            }
+        }
+    }
 }
