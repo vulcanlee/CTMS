@@ -11,6 +11,9 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     public class 臨床資料病理報告
     {
         public string VisitCode { get; set; } 
+        public DateTime? VisitCodeDate { get; set; }
+        public string Timeline { get; set; } 
+        public int CycleMonth { get; set; }
         public DateTime AssessmentDate { get; set; }
         public string SubjectNo { get; set; }
         public DateTime 切片日期 { get; set; }

@@ -32,6 +32,8 @@
         }
         else
         {
+            <span class="mx-3 mdi mdi-36px mdi-eye command-icon-width cursor-pointer"
+                  @onclick=OnVisitCodeEdit></span>
             <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
                   @onclick=OnChangeEditMode></span>
         }
@@ -378,6 +380,8 @@
     </div>
 </div>
 
+<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog/>
+
 @code {
     [Parameter]
     public string Code { get; set; }
@@ -386,6 +390,14 @@
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
     臨床資料病理報告 data = new();
+
+    bool ShowVisitCodeDialog = false;
+
+    void OnVisitCodeEdit()
+    {
+        ShowVisitCodeDialog = true;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
