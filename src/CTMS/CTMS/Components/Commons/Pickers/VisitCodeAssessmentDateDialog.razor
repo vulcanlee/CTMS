@@ -115,7 +115,7 @@
     [Parameter]
     public bool OpenPicker { get; set; } = false;
     [Parameter]
-    public EventCallback<ProjectAdapterModel> OnConfirmCallback { get; set; }
+    public EventCallback<VisitCodeModel> OnConfirmCallback { get; set; }
     [Parameter]
     public VisitCodeModel data { get; set; }
 
@@ -157,8 +157,8 @@
                  "沒有傳入任何 Visit Code 物件", ConfirmMessageBox.HiddenAsync);
             OpenPicker = false;
         }
-        // await OnConfirmCallback.InvokeAsync(CurrentRecord);
         OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(data);
     }
     async Task OnPickerCancel()
     {
