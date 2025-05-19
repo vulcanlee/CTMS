@@ -38,389 +38,418 @@
     </div>
 
     <div>
+        <div>
+            <div>
+                <span>Visit code : </span>
+                <span>
+                    <button class="btn btn-primary mx-2"
+                            @onclick=OnAddVisiteCode>
+                        新增
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-success mx-2"
+                            @onclick=OnEditVisiteCode>
+                        修改
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-danger mx-2"
+                            @onclick=OnVisiteCodeDeleteAsync>
+                        刪除
+                    </button>
+                </span>
+            </div>
+        </div>
         <div class="d-flex align-items-center">
-            <div>Visit code</div>
             <div class="flex-grow-1 ms-2">
-                @if (editMode)
-                {
-                    <SfTextBox @bind-Value="data.VisitCode" />
-                }
-                else
-                {
-                    @data.VisitCode
-                }
-            </div>
-            <div>Assessment date</div>
-            <div class="flex-grow-1 ms-2">
-                @if (editMode)
-                {
-                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                  @bind-Value="data.AssessmentDate"></SfDatePicker>
-                }
-                else
-                {
-                    @data.AssessmentDate.ToString("yyyy-MM-dd")
-                }
+                <SfDropDownList @ref="VisitCodeDropDown"
+                                TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                Placeholder="選擇一個值" DataSource="@ListVisitCode"
+                                @bind-Value="@SelectVisitCode" class="flex-grow-1">
+                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                        ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
+                </SfDropDownList>
             </div>
         </div>
 
     </div>
-    <div class="view-container">
-        <!-- Left Table -->
-        <div class="left-table">
-            <table>
-                <tr>
-                    <td class="w-15 data-title"></td>
-                    <td class="w-17 data-title">Cardiovascular<br />(include HTN )</td>
-                    <td class="w-17 data-title">Peripheral Vascular</td>
-                    <td class="w-17 data-title">Respiratory</td>
-                    <td class="w-17 data-title">Gastrointestinal</td>
-                    <td class="w-17 data-title">Renal</td>
-                </tr>
-                <tr>
-                    <td class="w-15 data-title">Yes/No</td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.CardiovascularIncludeHtn" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.CardiovascularIncludeHtn
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.PeripheralVascular" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.PeripheralVascular
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Respiratory" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Respiratory
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Gastrointestinal" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Gastrointestinal
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Renal" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Renal
-                            </div>
-                        }
-                    </td>
-                </tr>
-              
-                <tr>
-                    <td class="w-15 data-title"></td>
-                    <td class="w-17 data-title">Genitourinary</td>
-                    <td class="w-17 data-title-Metabolic<br/>(Include Diabetes)</td>
+    @if (data != null)
+    {
+        <div class="view-container">
+            <!-- Left Table -->
+            <div class="left-table">
+                <table>
+                    <tr>
+                        <td class="w-15 data-title"></td>
+                        <td class="w-17 data-title">Cardiovascular<br />(include HTN )</td>
+                        <td class="w-17 data-title">Peripheral Vascular</td>
+                        <td class="w-17 data-title">Respiratory</td>
+                        <td class="w-17 data-title">Gastrointestinal</td>
+                        <td class="w-17 data-title">Renal</td>
+                    </tr>
+                    <tr>
+                        <td class="w-15 data-title">Yes/No</td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.CardiovascularIncludeHtn" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.CardiovascularIncludeHtn
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.PeripheralVascular" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.PeripheralVascular
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Respiratory" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Respiratory
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Gastrointestinal" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Gastrointestinal
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Renal" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Renal
+                                </div>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="w-15 data-title"></td>
+                        <td class="w-17 data-title">Genitourinary</td>
+                        <td class="w-17 data-title-Metabolic<br/>(Include Diabetes)</td>
                     <td class="w-17 data-title">Hematologic-Lymphatic</td>
-                    <td class="w-17 data-title">Musculoskeletal</td>
-                    <td class="w-17 data-title">Dermatologic</td>
-                </tr>
-                <tr>
-                    <td class="w-15 data-title">Yes/No</td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Genitourinary" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Genitourinary
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.EndocrineMetabolicIncludeDiabetes" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.EndocrineMetabolicIncludeDiabetes
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.HematologicLymphatic" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.HematologicLymphatic
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Musculoskeletal" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Musculoskeletal
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Dermatologic" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Dermatologic
-                            </div>
-                        }
-                    </td>
-                </tr>
+                        <td class="w-17 data-title">Musculoskeletal</td>
+                        <td class="w-17 data-title">Dermatologic</td>
+                    </tr>
+                    <tr>
+                        <td class="w-15 data-title">Yes/No</td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Genitourinary" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Genitourinary
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.EndocrineMetabolicIncludeDiabetes" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.EndocrineMetabolicIncludeDiabetes
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.HematologicLymphatic" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.HematologicLymphatic
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Musculoskeletal" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Musculoskeletal
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Dermatologic" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Dermatologic
+                                </div>
+                            }
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td class="w-15 data-title"></td>
-                    <td class="w-17 data-title">Drug Abuse</td>
-                    <td class="w-17 data-title">Tobacco</td>
-                    <td class="w-17 data-title">Neurologic</td>
-                    <td class="w-17 data-title">Psychiatric</td>
-                    <td class="w-17 data-title">Allergies</td>
-                </tr>
-                <tr>
-                    <td class="w-15 data-title">Yes/No</td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.DrugAbuse" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.DrugAbuse
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Tobacco" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Tobacco
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Neurologic" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Neurologic
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Psychiatric" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Psychiatric
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Allergies" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Allergies
-                            </div>
-                        }
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="w-15 data-title"></td>
+                        <td class="w-17 data-title">Drug Abuse</td>
+                        <td class="w-17 data-title">Tobacco</td>
+                        <td class="w-17 data-title">Neurologic</td>
+                        <td class="w-17 data-title">Psychiatric</td>
+                        <td class="w-17 data-title">Allergies</td>
+                    </tr>
+                    <tr>
+                        <td class="w-15 data-title">Yes/No</td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.DrugAbuse" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.DrugAbuse
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Tobacco" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Tobacco
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Neurologic" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Neurologic
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Psychiatric" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Psychiatric
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Allergies" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Allergies
+                                </div>
+                            }
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td class="w-15 data-title"></td>
-                    <td class="w-17 data-title">Neoplasia</td>
-                    <td class="w-17 data-title">Alcohol Use</td>
-                    <td class="w-17 data-title">immunity (Include HIV)</td>
-                    <td class="w-17 data-title">Hepatobiliary(Include HBV/HCV)</td>
-                    <td class="w-17 data-title">other (specify)</td>
-                </tr>
-                <tr>
-                    <td class="w-15 data-title">Yes/No</td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.Neoplasia" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Neoplasia
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.AlcoholUse" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.AlcoholUse
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.ImmunityIncludeHiv" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.ImmunityIncludeHiv
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.HepatobiliaryIncludeHbvHcv" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.HepatobiliaryIncludeHbvHcv
-                            </div>
-                        }
-                    </td>
-                    <td class="w-17 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="string" TItem="string"
-                                            Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
-                                            @bind-Value="@data.OtherSpecify" class="flex-grow-1">
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.OtherSpecify
-                            </div>
-                        }
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="w-15 data-title"></td>
+                        <td class="w-17 data-title">Neoplasia</td>
+                        <td class="w-17 data-title">Alcohol Use</td>
+                        <td class="w-17 data-title">immunity (Include HIV)</td>
+                        <td class="w-17 data-title">Hepatobiliary(Include HBV/HCV)</td>
+                        <td class="w-17 data-title">other (specify)</td>
+                    </tr>
+                    <tr>
+                        <td class="w-15 data-title">Yes/No</td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.Neoplasia" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Neoplasia
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.AlcoholUse" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.AlcoholUse
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.ImmunityIncludeHiv" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.ImmunityIncludeHiv
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.HepatobiliaryIncludeHbvHcv" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.HepatobiliaryIncludeHbvHcv
+                                </div>
+                            }
+                        </td>
+                        <td class="w-17 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="string" TItem="string"
+                                                Placeholder="選擇 Yes or No" DataSource="@ListYesNo"
+                                                @bind-Value="@data.OtherSpecify" class="flex-grow-1">
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.OtherSpecify
+                                </div>
+                            }
+                        </td>
+                    </tr>
 
-            </table>
+                </table>
+            </div>
         </div>
-    </div>
+    }
 </div>
+
+<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
+                               data=VisitCode
+                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
 
 @code {
     [Parameter]
@@ -429,37 +458,29 @@
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
-    臨床資料BaselineMedicalHistoryForm data = new(); 
+    臨床資料BaselineMedicalHistoryFormNode data = new();
+    臨床資料BaselineMedicalHistoryForm header = new();
 
     List<DropDownListDataModel> ListCardiovascularIncludeHtnYesNo = new List<DropDownListDataModel>();
     List<string> ListYesNo = new List<string>();
 
-    DropDownListDataModel SelectCardiovascularIncludeHtn;
-    DropDownListDataModel SelectPeripheralVascular;
-    DropDownListDataModel SelectRespiratory;
-    DropDownListDataModel SelectGastrointestinal;
-    DropDownListDataModel SelectRenal;
-    DropDownListDataModel SelectGenitourinary;
-    DropDownListDataModel SelectEndocrineMetabolicIncludeDiabetes;
-    DropDownListDataModel SelectHematologicLymphatic;
-    DropDownListDataModel SelectMusculoskeletal;
-    DropDownListDataModel SelectDermatologic;
-    DropDownListDataModel SelectDrugAbuse;
-    DropDownListDataModel SelectTobacco;
-    DropDownListDataModel SelectNeurologic;
-    DropDownListDataModel SelectPsychiatric;
-    DropDownListDataModel SelectAllergies;
-    DropDownListDataModel SelectNeoplasia;
-    DropDownListDataModel SelectAlcoholUse;
-    DropDownListDataModel SelectImmunityIncludeHiv;
-    DropDownListDataModel SelectHepatobiliaryIncludeHbvHcv;
-    DropDownListDataModel SelectOtherSpecify;
+    #region 操作 Visit Code 用到的物件
+    bool ShowVisitCodeDialog = false;
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string VisitCodeOperateMode = string.Empty;
+    VisitCodeModel VisitCode = new();
+    SfDropDownList<DropDownListDataModel, DropDownListDataModel> VisitCodeDropDown;
+    DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
+    List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
+    #endregion
 
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        data = patientData.臨床資料.臨床資料BaselineMedicalHistoryForm;
+        header = patientData.臨床資料.臨床資料BaselineMedicalHistoryForm;
+        data = header.Items.FirstOrDefault();
 
         DropDownListDataInit();
     }
@@ -469,11 +490,6 @@
         #region Common YesNo
         {
             ListYesNo = DropDownListDataService.GetStringYesNo();
-
-            var itemCardiovascularIncludeHtn = ListYesNo
-            .FirstOrDefault(x => x == data.CardiovascularIncludeHtn);
-            if (itemCardiovascularIncludeHtn != null)
-                data.CardiovascularIncludeHtn = itemCardiovascularIncludeHtn;
 
             var itemPeripheralVascular = ListYesNo
             .FirstOrDefault(x => x == data.PeripheralVascular);
@@ -599,7 +615,139 @@
     async Task OnCancel()
     {
         patientData.FromJson(patientAdapterModel.JsonData);
-        data = patientData.臨床資料.臨床資料BaselineMedicalHistoryForm;
         editMode = false;
     }
+
+
+    #region 針對 VisitCode 的方法
+    void OnAddVisiteCode()
+    {
+        VisitCode = new();
+        VisitCodeOperateMode = "Add";
+        ShowVisitCodeDialog = true;
+    }
+
+    void OnEditVisiteCode()
+    {
+
+        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
+        VisitCodeOperateMode = "Edit";
+        ShowVisitCodeDialog = true;
+    }
+
+    async Task OnVisiteCodeDeleteAsync()
+    {
+        if (SelectVisitCode != null)
+        {
+            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
+            if (checkTask)
+            {
+                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+                if (itemDelete != null)
+                {
+                    SelectVisitCode = null;
+                    data = null;
+                    header.Items.Remove(itemDelete);
+                    patientAdapterModel.JsonData = patientData.ToJson();
+                    await PatientService.UpdateAsync(patientAdapterModel);
+                    RefreshVisitCode();
+                    RefreshDropDwonVisitCode();
+                }
+            }
+        }
+        ShowVisitCodeDialog = false;
+    }
+
+    private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value != null)
+        {
+            var item = header.Items.FirstOrDefault(x => x.VisitCode.Id == args.Value.Key);
+            if (item != null)
+            {
+                data = item;
+            }
+        }
+    }
+
+    void RefreshVisitCode(bool reset = true)
+    {
+        #region VisitCode
+        {
+            ListVisitCode.Clear();
+            if (data != null)
+            {
+
+            }
+            foreach (var nodeItem in header.Items)
+            {
+                ListVisitCode.Add(new DropDownListDataModel()
+                    {
+                        Key = nodeItem.VisitCode.Id,
+                        Name = nodeItem.VisitCode.VisitCodeTitle,
+                    });
+            }
+            if (reset)
+            {
+                SelectVisitCode = null;
+            }
+        }
+        #endregion
+    }
+    void RefreshDropDwonVisitCode()
+    {
+        // 重置選擇項目
+        SelectVisitCode = null;
+
+        // 手動刷新 DropDownList 元件
+        if (VisitCodeDropDown != null)
+        {
+            InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
+        }
+    }
+
+    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
+    {
+        if (VisitCodeOperateMode == "Add")
+        {
+            var newRecord = new 臨床資料BaselineMedicalHistoryFormNode()
+                {
+                    VisitCode = visitCodeModel,
+                };
+            header.Items.Add(newRecord);
+            patientData.SyncData();
+            patientAdapterModel.JsonData = patientData.ToJson();
+            await PatientService.UpdateAsync(patientAdapterModel);
+            RefreshVisitCode();
+            RefreshDropDwonVisitCode();
+        }
+        else if (VisitCodeOperateMode == "Edit")
+        {
+            var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
+            if (editItem != null)
+            {
+                data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
+                data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
+                data.VisitCode.Timeline = visitCodeModel.Timeline;
+                patientAdapterModel.JsonData = patientData.ToJson();
+                await PatientService.UpdateAsync(patientAdapterModel);
+                RefreshVisitCode(false);
+                RefreshDropDwonVisitCode();
+                var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
+                if (foo != null)
+                {
+                    SelectVisitCode = foo;
+                }
+                else
+                {
+                    SelectVisitCode = null;
+                }
+            }
+        }
+        ShowVisitCodeDialog = false;
+
+    }
+    #endregion
+
 }

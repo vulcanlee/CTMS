@@ -37,11 +37,22 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             {
                 item.SubjectNo = this.臨床資訊.SubjectNo;
             }
-
-            this.臨床資料.臨床資料病理報告.SubjectNo = this.臨床資訊.SubjectNo;
-            this.臨床資料.臨床資料化學治療.SubjectNo = this.臨床資訊.SubjectNo;
-            this.臨床資料.臨床資料合併用藥.SubjectNo = this.臨床資訊.SubjectNo;
-            this.臨床資料.臨床資料BaselineMedicalHistoryForm.SubjectNo = this.臨床資訊.SubjectNo;
+            foreach (var item in this.臨床資料.臨床資料病理報告.Items)
+            {
+                item.SubjectNo = this.臨床資訊.SubjectNo;
+            }
+            foreach (var item in this.臨床資料.臨床資料化學治療.Items)
+            {
+                item.SubjectNo = this.臨床資訊.SubjectNo;
+            }
+            foreach (var item in this.臨床資料.臨床資料合併用藥.Items)
+            {
+                item.SubjectNo = this.臨床資訊.SubjectNo;
+            }
+            foreach (var item in this.臨床資料.臨床資料BaselineMedicalHistoryForm.Items)
+            {
+                item.SubjectNo = this.臨床資訊.SubjectNo;
+            }
         }
     }
 }
