@@ -38,540 +38,543 @@
     </div>
 
     <div>
+        <div>
+            <div>
+                <span>Visit code : </span>
+                <span><button class="btn btn-primary mx-2">新增</button></span>
+                <span><button class="btn btn-success mx-2">修改</button></span>
+                <span><button class="btn btn-danger mx-2">刪除</button></span>
+            </div>
+        </div>
         <div class="d-flex align-items-center">
-            <div>Visit code : </div>
             <div class="flex-grow-1 ms-2">
-                @if (editMode)
-                {
-                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                    Placeholder="選擇一個值" DataSource="@ListVisitCode"
-                                    @bind-Value="@SelectVisitCode" class="flex-grow-1">
-                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                            ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
-                    </SfDropDownList>
-                }
-                else
-                {
-                    @data.VisitCode.VisitCodeTitle
-                }
+                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                Placeholder="選擇一個值" DataSource="@ListVisitCode"
+                                @bind-Value="@SelectVisitCode" class="flex-grow-1">
+                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                        ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
+                </SfDropDownList>
             </div>
         </div>
 
     </div>
-    <div class="view-container">
-        <!-- Left Table -->
-        <div class="left-table">
-            <table>
-                <tr>
-                    <td class="w-25 data-title">
-                        Subject No.
-                    </td>
-                    <td class="w-25 data-title">
-                        手術日期
-                    </td>
-                    <td class="w-25 data-title">
-                        術式
-                    </td>
-                    <td class="w-25 data-title">
-                        OP outcome
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.SubjectNo" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.SubjectNo
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                          @bind-Value="@data.手術日期"></SfDatePicker>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.手術日期.ToString("yyyy-MM-dd")
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.術式" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.術式
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.OPOutcome" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.OPOutcome
-                            </div>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        【Ascites】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Uterus】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Cervix】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Endometrium】
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListAscites"
-                                            @bind-Value="@SelectAscites" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnAscitesChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Ascites
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListUterus"
-                                            @bind-Value="@SelectUterus" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnUterusChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                            @if (data.Uterus == "abnormal")
+    @if (data != null)
+    {
+        <div class="view-container">
+            <!-- Left Table -->
+            <div class="left-table">
+                <table>
+                    <tr>
+                        <td class="w-25 data-title">
+                            Subject No.
+                        </td>
+                        <td class="w-25 data-title">
+                            手術日期
+                        </td>
+                        <td class="w-25 data-title">
+                            術式
+                        </td>
+                        <td class="w-25 data-title">
+                            OP outcome
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            @if (editMode)
                             {
-                                <div>
-                                    site
-                                </div>
-                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                Placeholder="選擇一個值" DataSource="@ListUterusSite"
-                                                @bind-Value="@SelectUterusSite" class="flex-grow-1">
-                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                        ValueChange="@OnUterusSiteChanged"></DropDownListEvents>
-                                </SfDropDownList>
-                                <div>
-                                    Tumor number
-                                </div>
-                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                Placeholder="選擇一個值" DataSource="@ListUterusTumorNumber"
-                                                @bind-Value="@SelectUterusTumorNumber" class="flex-grow-1">
-                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                        ValueChange="@OnUterusTumorNumberChanged"></DropDownListEvents>
-                                </SfDropDownList>
-                                <div>
-                                    Tumor size
-                                </div>
-                                <SfTextBox @bind-Value="data.UterusTumorSize" />
+                                <SfTextBox @bind-Value="data.SubjectNo" />
                             }
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Uterus
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.SubjectNo
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.手術日期"></SfDatePicker>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.手術日期.ToString("yyyy-MM-dd")
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.術式" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.術式
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.OPOutcome" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.OPOutcome
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            【Ascites】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Uterus】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Cervix】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Endometrium】
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListAscites"
+                                                @bind-Value="@SelectAscites" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnAscitesChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Ascites
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListUterus"
+                                                @bind-Value="@SelectUterus" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnUterusChanged"></DropDownListEvents>
+                                </SfDropDownList>
                                 @if (data.Uterus == "abnormal")
                                 {
                                     <div>
-                                        site: @data.UterusSite
+                                        site
                                     </div>
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListUterusSite"
+                                                    @bind-Value="@SelectUterusSite" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnUterusSiteChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                     <div>
-                                        Tumor number: @data.UterusTumorNumber
+                                        Tumor number
                                     </div>
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListUterusTumorNumber"
+                                                    @bind-Value="@SelectUterusTumorNumber" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnUterusTumorNumberChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                     <div>
-                                        Tumor size: @data.UterusTumorSize
+                                        Tumor size
                                     </div>
+                                    <SfTextBox @bind-Value="data.UterusTumorSize" />
                                 }
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListCervix"
-                                            @bind-Value="@SelectCervix" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnCervixChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                            @if (data.Cervix == "abnormal")
-                            {
-                                <div>
-                                    site
-                                </div>
-                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                Placeholder="選擇一個值" DataSource="@ListCervixSite"
-                                                @bind-Value="@SelectCervixSite" class="flex-grow-1">
-                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                        ValueChange="@OnCervixSiteChanged"></DropDownListEvents>
-                                </SfDropDownList>
-                                <div>
-                                    Tumor number
-                                </div>
-                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                Placeholder="選擇一個值" DataSource="@ListCervixTumorNumber"
-                                                @bind-Value="@SelectCervixTumorNumber" class="flex-grow-1">
-                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                        ValueChange="@OnCervixTumorNumberChanged"></DropDownListEvents>
-                                </SfDropDownList>
                             }
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Cervix
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Uterus
+                                    @if (data.Uterus == "abnormal")
+                                    {
+                                        <div>
+                                            site: @data.UterusSite
+                                        </div>
+                                        <div>
+                                            Tumor number: @data.UterusTumorNumber
+                                        </div>
+                                        <div>
+                                            Tumor size: @data.UterusTumorSize
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListCervix"
+                                                @bind-Value="@SelectCervix" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnCervixChanged"></DropDownListEvents>
+                                </SfDropDownList>
                                 @if (data.Cervix == "abnormal")
                                 {
                                     <div>
-                                        site: @data.CervixSite
+                                        site
                                     </div>
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListCervixSite"
+                                                    @bind-Value="@SelectCervixSite" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnCervixSiteChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                     <div>
-                                        Tumor number: @data.CervixTumorNumber
+                                        Tumor number
                                     </div>
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListCervixTumorNumber"
+                                                    @bind-Value="@SelectCervixTumorNumber" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnCervixTumorNumberChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                 }
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListEndometrium"
-                                            @bind-Value="@SelectEndometrium" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnEndometriumChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Endometrium
-                            </div>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        【Myometrium】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Cul de sac】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Ovarian surface rupture or not】-Right ovary
-                    </td>
-                    <td class="w-25 data-title">
-                        【Ovarian surface rupture or not】-Left ovary
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.Myometrium" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Myometrium
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.CulDeSac" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.CulDeSac
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListOvarianSurfaceRuptureOrNotLeftOvary"
-                                            @bind-Value="@SelectOvarianSurfaceRuptureOrNotLeftOvary" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnOvarianSurfaceRuptureOrNotLeftOvaryChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.OvarianSurfaceRuptureOrNotLeftOvary
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListOvarianSurfaceRuptureOrNotRightOvary"
-                                            @bind-Value="@SelectOvarianSurfaceRuptureOrNotRightOvary" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnOvarianSurfaceRuptureOrNotRightOvaryChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.OvarianSurfaceRuptureOrNotRightOvary
-                            </div>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        【Left adnexa】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Right adnexa】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Pelvic peritoneal cavity】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Extrapelvic peritoneal cavity】
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListLeftAdnexa"
-                                            @bind-Value="@SelectLeftAdnexa" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnLeftAdnexaChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                            @if (data.LeftAdnexa == "abnormal")
+                            }
+                            else
                             {
-                                <div>
-                                    Tumor number
+                                <div class="data-value">
+                                    @data.Cervix
+                                    @if (data.Cervix == "abnormal")
+                                    {
+                                        <div>
+                                            site: @data.CervixSite
+                                        </div>
+                                        <div>
+                                            Tumor number: @data.CervixTumorNumber
+                                        </div>
+                                    }
                                 </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                Placeholder="選擇一個值" DataSource="@ListLeftAdnexaTumorNumber"
-                                                @bind-Value="@SelectLeftAdnexaTumorNumber" class="flex-grow-1">
+                                                Placeholder="選擇一個值" DataSource="@ListEndometrium"
+                                                @bind-Value="@SelectEndometrium" class="flex-grow-1">
                                     <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
                                     <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                        ValueChange="@OnLeftAdnexaTumorNumberChanged"></DropDownListEvents>
+                                                        ValueChange="@OnEndometriumChanged"></DropDownListEvents>
                                 </SfDropDownList>
-                                <div>
-                                    Tumor size
-                                </div>
-                                <SfTextBox @bind-Value="data.LeftAdnexaTumorSize" />
                             }
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.LeftAdnexa
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Endometrium
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            【Myometrium】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Cul de sac】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Ovarian surface rupture or not】-Right ovary
+                        </td>
+                        <td class="w-25 data-title">
+                            【Ovarian surface rupture or not】-Left ovary
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.Myometrium" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Myometrium
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.CulDeSac" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.CulDeSac
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListOvarianSurfaceRuptureOrNotLeftOvary"
+                                                @bind-Value="@SelectOvarianSurfaceRuptureOrNotLeftOvary" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnOvarianSurfaceRuptureOrNotLeftOvaryChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.OvarianSurfaceRuptureOrNotLeftOvary
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListOvarianSurfaceRuptureOrNotRightOvary"
+                                                @bind-Value="@SelectOvarianSurfaceRuptureOrNotRightOvary" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnOvarianSurfaceRuptureOrNotRightOvaryChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.OvarianSurfaceRuptureOrNotRightOvary
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            【Left adnexa】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Right adnexa】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Pelvic peritoneal cavity】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Extrapelvic peritoneal cavity】
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListLeftAdnexa"
+                                                @bind-Value="@SelectLeftAdnexa" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnLeftAdnexaChanged"></DropDownListEvents>
+                                </SfDropDownList>
                                 @if (data.LeftAdnexa == "abnormal")
                                 {
                                     <div>
-                                        Tumor number: @data.LeftAdnexaTumorNumber
+                                        Tumor number
                                     </div>
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListLeftAdnexaTumorNumber"
+                                                    @bind-Value="@SelectLeftAdnexaTumorNumber" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnLeftAdnexaTumorNumberChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                     <div>
-                                        Tumor size: @data.LeftAdnexaTumorSize
+                                        Tumor size
                                     </div>
+                                    <SfTextBox @bind-Value="data.LeftAdnexaTumorSize" />
                                 }
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListRightAdnexa"
-                                            @bind-Value="@SelectRightAdnexa" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnRightAdnexaChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                            @if (data.RightAdnexa == "abnormal")
+                            }
+                            else
                             {
-                                <div>
-                                    Tumor number
+                                <div class="data-value">
+                                    @data.LeftAdnexa
+                                    @if (data.LeftAdnexa == "abnormal")
+                                    {
+                                        <div>
+                                            Tumor number: @data.LeftAdnexaTumorNumber
+                                        </div>
+                                        <div>
+                                            Tumor size: @data.LeftAdnexaTumorSize
+                                        </div>
+                                    }
                                 </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                Placeholder="選擇一個值" DataSource="@ListRightAdnexaTumorNumber"
-                                                @bind-Value="@SelectRightAdnexaTumorNumber" class="flex-grow-1">
+                                                Placeholder="選擇一個值" DataSource="@ListRightAdnexa"
+                                                @bind-Value="@SelectRightAdnexa" class="flex-grow-1">
                                     <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
                                     <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                        ValueChange="@OnRightAdnexaTumorNumberChanged"></DropDownListEvents>
+                                                        ValueChange="@OnRightAdnexaChanged"></DropDownListEvents>
                                 </SfDropDownList>
-                                <div>
-                                    Tumor size
-                                </div>
-                                <SfTextBox @bind-Value="data.RightAdnexaTumorSize" />
-                            }
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.RightAdnexa
                                 @if (data.RightAdnexa == "abnormal")
                                 {
                                     <div>
-                                        Tumor number: @data.RightAdnexaTumorNumber
+                                        Tumor number
                                     </div>
+                                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                    Placeholder="選擇一個值" DataSource="@ListRightAdnexaTumorNumber"
+                                                    @bind-Value="@SelectRightAdnexaTumorNumber" class="flex-grow-1">
+                                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                            ValueChange="@OnRightAdnexaTumorNumberChanged"></DropDownListEvents>
+                                    </SfDropDownList>
                                     <div>
-                                        Tumor size: @data.RightAdnexaTumorSize
+                                        Tumor size
                                     </div>
+                                    <SfTextBox @bind-Value="data.RightAdnexaTumorSize" />
                                 }
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListPelvicPeritonealCavity"
-                                            @bind-Value="@SelectPelvicPeritonealCavity" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnPelvicPeritonealCavityChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                            @if (data.PelvicPeritonealCavity == "abnormal")
+                            }
+                            else
                             {
-                                <div>
-                                    Tumor size
+                                <div class="data-value">
+                                    @data.RightAdnexa
+                                    @if (data.RightAdnexa == "abnormal")
+                                    {
+                                        <div>
+                                            Tumor number: @data.RightAdnexaTumorNumber
+                                        </div>
+                                        <div>
+                                            Tumor size: @data.RightAdnexaTumorSize
+                                        </div>
+                                    }
                                 </div>
-                                <SfTextBox @bind-Value="data.PelvicPeritonealCavityTumorSize" />
                             }
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.RightAdnexa
-                                @if (data.RightAdnexa == "abnormal")
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListPelvicPeritonealCavity"
+                                                @bind-Value="@SelectPelvicPeritonealCavity" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnPelvicPeritonealCavityChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                                @if (data.PelvicPeritonealCavity == "abnormal")
                                 {
                                     <div>
-                                        Tumor size: @data.RightAdnexaTumorSize
+                                        Tumor size
                                     </div>
+                                    <SfTextBox @bind-Value="data.PelvicPeritonealCavityTumorSize" />
                                 }
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.ExtrapelvicPeritonealCavity" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.ExtrapelvicPeritonealCavity
-                            </div>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        【Other organ involvement (gross looking)】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Optimal】
-                    </td>
-                    <td class="w-25 data-title">
-                        【Residual tumor】
-                    </td>
-                    <td class="w-25 data-title">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.OtherOrganInvolvementGrossLooking" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.OtherOrganInvolvementGrossLooking
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfTextBox @bind-Value="data.Optimal" />
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.Optimal
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                        @if (editMode)
-                        {
-                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                            Placeholder="選擇一個值" DataSource="@ListResidualTumor"
-                                            @bind-Value="@SelectResidualTumor" class="flex-grow-1">
-                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                    ValueChange="@OnResidualTumorChanged"></DropDownListEvents>
-                            </SfDropDownList>
-                        }
-                        else
-                        {
-                            <div class="data-value">
-                                @data.ResidualTumor
-                            </div>
-                        }
-                    </td>
-                    <td class="w-25 data-title">
-                    </td>
-                </tr>
-            </table>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.RightAdnexa
+                                    @if (data.RightAdnexa == "abnormal")
+                                    {
+                                        <div>
+                                            Tumor size: @data.RightAdnexaTumorSize
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.ExtrapelvicPeritonealCavity" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.ExtrapelvicPeritonealCavity
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            【Other organ involvement (gross looking)】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Optimal】
+                        </td>
+                        <td class="w-25 data-title">
+                            【Residual tumor】
+                        </td>
+                        <td class="w-25 data-title">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.OtherOrganInvolvementGrossLooking" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.OtherOrganInvolvementGrossLooking
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.Optimal" />
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.Optimal
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                            @if (editMode)
+                            {
+                                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                Placeholder="選擇一個值" DataSource="@ListResidualTumor"
+                                                @bind-Value="@SelectResidualTumor" class="flex-grow-1">
+                                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                        ValueChange="@OnResidualTumorChanged"></DropDownListEvents>
+                                </SfDropDownList>
+                            }
+                            else
+                            {
+                                <div class="data-value">
+                                    @data.ResidualTumor
+                                </div>
+                            }
+                        </td>
+                        <td class="w-25 data-title">
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 <VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog />
@@ -596,6 +599,7 @@
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
     臨床資料手術Node data = new();
+    臨床資料手術 header = new();
 
     bool ShowVisitCodeDialog = false;
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
@@ -606,11 +610,12 @@
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        data = data;
+        header = patientData.臨床資料.臨床資料手術;
+        data = header.Items.FirstOrDefault();
         DropDownListDataInit();
     }
 
-
+    #region 宣告下拉清單物件
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
     List<DropDownListDataModel> ListAscites = new List<DropDownListDataModel>();
@@ -645,13 +650,17 @@
     DropDownListDataModel SelectPelvicPeritonealCavity = new DropDownListDataModel();
     List<DropDownListDataModel> ListResidualTumor = new List<DropDownListDataModel>();
     DropDownListDataModel SelectResidualTumor = new DropDownListDataModel();
+    #endregion
 
     void DropDownListDataInit()
     {
         #region ResidualTumor
         {
             ListResidualTumor = DropDownListDataService.GetResidualTumor();
-            var item = ListResidualTumor.FirstOrDefault(x => x.Key == data.ResidualTumor);
+            if (data != null)
+            {
+            }
+            var item = ListResidualTumor.FirstOrDefault(x => x.Key == data?.ResidualTumor);
             if (item != null)
                 SelectResidualTumor = item;
         }
@@ -660,7 +669,7 @@
         #region PelvicPeritonealCavity
         {
             ListPelvicPeritonealCavity = DropDownListDataService.GetPelvicPeritonealCavity();
-            var item = ListPelvicPeritonealCavity.FirstOrDefault(x => x.Key == data.PelvicPeritonealCavity);
+            var item = ListPelvicPeritonealCavity.FirstOrDefault(x => x.Key == data?.PelvicPeritonealCavity);
             if (item != null)
                 SelectPelvicPeritonealCavity = item;
         }
@@ -669,7 +678,7 @@
         #region RightAdnexa
         {
             ListRightAdnexa = DropDownListDataService.GetRightAdnexa();
-            var item = ListRightAdnexa.FirstOrDefault(x => x.Key == data.RightAdnexa);
+            var item = ListRightAdnexa.FirstOrDefault(x => x.Key == data?.RightAdnexa);
             if (item != null)
                 SelectRightAdnexa = item;
         }
@@ -678,7 +687,7 @@
         #region RightAdnexaTumorNumber
         {
             ListRightAdnexaTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListRightAdnexaTumorNumber.FirstOrDefault(x => x.Key == data.RightAdnexaTumorNumber);
+            var item = ListRightAdnexaTumorNumber.FirstOrDefault(x => x.Key == data?.RightAdnexaTumorNumber);
             if (item != null)
                 SelectRightAdnexaTumorNumber = item;
         }
@@ -687,7 +696,7 @@
         #region LeftAdnexa
         {
             ListLeftAdnexa = DropDownListDataService.GetLeftAdnexa();
-            var item = ListLeftAdnexa.FirstOrDefault(x => x.Key == data.LeftAdnexa);
+            var item = ListLeftAdnexa.FirstOrDefault(x => x.Key == data?.LeftAdnexa);
             if (item != null)
                 SelectLeftAdnexa = item;
         }
@@ -696,7 +705,7 @@
         #region LeftAdnexaTumorNumber
         {
             ListLeftAdnexaTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListLeftAdnexaTumorNumber.FirstOrDefault(x => x.Key == data.LeftAdnexaTumorNumber);
+            var item = ListLeftAdnexaTumorNumber.FirstOrDefault(x => x.Key == data?.LeftAdnexaTumorNumber);
             if (item != null)
                 SelectLeftAdnexaTumorNumber = item;
         }
@@ -705,7 +714,7 @@
         #region OvarianSurfaceRuptureOrNotLeftOvary
         {
             ListOvarianSurfaceRuptureOrNotLeftOvary = DropDownListDataService.GetOvarianSurfaceRuptureOrNotLeftOvary();
-            var item = ListOvarianSurfaceRuptureOrNotLeftOvary.FirstOrDefault(x => x.Key == data.OvarianSurfaceRuptureOrNotLeftOvary);
+            var item = ListOvarianSurfaceRuptureOrNotLeftOvary.FirstOrDefault(x => x.Key == data?.OvarianSurfaceRuptureOrNotLeftOvary);
             if (item != null)
                 SelectOvarianSurfaceRuptureOrNotLeftOvary = item;
         }
@@ -714,7 +723,7 @@
         #region OvarianSurfaceRuptureOrNotRightOvary
         {
             ListOvarianSurfaceRuptureOrNotRightOvary = DropDownListDataService.GetOvarianSurfaceRuptureOrNotRightOvary();
-            var item = ListOvarianSurfaceRuptureOrNotRightOvary.FirstOrDefault(x => x.Key == data.OvarianSurfaceRuptureOrNotRightOvary);
+            var item = ListOvarianSurfaceRuptureOrNotRightOvary.FirstOrDefault(x => x.Key == data?.OvarianSurfaceRuptureOrNotRightOvary);
             if (item != null)
                 SelectOvarianSurfaceRuptureOrNotRightOvary = item;
         }
@@ -723,7 +732,7 @@
         #region Endometrium
         {
             ListEndometrium = DropDownListDataService.GetEndometrium();
-            var item = ListEndometrium.FirstOrDefault(x => x.Key == data.Endometrium);
+            var item = ListEndometrium.FirstOrDefault(x => x.Key == data?.Endometrium);
             if (item != null)
                 SelectEndometrium = item;
         }
@@ -732,7 +741,7 @@
         #region Cervix
         {
             ListCervix = DropDownListDataService.GetCervix();
-            var item = ListCervix.FirstOrDefault(x => x.Key == data.Cervix);
+            var item = ListCervix.FirstOrDefault(x => x.Key == data?.Cervix);
             if (item != null)
                 SelectCervix = item;
         }
@@ -741,7 +750,7 @@
         #region UterusTumorNumber
         {
             ListUterusTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListUterusTumorNumber.FirstOrDefault(x => x.Key == data.UterusTumorNumber);
+            var item = ListUterusTumorNumber.FirstOrDefault(x => x.Key == data?.UterusTumorNumber);
             if (item != null)
                 SelectUterusTumorNumber = item;
         }
@@ -750,7 +759,7 @@
         #region CervixSite
         {
             ListCervixSite = DropDownListDataService.GetSite();
-            var item = ListCervixSite.FirstOrDefault(x => x.Key == data.CervixSite);
+            var item = ListCervixSite.FirstOrDefault(x => x.Key == data?.CervixSite);
             if (item != null)
                 SelectCervixSite = item;
         }
@@ -759,7 +768,7 @@
         #region CervixTumorNumber
         {
             ListCervixTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListCervixTumorNumber.FirstOrDefault(x => x.Key == data.CervixTumorNumber);
+            var item = ListCervixTumorNumber.FirstOrDefault(x => x.Key == data?.CervixTumorNumber);
             if (item != null)
                 SelectCervixTumorNumber = item;
         }
@@ -768,7 +777,7 @@
         #region Uterus
         {
             ListUterus = DropDownListDataService.GetUterus();
-            var item = ListUterus.FirstOrDefault(x => x.Key == data.Uterus);
+            var item = ListUterus.FirstOrDefault(x => x.Key == data?.Uterus);
             if (item != null)
                 SelectUterus = item;
         }
@@ -777,7 +786,7 @@
         #region UterusSite
         {
             ListUterusSite = DropDownListDataService.GetSite();
-            var item = ListUterusSite.FirstOrDefault(x => x.Key == data.UterusSite);
+            var item = ListUterusSite.FirstOrDefault(x => x.Key == data?.UterusSite);
             if (item != null)
                 SelectUterusSite = item;
         }
@@ -786,21 +795,37 @@
         #region Ascites
         {
             ListAscites = DropDownListDataService.GetAscites();
-            var item = ListAscites.FirstOrDefault(x => x.Key == data.Ascites);
+            var item = ListAscites.FirstOrDefault(x => x.Key == data?.Ascites);
             if (item != null)
                 SelectAscites = item;
         }
         #endregion
 
+        RefreshVisitCode();
+        var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
+        if (itemx != null)
+            SelectVisitCode = itemx;
+    }
+
+    void RefreshVisitCode()
+    {
         #region VisitCode
         {
-            // ListVisitCode = DropDownListDataService.GetVisitCode();
-            // var item = ListVisitCode.FirstOrDefault(x => x.Key == data.VisitCode);
-            // if (item != null)
-            //     SelectVisitCode = item;
+            ListVisitCode.Clear();
+            if (data != null)
+            {
+
+            }
+            foreach (var nodeItem in header.Items)
+            {
+                ListVisitCode.Add(new DropDownListDataModel()
+                {
+                    Key = nodeItem.VisitCode.Id,
+                    Name = nodeItem.VisitCode.VisitCodeTitle,
+                });
+            }
         }
         #endregion
-
     }
 
     #region 下拉選單的事件

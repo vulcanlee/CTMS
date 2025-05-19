@@ -11,6 +11,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 {
     public class VisitCodeModel
     {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTime? AssessmentDate { get; set; }
         public string Timeline { get; set; }
         public int CycleMonth { get; set; }

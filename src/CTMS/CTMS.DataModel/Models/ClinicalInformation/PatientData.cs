@@ -33,7 +33,11 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 
         public void SyncData()
         {
-            this.臨床資料.臨床資料手術.SubjectNo = this.臨床資訊.SubjectNo;
+            foreach (var item in this.臨床資料.臨床資料手術.Items)
+            {
+                item.SubjectNo = this.臨床資訊.SubjectNo;
+            }
+
             this.臨床資料.臨床資料病理報告.SubjectNo = this.臨床資訊.SubjectNo;
             this.臨床資料.臨床資料化學治療.SubjectNo = this.臨床資訊.SubjectNo;
             this.臨床資料.臨床資料合併用藥.SubjectNo = this.臨床資訊.SubjectNo;
