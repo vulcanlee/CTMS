@@ -24,7 +24,8 @@ public class SurveyService
     public void Reset(Survey survey)
     {
         var hasAnyOfQuestions = survey.Questions
-            .Where(q => q.VisibilityCondition != null && q.VisibilityCondition.AnyOf.Count > 0)
+            .Where(q => q.VisibilityCondition != null && 
+            q.VisibilityCondition.AnyOf!=null && q.VisibilityCondition.AnyOf.Count > 0)
             .ToList();
         foreach (var q in hasAnyOfQuestions)
         {

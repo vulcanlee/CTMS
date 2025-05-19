@@ -16,81 +16,78 @@
         <Content>
 
             <div>
-
-                <div class="card my-4">
-                    <div class="card-header">
-                        <h3>Visit code : @data.GetVisitCodeTitle()</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="">
-                            <div>
-                                <div class="h4">
-                                    選日期
-                                </div>
+                @if (data != null)
+                {
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>Visit code : @data.GetVisitCodeTitle()</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="">
                                 <div>
-                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                                  @bind-Value="@data.AssessmentDate"></SfDatePicker>
-                                </div>
-                            </div>
-
-                            <hr />
-
-                            <div>
-                                <div class="h4">
-                                    追蹤 Timeline
-                                </div>
-                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelineBaseline)">
-                                    @{
-                                        string icon1 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineBaseline);
-                                    }
-                                    <span class="mx-3 mdi mdi-24px @icon1 command-icon-width cursor-pointer"
-                                          ></span>
-                                    <span class="cursor-pointer">Baseline</span>
-                                </div>
-                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelineSurgery)">
-                                    @{
-                                        string icon2 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineSurgery);
-                                    }
-                                    <span class="mx-3 mdi mdi-24px @icon2 command-icon-width cursor-pointer"
-                                          ></span>
-                                    <span class="cursor-pointer">Surgery</span>
-                                </div>
-                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelineChemotherapyDate)">
-                                    @{
-                                        string icon3 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineChemotherapyDate);
-                                    }
-                                    <span class="mx-3 mdi mdi-24px @icon3 command-icon-width cursor-pointer"
-                                          ></span>
-                                    <span class="cursor-pointer">Chemotherapy Date</span>
-                                </div>
-                                <div @onclick="()=>OnTimelineChanged(MagicObjectHelper.TimelinePostChemotherapy)">
-                                    @{
-                                        string icon4 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelinePostChemotherapy);
-                                    }
-                                    <span class="mx-3 mdi mdi-24px @icon4 command-icon-width cursor-pointer"
-                                          ></span>
-                                    <span class="cursor-pointer">Post Chemotherapy</span>
+                                    <div class="h4">
+                                        選日期
+                                    </div>
+                                    <div>
+                                        <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                                      @bind-Value="@data.AssessmentDate"></SfDatePicker>
+                                    </div>
                                 </div>
 
-                            </div>
+                                <hr />
 
-                            <hr />
-
-                            <div>
-                                <div class="h4">
-                                    Cycle (Months)
-                                </div>
                                 <div>
-                                    <SfDropDownList TValue="int" TItem="int"
-                                                    Placeholder="選擇一個值" DataSource="@ListCycleVisitCode"
-                                                    @bind-Value="@data.CycleMonth">
-                                    </SfDropDownList>
+                                    <div class="h4">
+                                        追蹤 Timeline
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelineBaseline)">
+                                        @{
+                                            string icon1 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineBaseline);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon1 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Baseline</span>
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelineSurgery)">
+                                        @{
+                                            string icon2 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineSurgery);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon2 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Surgery</span>
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelineChemotherapyDate)">
+                                        @{
+                                            string icon3 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineChemotherapyDate);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon3 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Chemotherapy Date</span>
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelinePostChemotherapy)">
+                                        @{
+                                            string icon4 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelinePostChemotherapy);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon4 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Post Chemotherapy</span>
+                                    </div>
+
+                                </div>
+
+                                <hr />
+
+                                <div>
+                                    <div class="h4">
+                                        Cycle (Months)
+                                    </div>
+                                    <div>
+                                        <SfDropDownList TValue="int" TItem="int"
+                                                        Placeholder="選擇一個值" DataSource="@ListCycleVisitCode"
+                                                        @bind-Value="@data.CycleMonth">
+                                        </SfDropDownList>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                }
             </div>
 
         </Content>
@@ -119,6 +116,8 @@
     public bool OpenPicker { get; set; } = false;
     [Parameter]
     public EventCallback<ProjectAdapterModel> OnConfirmCallback { get; set; }
+    [Parameter]
+    public VisitCodeModel data { get; set; }
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
@@ -129,7 +128,6 @@
     public string MessageBoxTitle { get; set; } = "";
 
     bool editMode = false;
-    VisitCodeModel data = new();
     List<int> ListCycleVisitCode = new List<int>();
 
     protected override async Task OnInitializedAsync()
@@ -153,6 +151,12 @@
 
     async Task OnPickerOK()
     {
+        if(data == null)
+        {
+            var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 "沒有傳入任何 Visit Code 物件", ConfirmMessageBox.HiddenAsync);
+            OpenPicker = false;
+        }
         // await OnConfirmCallback.InvokeAsync(CurrentRecord);
         OpenPicker = false;
     }

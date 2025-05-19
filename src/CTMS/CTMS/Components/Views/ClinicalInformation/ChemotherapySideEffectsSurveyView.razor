@@ -68,7 +68,7 @@
                         <h3><span>@item.Id </span>@item.Text</h3>
                     </div>
                     <div class="card-body">
-                        @if (item.Options != null)
+                        @if (item.Options != null && item.Options.Count>0)
                         {
                             foreach (var itemOption in item.Options)
                             {
@@ -81,7 +81,6 @@
                                     <span class="card-text my-2 cursor-pointer">@title</span>
                                 </div>
                             }
-
                             <div>@item.Answer</div>
                         }
                         else

@@ -15,6 +15,12 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public string Timeline { get; set; }
         public int CycleMonth { get; set; }
 
+        public string VisitCodeTitle
+        {
+            get { return GetVisitCodeTitle(); }
+        }
+
+
         public string GetVisitCodeTitle()
         {
             // 這個病人來的visit code 

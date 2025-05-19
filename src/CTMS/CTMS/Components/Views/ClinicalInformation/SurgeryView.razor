@@ -39,7 +39,7 @@
 
     <div>
         <div class="d-flex align-items-center">
-            <div>Visit code</div>
+            <div>Visit code : </div>
             <div class="flex-grow-1 ms-2">
                 @if (editMode)
                 {
@@ -53,7 +53,7 @@
                 }
                 else
                 {
-                    @patientData.臨床資料.臨床資料手術.VisitCode
+                    @data.VisitCode.VisitCodeTitle
                 }
             </div>
         </div>
@@ -81,12 +81,12 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.SubjectNo" />
+                            <SfTextBox @bind-Value="data.SubjectNo" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.SubjectNo
+                                @data.SubjectNo
                             </div>
                         }
                     </td>
@@ -94,36 +94,36 @@
                         @if (editMode)
                         {
                             <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                          @bind-Value="@patientData.臨床資料.臨床資料手術.手術日期"></SfDatePicker>
+                                          @bind-Value="@data.手術日期"></SfDatePicker>
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.手術日期.ToString("yyyy-MM-dd")
+                                @data.手術日期.ToString("yyyy-MM-dd")
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.術式" />
+                            <SfTextBox @bind-Value="data.術式" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.術式
+                                @data.術式
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.OPOutcome" />
+                            <SfTextBox @bind-Value="data.OPOutcome" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.OPOutcome
+                                @data.OPOutcome
                             </div>
                         }
                     </td>
@@ -157,7 +157,7 @@
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Ascites
+                                @data.Ascites
                             </div>
                         }
                     </td>
@@ -171,7 +171,7 @@
                                 <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                     ValueChange="@OnUterusChanged"></DropDownListEvents>
                             </SfDropDownList>
-                            @if (patientData.臨床資料.臨床資料手術.Uterus == "abnormal")
+                            @if (data.Uterus == "abnormal")
                             {
                                 <div>
                                     site
@@ -196,23 +196,23 @@
                                 <div>
                                     Tumor size
                                 </div>
-                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.UterusTumorSize" />
+                                <SfTextBox @bind-Value="data.UterusTumorSize" />
                             }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Uterus
-                                @if (patientData.臨床資料.臨床資料手術.Uterus == "abnormal")
+                                @data.Uterus
+                                @if (data.Uterus == "abnormal")
                                 {
                                     <div>
-                                        site: @patientData.臨床資料.臨床資料手術.UterusSite
+                                        site: @data.UterusSite
                                     </div>
                                     <div>
-                                        Tumor number: @patientData.臨床資料.臨床資料手術.UterusTumorNumber
+                                        Tumor number: @data.UterusTumorNumber
                                     </div>
                                     <div>
-                                        Tumor size: @patientData.臨床資料.臨床資料手術.UterusTumorSize
+                                        Tumor size: @data.UterusTumorSize
                                     </div>
                                 }
                             </div>
@@ -228,7 +228,7 @@
                                 <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                     ValueChange="@OnCervixChanged"></DropDownListEvents>
                             </SfDropDownList>
-                            @if (patientData.臨床資料.臨床資料手術.Cervix == "abnormal")
+                            @if (data.Cervix == "abnormal")
                             {
                                 <div>
                                     site
@@ -255,14 +255,14 @@
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Cervix
-                                @if (patientData.臨床資料.臨床資料手術.Cervix == "abnormal")
+                                @data.Cervix
+                                @if (data.Cervix == "abnormal")
                                 {
                                     <div>
-                                        site: @patientData.臨床資料.臨床資料手術.CervixSite
+                                        site: @data.CervixSite
                                     </div>
                                     <div>
-                                        Tumor number: @patientData.臨床資料.臨床資料手術.CervixTumorNumber
+                                        Tumor number: @data.CervixTumorNumber
                                     </div>
                                 }
                             </div>
@@ -282,7 +282,7 @@
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Endometrium
+                                @data.Endometrium
                             </div>
                         }
                     </td>
@@ -305,24 +305,24 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.Myometrium" />
+                            <SfTextBox @bind-Value="data.Myometrium" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Myometrium
+                                @data.Myometrium
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.CulDeSac" />
+                            <SfTextBox @bind-Value="data.CulDeSac" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.CulDeSac
+                                @data.CulDeSac
                             </div>
                         }
                     </td>
@@ -340,7 +340,7 @@
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotLeftOvary
+                                @data.OvarianSurfaceRuptureOrNotLeftOvary
                             </div>
                         }
                     </td>
@@ -358,7 +358,7 @@
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotRightOvary
+                                @data.OvarianSurfaceRuptureOrNotRightOvary
                             </div>
                         }
                     </td>
@@ -388,7 +388,7 @@
                                 <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                     ValueChange="@OnLeftAdnexaChanged"></DropDownListEvents>
                             </SfDropDownList>
-                            @if (patientData.臨床資料.臨床資料手術.LeftAdnexa == "abnormal")
+                            @if (data.LeftAdnexa == "abnormal")
                             {
                                 <div>
                                     Tumor number
@@ -403,20 +403,20 @@
                                 <div>
                                     Tumor size
                                 </div>
-                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.LeftAdnexaTumorSize" />
+                                <SfTextBox @bind-Value="data.LeftAdnexaTumorSize" />
                             }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.LeftAdnexa
-                                @if (patientData.臨床資料.臨床資料手術.LeftAdnexa == "abnormal")
+                                @data.LeftAdnexa
+                                @if (data.LeftAdnexa == "abnormal")
                                 {
                                     <div>
-                                        Tumor number: @patientData.臨床資料.臨床資料手術.LeftAdnexaTumorNumber
+                                        Tumor number: @data.LeftAdnexaTumorNumber
                                     </div>
                                     <div>
-                                        Tumor size: @patientData.臨床資料.臨床資料手術.LeftAdnexaTumorSize
+                                        Tumor size: @data.LeftAdnexaTumorSize
                                     </div>
                                 }
                             </div>
@@ -432,7 +432,7 @@
                                 <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                     ValueChange="@OnRightAdnexaChanged"></DropDownListEvents>
                             </SfDropDownList>
-                            @if (patientData.臨床資料.臨床資料手術.RightAdnexa == "abnormal")
+                            @if (data.RightAdnexa == "abnormal")
                             {
                                 <div>
                                     Tumor number
@@ -447,20 +447,20 @@
                                 <div>
                                     Tumor size
                                 </div>
-                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.RightAdnexaTumorSize" />
+                                <SfTextBox @bind-Value="data.RightAdnexaTumorSize" />
                             }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.RightAdnexa
-                                @if (patientData.臨床資料.臨床資料手術.RightAdnexa == "abnormal")
+                                @data.RightAdnexa
+                                @if (data.RightAdnexa == "abnormal")
                                 {
                                     <div>
-                                        Tumor number: @patientData.臨床資料.臨床資料手術.RightAdnexaTumorNumber
+                                        Tumor number: @data.RightAdnexaTumorNumber
                                     </div>
                                     <div>
-                                        Tumor size: @patientData.臨床資料.臨床資料手術.RightAdnexaTumorSize
+                                        Tumor size: @data.RightAdnexaTumorSize
                                     </div>
                                 }
                             </div>
@@ -476,22 +476,22 @@
                                 <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                     ValueChange="@OnPelvicPeritonealCavityChanged"></DropDownListEvents>
                             </SfDropDownList>
-                            @if (patientData.臨床資料.臨床資料手術.PelvicPeritonealCavity == "abnormal")
+                            @if (data.PelvicPeritonealCavity == "abnormal")
                             {
                                 <div>
                                     Tumor size
                                 </div>
-                                <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.PelvicPeritonealCavityTumorSize" />
+                                <SfTextBox @bind-Value="data.PelvicPeritonealCavityTumorSize" />
                             }
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.RightAdnexa
-                                @if (patientData.臨床資料.臨床資料手術.RightAdnexa == "abnormal")
+                                @data.RightAdnexa
+                                @if (data.RightAdnexa == "abnormal")
                                 {
                                     <div>
-                                        Tumor size: @patientData.臨床資料.臨床資料手術.RightAdnexaTumorSize
+                                        Tumor size: @data.RightAdnexaTumorSize
                                     </div>
                                 }
                             </div>
@@ -500,12 +500,12 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.ExtrapelvicPeritonealCavity" />
+                            <SfTextBox @bind-Value="data.ExtrapelvicPeritonealCavity" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.ExtrapelvicPeritonealCavity
+                                @data.ExtrapelvicPeritonealCavity
                             </div>
                         }
                     </td>
@@ -527,24 +527,24 @@
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking" />
+                            <SfTextBox @bind-Value="data.OtherOrganInvolvementGrossLooking" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.OtherOrganInvolvementGrossLooking
+                                @data.OtherOrganInvolvementGrossLooking
                             </div>
                         }
                     </td>
                     <td class="w-25 data-title">
                         @if (editMode)
                         {
-                            <SfTextBox @bind-Value="patientData.臨床資料.臨床資料手術.Optimal" />
+                            <SfTextBox @bind-Value="data.Optimal" />
                         }
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.Optimal
+                                @data.Optimal
                             </div>
                         }
                     </td>
@@ -562,7 +562,7 @@
                         else
                         {
                             <div class="data-value">
-                                @patientData.臨床資料.臨床資料手術.ResidualTumor
+                                @data.ResidualTumor
                             </div>
                         }
                     </td>
@@ -574,6 +574,20 @@
     </div>
 </div>
 
+<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog />
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
 @code {
     [Parameter]
     public string Code { get; set; }
@@ -581,12 +595,18 @@
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
+    臨床資料手術Node data = new();
+
+    bool ShowVisitCodeDialog = false;
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
     protected override async Task OnInitializedAsync()
     {
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
+        data = data;
         DropDownListDataInit();
     }
 
@@ -631,7 +651,7 @@
         #region ResidualTumor
         {
             ListResidualTumor = DropDownListDataService.GetResidualTumor();
-            var item = ListResidualTumor.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.ResidualTumor);
+            var item = ListResidualTumor.FirstOrDefault(x => x.Key == data.ResidualTumor);
             if (item != null)
                 SelectResidualTumor = item;
         }
@@ -640,7 +660,7 @@
         #region PelvicPeritonealCavity
         {
             ListPelvicPeritonealCavity = DropDownListDataService.GetPelvicPeritonealCavity();
-            var item = ListPelvicPeritonealCavity.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.PelvicPeritonealCavity);
+            var item = ListPelvicPeritonealCavity.FirstOrDefault(x => x.Key == data.PelvicPeritonealCavity);
             if (item != null)
                 SelectPelvicPeritonealCavity = item;
         }
@@ -649,7 +669,7 @@
         #region RightAdnexa
         {
             ListRightAdnexa = DropDownListDataService.GetRightAdnexa();
-            var item = ListRightAdnexa.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.RightAdnexa);
+            var item = ListRightAdnexa.FirstOrDefault(x => x.Key == data.RightAdnexa);
             if (item != null)
                 SelectRightAdnexa = item;
         }
@@ -658,7 +678,7 @@
         #region RightAdnexaTumorNumber
         {
             ListRightAdnexaTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListRightAdnexaTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.RightAdnexaTumorNumber);
+            var item = ListRightAdnexaTumorNumber.FirstOrDefault(x => x.Key == data.RightAdnexaTumorNumber);
             if (item != null)
                 SelectRightAdnexaTumorNumber = item;
         }
@@ -667,7 +687,7 @@
         #region LeftAdnexa
         {
             ListLeftAdnexa = DropDownListDataService.GetLeftAdnexa();
-            var item = ListLeftAdnexa.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.LeftAdnexa);
+            var item = ListLeftAdnexa.FirstOrDefault(x => x.Key == data.LeftAdnexa);
             if (item != null)
                 SelectLeftAdnexa = item;
         }
@@ -676,7 +696,7 @@
         #region LeftAdnexaTumorNumber
         {
             ListLeftAdnexaTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListLeftAdnexaTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.LeftAdnexaTumorNumber);
+            var item = ListLeftAdnexaTumorNumber.FirstOrDefault(x => x.Key == data.LeftAdnexaTumorNumber);
             if (item != null)
                 SelectLeftAdnexaTumorNumber = item;
         }
@@ -685,7 +705,7 @@
         #region OvarianSurfaceRuptureOrNotLeftOvary
         {
             ListOvarianSurfaceRuptureOrNotLeftOvary = DropDownListDataService.GetOvarianSurfaceRuptureOrNotLeftOvary();
-            var item = ListOvarianSurfaceRuptureOrNotLeftOvary.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotLeftOvary);
+            var item = ListOvarianSurfaceRuptureOrNotLeftOvary.FirstOrDefault(x => x.Key == data.OvarianSurfaceRuptureOrNotLeftOvary);
             if (item != null)
                 SelectOvarianSurfaceRuptureOrNotLeftOvary = item;
         }
@@ -694,7 +714,7 @@
         #region OvarianSurfaceRuptureOrNotRightOvary
         {
             ListOvarianSurfaceRuptureOrNotRightOvary = DropDownListDataService.GetOvarianSurfaceRuptureOrNotRightOvary();
-            var item = ListOvarianSurfaceRuptureOrNotRightOvary.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotRightOvary);
+            var item = ListOvarianSurfaceRuptureOrNotRightOvary.FirstOrDefault(x => x.Key == data.OvarianSurfaceRuptureOrNotRightOvary);
             if (item != null)
                 SelectOvarianSurfaceRuptureOrNotRightOvary = item;
         }
@@ -703,7 +723,7 @@
         #region Endometrium
         {
             ListEndometrium = DropDownListDataService.GetEndometrium();
-            var item = ListEndometrium.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.Endometrium);
+            var item = ListEndometrium.FirstOrDefault(x => x.Key == data.Endometrium);
             if (item != null)
                 SelectEndometrium = item;
         }
@@ -712,7 +732,7 @@
         #region Cervix
         {
             ListCervix = DropDownListDataService.GetCervix();
-            var item = ListCervix.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.Cervix);
+            var item = ListCervix.FirstOrDefault(x => x.Key == data.Cervix);
             if (item != null)
                 SelectCervix = item;
         }
@@ -721,7 +741,7 @@
         #region UterusTumorNumber
         {
             ListUterusTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListUterusTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.UterusTumorNumber);
+            var item = ListUterusTumorNumber.FirstOrDefault(x => x.Key == data.UterusTumorNumber);
             if (item != null)
                 SelectUterusTumorNumber = item;
         }
@@ -730,7 +750,7 @@
         #region CervixSite
         {
             ListCervixSite = DropDownListDataService.GetSite();
-            var item = ListCervixSite.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.CervixSite);
+            var item = ListCervixSite.FirstOrDefault(x => x.Key == data.CervixSite);
             if (item != null)
                 SelectCervixSite = item;
         }
@@ -739,7 +759,7 @@
         #region CervixTumorNumber
         {
             ListCervixTumorNumber = DropDownListDataService.GetTumorNumber();
-            var item = ListCervixTumorNumber.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.CervixTumorNumber);
+            var item = ListCervixTumorNumber.FirstOrDefault(x => x.Key == data.CervixTumorNumber);
             if (item != null)
                 SelectCervixTumorNumber = item;
         }
@@ -748,7 +768,7 @@
         #region Uterus
         {
             ListUterus = DropDownListDataService.GetUterus();
-            var item = ListUterus.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.Uterus);
+            var item = ListUterus.FirstOrDefault(x => x.Key == data.Uterus);
             if (item != null)
                 SelectUterus = item;
         }
@@ -757,7 +777,7 @@
         #region UterusSite
         {
             ListUterusSite = DropDownListDataService.GetSite();
-            var item = ListUterusSite.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.UterusSite);
+            var item = ListUterusSite.FirstOrDefault(x => x.Key == data.UterusSite);
             if (item != null)
                 SelectUterusSite = item;
         }
@@ -766,7 +786,7 @@
         #region Ascites
         {
             ListAscites = DropDownListDataService.GetAscites();
-            var item = ListAscites.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.Ascites);
+            var item = ListAscites.FirstOrDefault(x => x.Key == data.Ascites);
             if (item != null)
                 SelectAscites = item;
         }
@@ -774,10 +794,10 @@
 
         #region VisitCode
         {
-            ListVisitCode = DropDownListDataService.GetVisitCode();
-            var item = ListVisitCode.FirstOrDefault(x => x.Key == patientData.臨床資料.臨床資料手術.VisitCode);
-            if (item != null)
-                SelectVisitCode = item;
+            // ListVisitCode = DropDownListDataService.GetVisitCode();
+            // var item = ListVisitCode.FirstOrDefault(x => x.Key == data.VisitCode);
+            // if (item != null)
+            //     SelectVisitCode = item;
         }
         #endregion
 
@@ -786,98 +806,98 @@
     #region 下拉選單的事件
     private async Task OnResidualTumorChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.ResidualTumor = args.Value.Key;
+        data.ResidualTumor = args.Value.Key;
     }
 
     private async Task OnRightAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.RightAdnexa = args.Value.Key;
+        data.RightAdnexa = args.Value.Key;
     }
 
     private async Task OnPelvicPeritonealCavityChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.PelvicPeritonealCavity = args.Value.Key;
+        data.PelvicPeritonealCavity = args.Value.Key;
     }
 
     private async Task OnRightAdnexaTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.RightAdnexaTumorNumber = args.Value.Key;
+        data.RightAdnexaTumorNumber = args.Value.Key;
     }
 
     private async Task OnLeftAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.LeftAdnexa = args.Value.Key;
+        data.LeftAdnexa = args.Value.Key;
     }
 
     private async Task OnLeftAdnexaTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.LeftAdnexaTumorNumber = args.Value.Key;
+        data.LeftAdnexaTumorNumber = args.Value.Key;
     }
 
     private async Task OnOvarianSurfaceRuptureOrNotLeftOvaryChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotLeftOvary = args.Value.Key;
+        data.OvarianSurfaceRuptureOrNotLeftOvary = args.Value.Key;
     }
 
     private async Task OnOvarianSurfaceRuptureOrNotRightOvaryChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.OvarianSurfaceRuptureOrNotRightOvary = args.Value.Key;
+        data.OvarianSurfaceRuptureOrNotRightOvary = args.Value.Key;
     }
 
     private async Task OnEndometriumChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.Endometrium = args.Value.Key;
+        data.Endometrium = args.Value.Key;
     }
 
     private async Task OnCervixSiteChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.CervixSite = args.Value.Key;
+        data.CervixSite = args.Value.Key;
     }
 
     private async Task OnCervixTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.CervixTumorNumber = args.Value.Key;
+        data.CervixTumorNumber = args.Value.Key;
     }
 
     private async Task OnCervixChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.Cervix = args.Value.Key;
-        if (patientData.臨床資料.臨床資料手術.Cervix == "normal")
+        data.Cervix = args.Value.Key;
+        if (data.Cervix == "normal")
         {
-            patientData.臨床資料.臨床資料手術.CervixSite = "";
-            patientData.臨床資料.臨床資料手術.CervixTumorNumber = "";
+            data.CervixSite = "";
+            data.CervixTumorNumber = "";
         }
     }
 
     private async Task OnUterusSiteChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.UterusSite = args.Value.Key;
+        data.UterusSite = args.Value.Key;
     }
 
     private async Task OnUterusTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.UterusTumorNumber = args.Value.Key;
+        data.UterusTumorNumber = args.Value.Key;
     }
 
     private async Task OnUterusChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.Uterus = args.Value.Key;
-        if (patientData.臨床資料.臨床資料手術.Uterus == "normal")
+        data.Uterus = args.Value.Key;
+        if (data.Uterus == "normal")
         {
-            patientData.臨床資料.臨床資料手術.UterusSite = "";
-            patientData.臨床資料.臨床資料手術.UterusTumorNumber = "";
-            patientData.臨床資料.臨床資料手術.UterusTumorSize = "";
+            data.UterusSite = "";
+            data.UterusTumorNumber = "";
+            data.UterusTumorSize = "";
         }
     }
 
     private async Task OnAscitesChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.Ascites = args.Value.Key;
+        data.Ascites = args.Value.Key;
     }
 
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
-        patientData.臨床資料.臨床資料手術.VisitCode = args.Value.Key;
+        // data.VisitCode = args.Value.Key;
     }
 
     #endregion
@@ -896,6 +916,7 @@
     async Task OnCancel()
     {
         patientData.FromJson(patientAdapterModel.JsonData);
+        data = data;
         editMode = false;
     }
 
