@@ -16,6 +16,9 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public BaselineMedicalHistoryForm BaselineMedicalHistoryForm { get; set; } = new();
         public BloodTest抽血檢驗血液 抽血檢驗血液 { get; set; } = new();
         public BloodTest抽血檢驗生化 抽血檢驗生化 { get; set; } = new();
-        public Survey問卷 問卷 { get; set; } = new();
+        public Survey化療副作用 Survey化療副作用 { get; set; } = new();
+        public Survey標靶副作用 Survey標靶副作用 { get; set; } = new();
+        public Survey放療副作用 Survey放療副作用 { get; set; } = new();
+        public SurveyWhooqol問卷 SurveyWhooqol問卷 { get; set; } = new();
     }
 }

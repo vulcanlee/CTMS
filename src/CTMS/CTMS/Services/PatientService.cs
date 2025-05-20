@@ -127,7 +127,7 @@ public class PatientService
             PatientData patientData = new();
             string name = "0-" + DateTime.Now.ToString("yyyyMMddHHmmss");
             patientData.臨床資訊.SubjectNo = name;
-            survey.Read(patientData.臨床資料.問卷);
+            //survey.Read(patientData.臨床資料.問卷);
             //bloodExameService.Read(patientData.臨床資料.抽血檢驗);
             Patient itemParameter = new()
             {

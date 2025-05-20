@@ -10,7 +10,6 @@ public class SurveyService
         survey.放療副作用 = ReadFile("放療副作用.json");
         survey.標靶副作用 = ReadFile("標靶副作用.json");
         survey.whooqol問卷 = ReadFile("whooqol問卷.json");
-        //bloodTest.抽血檢驗生化2 = ReadFile("抽血檢驗血液.json");
     }
 
     public Survey ReadFile(string filename)
@@ -21,9 +20,9 @@ public class SurveyService
         return surveryItems;
     }
 
-    public void Reset(Survey survey)
+    public void Reset(List<Question> questions)
     {
-        var hasAnyOfQuestions = survey.Questions
+        var hasAnyOfQuestions = questions
             .Where(q => q.VisibilityCondition != null && 
             q.VisibilityCondition.AnyOf!=null && q.VisibilityCondition.AnyOf.Count > 0)
             .ToList();
@@ -31,16 +30,15 @@ public class SurveyService
         {
             q.IsVisible = false;
         }
-
     }
 
-    public void RefreshByQuestionChanged(Survey survey, Question question)
+    public void RefreshByQuestionChanged(List<Question> survey, Question question)
     {
-        if (survey?.Questions == null || question == null)
+        if (survey == null || question == null)
             return;
 
         // 找出所有 VisibilityCondition.QuestionId 等於 question.Id 的題目
-        var relatedQuestions = survey.Questions
+        var relatedQuestions = survey
             .Where(q => q.VisibilityCondition != null && q.VisibilityCondition.QuestionId == question.Id)
             .ToList();
 
