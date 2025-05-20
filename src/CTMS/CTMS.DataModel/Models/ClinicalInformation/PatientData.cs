@@ -9,7 +9,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     public class PatientData
     {
         public BasicClinicalPresentation_臨床資訊 臨床資訊 { get; set; } = new();
-        public 臨床資料 臨床資料 { get; set; } = new();
+        public Main臨床資料 臨床資料 { get; set; } = new();
 
         public string ToJson()
         {
