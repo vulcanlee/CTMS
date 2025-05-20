@@ -32,8 +32,6 @@
         }
         else
         {
-            <span class="mx-3 mdi mdi-36px mdi-eye command-icon-width cursor-pointer"
-            @onclick=OnVisitCodeEdit></span>
             <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
             @onclick=OnChangeEditMode></span>
         }
@@ -431,11 +429,6 @@ Callback="ConfirmMessageBox.ConfirmDelegate" />
     DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     #endregion
-
-    void OnVisitCodeEdit()
-    {
-        ShowVisitCodeDialog = true;
-    }
 
     protected override async Task OnInitializedAsync()
     {

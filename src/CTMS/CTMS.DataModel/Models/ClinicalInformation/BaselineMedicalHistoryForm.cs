@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace CTMS.DataModel.Models.ClinicalInformation
 {
-    public class 臨床資料BaselineMedicalHistoryForm
+    public class BaselineMedicalHistoryForm
     {
-        public List<臨床資料BaselineMedicalHistoryFormNode> Items { get; set; }=new();
+        public List<BaselineMedicalHistoryFormNode> Items { get; set; }=new();
     }
 }

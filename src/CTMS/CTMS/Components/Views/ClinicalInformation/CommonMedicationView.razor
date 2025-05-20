@@ -80,7 +80,8 @@
         <div class="view-container">
             <div>
                 @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" @onclick="async () =>await OnAddAsync()">
+                <button class="btn btn-primary add-button" 
+                @onclick="async () =>await OnAddAsync()">
                     新增一筆紀錄
                 </button>
             </div>
@@ -236,10 +237,29 @@
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        header = patientData.臨床資料.臨床資料合併用藥;
-        data = header.Items.FirstOrDefault();
+        InitData(true);
     }
 
+    void InitData(bool isFirst = true)
+    {
+        header = patientData.臨床資料.臨床資料合併用藥;
+        if (isFirst)
+        {
+            data = header.Items.FirstOrDefault();
+            RefreshVisitCode();
+            RefreshDropDwonVisitCode();
+            var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
+            if (itemx != null)
+                SelectVisitCode = itemx;
+        }
+        else
+        {
+            if (SelectVisitCode != null)
+            {
+                data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+            }
+        }
+    }
 
     void OnChangeEditMode()
     {
@@ -256,6 +276,7 @@
     async Task OnCancel()
     {
         patientData.FromJson(patientAdapterModel.JsonData);
+        InitData(false);
         ReIndexItems();
         editMode = false;
     }
@@ -270,7 +291,7 @@
 
     async Task OnAddAsync()
     {
-        patientData.臨床資料.臨床資料合併用藥.Items.Add(new());
+        data.Items.Add(new());
         ReIndexItems();
         await OnSave();
     }

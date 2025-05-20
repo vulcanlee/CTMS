@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CTMS.DataModel.Models.ClinicalInformation
 {
-    public class 臨床資料BaselineMedicalHistoryFormNode
+    public class BaselineMedicalHistoryFormNode
     {
         public VisitCodeModel VisitCode { get; set; } = new();
         public DateTime AssessmentDate { get; set; }

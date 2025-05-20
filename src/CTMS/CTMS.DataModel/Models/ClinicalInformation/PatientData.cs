@@ -49,7 +49,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             {
                 item.SubjectNo = this.臨床資訊.SubjectNo;
             }
-            foreach (var item in this.臨床資料.臨床資料BaselineMedicalHistoryForm.Items)
+            foreach (var item in this.臨床資料.BaselineMedicalHistoryForm.Items)
             {
                 item.SubjectNo = this.臨床資訊.SubjectNo;
             }

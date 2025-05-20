@@ -458,8 +458,8 @@
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
-    臨床資料BaselineMedicalHistoryFormNode data = new();
-    臨床資料BaselineMedicalHistoryForm header = new();
+    BaselineMedicalHistoryFormNode data = new();
+    BaselineMedicalHistoryForm header = new();
 
     List<DropDownListDataModel> ListCardiovascularIncludeHtnYesNo = new List<DropDownListDataModel>();
     List<string> ListYesNo = new List<string>();
@@ -479,10 +479,29 @@
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        header = patientData.臨床資料.臨床資料BaselineMedicalHistoryForm;
-        data = header.Items.FirstOrDefault();
+        InitData(true);
+    }
 
-        DropDownListDataInit();
+    void InitData(bool isFirst = true)
+    {
+        header = patientData.臨床資料.BaselineMedicalHistoryForm;
+        if (isFirst)
+        {
+            data = header.Items.FirstOrDefault();
+            DropDownListDataInit();
+            RefreshVisitCode();
+            RefreshDropDwonVisitCode();
+            var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
+            if (itemx != null)
+                SelectVisitCode = itemx;
+        }
+        else
+        {
+            if (SelectVisitCode != null)
+            {
+                data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+            }
+        }
     }
 
     void DropDownListDataInit()
@@ -492,97 +511,97 @@
             ListYesNo = DropDownListDataService.GetStringYesNo();
 
             var itemPeripheralVascular = ListYesNo
-            .FirstOrDefault(x => x == data.PeripheralVascular);
+            .FirstOrDefault(x => x == data?.PeripheralVascular);
             if (itemPeripheralVascular != null)
                 data.PeripheralVascular = itemPeripheralVascular;
 
             var itemRespiratory = ListYesNo
-            .FirstOrDefault(x => x == data.Respiratory);
+            .FirstOrDefault(x => x == data?.Respiratory);
             if (itemRespiratory != null)
                 data.Respiratory = itemRespiratory;
 
             var itemGastrointestinal = ListYesNo
-            .FirstOrDefault(x => x == data.Gastrointestinal);
+            .FirstOrDefault(x => x == data?.Gastrointestinal);
             if (itemGastrointestinal != null)
                 data.Gastrointestinal = itemGastrointestinal;
 
             var itemRenal = ListYesNo
-            .FirstOrDefault(x => x == data.Renal);
+            .FirstOrDefault(x => x == data?.Renal);
             if (itemRenal != null)
                 data.Renal = itemRenal;
 
             var itemGenitourinary = ListYesNo
-            .FirstOrDefault(x => x == data.Genitourinary);
+            .FirstOrDefault(x => x == data?.Genitourinary);
             if (itemGenitourinary != null)
                 data.Genitourinary = itemGenitourinary;
 
             var itemEndocrineMetabolicIncludeDiabetes = ListYesNo
-            .FirstOrDefault(x => x == data.EndocrineMetabolicIncludeDiabetes);
+            .FirstOrDefault(x => x == data?.EndocrineMetabolicIncludeDiabetes);
             if (itemEndocrineMetabolicIncludeDiabetes != null)
                 data.EndocrineMetabolicIncludeDiabetes = itemEndocrineMetabolicIncludeDiabetes;
 
             var itemHematologicLymphatic = ListYesNo
-            .FirstOrDefault(x => x == data.HematologicLymphatic);
+            .FirstOrDefault(x => x == data?.HematologicLymphatic);
             if (itemHematologicLymphatic != null)
                 data.HematologicLymphatic = itemHematologicLymphatic;
 
             var itemMusculoskeletal = ListYesNo
-            .FirstOrDefault(x => x == data.Musculoskeletal);
+            .FirstOrDefault(x => x == data?.Musculoskeletal);
             if (itemMusculoskeletal != null)
                 data.Musculoskeletal = itemMusculoskeletal;
 
             var itemDermatologic = ListYesNo
-            .FirstOrDefault(x => x == data.Dermatologic);
+            .FirstOrDefault(x => x == data?.Dermatologic);
             if (itemDermatologic != null)
                 data.Dermatologic = itemDermatologic;
 
             var itemDrugAbuse = ListYesNo
-            .FirstOrDefault(x => x == data.DrugAbuse);
+            .FirstOrDefault(x => x == data?.DrugAbuse);
             if (itemDrugAbuse != null)
                 data.DrugAbuse = itemDrugAbuse;
 
             var itemTobacco = ListYesNo
-            .FirstOrDefault(x => x == data.Tobacco);
+            .FirstOrDefault(x => x == data?.Tobacco);
             if (itemTobacco != null)
                 data.Tobacco = itemTobacco;
 
             var itemNeurologic = ListYesNo
-            .FirstOrDefault(x => x == data.Neurologic);
+            .FirstOrDefault(x => x == data?.Neurologic);
             if (itemNeurologic != null)
                 data.Neurologic = itemNeurologic;
 
             var itemPsychiatric = ListYesNo
-            .FirstOrDefault(x => x == data.Psychiatric);
+            .FirstOrDefault(x => x == data?.Psychiatric);
             if (itemPsychiatric != null)
                 data.Psychiatric = itemPsychiatric;
 
             var itemAllergies = ListYesNo
-            .FirstOrDefault(x => x == data.Allergies);
+            .FirstOrDefault(x => x == data?.Allergies);
             if (itemAllergies != null)
                 data.Allergies = itemAllergies;
 
             var itemNeoplasia = ListYesNo
-            .FirstOrDefault(x => x == data.Neoplasia);
+            .FirstOrDefault(x => x == data?.Neoplasia);
             if (itemNeoplasia != null)
                 data.Neoplasia = itemNeoplasia;
 
             var itemAlcoholUse = ListYesNo
-            .FirstOrDefault(x => x == data.AlcoholUse);
+            .FirstOrDefault(x => x == data?.AlcoholUse);
             if (itemAlcoholUse != null)
                 data.AlcoholUse = itemAlcoholUse;
 
             var itemImmunityIncludeHiv = ListYesNo
-            .FirstOrDefault(x => x == data.ImmunityIncludeHiv);
+            .FirstOrDefault(x => x == data?.ImmunityIncludeHiv);
             if (itemImmunityIncludeHiv != null)
                 data.ImmunityIncludeHiv = itemImmunityIncludeHiv;
 
             var itemHepatobiliaryIncludeHbvHcv = ListYesNo
-            .FirstOrDefault(x => x == data.HepatobiliaryIncludeHbvHcv);
+            .FirstOrDefault(x => x == data?.HepatobiliaryIncludeHbvHcv);
             if (itemHepatobiliaryIncludeHbvHcv != null)
                 data.HepatobiliaryIncludeHbvHcv = itemHepatobiliaryIncludeHbvHcv;
 
             var itemOtherSpecify = ListYesNo
-            .FirstOrDefault(x => x == data.OtherSpecify);
+            .FirstOrDefault(x => x == data?.OtherSpecify);
             if (itemOtherSpecify != null)
                 data.OtherSpecify = itemOtherSpecify;
         }
@@ -615,6 +634,7 @@
     async Task OnCancel()
     {
         patientData.FromJson(patientAdapterModel.JsonData);
+        InitData(false);
         editMode = false;
     }
 
@@ -711,7 +731,7 @@
     {
         if (VisitCodeOperateMode == "Add")
         {
-            var newRecord = new 臨床資料BaselineMedicalHistoryFormNode()
+            var newRecord = new BaselineMedicalHistoryFormNode()
                 {
                     VisitCode = visitCodeModel,
                 };

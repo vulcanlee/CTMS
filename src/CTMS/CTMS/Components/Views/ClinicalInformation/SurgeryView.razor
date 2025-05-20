@@ -631,9 +631,29 @@
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
+        InitData(true);
+    }
+
+    void InitData(bool isFirst = true)
+    {
         header = patientData.臨床資料.臨床資料手術;
-        data = header.Items.FirstOrDefault();
-        DropDownListDataInit();
+        if (isFirst)
+        {
+            data = header.Items.FirstOrDefault();
+            DropDownListDataInit();
+            RefreshVisitCode();
+            RefreshDropDwonVisitCode();
+            var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
+            if (itemx != null)
+                SelectVisitCode = itemx;
+        }
+        else
+        {
+            if (SelectVisitCode != null)
+            {
+                data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+            }
+        }
     }
 
     #region 宣告下拉清單物件
@@ -973,7 +993,7 @@
     async Task OnCancel()
     {
         patientData.FromJson(patientAdapterModel.JsonData);
-        data = data;
+        InitData(false);
         editMode = false;
     }
 
