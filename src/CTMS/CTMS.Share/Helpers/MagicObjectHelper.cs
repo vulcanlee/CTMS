@@ -106,5 +106,8 @@ namespace CTMS.Share.Helpers
         public const string TimelineSurgery = "Surgery";
         public const string TimelineChemotherapyDate = "Chemotherapy Date";
         public const string TimelinePostChemotherapy = "Post Chemotherapy";
+
+        public const string NotFoundClass = "not-found";
+        public const string FoundClass = "has-found";
     }
 }
