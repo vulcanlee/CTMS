@@ -113,6 +113,7 @@ namespace CTMS
                 builder.Services.AddTransient<DropDownListDataService>();
                 builder.Services.AddTransient<BloodExameService>();
                 builder.Services.AddTransient<SurveyService>();
+                builder.Services.AddTransient<SideEffectsService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

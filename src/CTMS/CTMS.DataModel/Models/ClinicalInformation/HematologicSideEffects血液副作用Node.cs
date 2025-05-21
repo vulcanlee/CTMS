@@ -6,15 +6,15 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     public class HematologicSideEffects血液副作用Node
     {
         public VisitCodeModel VisitCode { get; set; } = new();
-        public List<HematologicSideEffectsItem> WhiteBloodCell白血球 { get; set; } = new();
-        public List<HematologicSideEffectsItem> NeutrophilCount絕對嗜中性白血球數 { get; set; } = new();
-        public List<HematologicSideEffectsItem> HemoglobinHb血色素 { get; set; } = new();
-        public List<HematologicSideEffectsItem> PlateletCount血小板 { get; set; } = new();
+        public HematologicSideEffectsItem WhiteBloodCell白血球 { get; set; } = new();
+        public HematologicSideEffectsItem NeutrophilCount絕對嗜中性白血球數 { get; set; } = new();
+        public HematologicSideEffectsItem HemoglobinHb血色素 { get; set; } = new();
+        public HematologicSideEffectsItem PlateletCount血小板 { get; set; } = new();
     }
 
     public class HematologicSideEffectsItem
     {
-        public string Title { get; set; }
+        public string RetriveValue { get; set; } = string.Empty;
         public GradeItem Grade1 { get; set; } = new();
         public GradeItem Grade2 { get; set; } = new();
         public GradeItem Grade3 { get; set; } = new();
@@ -24,9 +24,19 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 
     public class GradeItem
     {
+        public string Title { get; set; }
         public string GradeValue1 { get; set; } = string.Empty;
         public string GradeValue2 { get; set; } = string.Empty;
-        public string RetriveValue { get; set; } = string.Empty;
         public string ApplyCssClass { get; set; } = MagicObjectHelper.NotFoundClass;
+
+        public void ResetCssClassNotFound()
+        {
+            ApplyCssClass = MagicObjectHelper.NotFoundClass;
+        }
+
+        public void ResetCssClassFound()
+        {
+            ApplyCssClass = MagicObjectHelper.FoundClass;
+        }
     }
 }
