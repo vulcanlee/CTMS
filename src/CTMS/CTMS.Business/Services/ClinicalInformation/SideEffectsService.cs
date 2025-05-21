@@ -21,7 +21,7 @@ public class SideEffectsService
 
     public void Init血液副作用WhiteBloodCell白血球(HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
-        HematologicSideEffectsItem Item副作用;
+        GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.WhiteBloodCell白血球;
         Item副作用.Grade1.ResetCssClassNotFound();
         Item副作用.Grade1.Title = $"<LLN - 3000/mm3";
@@ -49,7 +49,7 @@ public class SideEffectsService
 
     public void Init血液副作用NeutrophilCount絕對嗜中性白血球數(HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
-        HematologicSideEffectsItem Item副作用;
+        GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
         Item副作用.Grade1.ResetCssClassNotFound();
         Item副作用.Grade1.Title = $"<LLN - 1500/mm3";
@@ -77,7 +77,7 @@ public class SideEffectsService
 
     public void Init血液副作用HemoglobinHb血色素(HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
-        HematologicSideEffectsItem Item副作用;
+        GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.HemoglobinHb血色素;
         Item副作用.Grade1.ResetCssClassNotFound();
         Item副作用.Grade1.Title = $" <LLN - 10.0 g/dL";
@@ -105,7 +105,7 @@ public class SideEffectsService
 
     public void Init血液副作用PlateletCount血小板(HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
-        HematologicSideEffectsItem Item副作用;
+        GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.PlateletCount血小板;
         Item副作用.Grade1.ResetCssClassNotFound();
         Item副作用.Grade1.Title = $"<LLN - 75,000/mm3";
@@ -151,7 +151,7 @@ public class SideEffectsService
         TestItem檢驗項目 testItem = bloodTest.抽血檢驗血液
             .FirstOrDefault(x => x.項目名稱 == WhiteBloodCell白血球);
 
-        HematologicSideEffectsItem sideEffectsItem =
+        GradeItemSideEffectsItem sideEffectsItem =
                 hematologicSideEffects.WhiteBloodCell白血球;
 
         var 參考區間開始 = testItem.參考區間開始 * 1000.0;
@@ -174,7 +174,7 @@ public class SideEffectsService
         TestItem檢驗項目 testItem = bloodTest.抽血檢驗血液
             .FirstOrDefault(x => x.項目名稱 == HemoglobinHb血色素);
 
-        HematologicSideEffectsItem sideEffectsItem =
+        GradeItemSideEffectsItem sideEffectsItem =
                 hematologicSideEffects.HemoglobinHb血色素;
 
         testItem.參考區間開始 = testItem.參考區間開始;
@@ -197,7 +197,7 @@ public class SideEffectsService
         TestItem檢驗項目 testItem = bloodTest.抽血檢驗血液
             .FirstOrDefault(x => x.項目名稱 == PlateletCount血小板);
 
-        HematologicSideEffectsItem sideEffectsItem =
+        GradeItemSideEffectsItem sideEffectsItem =
                 hematologicSideEffects.PlateletCount血小板;
 
         var 參考區間開始 = testItem.參考區間開始 * 1000.0;
@@ -209,7 +209,7 @@ public class SideEffectsService
     }
 
     public void ComputeGrade(Main臨床資料 main臨床資料,
-        HematologicSideEffectsItem sideEffectsItem,
+        GradeItemSideEffectsItem sideEffectsItem,
         BloodTest抽血檢驗血液Node bloodTest,
         TestItem檢驗項目 testItem)
     {

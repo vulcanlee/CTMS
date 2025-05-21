@@ -6,13 +6,13 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     public class HematologicSideEffects血液副作用Node
     {
         public VisitCodeModel VisitCode { get; set; } = new();
-        public HematologicSideEffectsItem WhiteBloodCell白血球 { get; set; } = new();
-        public HematologicSideEffectsItem NeutrophilCount絕對嗜中性白血球數 { get; set; } = new();
-        public HematologicSideEffectsItem HemoglobinHb血色素 { get; set; } = new();
-        public HematologicSideEffectsItem PlateletCount血小板 { get; set; } = new();
+        public GradeItemSideEffectsItem WhiteBloodCell白血球 { get; set; } = new();
+        public GradeItemSideEffectsItem NeutrophilCount絕對嗜中性白血球數 { get; set; } = new();
+        public GradeItemSideEffectsItem HemoglobinHb血色素 { get; set; } = new();
+        public GradeItemSideEffectsItem PlateletCount血小板 { get; set; } = new();
     }
 
-    public class HematologicSideEffectsItem
+    public class GradeItemSideEffectsItem
     {
         public string RetriveValue { get; set; } = string.Empty;
         public GradeItem Grade1 { get; set; } = new();
