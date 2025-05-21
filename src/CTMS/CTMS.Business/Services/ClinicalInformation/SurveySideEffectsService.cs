@@ -135,7 +135,7 @@ public class SurveySideEffectsService
     public void Init副作用Constipation便秘(SurveySideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
-        Item副作用 = hematologicSideEffects.Diarrhea拉肚子;
+        Item副作用 = hematologicSideEffects.Constipation便秘;
         Item副作用.Grade1.ResetCssClassNotFound();
         Item副作用.Grade1.Title = $"偶爾有便秘情形，有時會用到軟便藥、改變飲食或灌腸";
         Item副作用.Grade1.GradeValue1 = "";
@@ -162,7 +162,7 @@ public class SurveySideEffectsService
     public void Init副作用Anorexia食慾不振(SurveySideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
-        Item副作用 = hematologicSideEffects.Diarrhea拉肚子;
+        Item副作用 = hematologicSideEffects.Anorexia食慾不振;
         Item副作用.Grade1.ResetCssClassNotFound();
         Item副作用.Grade1.Title = $"食慾輕微下降，但飲食習慣沒有改變";
         Item副作用.Grade1.GradeValue1 = "";
