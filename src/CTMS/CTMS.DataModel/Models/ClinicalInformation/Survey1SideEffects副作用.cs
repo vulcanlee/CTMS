@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CTMS.DataModel.Models.ClinicalInformation
 {
-    public class SurveySideEffects副作用
+    public class Survey1SideEffects副作用
     {
         public string Title { get; set; }
-        public List<SurveySideEffects副作用Node> Items { get; set; } = new();
+        public List<Survey1SideEffects副作用Node> Items { get; set; } = new();
     }
 }

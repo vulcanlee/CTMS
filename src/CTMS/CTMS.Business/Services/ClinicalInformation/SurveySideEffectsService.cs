@@ -13,8 +13,14 @@ public class SurveySideEffectsService
     string 請問您是否有便秘情形 = "請問您是否有便秘情形";
     string 請問您是否有食慾不振 = "請問您是否有食慾不振情形";
 
-    #region Init
-    public void InitAll(SurveySideEffects副作用Node hematologicSideEffects)
+    string 請問您是否有食慾請問您是否有發生周邊感覺神經異常情形不振 = "請問您是否有發生周邊感覺神經異常情形";
+    string 請問您是否會感到疲倦 = "請問您是否會感到疲倦";
+    string 請問您是否有發生紅疹情形 = "請問您是否有發生紅疹情形";
+    string 請問您是否有手足症候群情形 = "請問您是否有手足症候群情形";
+    string 請問您是否有掉髮情形 = "請問您是否有掉髮情形";
+
+    #region Init 1
+    public void Init1All(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         Init副作用Nausea噁心(hematologicSideEffects);
         Init副作用Vomiting嘔吐(hematologicSideEffects);
@@ -24,7 +30,7 @@ public class SurveySideEffectsService
         Init副作用Anorexia食慾不振(hematologicSideEffects);
     }
 
-    public void Init副作用Nausea噁心(SurveySideEffects副作用Node hematologicSideEffects)
+    public void Init副作用Nausea噁心(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.Nausea噁心;
@@ -51,7 +57,7 @@ public class SurveySideEffectsService
         Item副作用.RetriveValue = string.Empty;
     }
 
-    public void Init副作用Vomiting嘔吐(SurveySideEffects副作用Node hematologicSideEffects)
+    public void Init副作用Vomiting嘔吐(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.Vomiting嘔吐;
@@ -78,7 +84,7 @@ public class SurveySideEffectsService
         Item副作用.RetriveValue = string.Empty;
     }
 
-    public void Init副作用MucositisOral口腔炎(SurveySideEffects副作用Node hematologicSideEffects)
+    public void Init副作用MucositisOral口腔炎(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.MucositisOral口腔炎;
@@ -105,7 +111,7 @@ public class SurveySideEffectsService
         Item副作用.RetriveValue = string.Empty;
     }
 
-    public void Init副作用Diarrhea拉肚子(SurveySideEffects副作用Node hematologicSideEffects)
+    public void Init副作用Diarrhea拉肚子(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.Diarrhea拉肚子;
@@ -132,7 +138,7 @@ public class SurveySideEffectsService
         Item副作用.RetriveValue = string.Empty;
     }
 
-    public void Init副作用Constipation便秘(SurveySideEffects副作用Node hematologicSideEffects)
+    public void Init副作用Constipation便秘(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.Constipation便秘;
@@ -159,7 +165,7 @@ public class SurveySideEffectsService
         Item副作用.RetriveValue = string.Empty;
     }
 
-    public void Init副作用Anorexia食慾不振(SurveySideEffects副作用Node hematologicSideEffects)
+    public void Init副作用Anorexia食慾不振(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.Anorexia食慾不振;
@@ -186,7 +192,7 @@ public class SurveySideEffectsService
         Item副作用.RetriveValue = string.Empty;
     }
 
-    public void InitEmpty(SurveySideEffects副作用Node hematologicSideEffects)
+    public void InitEmpty(Survey1SideEffects副作用Node hematologicSideEffects)
     {
         GradeItemSideEffectsItem Item副作用;
         Item副作用 = hematologicSideEffects.Diarrhea拉肚子;
@@ -214,8 +220,9 @@ public class SurveySideEffectsService
     }
     #endregion
 
-    public void Update副作用All(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects副作用Node)
+    #region Update副作用 1
+    public void Update副作用1All(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects副作用Node)
     {
         Update副作用Nausea噁心(main臨床資料, surveySideEffects副作用Node);
         Update副作用Vomiting嘔吐(main臨床資料, surveySideEffects副作用Node);
@@ -226,7 +233,7 @@ public class SurveySideEffectsService
     }
 
     public void Update副作用Nausea噁心(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects)
+        Survey1SideEffects副作用Node surveySideEffects)
     {
         var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
         Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
@@ -247,7 +254,7 @@ public class SurveySideEffectsService
     }
 
     public void Update副作用Vomiting嘔吐(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects)
+        Survey1SideEffects副作用Node surveySideEffects)
     {
         var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
         Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
@@ -270,7 +277,7 @@ public class SurveySideEffectsService
     }
 
     public void Update副作用MucositisOral口腔炎(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects)
+        Survey1SideEffects副作用Node surveySideEffects)
     {
         var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
         Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
@@ -293,7 +300,7 @@ public class SurveySideEffectsService
     }
 
     public void Update副作用Diarrhea拉肚子(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects)
+        Survey1SideEffects副作用Node surveySideEffects)
     {
         var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
         Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
@@ -316,7 +323,7 @@ public class SurveySideEffectsService
     }
 
     public void Update副作用Constipation便秘(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects)
+        Survey1SideEffects副作用Node surveySideEffects)
     {
         var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
         Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
@@ -339,7 +346,7 @@ public class SurveySideEffectsService
     }
 
     public void Update副作用Anorexia食慾不振(Main臨床資料 main臨床資料,
-        SurveySideEffects副作用Node surveySideEffects)
+        Survey1SideEffects副作用Node surveySideEffects)
     {
         var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
         Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
@@ -360,5 +367,299 @@ public class SurveySideEffectsService
         else if (question.Answer == "5")
             surveySideEffects.Anorexia食慾不振.Grade4.ResetCssClassFound();
     }
+
+    #endregion
+
+    #region Init 2
+    public void Init2All(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        Init副作用PeripheralNeuropathy周邊感覺神經異常(hematologicSideEffects);
+        Init副作用Fatigue疲倦(hematologicSideEffects);
+        Init副作用SkinRash紅疹(hematologicSideEffects);
+        Init副作用HandFootSyndrome手足症候群(hematologicSideEffects);
+        Init副作用Alopecia掉髮(hematologicSideEffects);
+    }
+
+    public void Init副作用PeripheralNeuropathy周邊感覺神經異常(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = hematologicSideEffects.PeripheralNeuropathy周邊感覺神經異常;
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"感覺輕微異常，但沒有影響到日常生活功能";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"因感覺異常，輕微影響日常生活能力(如上街購物、煮飯、做家事等)";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"因感覺異常，嚴重影響日常生活自我照顧能力";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"因周邊神經異常相當嚴重需緊急住院治療";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+        Item副作用.RetriveValue = string.Empty;
+    }
+
+    public void Init副作用Fatigue疲倦(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = hematologicSideEffects.Fatigue疲倦;
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"有時感到疲倦，但休息後可緩解";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"感到疲倦時，無法透過休息緩解／已影響日常家務活動(穿衣、洗澡等)";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"疲倦程度已經影響生活無法自理";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+        Item副作用.RetriveValue = string.Empty;
+    }
+
+    public void Init副作用SkinRash紅疹(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = hematologicSideEffects.SkinRash紅疹;
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"皮膚發生些微紅斑／肌膚乾燥／脫屑";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"皮膚發生中度紅疹／皮膚脫屑且腫脹、潮濕";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"除皺褶以外的皮膚皆發生脫屑且腫脹、潮濕／紅疹因擦傷等引起的出血";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"皮膚發生潰瘍或壞死／紅疹發生自發性出血";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+        Item副作用.RetriveValue = string.Empty;
+    }
+
+    public void Init副作用HandFootSyndrome手足症候群(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = hematologicSideEffects.HandFootSyndrome手足症候群;
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"輕微紅腫、脫皮，不影響日常生活";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"有水泡、破皮，有些微影響日常生活";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"有水泡、破皮、出血伴隨疼痛，嚴重影響日常生活";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+        Item副作用.RetriveValue = string.Empty;
+    }
+
+    public void Init副作用Alopecia掉髮(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = hematologicSideEffects.Alopecia掉髮;
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"掉髮量少於一半(<50%)，外觀無明顯變化／不需使用假髮或髮片";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"掉髮量大於一半 (≥50%)，外觀有明顯變化／會需使用假髮或髮片";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+        Item副作用.RetriveValue = string.Empty;
+    }
+
+    public void InitEmpty(Survey2SideEffects副作用Node hematologicSideEffects)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = hematologicSideEffects.PeripheralNeuropathy周邊感覺神經異常;
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"否";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+        Item副作用.RetriveValue = string.Empty;
+    }
+    #endregion
+
+    #region Update副作用 2
+    public void Update副作用2All(Main臨床資料 main臨床資料,
+        Survey2SideEffects副作用Node surveySideEffects副作用Node)
+    {
+        Update副作用PeripheralNeuropathy周邊感覺神經異常(main臨床資料, surveySideEffects副作用Node);
+        Update副作用Fatigue疲倦(main臨床資料, surveySideEffects副作用Node);
+        Update副作用SkinRash紅疹(main臨床資料, surveySideEffects副作用Node);
+        Update副作用HandFootSyndrome手足症候群(main臨床資料, surveySideEffects副作用Node);
+        Update副作用Alopecia掉髮(main臨床資料, surveySideEffects副作用Node);
+    }
+
+    public void Update副作用PeripheralNeuropathy周邊感覺神經異常(Main臨床資料 main臨床資料,
+        Survey2SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有食慾請問您是否有發生周邊感覺神經異常情形不振));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade4.ResetCssClassFound();
+    }
+
+    public void Update副作用Fatigue疲倦(Main臨床資料 main臨床資料,
+        Survey2SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否會感到疲倦));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Fatigue疲倦.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Fatigue疲倦.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Fatigue疲倦.Grade3.ResetCssClassFound();
+    }
+
+    public void Update副作用SkinRash紅疹(Main臨床資料 main臨床資料,
+        Survey2SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有發生紅疹情形));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.SkinRash紅疹.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.SkinRash紅疹.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.SkinRash紅疹.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.SkinRash紅疹.Grade4.ResetCssClassFound();
+    }
+
+    public void Update副作用HandFootSyndrome手足症候群(Main臨床資料 main臨床資料,
+        Survey2SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有手足症候群情形));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.HandFootSyndrome手足症候群.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.HandFootSyndrome手足症候群.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.HandFootSyndrome手足症候群.Grade3.ResetCssClassFound();
+    }
+
+    public void Update副作用Alopecia掉髮(Main臨床資料 main臨床資料,
+        Survey2SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有掉髮情形));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Alopecia掉髮.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Alopecia掉髮.Grade2.ResetCssClassFound();
+    }
+    #endregion
 
 }

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace CTMS.DataModel.Models.ClinicalInformation
 {
-    public class SurveySideEffects副作用Node
+    public class Survey1SideEffects副作用Node
     {
         public VisitCodeModel VisitCode { get; set; } = new();
         public GradeItemSideEffectsItem Nausea噁心 { get; set; } = new();
