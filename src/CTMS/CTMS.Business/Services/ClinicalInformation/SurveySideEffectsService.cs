@@ -19,15 +19,102 @@ public class SurveySideEffectsService
     string 請問您是否有手足症候群情形 = "請問您是否有手足症候群情形";
     string 請問您是否有掉髮情形 = "請問您是否有掉髮情形";
 
-    #region Init 1
-    public void Init1All(Survey1SideEffects副作用Node hematologicSideEffects)
+    private readonly SurveyService surveyService;
+    Survey問卷 survey問卷 = new();
+
+    public SurveySideEffectsService(SurveyService surveyService)
     {
-        Init副作用Nausea噁心(hematologicSideEffects);
-        Init副作用Vomiting嘔吐(hematologicSideEffects);
-        Init副作用MucositisOral口腔炎(hematologicSideEffects);
-        Init副作用Diarrhea拉肚子(hematologicSideEffects);
-        Init副作用Constipation便秘(hematologicSideEffects);
-        Init副作用Anorexia食慾不振(hematologicSideEffects);
+        this.surveyService = surveyService;
+    }
+
+    #region Init 1
+    public void Init1All(Survey1SideEffects副作用Node survey1SideEffects副作用Node)
+    {
+        //Init副作用Nausea噁心(survey1SideEffects副作用Node);
+        //Init副作用Vomiting嘔吐(survey1SideEffects副作用Node);
+        //Init副作用MucositisOral口腔炎(survey1SideEffects副作用Node);
+        //Init副作用Diarrhea拉肚子(survey1SideEffects副作用Node);
+        //Init副作用Constipation便秘(survey1SideEffects副作用Node);
+        //Init副作用Anorexia食慾不振(survey1SideEffects副作用Node);
+
+        surveyService.Read(survey問卷);
+        Question question;
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否感到噁心));
+        Init副作用(question, survey1SideEffects副作用Node.Nausea噁心);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有嘔吐情形));
+        Init副作用(question, survey1SideEffects副作用Node.Vomiting嘔吐);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有發生口腔黏膜炎));
+        Init副作用(question, survey1SideEffects副作用Node.MucositisOral口腔炎);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有腹瀉情形));
+        Init副作用(question, survey1SideEffects副作用Node.Diarrhea拉肚子);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有便秘情形));
+        Init副作用(question, survey1SideEffects副作用Node.Constipation便秘);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有食慾不振));
+        Init副作用(question, survey1SideEffects副作用Node.Anorexia食慾不振);
+    }
+
+    public void Init副作用(Question question, GradeItemSideEffectsItem gradeItemSideEffectsItem)
+    {
+        GradeItemSideEffectsItem Item副作用;
+        Item副作用 = gradeItemSideEffectsItem;
+        Reset(Item副作用);
+
+        for (int i = 0; i < question.Options.Count; i++)
+        {
+            if(i==1)
+            {
+                Item副作用.Grade1.Title = question.Options[i].Label;
+            }
+            else if (i == 2)
+            {
+                Item副作用.Grade2.Title = question.Options[i].Label;
+            }
+            else if (i == 3 )
+            {
+                Item副作用.Grade3.Title = question.Options[i].Label;
+            }
+            else if (i == 4)
+            {
+                Item副作用.Grade4.Title = question.Options[i].Label;
+            }
+        }
+    }
+
+    void Reset(GradeItemSideEffectsItem Item副作用)
+    {
+        Item副作用.RetriveValue = string.Empty;
+
+        Item副作用.Grade1.ResetCssClassNotFound();
+        Item副作用.Grade1.Title = $"";
+        Item副作用.Grade1.GradeValue1 = "";
+        Item副作用.Grade1.GradeValue2 = "";
+
+        Item副作用.Grade2.ResetCssClassNotFound();
+        Item副作用.Grade2.Title = $"";
+        Item副作用.Grade2.GradeValue1 = "";
+        Item副作用.Grade2.GradeValue2 = "";
+
+        Item副作用.Grade3.ResetCssClassNotFound();
+        Item副作用.Grade3.Title = $"";
+        Item副作用.Grade3.GradeValue1 = "";
+        Item副作用.Grade3.GradeValue2 = "";
+
+        Item副作用.Grade4.ResetCssClassNotFound();
+        Item副作用.Grade4.Title = $"";
+        Item副作用.Grade4.GradeValue1 = "";
+        Item副作用.Grade4.GradeValue2 = "";
+
+        Item副作用.Grade5.ResetCssClassNotFound();
+        Item副作用.Grade5.Title = $"";
+        Item副作用.Grade5.GradeValue1 = "";
+        Item副作用.Grade5.GradeValue2 = "";
+
     }
 
     public void Init副作用Nausea噁心(Survey1SideEffects副作用Node hematologicSideEffects)
@@ -220,164 +307,32 @@ public class SurveySideEffectsService
     }
     #endregion
 
-    #region Update副作用 1
-    public void Update副作用1All(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects副作用Node)
-    {
-        Update副作用Nausea噁心(main臨床資料, surveySideEffects副作用Node);
-        Update副作用Vomiting嘔吐(main臨床資料, surveySideEffects副作用Node);
-        Update副作用MucositisOral口腔炎(main臨床資料, surveySideEffects副作用Node);
-        Update副作用Diarrhea拉肚子(main臨床資料, surveySideEffects副作用Node);
-        Update副作用Constipation便秘(main臨床資料, surveySideEffects副作用Node);
-        Update副作用Anorexia食慾不振(main臨床資料, surveySideEffects副作用Node);
-    }
-
-    public void Update副作用Nausea噁心(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects)
-    {
-        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
-        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
-            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
-        if (survey化療副作用Node == null) return;
-
-        Question question = survey化療副作用Node.Questions
-            .FirstOrDefault(x => x.Text.Contains(請問您是否感到噁心));
-
-        if (question == null) return;
-
-        if (question.Answer == "2")
-            surveySideEffects.Nausea噁心.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
-            surveySideEffects.Nausea噁心.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
-            surveySideEffects.Nausea噁心.Grade3.ResetCssClassFound();
-    }
-
-    public void Update副作用Vomiting嘔吐(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects)
-    {
-        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
-        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
-            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
-        if (survey化療副作用Node == null) return;
-
-        Question question = survey化療副作用Node.Questions
-            .FirstOrDefault(x => x.Text.Contains(請問您是否有嘔吐情形));
-
-        if (question == null) return;
-
-        if (question.Answer == "2")
-            surveySideEffects.Vomiting嘔吐.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
-            surveySideEffects.Vomiting嘔吐.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
-            surveySideEffects.Vomiting嘔吐.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
-            surveySideEffects.Vomiting嘔吐.Grade4.ResetCssClassFound();
-    }
-
-    public void Update副作用MucositisOral口腔炎(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects)
-    {
-        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
-        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
-            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
-        if (survey化療副作用Node == null) return;
-
-        Question question = survey化療副作用Node.Questions
-            .FirstOrDefault(x => x.Text.Contains(請問您是否有發生口腔黏膜炎));
-
-        if (question == null) return;
-
-        if (question.Answer == "2")
-            surveySideEffects.MucositisOral口腔炎.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
-            surveySideEffects.MucositisOral口腔炎.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
-            surveySideEffects.MucositisOral口腔炎.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
-            surveySideEffects.MucositisOral口腔炎.Grade4.ResetCssClassFound();
-    }
-
-    public void Update副作用Diarrhea拉肚子(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects)
-    {
-        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
-        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
-            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
-        if (survey化療副作用Node == null) return;
-
-        Question question = survey化療副作用Node.Questions
-            .FirstOrDefault(x => x.Text.Contains(請問您是否有腹瀉情形));
-
-        if (question == null) return;
-
-        if (question.Answer == "2")
-            surveySideEffects.Diarrhea拉肚子.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
-            surveySideEffects.Diarrhea拉肚子.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
-            surveySideEffects.Diarrhea拉肚子.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
-            surveySideEffects.Diarrhea拉肚子.Grade4.ResetCssClassFound();
-    }
-
-    public void Update副作用Constipation便秘(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects)
-    {
-        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
-        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
-            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
-        if (survey化療副作用Node == null) return;
-
-        Question question = survey化療副作用Node.Questions
-            .FirstOrDefault(x => x.Text.Contains(請問您是否有便秘情形));
-
-        if (question == null) return;
-
-        if (question.Answer == "2")
-            surveySideEffects.Constipation便秘.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
-            surveySideEffects.Constipation便秘.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
-            surveySideEffects.Constipation便秘.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
-            surveySideEffects.Constipation便秘.Grade4.ResetCssClassFound();
-    }
-
-    public void Update副作用Anorexia食慾不振(Main臨床資料 main臨床資料,
-        Survey1SideEffects副作用Node surveySideEffects)
-    {
-        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
-        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
-            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
-        if (survey化療副作用Node == null) return;
-
-        Question question = survey化療副作用Node.Questions
-            .FirstOrDefault(x => x.Text.Contains(請問您是否有食慾不振));
-
-        if (question == null) return;
-
-        if (question.Answer == "2")
-            surveySideEffects.Anorexia食慾不振.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
-            surveySideEffects.Anorexia食慾不振.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
-            surveySideEffects.Anorexia食慾不振.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
-            surveySideEffects.Anorexia食慾不振.Grade4.ResetCssClassFound();
-    }
-
-    #endregion
-
     #region Init 2
-    public void Init2All(Survey2SideEffects副作用Node hematologicSideEffects)
+    public void Init2All(Survey2SideEffects副作用Node survey2SideEffects副作用Node)
     {
-        Init副作用PeripheralNeuropathy周邊感覺神經異常(hematologicSideEffects);
-        Init副作用Fatigue疲倦(hematologicSideEffects);
-        Init副作用SkinRash紅疹(hematologicSideEffects);
-        Init副作用HandFootSyndrome手足症候群(hematologicSideEffects);
-        Init副作用Alopecia掉髮(hematologicSideEffects);
+        //Init副作用PeripheralNeuropathy周邊感覺神經異常(hematologicSideEffects);
+        //Init副作用Fatigue疲倦(hematologicSideEffects);
+        //Init副作用SkinRash紅疹(hematologicSideEffects);
+        //Init副作用HandFootSyndrome手足症候群(hematologicSideEffects);
+        //Init副作用Alopecia掉髮(hematologicSideEffects);
+
+        surveyService.Read(survey問卷);
+        Question question;
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有食慾請問您是否有發生周邊感覺神經異常情形不振));
+        Init副作用(question, survey2SideEffects副作用Node.PeripheralNeuropathy周邊感覺神經異常);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否會感到疲倦));
+        Init副作用(question, survey2SideEffects副作用Node.Fatigue疲倦);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有發生紅疹情形));
+        Init副作用(question, survey2SideEffects副作用Node.SkinRash紅疹);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有手足症候群情形));
+        Init副作用(question, survey2SideEffects副作用Node.HandFootSyndrome手足症候群);
+        question = survey問卷.化療副作用.Questions
+            .FirstOrDefault(q => q.Text.Contains(請問您是否有掉髮情形));
+        Init副作用(question, survey2SideEffects副作用Node.Alopecia掉髮);
     }
 
     public void Init副作用PeripheralNeuropathy周邊感覺神經異常(Survey2SideEffects副作用Node hematologicSideEffects)
@@ -541,6 +496,156 @@ public class SurveySideEffectsService
         Item副作用.Grade5.GradeValue2 = "";
         Item副作用.RetriveValue = string.Empty;
     }
+    #endregion
+
+    #region Update副作用 1
+    public void Update副作用1All(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects副作用Node)
+    {
+        Update副作用Nausea噁心(main臨床資料, surveySideEffects副作用Node);
+        Update副作用Vomiting嘔吐(main臨床資料, surveySideEffects副作用Node);
+        Update副作用MucositisOral口腔炎(main臨床資料, surveySideEffects副作用Node);
+        Update副作用Diarrhea拉肚子(main臨床資料, surveySideEffects副作用Node);
+        Update副作用Constipation便秘(main臨床資料, surveySideEffects副作用Node);
+        Update副作用Anorexia食慾不振(main臨床資料, surveySideEffects副作用Node);
+    }
+
+    public void Update副作用Nausea噁心(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否感到噁心));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Nausea噁心.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Nausea噁心.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Nausea噁心.Grade3.ResetCssClassFound();
+    }
+
+    public void Update副作用Vomiting嘔吐(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有嘔吐情形));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Vomiting嘔吐.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Vomiting嘔吐.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Vomiting嘔吐.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.Vomiting嘔吐.Grade4.ResetCssClassFound();
+    }
+
+    public void Update副作用MucositisOral口腔炎(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有發生口腔黏膜炎));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.MucositisOral口腔炎.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.MucositisOral口腔炎.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.MucositisOral口腔炎.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.MucositisOral口腔炎.Grade4.ResetCssClassFound();
+    }
+
+    public void Update副作用Diarrhea拉肚子(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有腹瀉情形));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Diarrhea拉肚子.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Diarrhea拉肚子.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Diarrhea拉肚子.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.Diarrhea拉肚子.Grade4.ResetCssClassFound();
+    }
+
+    public void Update副作用Constipation便秘(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有便秘情形));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Constipation便秘.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Constipation便秘.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Constipation便秘.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.Constipation便秘.Grade4.ResetCssClassFound();
+    }
+
+    public void Update副作用Anorexia食慾不振(Main臨床資料 main臨床資料,
+        Survey1SideEffects副作用Node surveySideEffects)
+    {
+        var visitCodeTitle = surveySideEffects.VisitCode.VisitCodeTitle;
+        Survey化療副作用Node survey化療副作用Node = main臨床資料.Survey化療副作用
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (survey化療副作用Node == null) return;
+
+        Question question = survey化療副作用Node.Questions
+            .FirstOrDefault(x => x.Text.Contains(請問您是否有食慾不振));
+
+        if (question == null) return;
+
+        if (question.Answer == "2")
+            surveySideEffects.Anorexia食慾不振.Grade1.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Anorexia食慾不振.Grade2.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Anorexia食慾不振.Grade3.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.Anorexia食慾不振.Grade4.ResetCssClassFound();
+    }
+
     #endregion
 
     #region Update副作用 2

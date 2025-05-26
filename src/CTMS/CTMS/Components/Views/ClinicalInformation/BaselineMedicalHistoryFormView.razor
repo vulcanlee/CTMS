@@ -171,8 +171,8 @@
                     <tr>
                         <td class="w-15 data-title"></td>
                         <td class="w-17 data-title">Genitourinary</td>
-                        <td class="w-17 data-title-Metabolic<br/>(Include Diabetes)</td>
-                    <td class="w-17 data-title">Hematologic-Lymphatic</td>
+                        <td class="w-17 data-title">Metabolic<br />(Include Diabetes)</td>
+                        <td class="w-17 data-title">Hematologic-Lymphatic</td>
                         <td class="w-17 data-title">Musculoskeletal</td>
                         <td class="w-17 data-title">Dermatologic</td>
                     </tr>
@@ -703,10 +703,10 @@
             foreach (var nodeItem in header.Items)
             {
                 ListVisitCode.Add(new DropDownListDataModel()
-                    {
-                        Key = nodeItem.VisitCode.Id,
-                        Name = nodeItem.VisitCode.VisitCodeTitle,
-                    });
+                {
+                    Key = nodeItem.VisitCode.Id,
+                    Name = nodeItem.VisitCode.VisitCodeTitle,
+                });
             }
             if (reset)
             {
@@ -732,9 +732,9 @@
         if (VisitCodeOperateMode == "Add")
         {
             var newRecord = new BaselineMedicalHistoryFormNode()
-                {
-                    VisitCode = visitCodeModel,
-                };
+            {
+                VisitCode = visitCodeModel,
+            };
             header.Items.Add(newRecord);
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();

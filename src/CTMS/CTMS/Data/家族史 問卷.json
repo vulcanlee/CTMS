@@ -1,0 +1,154 @@
+{
+  "title": "家族史問卷",
+  "questions": [
+    {
+      "id": "1.0",
+      "type": "single-choice",
+      "text": "是否有二等親罹患子宮內膜癌(祖母,母親,姊妹,女兒,孫女等)",
+      "options": [
+        {
+          "value": 1,
+          "label": "是"
+        },
+        {
+          "value": 2,
+          "label": "否"
+        },
+        {
+          "value": 3,
+          "label": "不知道"
+        }
+      ]
+    },
+    {
+      "id": "1.1",
+      "type": "single-choice",
+      "text": "確診年紀",
+      "visibilityCondition": {
+        "questionId": "1.0",
+        "anyOf": [ 1 ]
+      }
+    },
+    {
+      "id": "2.0",
+      "type": "single-choice",
+      "text": "是否有二等親罹患卵巢癌(祖母,母親,姊妹,女兒,孫女等)",
+      "options": [
+        {
+          "value": 1,
+          "label": "是"
+        },
+        {
+          "value": 2,
+          "label": "否"
+        },
+        {
+          "value": 3,
+          "label": "不知道"
+        }
+      ]
+    },
+    {
+      "id": "2.1",
+      "type": "single-choice",
+      "text": "確診年紀",
+      "visibilityCondition": {
+        "questionId": "2.0",
+        "anyOf": [ 1 ]
+      }
+    },
+    {
+      "id": "3.0",
+      "type": "single-choice",
+      "text": "是否有二等親罹患乳癌(祖父母,父母親,手足,兒女,孫子女等)",
+      "options": [
+        {
+          "value": 1,
+          "label": "是"
+        },
+        {
+          "value": 2,
+          "label": "否"
+        },
+        {
+          "value": 3,
+          "label": "不知道"
+        }
+      ]
+    },
+    {
+      "id": "3.1",
+      "type": "single-choice",
+      "text": "確診年紀",
+      "visibilityCondition": {
+        "questionId": "3.0",
+        "anyOf": [ 1 ]
+      }
+    },
+    {
+      "id": "4.0",
+      "type": "single-choice",
+      "text": "是否有二等親罹患大腸癌(祖父母,父母親,手足,兒女,孫子女等)",
+      "options": [
+        {
+          "value": 1,
+          "label": "是"
+        },
+        {
+          "value": 2,
+          "label": "否"
+        },
+        {
+          "value": 3,
+          "label": "不知道"
+        }
+      ]
+    },
+    {
+      "id": "4.1",
+      "type": "single-choice",
+      "text": "確診年紀",
+      "visibilityCondition": {
+        "questionId": "4.0",
+        "anyOf": [ 1 ]
+      }
+    },
+    {
+      "id": "5.0",
+      "type": "single-choice",
+      "text": "是否有二等親罹患其他癌種(惡性腫瘤)",
+      "options": [
+        {
+          "value": 1,
+          "label": "是"
+        },
+        {
+          "value": 2,
+          "label": "否"
+        },
+        {
+          "value": 3,
+          "label": "不知道"
+        }
+      ]
+    },
+    {
+      "id": "5.1",
+      "type": "single-choice",
+      "text": "癌種為何",
+      "visibilityCondition": {
+        "questionId": "5.0",
+        "anyOf": [ 1 ]
+      }
+    },
+    {
+      "id": "5.2",
+      "type": "single-choice",
+      "text": "確診年紀",
+      "visibilityCondition": {
+        "questionId": "5.0",
+        "anyOf": []
+      }
+    }
+  ]
+}

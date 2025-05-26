@@ -11,6 +11,13 @@ public class SideEffectsService
     string HemoglobinHb血色素 = "血色素 Hb(g/dL)";
     string PlateletCount血小板 = "血小板 Plt (10^3/μL)";
 
+    private readonly SurveyService surveyService;
+
+    public SideEffectsService(SurveyService surveyService)
+    {
+        this.surveyService = surveyService;
+    }
+
     public void InitAll(HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
         Init血液副作用WhiteBloodCell白血球(hematologicSideEffects);
