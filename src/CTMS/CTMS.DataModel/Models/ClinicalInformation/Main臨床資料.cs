@@ -20,6 +20,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public Survey標靶副作用 Survey標靶副作用 { get; set; } = new();
         public Survey放療副作用 Survey放療副作用 { get; set; } = new();
         public SurveyWhooqol問卷 SurveyWhooqol問卷 { get; set; } = new();
+        public Survey個人史問卷 Survey個人史問卷 { get; set; } = new();
+        public Survey家族史問卷 Survey家族史問卷 { get; set; } = new();
         public HematologicSideEffects血液副作用 HematologicSideEffects血液副作用 { get; set; } = new();
         public Survey1SideEffects副作用 SurveySideEffects副作用1 { get; set; } = new();
         public Survey2SideEffects副作用 SurveySideEffects副作用2 { get; set; } = new();

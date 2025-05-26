@@ -1,0 +1,359 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject SurveyService SurveyService
+
+<PageTitle>臨床資料 家族史</PageTitle>
+
+<div>
+
+    <div class="header" style="display: flex; align-items: center;">
+        <h1 style="margin: 0; flex-grow: 1;">臨床資料 家族史</h1>
+    </div>
+
+    <div>
+        <div>
+            <div>
+                <span>Visit code : </span>
+                <span>
+                    <button class="btn btn-primary mx-2"
+                            @onclick=OnAddVisiteCode>
+                        新增
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-success mx-2"
+                            @onclick=OnEditVisiteCode>
+                        修改
+                    </button>
+                </span>
+                <span>
+                    <button class="btn btn-danger mx-2"
+                            @onclick=OnVisiteCodeDeleteAsync>
+                        刪除
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="flex-grow-1 ms-2">
+                <SfDropDownList @ref="VisitCodeDropDown"
+                                TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                Placeholder="選擇一個值" DataSource="@ListVisitCode"
+                                @bind-Value="@SelectVisitCode" class="flex-grow-1">
+                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                        ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
+                </SfDropDownList>
+            </div>
+        </div>
+
+    </div>
+    @if (data != null)
+    {
+        <div class="view-container">
+            <div class="">
+                @foreach (var item in data.Questions)
+                {
+                    if (item.IsVisible == false)
+                    {
+                        continue;
+                    }
+
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3><span>@item.Id </span>@item.Text</h3>
+                        </div>
+                        <div class="card-body">
+                            @if (item.Options != null && item.Options.Count > 0)
+                            {
+                                foreach (var itemOption in item.Options)
+                                {
+                                    string title = $"{itemOption.Value} {itemOption.Label}";
+
+                                    <div @onclick="() =>
+                                                                                                                      OnOptionChange(item, item.Options, itemOption)">
+                        <span class="mx-3 mdi mdi-24px @itemOption.CheckBoxIcon command-icon-width cursor-pointer"></span>
+                        <span class="card-text my-2 cursor-pointer">@title</span>
+                    </div>
+                                        }
+                                <div>@item.Answer</div>
+                            }
+                            else
+                            {
+                                <SfTextBox @bind-Value="item.Answer" />
+                            }
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                }
+
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary" @onclick=OnSaveAsync>儲存</button>
+            </div>
+        </div>
+    }
+</div>
+
+<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
+                               data=VisitCode
+                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+
+    Survey家族史問卷Node data = new();
+    Survey家族史問卷 header = new();
+
+    #region 操作 Visit Code 用到的物件
+    bool ShowVisitCodeDialog = false;
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string VisitCodeOperateMode = string.Empty;
+    VisitCodeModel VisitCode = new();
+    SfDropDownList<DropDownListDataModel, DropDownListDataModel> VisitCodeDropDown;
+    DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
+    List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+
+        InitData(true);
+    }
+
+    void InitData(bool isFirst = true)
+    {
+        header = patientData.臨床資料.Survey家族史問卷;
+        if (isFirst)
+        {
+            data = header.Items.FirstOrDefault();
+
+            if (data != null)
+            {
+                SurveyService.Reset(data.Questions);
+                foreach (var item in data.Questions)
+                {
+                    SurveyService.RefreshByQuestionChanged(data.Questions, item);
+                }
+            }
+
+            RefreshVisitCode();
+            RefreshDropDwonVisitCode();
+            var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
+            if (itemx != null)
+                SelectVisitCode = itemx;
+        }
+        else
+        {
+            if (SelectVisitCode != null)
+            {
+                data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+            }
+        }
+    }
+
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSaveAsync()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        InitData(false);
+        editMode = false;
+        // <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+        //             IsVisible="@MessageBox.IsVisible"
+        //             Title="@MessageBox.Title" Message="@MessageBox.Body"
+        //             Callback="MessageBox.MessageDelegate" />
+
+        MessageBox.Show("400px", "200px", "資訊", "儲存成功", MessageBox.HiddenAsync);
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        editMode = false;
+        InitData(false);
+    }
+
+    void OnOptionChange(Question question, List<Option> options, Option option)
+    {
+        question.Answer = "";
+        foreach (var item in options)
+        {
+            item.CheckBoxIcon = MagicObjectHelper.CheckBoxBlankIcon;
+        }
+
+        option.CheckBoxIcon = MagicObjectHelper.CheckBoxIcon;
+        question.Answer = option.Value.ToString();
+
+        SurveyService.RefreshByQuestionChanged(data.Questions, question);
+    }
+
+    #region 針對 VisitCode 的方法
+    void OnAddVisiteCode()
+    {
+        VisitCode = new();
+        VisitCodeOperateMode = "Add";
+        ShowVisitCodeDialog = true;
+    }
+
+    void OnEditVisiteCode()
+    {
+        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
+        VisitCodeOperateMode = "Edit";
+        ShowVisitCodeDialog = true;
+    }
+
+    async Task OnVisiteCodeDeleteAsync()
+    {
+        if (SelectVisitCode != null)
+        {
+            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
+            if (checkTask)
+            {
+                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+                if (itemDelete != null)
+                {
+                    SelectVisitCode = null;
+                    data = null;
+                    header.Items.Remove(itemDelete);
+                    patientAdapterModel.JsonData = patientData.ToJson();
+                    await PatientService.UpdateAsync(patientAdapterModel);
+                    RefreshVisitCode();
+                    RefreshDropDwonVisitCode();
+                }
+            }
+        }
+        ShowVisitCodeDialog = false;
+    }
+
+    private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value != null)
+        {
+            var item = header.Items.FirstOrDefault(x => x.VisitCode.Id == args.Value.Key);
+            if (item != null)
+            {
+                data = item;
+            }
+        }
+    }
+
+    void RefreshVisitCode(bool reset = true)
+    {
+        #region VisitCode
+        {
+            ListVisitCode.Clear();
+            if (data != null)
+            {
+
+            }
+            foreach (var nodeItem in header.Items)
+            {
+                ListVisitCode.Add(new DropDownListDataModel()
+                {
+                    Key = nodeItem.VisitCode.Id,
+                    Name = nodeItem.VisitCode.VisitCodeTitle,
+                });
+            }
+            if (reset)
+            {
+                SelectVisitCode = null;
+            }
+        }
+        #endregion
+    }
+    void RefreshDropDwonVisitCode()
+    {
+        // 重置選擇項目
+        SelectVisitCode = null;
+
+        // 手動刷新 DropDownList 元件
+        if (VisitCodeDropDown != null)
+        {
+            InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
+        }
+    }
+
+    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
+    {
+        if (VisitCodeOperateMode == "Add")
+        {
+            var newRecord = new Survey家族史問卷Node()
+            {
+                VisitCode = visitCodeModel,
+            };
+            Survey問卷 survey = new();
+            SurveyService.Read(survey);
+            newRecord.Questions = survey.家族史問卷.Questions;
+
+            header.Items.Add(newRecord);
+            patientData.SyncData();
+            patientAdapterModel.JsonData = patientData.ToJson();
+            await PatientService.UpdateAsync(patientAdapterModel);
+            RefreshVisitCode();
+            RefreshDropDwonVisitCode();
+        }
+        else if (VisitCodeOperateMode == "Edit")
+        {
+            var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
+            if (editItem != null)
+            {
+                data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
+                data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
+                data.VisitCode.Timeline = visitCodeModel.Timeline;
+                patientAdapterModel.JsonData = patientData.ToJson();
+                await PatientService.UpdateAsync(patientAdapterModel);
+                RefreshVisitCode(false);
+                RefreshDropDwonVisitCode();
+                var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
+                if (foo != null)
+                {
+                    SelectVisitCode = foo;
+                }
+                else
+                {
+                    SelectVisitCode = null;
+                }
+            }
+        }
+        ShowVisitCodeDialog = false;
+
+    }
+    #endregion
+}

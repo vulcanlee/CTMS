@@ -10,6 +10,8 @@ public class SurveyService
         survey.放療副作用 = ReadFile("放療副作用.json");
         survey.標靶副作用 = ReadFile("標靶副作用.json");
         survey.whooqol問卷 = ReadFile("whooqol問卷.json");
+        survey.個人史問卷 = ReadFile("個人史問卷.json");
+        survey.家族史問卷 = ReadFile("家族史問卷.json");
     }
 
     public Survey ReadFile(string filename)
