@@ -322,6 +322,12 @@
             SurveyService.Read(survey);
             newRecord.Questions = survey.個人史問卷.Questions;
 
+            SurveyService.Reset(newRecord.Questions);
+            foreach (var item in newRecord.Questions)
+            {
+                SurveyService.RefreshByQuestionChanged(newRecord.Questions, item);
+            }
+
             header.Items.Add(newRecord);
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();
