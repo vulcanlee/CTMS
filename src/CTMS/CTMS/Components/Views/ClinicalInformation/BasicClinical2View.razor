@@ -21,54 +21,209 @@
 
     <div class="px-4">
         <!-- 標題 -->
-        <div class="title-section">
-            <h1>Basic clinical presentation 臨床資訊 <span class="edit-icon"><i class="bi bi-pencil-square"></i>編輯</span></h1>
+        <div class="title-section d-flex align-items-start">
+            <h1 class="mb-0">Basic clinical presentation 臨床資訊</h1>
+            @if (editMode)
+            {
+                <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
+                    <button type="button" class="btn btn-sm btn-primary save-button"
+                            @onclick=OnSave>
+                        儲存
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger cancle-button"
+                            @onclick=OnCancel>
+                        取消
+                    </button>
+                </div>
+            }
+            else
+            {
+                <span class="edit-icon d-flex align-items-center cursor-pointer"
+                      @onclick="OnChangeEditMode">
+                    <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                </span>
+            }
+
         </div>
 
         <div class="row g-3">
             <!-- 第一個表格 - 病人基本資料 -->
             <div class="col-md-4">
                 <div class="info-card patient-info">
-                    <div class="header pink-header">
-                        病人編號 0-20250520074124<br />
-                        <small>(E代表內膜癌, O代表卵巢癌)</small>
+                    <div class="">
+                        <div class="header pink-header">
+                            病人編號 Subject No
+                            <span class="ms-2">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="patientData.臨床資訊.SubjectNo" CssClass="w-100" />
+                                }
+                                else
+                                {
+                                    @patientData.臨床資訊.SubjectNo
+                                }
+                            </span><br/>
+                            <span class="small-info"><small>(E代表內膜癌, O代表卵巢癌)</small></span>
+                        </div>
                     </div>
-                    <div class="sub-header">
-                        臨床資訊 癌別 EC
-                    </div>
+
+
                     <table class="table table-bordered info-table">
                         <tbody>
                             <tr>
+                                <td class="label-column">臨床資訊 癌別</td>
+                                <td class="value-column">
+                                    <div class="">
+                                        @if (editMode)
+                                        {
+                                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                            Placeholder="選擇一個值" DataSource="@ListECOrOCC"
+                                                            @bind-Value="@SelectECOrOCC" class="flex-grow-1">
+                                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                    ValueChange="@OnECOrOCCChanged"></DropDownListEvents>
+                                            </SfDropDownList>
+                                        }
+                                        else
+                                        {
+                                            @patientData.臨床資訊.ECorOC
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="label-column">年齡 (Age)</td>
-                                <td class="value-column">60</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List年齡Age"
+                                                        @bind-Value="@Select年齡Age" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On年齡AgeChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.Age
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">月經狀態</td>
-                                <td class="value-column">0</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List月經狀態"
+                                                        @bind-Value="@Select月經狀態" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On月經狀態Changed"></DropDownListEvents>
+                                        </SfDropDownList>
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.MenstrualStatus
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">身高 (Height) cm</td>
-                                <td class="value-column">158</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List身高Height"
+                                                        @bind-Value="@Select身高Height" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On身高HeightChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.Height
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">體重 (BW) kg</td>
-                                <td class="value-column">66</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List體重BW"
+                                                        @bind-Value="@Select體重BW" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On體重BWChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.Weight
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">BMI (kg / m²)</td>
-                                <td class="value-column">26.4</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.BMI" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.BMI
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">體表面積 (BSA) m²</td>
-                                <td class="value-column">1.70</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.BSA" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.BSA
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">腰圍 (AC) cm</td>
-                                <td class="value-column">80</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.AbdominalCircumference" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.AbdominalCircumference
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">日常體能狀態 (PS)</td>
-                                <td class="value-column">0</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List日常體能狀態PS"
+                                                        @bind-Value="@Select日常體能狀態PS" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On日常體能狀態PSChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.PerformanceStatus
+                                    }
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -255,31 +410,37 @@
     #region 下拉選單的事件
     private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.PerformanceStatus = args.Value.Key;
     }
 
     private async Task On體重BWChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.Weight = args.Value.Key;
     }
 
     private async Task On身高HeightChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.Height = args.Value.Key;
     }
 
     private async Task On月經狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.MenstrualStatus = args.Value.Key;
     }
 
     private async Task On年齡AgeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.Age = args.Value.Key;
     }
 
     private async Task OnECOrOCCChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.ECorOC = args.Value.Key;
         patientData.臨床資訊.CalculateCancerType();
     }
