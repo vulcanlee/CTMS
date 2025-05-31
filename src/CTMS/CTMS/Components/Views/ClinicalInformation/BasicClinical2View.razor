@@ -239,32 +239,95 @@
                     <table class="table table-bordered info-table">
                         <tbody>
                             <tr>
-                                <td class="label-column">癌症分期<br />(2023 FIGO)</td>
-                                <td class="value-column">1</td>
+                                <td class="label-column">癌症分期(2023 FIGO)</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.FIGOStaging" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.FIGOStaging
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">AJCC c stage</td>
-                                <td class="value-column">T1aN0M0</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.AJCCClinicalStage" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.AJCCClinicalStage
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">AJCC p stage</td>
-                                <td class="value-column">T1aN0M0</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.AJCCPathologicalStage" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.AJCCPathologicalStage
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">組織型態</td>
-                                <td class="value-column">Endometrioid<br />adenocarcinoma</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.HistologicalType" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.HistologicalType
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">MMR protein</td>
-                                <td class="value-column">dmmr</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.MMRProtein" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.MMRProtein
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">p53</td>
-                                <td class="value-column">postive</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.P53" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.P53
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label-column">Hormon status</td>
-                                <td class="value-column">ER + PR+</td>
+                                <td class="value-column">
+                                    @if (editMode)
+                                    {
+                                        <SfTextBox @bind-Value="patientData.臨床資訊.HormonStatus" CssClass="w-100" />
+                                    }
+                                    else
+                                    {
+                                        @patientData.臨床資訊.HormonStatus
+                                    }
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -283,10 +346,7 @@
                 </div>
                 <div class="info-card report-card mt-3">
                     <div class="header blue-header">
-                        Report
-                    </div>
-                    <div class="empty-report-area">
-                        <!-- 空白的 Report 區域 -->
+                        上傳
                     </div>
                 </div>
             </div>
