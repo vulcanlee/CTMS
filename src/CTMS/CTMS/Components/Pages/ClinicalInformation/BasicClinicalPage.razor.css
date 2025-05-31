@@ -13,6 +13,15 @@
     z-index: 1000;
 }
 
+/* 更新返回按鈕容器與按鈕樣式，使背景色與畫面同寬 */
+.back-button-container {
+    background-color: #e9ecef;
+    padding: 0px 6px;
+    width: 100vw; /* 視窗寬度 */
+    /*position: relative;*/
+    left: 0;
+}
+
 button {
     padding: 5px 10px;
     margin-right: 5px;
@@ -34,25 +43,23 @@ button {
 }
 
 .back-btn {
-    background-color: #333;
-    color: white;
+    color: #333;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
     margin-right: auto; /* Push the button to the left */
     font-size: 14px;
-    position: absolute;
+    /*position: absolute;*/
     left: 15px;
 }
 
     .back-btn:hover {
-        background-color: #555;
+        color: black; /* Change color on hover */
     }
 
 .page-title {
     font-size: 16px;
     text-align: center; /* Center the text inside its container */
-    cursor: pointer;
 }
 
 .upload-btn {
@@ -70,6 +77,7 @@ button {
     background-color: #fff;
     overflow: hidden;
     font-size: 24px;
+    padding-bottom:4px;
 }
 
 .header {

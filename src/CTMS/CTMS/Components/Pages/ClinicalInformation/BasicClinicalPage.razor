@@ -24,15 +24,16 @@
 else
 {
     <div>
-        <div class="page-top">
+        <div class="back-button-container">
             <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
-            <span class="page-title">Basic clinical presentation 臨床資訊</span>
+            @* <a href="/" class="back-btn"><i class="bi bi-arrow-left"></i> 返回上頁</a> *@
+            @* <span class="page-title">Basic clinical presentation 臨床資訊</span> *@
         </div>
     </div>
 
-    <div class="py-5 mw-100">
+    <div class="mw-100">
         <div class="container-custom">
-            <BasicClinicalView Code=@Code />
+            <BasicClinical2View Code=@Code />
         </div>
     </div>
 }

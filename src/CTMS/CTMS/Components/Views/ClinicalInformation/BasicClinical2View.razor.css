@@ -1,0 +1,119 @@
+﻿.patient-info-page {
+    font-family: Arial, sans-serif;
+    padding-bottom: 20px;
+}
+
+/* 更新返回按鈕容器與按鈕樣式，使背景色與畫面同寬 */
+.back-button-container {
+    background-color: #e9ecef;
+    padding: 0px 6px;
+    width: 100vw; /* 視窗寬度 */
+    position: relative;
+    left: 0;
+}
+
+.back-btn {
+    color: #212529;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.title-section {
+    margin-bottom: 20px;
+    color: #3776ab;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+    .title-section h2 {
+        font-size: 24px;
+    }
+
+.edit-icon {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #3776ab; /* 改為藍色，與標題顏色一致 */
+}
+
+.info-card {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.header {
+    padding: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.pink-header {
+    background-color: #f8d7da;
+}
+
+.yellow-header {
+    background-color: #fff3cd;
+}
+
+.green-header {
+    background-color: #d1e7dd;
+}
+
+.blue-header {
+    background-color: #cfe2ff;
+}
+
+.sub-header {
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.info-table {
+    margin-bottom: 0;
+}
+
+.label-column {
+    width: 50%;
+    background-color: #f8f9fa;
+}
+
+.value-column {
+    width: 50%;
+}
+
+.empty-image-area, .empty-report-area {
+    height: 200px;
+    background-color: #f8f9fa;
+}
+
+.empty-report-area {
+    height: 150px;
+}
+
+.navigation-buttons {
+    margin-top: 20px;
+}
+
+.btn-pink {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.btn-yellow {
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+.btn-green {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.btn-blue {
+    background-color: #cfe2ff;
+    border-color: #b6d4fe;
+}

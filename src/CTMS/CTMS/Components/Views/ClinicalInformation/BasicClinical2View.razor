@@ -1,0 +1,329 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+
+<PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
+
+<div class="patient-info-page">
+    <!-- 返回按鈕 - 修改為全寬背景 -->
+    @* <div class="back-button-container">
+        <a href="/" class="back-btn"><i class="bi bi-arrow-left"></i> 返回上頁</a>
+    </div> *@
+
+    <div class="px-4">
+        <!-- 標題 -->
+        <div class="title-section">
+            <h1>Basic clinical presentation 臨床資訊 <span class="edit-icon"><i class="bi bi-pencil-square"></i>編輯</span></h1>
+        </div>
+
+        <div class="row g-3">
+            <!-- 第一個表格 - 病人基本資料 -->
+            <div class="col-md-4">
+                <div class="info-card patient-info">
+                    <div class="header pink-header">
+                        病人編號 0-20250520074124<br />
+                        <small>(E代表內膜癌, O代表卵巢癌)</small>
+                    </div>
+                    <div class="sub-header">
+                        臨床資訊 癌別 EC
+                    </div>
+                    <table class="table table-bordered info-table">
+                        <tbody>
+                            <tr>
+                                <td class="label-column">年齡 (Age)</td>
+                                <td class="value-column">60</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">月經狀態</td>
+                                <td class="value-column">0</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">身高 (Height) cm</td>
+                                <td class="value-column">158</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">體重 (BW) kg</td>
+                                <td class="value-column">66</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">BMI (kg / m²)</td>
+                                <td class="value-column">26.4</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">體表面積 (BSA) m²</td>
+                                <td class="value-column">1.70</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">腰圍 (AC) cm</td>
+                                <td class="value-column">80</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">日常體能狀態 (PS)</td>
+                                <td class="value-column">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 第二個表格 - 癌症狀態 -->
+            <div class="col-md-4">
+                <div class="info-card cancer-info">
+                    <div class="header yellow-header">
+                        癌症狀態 癌別 子宮內膜癌
+                    </div>
+                    <table class="table table-bordered info-table">
+                        <tbody>
+                            <tr>
+                                <td class="label-column">癌症分期<br />(2023 FIGO)</td>
+                                <td class="value-column">1</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">AJCC c stage</td>
+                                <td class="value-column">T1aN0M0</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">AJCC p stage</td>
+                                <td class="value-column">T1aN0M0</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">組織型態</td>
+                                <td class="value-column">Endometrioid<br />adenocarcinoma</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">MMR protein</td>
+                                <td class="value-column">dmmr</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">p53</td>
+                                <td class="value-column">postive</td>
+                            </tr>
+                            <tr>
+                                <td class="label-column">Hormon status</td>
+                                <td class="value-column">ER + PR+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 第三和第四個區塊 - CT Image 與 Report -->
+            <div class="col-md-4">
+                <div class="info-card image-card">
+                    <div class="header green-header">
+                        CT Image
+                    </div>
+                    <div class="empty-image-area">
+                        <!-- 空白的 CT Image 區域 -->
+                    </div>
+                </div>
+                <div class="info-card report-card mt-3">
+                    <div class="header blue-header">
+                        Report
+                    </div>
+                    <div class="empty-report-area">
+                        <!-- 空白的 Report 區域 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部導航按鈕 -->
+        <div class="navigation-buttons">
+            <div class="row g-2">
+                <div class="col-2">
+                    <button class="btn btn-light btn-pink w-100">臨床資料</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-light btn-yellow w-100">抽血資料</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-light btn-green w-100">CTCAE 5.0</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-light btn-blue w-100">問卷</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-light btn-pink w-100">追蹤資料</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-light btn-yellow w-100">風險評估</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+    bool editMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate fetching data from a service
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        patientData.臨床資訊.CalculateCancerType();
+        DropDownListDataInit();
+    }
+
+
+    List<DropDownListDataModel> ListECOrOCC = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectECOrOCC = new DropDownListDataModel();
+    List<DropDownListDataModel> List年齡Age = new List<DropDownListDataModel>();
+    DropDownListDataModel Select年齡Age = new DropDownListDataModel();
+    List<DropDownListDataModel> List月經狀態 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select月經狀態 = new DropDownListDataModel();
+    List<DropDownListDataModel> List身高Height = new List<DropDownListDataModel>();
+    DropDownListDataModel Select身高Height = new DropDownListDataModel();
+    List<DropDownListDataModel> List體重BW = new List<DropDownListDataModel>();
+    DropDownListDataModel Select體重BW = new DropDownListDataModel();
+    List<DropDownListDataModel> List日常體能狀態PS = new List<DropDownListDataModel>();
+    DropDownListDataModel Select日常體能狀態PS = new DropDownListDataModel();
+
+    void DropDownListDataInit()
+    {
+        #region 癌別
+        {
+            ListECOrOCC = DropDownListDataService.Get癌別();
+            var item = ListECOrOCC.FirstOrDefault(x => x.Key == patientData.臨床資訊.ECorOC);
+            if (item != null)
+                SelectECOrOCC = item;
+        }
+        #endregion
+
+        #region 年齡Age
+        {
+            List年齡Age = DropDownListDataService.GetAge();
+            var item = List年齡Age.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            if (item != null)
+                Select年齡Age = item;
+        }
+        #endregion
+
+        #region 月經狀態
+        {
+            List月經狀態 = DropDownListDataService.Get月經狀態();
+            var item = List月經狀態.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            if (item != null)
+                Select月經狀態 = item;
+        }
+        #endregion
+
+        #region 身高Height
+        {
+            List身高Height = DropDownListDataService.Get身高Height();
+            var item = List身高Height.FirstOrDefault(x => x.Key == patientData.臨床資訊.Height);
+            if (item != null)
+                Select身高Height = item;
+        }
+        #endregion
+
+        #region 體重BW
+        {
+            List體重BW = DropDownListDataService.Get體重BW();
+            var item = List體重BW.FirstOrDefault(x => x.Key == patientData.臨床資訊.Weight);
+            if (item != null)
+                Select體重BW = item;
+        }
+        #endregion
+
+        #region 日常體能狀態PS
+        {
+            List日常體能狀態PS = DropDownListDataService.Get日常體能狀態PS();
+            var item = List日常體能狀態PS.FirstOrDefault(x => x.Key == patientData.臨床資訊.PerformanceStatus);
+            if (item != null)
+                Select日常體能狀態PS = item;
+        }
+        #endregion
+
+    }
+
+    #region 下拉選單的事件
+    private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.PerformanceStatus = args.Value.Key;
+    }
+
+    private async Task On體重BWChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Weight = args.Value.Key;
+    }
+
+    private async Task On身高HeightChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Height = args.Value.Key;
+    }
+
+    private async Task On月經狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.MenstrualStatus = args.Value.Key;
+    }
+
+    private async Task On年齡AgeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.Age = args.Value.Key;
+    }
+
+    private async Task OnECOrOCCChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        patientData.臨床資訊.ECorOC = args.Value.Key;
+        patientData.臨床資訊.CalculateCancerType();
+    }
+
+    #endregion
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        editMode = false;
+    }
+
+    void On臨床資料()
+    {
+        var url = $"/ClinicalInformation/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    void On抽血資料()
+    {
+        var url = $"/BloodTest/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    void On副作用()
+    {
+        var url = $"/SideEffectPage/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    void On問卷()
+    {
+        var url = $"/Survey/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+}
