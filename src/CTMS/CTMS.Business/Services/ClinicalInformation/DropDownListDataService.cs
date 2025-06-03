@@ -1,8 +1,10 @@
 ﻿using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -73,12 +75,87 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> GetFIGO癌症分期()
+        {
+                List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"I", Name = $"I" });
+            result.Add(new DropDownListDataModel() { Key = $"IA", Name = $"IA" });
+            result.Add(new DropDownListDataModel() { Key = $"IB", Name = $"IB" });
+            result.Add(new DropDownListDataModel() { Key = $"II", Name = $"II" });
+            result.Add(new DropDownListDataModel() { Key = $"III", Name = $"III" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIA", Name = $"IIIA" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIB", Name = $"IIIB" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC", Name = $"IIIC" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC1", Name = $"IIIC1" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC2", Name = $"IIIC2" });
+            result.Add(new DropDownListDataModel() { Key = $"IV", Name = $"IV" });
+            result.Add(new DropDownListDataModel() { Key = $"IVA", Name = $"IVA" });
+            result.Add(new DropDownListDataModel() { Key = $"IVB", Name = $"IVB" });
+            return result;
+        }
+
         public List<DropDownListDataModel> Get日常體能狀態PS()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             result.Add(new DropDownListDataModel() { Key = $"0", Name = $"0" });
             result.Add(new DropDownListDataModel() { Key = $"1", Name = $"1" });
             result.Add(new DropDownListDataModel() { Key = $"2", Name = $"2" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetAJCC_CP_Stage()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"TX NX  M0", Name = $"TX NX  M0" });
+            result.Add(new DropDownListDataModel() { Key = $"T0  N1 M1", Name = $"T0  N1 M1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1 N0(i+)", Name = $"T1 N0(i+)" });
+            result.Add(new DropDownListDataModel() { Key = $"T1a N1", Name = $"T1a N1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1b N1mi", Name = $"T1b N1mi" });
+            result.Add(new DropDownListDataModel() { Key = $"T2 N1a", Name = $"T2 N1a" });
+            result.Add(new DropDownListDataModel() { Key = $"T3 N2", Name = $"T3 N2" });
+            result.Add(new DropDownListDataModel() { Key = $"T3a N2mi", Name = $"T3a N2mi" });
+            result.Add(new DropDownListDataModel() { Key = $"T3b N2a", Name = $"T3b N2a" });
+            result.Add(new DropDownListDataModel() { Key = $"T4", Name = $"T4" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetMMRProtein()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"PMS2 Preserved", Name = $"PMS2 Preserved" });
+            result.Add(new DropDownListDataModel() { Key = $"PMS2 Loss", Name = $"PMS2 Loss" });
+            result.Add(new DropDownListDataModel() { Key = $"MSH6 Preserved", Name = $"MSH6 Preserved" });
+            result.Add(new DropDownListDataModel() { Key = $"MSH6 Loss", Name = $"MSH6 Loss" });
+            result.Add(new DropDownListDataModel() { Key = $"MLH1 Preserved", Name = $"MLH1 Preserved" });
+            result.Add(new DropDownListDataModel() { Key = $"MLH1 Loss", Name = $"MLH1 Loss" });
+            result.Add(new DropDownListDataModel() { Key = $"MSH2 Preserved", Name = $"MSH2 Preserved" });
+            result.Add(new DropDownListDataModel() { Key = $"MSH2 Loss", Name = $"MSH2 Loss" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetP53()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"Wild - type", Name = $"Wild - type" });
+            result.Add(new DropDownListDataModel() { Key = $"overexpression", Name = $"overexpression" });
+            result.Add(new DropDownListDataModel() { Key = $"mosaic staining pattern", Name = $"mosaic staining pattern" });
+            result.Add(new DropDownListDataModel() { Key = $"non - abnormal expression", Name = $"non - abnormal expression" });
+            result.Add(new DropDownListDataModel() { Key = $"Positive", Name = $"Positive" });
+            result.Add(new DropDownListDataModel() { Key = $"Not mutant", Name = $"Not mutant" });
+            result.Add(new DropDownListDataModel() { Key = $"non - abnormal expression", Name = $"non - abnormal expression" });
+            result.Add(new DropDownListDataModel() { Key = $"aberrant expression", Name = $"aberrant expression" });
+            result.Add(new DropDownListDataModel() { Key = $"Abnormal", Name = $"Abnormal" });
+            result.Add(new DropDownListDataModel() { Key = $"Negative", Name = $"Negative" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetHormonStatus()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"ER Positive(%)", Name = $"ER Positive(%)" });
+            result.Add(new DropDownListDataModel() { Key = $"ER Negative", Name = $"ER Negative" });
+            result.Add(new DropDownListDataModel() { Key = $"PR Positive(%)", Name = $"PR Positive(%)" });
+            result.Add(new DropDownListDataModel() { Key = $"PR Negative", Name = $"PR Negative" });
             return result;
         }
 

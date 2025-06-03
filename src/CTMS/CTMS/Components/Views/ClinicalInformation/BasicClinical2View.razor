@@ -243,7 +243,13 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.FIGOStaging" CssClass="w-100" />
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListFIGO癌症分期"
+                                                        @bind-Value="@SelectFIGO癌症分期" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnFIGO癌症分期Changed"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
@@ -256,7 +262,13 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.AJCCClinicalStage" CssClass="w-100" />
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_C_Stage"
+                                                        @bind-Value="@SelectAJCC_C_Stage" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnAJCC_C_StageChanged"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
@@ -269,7 +281,13 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.AJCCPathologicalStage" CssClass="w-100" />
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_P_Stage"
+                                                        @bind-Value="@SelectAJCC_P_Stage" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnAJCC_P_StageChanged"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
@@ -282,7 +300,7 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.HistologicalType" CssClass="w-100" />
+                                        @patientData.臨床資訊.HistologicalType
                                     }
                                     else
                                     {
@@ -295,7 +313,13 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.MMRProtein" CssClass="w-100" />
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListMMRProtein"
+                                                        @bind-Value="@SelectMMRProtein" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnMMRProteinChanged"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
@@ -308,7 +332,13 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.P53" CssClass="w-100" />
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListP53"
+                                                        @bind-Value="@SelectP53" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnP53Changed"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
@@ -321,7 +351,13 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.HormonStatus" CssClass="w-100" />
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListHormonStatus"
+                                                        @bind-Value="@SelectHormonStatus" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnHormonStatusChanged"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
@@ -408,6 +444,18 @@
     DropDownListDataModel Select體重BW = new DropDownListDataModel();
     List<DropDownListDataModel> List日常體能狀態PS = new List<DropDownListDataModel>();
     DropDownListDataModel Select日常體能狀態PS = new DropDownListDataModel();
+    List<DropDownListDataModel> ListFIGO癌症分期 = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectFIGO癌症分期 = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_C_Stage = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_C_Stage = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_P_Stage = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_P_Stage = new DropDownListDataModel();
+    List<DropDownListDataModel> ListMMRProtein = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectMMRProtein = new DropDownListDataModel();
+    List<DropDownListDataModel> ListP53 = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectP53 = new DropDownListDataModel();
+    List<DropDownListDataModel> ListHormonStatus = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectHormonStatus = new DropDownListDataModel();
 
     void DropDownListDataInit()
     {
@@ -465,9 +513,105 @@
         }
         #endregion
 
+        #region FIGO癌症分期
+        {
+            ListFIGO癌症分期 = DropDownListDataService.GetFIGO癌症分期();
+            var item = ListFIGO癌症分期.FirstOrDefault(x => 
+                x.Key == patientData.臨床資訊.FIGOStaging);
+            if (item != null)
+                SelectFIGO癌症分期 = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_Stage
+        {
+            ListAJCC_C_Stage = DropDownListDataService.GetAJCC_CP_Stage();
+            var item = ListAJCC_C_Stage.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCClinicalStage);
+            if (item != null)
+                SelectAJCC_C_Stage = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_Stage
+        {
+            ListAJCC_P_Stage = DropDownListDataService.GetAJCC_CP_Stage();
+            var item = ListAJCC_P_Stage.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCPathologicalStage);
+            if (item != null)
+                SelectAJCC_P_Stage = item;
+        }
+        #endregion
+
+        #region MMRProtein
+        {
+            ListMMRProtein = DropDownListDataService.GetMMRProtein();
+            var item = ListMMRProtein.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.MMRProtein);
+            if (item != null)
+                SelectMMRProtein = item;
+        }
+        #endregion
+
+        #region P53
+        {
+            ListP53 = DropDownListDataService.GetP53();
+            var item = ListP53.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.P53);
+            if (item != null)
+                SelectP53 = item;
+        }
+        #endregion
+
+        #region HormonStatus
+        {
+            ListHormonStatus = DropDownListDataService.GetHormonStatus();
+            var item = ListHormonStatus.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.HormonStatus);
+            if (item != null)
+                SelectHormonStatus = item;
+        }
+        #endregion
+
     }
 
     #region 下拉選單的事件
+    private async Task OnFIGO癌症分期Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.FIGOStaging = args.Value.Key;
+    }
+
+    private async Task OnHormonStatusChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.HormonStatus = args.Value.Key;
+    }
+
+    private async Task OnP53Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.P53 = args.Value.Key;
+    }
+
+    private async Task OnMMRProteinChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.MMRProtein = args.Value.Key;
+    }
+
+    private async Task OnAJCC_P_StageChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCPathologicalStage = args.Value.Key;
+    }
+
+    private async Task OnAJCC_C_StageChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCClinicalStage = args.Value.Key;
+    }
+
     private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value == null) return;
@@ -506,6 +650,7 @@
     }
 
     #endregion
+ 
     void OnChangeEditMode()
     {
         editMode = !editMode;
