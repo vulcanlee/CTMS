@@ -172,7 +172,7 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.BMI" CssClass="w-100" />
+                                        @patientData.臨床資訊.BMI
                                     }
                                     else
                                     {
@@ -185,7 +185,7 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfTextBox @bind-Value="patientData.臨床資訊.BSA" CssClass="w-100" />
+                                        @patientData.臨床資訊.BSA
                                     }
                                     else
                                     {
@@ -622,12 +622,14 @@
     {
         if (args.Value == null) return;
         patientData.臨床資訊.Weight = args.Value.Key;
+        patientData.臨床資訊.CalculateBMIAndBSA();
     }
 
     private async Task On身高HeightChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value == null) return;
         patientData.臨床資訊.Height = args.Value.Key;
+        patientData.臨床資訊.CalculateBMIAndBSA();
     }
 
     private async Task On月經狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)

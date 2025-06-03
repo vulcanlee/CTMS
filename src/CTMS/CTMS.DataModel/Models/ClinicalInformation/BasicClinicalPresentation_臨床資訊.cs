@@ -106,7 +106,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             if (Height.ToDouble() > 0 && Weight.ToDouble() > 0)
             {
                 // BMI = 體重(kg) / 身高(m)²
-                BMI = (Weight.ToDouble() / Math.Pow(Height.ToDouble() / 100, 2)).ToString();
+                BMI = (Weight.ToDouble() / Math.Pow(Height.ToDouble() / 100, 2)).ToString("F2");
             }
         }
 
@@ -115,8 +115,13 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             if (Height.ToDouble() > 0 && Weight.ToDouble() > 0)
             {
                 // BSA = (體重(kg) × 身高(cm)) ÷ 3600 的開根號
-                BSA = Math.Sqrt((Weight.ToDouble() * Height.ToDouble()) / 3600).ToString();
+                BSA = Math.Sqrt((Weight.ToDouble() * Height.ToDouble()) / 3600).ToString("F2");
             }
+        }
+        public void CalculateBMIAndBSA()
+        {
+            CalculateBMI();
+            CalculateBSA();
         }
     }
 }
