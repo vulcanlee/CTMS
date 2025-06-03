@@ -99,6 +99,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             {
                 CancerType = "未知";
             }
+            //ECorOC = CancerType;
         }
         // 計算BMI和BSA的方法
         public void CalculateBMI()

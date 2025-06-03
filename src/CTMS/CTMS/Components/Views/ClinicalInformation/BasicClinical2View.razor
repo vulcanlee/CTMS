@@ -234,7 +234,7 @@
             <div class="col-md-4">
                 <div class="info-card cancer-info">
                     <div class="header yellow-header">
-                        癌症狀態 癌別 子宮內膜癌
+                        癌症狀態 癌別 @patientData.臨床資訊.CancerType
                     </div>
                     <table class="table table-bordered info-table">
                         <tbody>
@@ -471,7 +471,7 @@
         #region 年齡Age
         {
             List年齡Age = DropDownListDataService.GetAge();
-            var item = List年齡Age.FirstOrDefault(x => x.Key == patientData.臨床資訊.MenstrualStatus);
+            var item = List年齡Age.FirstOrDefault(x => x.Key == patientData.臨床資訊.Age);
             if (item != null)
                 Select年齡Age = item;
         }
