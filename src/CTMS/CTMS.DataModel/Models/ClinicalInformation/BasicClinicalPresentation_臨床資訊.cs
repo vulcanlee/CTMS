@@ -88,6 +88,10 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         /// Hormon status
         /// </summary>
         public string HormonStatus { get; set; }
+        /// <summary>
+        /// Hormon status Positive Percentage
+        /// </summary>
+        public string HormonStatusPositivePercentage { get; set; }
 
         public void CalculateCancerType()
         {

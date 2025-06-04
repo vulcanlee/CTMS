@@ -319,7 +319,7 @@
                                     else
                                     {
                                         @patientData.臨床資訊.HistologicalType
-                                    
+
                                         <br />
                                         @patientData.臨床資訊.HistologicalTypeDetail
                                     }
@@ -375,10 +375,23 @@
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                                 ValueChange="@OnHormonStatusChanged"></DropDownListEvents>
                                         </SfDropDownList>
+                                        @if (patientData.臨床資訊.HormonStatus != null &&
+                                                                            patientData.臨床資訊.HormonStatus.ToLower().Contains("positive"))
+                                        {
+                                            <SfTextBox @bind-Value="patientData.臨床資訊.HormonStatusPositivePercentage" CssClass="w-100" />
+                                        }
                                     }
                                     else
                                     {
                                         @patientData.臨床資訊.HormonStatus
+                                        @if (patientData.臨床資訊.HormonStatus != null &&
+                                                                            patientData.臨床資訊.HormonStatus.ToLower().Contains("positive"))
+                                        {
+                                            <div>
+                                                @patientData.臨床資訊.HormonStatusPositivePercentage
+                                                <span> %</span>
+                                            </div>
+                                        }
                                     }
                                 </td>
                             </tr>
@@ -616,7 +629,7 @@
 
     void Refresh組織型態Detail()
     {
-        if(Select組織型態 == null) return;
+        if (Select組織型態 == null) return;
         List組織型態Detail = DropDownListDataService.Get組織型態Detail(Select組織型態.Key);
         var itemDetail = List組織型態Detail.FirstOrDefault(x =>
             x.Key == patientData.臨床資訊.HistologicalTypeDetail);
