@@ -67,11 +67,15 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         /// <summary>
         /// AJCC p stage
         /// </summary>
-        public string AJCCPathologicalStage { get; set; }  
+        public string AJCCPathologicalStage { get; set; }
         /// <summary>
         /// 組織型態
         /// </summary>
         public string HistologicalType { get; set; }
+        /// <summary>
+        /// 組織型態 Type I  (2A )or Type II (2B)
+        /// </summary>
+        public string HistologicalTypeDetail { get; set; }
         /// <summary>
         /// MMR protein
         /// </summary>

@@ -3,6 +3,7 @@ using CTMS.DataModel.Models.ClinicalInformation;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -77,7 +78,7 @@ namespace CTMS.Business.Services.ClinicalInformation
 
         public List<DropDownListDataModel> GetFIGO癌症分期()
         {
-                List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             result.Add(new DropDownListDataModel() { Key = $"I", Name = $"I" });
             result.Add(new DropDownListDataModel() { Key = $"IA", Name = $"IA" });
             result.Add(new DropDownListDataModel() { Key = $"IB", Name = $"IB" });
@@ -156,6 +157,37 @@ namespace CTMS.Business.Services.ClinicalInformation
             result.Add(new DropDownListDataModel() { Key = $"ER Negative", Name = $"ER Negative" });
             result.Add(new DropDownListDataModel() { Key = $"PR Positive(%)", Name = $"PR Positive(%)" });
             result.Add(new DropDownListDataModel() { Key = $"PR Negative", Name = $"PR Negative" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> Get組織型態()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"Type I", Name = $"Type I" });
+            result.Add(new DropDownListDataModel() { Key = $"Type II", Name = $"Type II" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> Get組織型態Detail(string typeDescription)
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            if (typeDescription == "Type I")
+            {
+                result.Add(new DropDownListDataModel() { Key = $"Endometrioid adenocarcinoma Grade 1", Name = $"Endometrioid adenocarcinoma Grade 1" });
+                result.Add(new DropDownListDataModel() { Key = $"Endometrioid adenocarcinoma Grade 2", Name = $"Endometrioid adenocarcinoma Grade 2" });
+                result.Add(new DropDownListDataModel() { Key = $"Endometrioid adenocarcinoma Grade 3", Name = $"Endometrioid adenocarcinoma Grade 3" });
+            }
+            else if (typeDescription == "Type II")
+            {
+                result.Add(new DropDownListDataModel() { Key = $"Serous", Name = $"Serous" });
+                result.Add(new DropDownListDataModel() { Key = $"Clear cell", Name = $"Clear cell" });
+                result.Add(new DropDownListDataModel() { Key = $"Carcinosarcoma", Name = $"Carcinosarcoma" });
+                result.Add(new DropDownListDataModel() { Key = $"Mixed cell adenocarcinoma", Name = $"Mixed cell adenocarcinoma" });
+                result.Add(new DropDownListDataModel() { Key = $"Neuroendocrine tumors", Name = $"Neuroendocrine tumors" });
+                result.Add(new DropDownListDataModel() { Key = $"Dedifferentiated carcinoma", Name = $"Dedifferentiated carcinoma" });
+                result.Add(new DropDownListDataModel() { Key = $"Undifferentiated carcinoma", Name = $"Undifferentiated carcinoma" });
+                result.Add(new DropDownListDataModel() { Key = $"Others", Name = $"Others" });
+            }
             return result;
         }
 

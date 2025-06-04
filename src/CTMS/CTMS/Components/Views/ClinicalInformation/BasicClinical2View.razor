@@ -62,7 +62,7 @@
                                 {
                                     @patientData.臨床資訊.SubjectNo
                                 }
-                            </span><br/>
+                            </span><br />
                             <span class="small-info"><small>(E代表內膜癌, O代表卵巢癌)</small></span>
                         </div>
                     </div>
@@ -300,11 +300,28 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        @patientData.臨床資訊.HistologicalType
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List組織型態"
+                                                        @bind-Value="@Select組織型態" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On組織型態Changed"></DropDownListEvents>
+                                        </SfDropDownList>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@List組織型態Detail"
+                                                        PopupWidth="auto"
+                                                        @bind-Value="@Select組織型態Detail" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@On組織型態DetailChanged"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
                                         @patientData.臨床資訊.HistologicalType
+                                    
+                                        <br />
+                                        @patientData.臨床資訊.HistologicalTypeDetail
                                     }
                                 </td>
                             </tr>
@@ -456,6 +473,10 @@
     DropDownListDataModel SelectP53 = new DropDownListDataModel();
     List<DropDownListDataModel> ListHormonStatus = new List<DropDownListDataModel>();
     DropDownListDataModel SelectHormonStatus = new DropDownListDataModel();
+    List<DropDownListDataModel> List組織型態 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select組織型態 = new DropDownListDataModel();
+    List<DropDownListDataModel> List組織型態Detail = new List<DropDownListDataModel>();
+    DropDownListDataModel Select組織型態Detail = new DropDownListDataModel();
 
     void DropDownListDataInit()
     {
@@ -516,7 +537,7 @@
         #region FIGO癌症分期
         {
             ListFIGO癌症分期 = DropDownListDataService.GetFIGO癌症分期();
-            var item = ListFIGO癌症分期.FirstOrDefault(x => 
+            var item = ListFIGO癌症分期.FirstOrDefault(x =>
                 x.Key == patientData.臨床資訊.FIGOStaging);
             if (item != null)
                 SelectFIGO癌症分期 = item;
@@ -572,14 +593,55 @@
                 SelectHormonStatus = item;
         }
         #endregion
+        // List<DropDownListDataModel> List組織型態 = new List<DropDownListDataModel>();
+        // DropDownListDataModel Select組織型態 = new DropDownListDataModel();
 
+        #region 組織型態
+        {
+            List組織型態Detail?.Clear();
+            List組織型態 = DropDownListDataService.Get組織型態();
+            var item = List組織型態.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.HistologicalType);
+            if (item != null)
+            {
+                Select組織型態 = item;
+
+                Refresh組織型態Detail();
+            }
+        }
+        #endregion
     }
 
     #region 下拉選單的事件
+
+    void Refresh組織型態Detail()
+    {
+        if(Select組織型態 == null) return;
+        List組織型態Detail = DropDownListDataService.Get組織型態Detail(Select組織型態.Key);
+        var itemDetail = List組織型態Detail.FirstOrDefault(x =>
+            x.Key == patientData.臨床資訊.HistologicalTypeDetail);
+        if (itemDetail != null)
+        {
+            Select組織型態Detail = itemDetail;
+        }
+    }
     private async Task OnFIGO癌症分期Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value == null) return;
         patientData.臨床資訊.FIGOStaging = args.Value.Key;
+    }
+
+    private async Task On組織型態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.HistologicalType = args.Value.Key;
+        Refresh組織型態Detail();
+    }
+
+    private async Task On組織型態DetailChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.HistologicalTypeDetail = args.Value.Key;
     }
 
     private async Task OnHormonStatusChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
@@ -652,7 +714,7 @@
     }
 
     #endregion
- 
+
     void OnChangeEditMode()
     {
         editMode = !editMode;
