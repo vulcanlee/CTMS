@@ -141,16 +141,11 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> GetP53()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            result.Add(new DropDownListDataModel() { Key = $"Wild - type", Name = $"Wild - type" });
-            result.Add(new DropDownListDataModel() { Key = $"overexpression", Name = $"overexpression" });
-            result.Add(new DropDownListDataModel() { Key = $"mosaic staining pattern", Name = $"mosaic staining pattern" });
-            result.Add(new DropDownListDataModel() { Key = $"non - abnormal expression", Name = $"non - abnormal expression" });
-            result.Add(new DropDownListDataModel() { Key = $"Positive", Name = $"Positive" });
-            result.Add(new DropDownListDataModel() { Key = $"Not mutant", Name = $"Not mutant" });
-            result.Add(new DropDownListDataModel() { Key = $"non - abnormal expression", Name = $"non - abnormal expression" });
-            result.Add(new DropDownListDataModel() { Key = $"aberrant expression", Name = $"aberrant expression" });
-            result.Add(new DropDownListDataModel() { Key = $"Abnormal", Name = $"Abnormal" });
-            result.Add(new DropDownListDataModel() { Key = $"Negative", Name = $"Negative" });
+            result.Add(new DropDownListDataModel() { Key = $"Wild-type", Name = $"Wild-type" });
+            result.Add(new DropDownListDataModel() { Key = $"Abnormal - null", Name = $"Abnormal - null" });
+            result.Add(new DropDownListDataModel() { Key = $"expression", Name = $"expression" });
+            result.Add(new DropDownListDataModel() { Key = $"Overexpression", Name = $"Overexpression" });
+
             return result;
         }
 
