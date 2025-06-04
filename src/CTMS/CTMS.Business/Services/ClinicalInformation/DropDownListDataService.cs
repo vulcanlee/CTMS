@@ -123,14 +123,18 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> GetMMRProtein()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            result.Add(new DropDownListDataModel() { Key = $"PMS2 Preserved", Name = $"PMS2 Preserved" });
-            result.Add(new DropDownListDataModel() { Key = $"PMS2 Loss", Name = $"PMS2 Loss" });
-            result.Add(new DropDownListDataModel() { Key = $"MSH6 Preserved", Name = $"MSH6 Preserved" });
-            result.Add(new DropDownListDataModel() { Key = $"MSH6 Loss", Name = $"MSH6 Loss" });
-            result.Add(new DropDownListDataModel() { Key = $"MLH1 Preserved", Name = $"MLH1 Preserved" });
-            result.Add(new DropDownListDataModel() { Key = $"MLH1 Loss", Name = $"MLH1 Loss" });
-            result.Add(new DropDownListDataModel() { Key = $"MSH2 Preserved", Name = $"MSH2 Preserved" });
-            result.Add(new DropDownListDataModel() { Key = $"MSH2 Loss", Name = $"MSH2 Loss" });
+            result.Add(new DropDownListDataModel() { Key = $"PMS2", Name = $"PMS2" });
+            result.Add(new DropDownListDataModel() { Key = $"MSH6", Name = $"MSH6" });
+            result.Add(new DropDownListDataModel() { Key = $"MLH1", Name = $"MLH1" });
+            result.Add(new DropDownListDataModel() { Key = $"MSH2", Name = $"MSH2" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetMMRProteinDetail()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"Preserved", Name = $"Preserved" });
+            result.Add(new DropDownListDataModel() { Key = $"Loss", Name = $"Loss" });
             return result;
         }
 

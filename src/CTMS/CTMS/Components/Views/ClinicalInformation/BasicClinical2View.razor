@@ -337,10 +337,20 @@
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                                 ValueChange="@OnMMRProteinChanged"></DropDownListEvents>
                                         </SfDropDownList>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListMMRProteinDetail"
+                                                        @bind-Value="@SelectMMRProteinDetail" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnMMRProteinDetailChanged"></DropDownListEvents>
+                                        </SfDropDownList>
                                     }
                                     else
                                     {
-                                        @patientData.臨床資訊.MMRProtein
+                                        <div>
+                                            @patientData.臨床資訊.MMRProtein
+                                            <span> @patientData.臨床資訊.MMRProteinDetail</span>
+                                        </div>
                                     }
                                 </td>
                             </tr>
@@ -482,6 +492,8 @@
     DropDownListDataModel SelectAJCC_P_Stage = new DropDownListDataModel();
     List<DropDownListDataModel> ListMMRProtein = new List<DropDownListDataModel>();
     DropDownListDataModel SelectMMRProtein = new DropDownListDataModel();
+    List<DropDownListDataModel> ListMMRProteinDetail = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectMMRProteinDetail = new DropDownListDataModel();
     List<DropDownListDataModel> ListP53 = new List<DropDownListDataModel>();
     DropDownListDataModel SelectP53 = new DropDownListDataModel();
     List<DropDownListDataModel> ListHormonStatus = new List<DropDownListDataModel>();
@@ -583,7 +595,10 @@
             var item = ListMMRProtein.FirstOrDefault(x =>
                 x.Key == patientData.臨床資訊.MMRProtein);
             if (item != null)
+            {
                 SelectMMRProtein = item;
+                RefreshMMRProteinDetail();
+            }
         }
         #endregion
 
@@ -606,8 +621,6 @@
                 SelectHormonStatus = item;
         }
         #endregion
-        // List<DropDownListDataModel> List組織型態 = new List<DropDownListDataModel>();
-        // DropDownListDataModel Select組織型態 = new DropDownListDataModel();
 
         #region 組織型態
         {
@@ -638,6 +651,19 @@
             Select組織型態Detail = itemDetail;
         }
     }
+ 
+    void RefreshMMRProteinDetail()
+    {
+        // if (SelectMMRProtein == null) return;
+        ListMMRProteinDetail = DropDownListDataService.GetMMRProteinDetail();
+        var itemDetail = ListMMRProteinDetail.FirstOrDefault(x =>
+            x.Key == patientData.臨床資訊.MMRProteinDetail);
+        if (itemDetail != null)
+        {
+            SelectMMRProteinDetail = itemDetail;
+        }
+    }
+ 
     private async Task OnFIGO癌症分期Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value == null) return;
@@ -673,6 +699,13 @@
     {
         if (args.Value == null) return;
         patientData.臨床資訊.MMRProtein = args.Value.Key;
+        RefreshMMRProteinDetail();
+    }
+
+    private async Task OnMMRProteinDetailChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.MMRProteinDetail = args.Value.Key;
     }
 
     private async Task OnAJCC_P_StageChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)

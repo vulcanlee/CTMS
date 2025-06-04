@@ -81,6 +81,10 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         /// </summary>
         public string MMRProtein { get; set; }
         /// <summary>
+        /// MMR protein Detail
+        /// </summary>
+        public string MMRProteinDetail { get; set; }
+        /// <summary>
         /// p53
         /// </summary>
         public string P53 { get; set; }
