@@ -4,7 +4,17 @@
     background-color: #f0f0f0;
     padding: 10px 20px;
     border-bottom: 1px solid #ddd;
+    position: relative; /* 添加相對定位以便子元素可以絕對定位 */
 }
+
+    /* 以下是新添加的 Version 元素的樣式 */
+    .header .version {
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-size: 14px;
+        color: #666;
+    }
 
 .hospital-logo {
     width: 80px;

@@ -47,13 +47,18 @@
 .ai-result-panel {
     background-color: #ffedee;
 }
-
+.ai-result-table {
+    font-size: 24px;
+}
+.details-table {
+    font-size: 24px;
+}
 .details-panel {
     background-color: #e0f3e0;
 }
 
 .panel-header {
-    font-size: 18px;
+    font-size: 28px;
     font-weight: bold;
     padding: 10px;
     text-align: center;
@@ -61,6 +66,7 @@
 }
 
 .panel-content {
+    font-size: 26px;
     padding: 20px;
     text-align: center;
 }
