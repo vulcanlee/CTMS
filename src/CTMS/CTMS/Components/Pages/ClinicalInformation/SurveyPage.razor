@@ -24,11 +24,20 @@
 else
 {
     <div>
-        <div class="page-top">
-            <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
-            <span class="page-title">問卷 儀錶板</span>
+        <div>
+            <div class="header">
+                <img src="/images/nckuh2.png" alt="國立成功大學附設醫院" class="hospital-logo" />
+                <div class="hospital-title">
+                    <h1>國立成功大學附設醫院</h1>
+                    <h2>National Cheng Kung University Hospital</h2>
+                </div>
+            </div>
+
+            <div class="back-button cursor-pointer" @onclick=OnBack>
+                <i class="oi oi-arrow-left"></i> <span>返回上頁</span>
+            </div>
         </div>
-        ClinicalSurgeryView
+
         <div class="page-body">
             <MudTabs PanelClass="pa-6">
                 <MudTabPanel Text="化療副作用">

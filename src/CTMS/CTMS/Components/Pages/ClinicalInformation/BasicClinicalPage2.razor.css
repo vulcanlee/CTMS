@@ -1,4 +1,35 @@
-﻿.page-top {
+﻿.header {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.hospital-logo {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.hospital-title h1 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.hospital-title h2 {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.back-button {
+    padding: 15px 20px;
+}
+
+
+
+.page-top {
     background-color: black;
     color: white;
     height: 30px;
@@ -79,18 +110,6 @@ button {
     font-size: 24px;
     padding-bottom:4px;
 }
-
-.header {
-    background-color: #e0e0e0;
-    text-align: left;
-    padding: 10px;
-}
-
-    .header h1 {
-        margin: 0;
-        font-size: 24px;
-        padding-left: 10px;
-    }
 
 .main-content {
     display: flex;

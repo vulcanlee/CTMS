@@ -1,4 +1,4 @@
-﻿@page "/ClinicalInformation/{code}"
+﻿@page "/RiskAssessment/{code}"
 @using CTMS.Share.Helpers
 @using Newtonsoft.Json
 @layout EmptyLayout
@@ -13,7 +13,7 @@
 @inject BrowseAthleteService BrowseAthleteService
 @inject CurrentAthleteExamine CurrentAthleteExamine
 
-<PageTitle>臨床資料 儀錶板</PageTitle>
+<PageTitle>問卷 儀錶板</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -39,23 +39,7 @@ else
         </div>
 
         <div class="page-body">
-            <MudTabs PanelClass="pa-6">
-                <MudTabPanel Text="手術">
-                    <SurgeryView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="病理報告">
-                    <PathologyReportView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="化學治療">
-                    <ChemotherapyView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="合併用藥 common medication">
-                    <CommonMedicationView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="Baseline-Medical History Form">
-                    <BaselineMedicalHistoryFormView Code="@Code" />
-                </MudTabPanel>
-            </MudTabs>
+            <RiskAssessmentView />
         </div>
     </div>
 }

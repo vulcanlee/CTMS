@@ -24,12 +24,24 @@
 else
 {
     <div>
-        <div class="back-button-container">
-            <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
-            @* <a href="/" class="back-btn"><i class="bi bi-arrow-left"></i> 返回上頁</a> *@
-            @* <span class="page-title">Basic clinical presentation 臨床資訊</span> *@
+        <div class="header">
+            <img src="/images/nckuh2.png" alt="國立成功大學附設醫院" class="hospital-logo" />
+            <div class="hospital-title">
+                <h1>國立成功大學附設醫院</h1>
+                <h2>National Cheng Kung University Hospital</h2>
+            </div>
+        </div>
+
+        <div class="back-button cursor-pointer" @onclick=OnBack>
+            <i class="oi oi-arrow-left"></i> <span>返回上頁</span>
         </div>
     </div>
+
+    @* <div>
+        <div class="back-button-container">
+            <button class="back-btn" @onclick=OnBack>&lt; 上頁</button>
+        </div>
+    </div> *@
 
     <div class="mw-100">
         <div class="container-custom">

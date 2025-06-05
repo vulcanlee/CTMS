@@ -453,7 +453,7 @@
                     <button class="btn btn-light btn-pink w-100">追蹤資料</button>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-light btn-yellow w-100">風險評估</button>
+                    <button class="btn btn-light btn-yellow w-100" @onclick=On風險評估>風險評估</button>
                 </div>
             </div>
         </div>
@@ -842,6 +842,12 @@
     void On問卷()
     {
         var url = $"/Survey/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    void On風險評估()
+    {
+        var url = $"/RiskAssessment/{Code}";
         NavigationManager.NavigateTo(url);
     }
 }
