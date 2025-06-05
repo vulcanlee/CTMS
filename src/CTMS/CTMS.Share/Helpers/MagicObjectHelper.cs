@@ -98,6 +98,7 @@ namespace CTMS.Share.Helpers
         public static readonly string 角色明細之專案清單管理功能名稱 = "角色明細之專案清單";
         public const string CheckBoxIcon = "mdi-checkbox-marked-outline";
         public const string CheckBoxBlankIcon = "mdi-checkbox-blank-outline";
+        public const string CheckBoxUnknownIcon = "mdi-checkbox-blank";
         public const string VisitCodeA = "A";
         public const string VisitCodeB = "B";
         public const string VisitCodeC = "C";
@@ -109,5 +110,11 @@ namespace CTMS.Share.Helpers
 
         public const string NotFoundClass = "not-found";
         public const string FoundClass = "has-found";
+
+        public const string ProteinLoss = "Loss";
+        public const string ProteinPreserve = "Preserve";
+        public const string ProteinUnknown = "Unknown";
+        public const string Protein_dMMR = "dMMR";
+        public const string Protein_pMMR = "pMMR";
     }
 }

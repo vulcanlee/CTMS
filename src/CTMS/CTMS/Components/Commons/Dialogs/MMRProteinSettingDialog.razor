@@ -1,0 +1,196 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject DropDownListDataService DropDownListDataService
+
+<SfDialog @bind-Visible="@OpenPicker" IsModal="true"
+          Width="95%" Height="100%" CssClass="dialogSize">
+    <DialogTemplates>
+        <Header>@DialogTitle</Header>
+        <Content>
+
+            <div>
+                @if (data != null)
+                {
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>dMMR or PMMR</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="">
+                                <div>
+                                    <div class="h4">
+                                        MSH2
+                                    </div>
+                                    <div @onclick="() => data.MSH2.SetLoss()">
+                                        @{
+                                            string icon1 = data.MSH2.GetProteinLossIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon1 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Loss</span>
+                                    </div>
+                                    <div @onclick="() => data.MSH2.SetPreserve()">
+                                        @{
+                                            string icon2 = data.MSH2.GetProteinPreserveIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon2 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Preserve</span>
+                                    </div>
+
+                                </div>
+
+                                <div>
+                                    <div class="h4">
+                                        MSH6
+                                    </div>
+                                    <div @onclick="() => data.MSH6.SetLoss()">
+                                        @{
+                                            string icon3 = data.MSH6.GetProteinLossIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon3 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Loss</span>
+                                    </div>
+                                    <div @onclick="() => data.MSH6.SetPreserve()">
+                                        @{
+                                            string icon4 = data.MSH6.GetProteinPreserveIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon4 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Preserve</span>
+                                    </div>
+
+                                </div>
+
+                                <div>
+                                    <div class="h4">
+                                        PMS2
+                                    </div>
+                                    <div @onclick="() => data.PMS2.SetLoss()">
+                                        @{
+                                            string icon5 = data.PMS2.GetProteinLossIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon5 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Loss</span>
+                                    </div>
+                                    <div @onclick="() => data.PMS2.SetPreserve()">
+                                        @{
+                                            string icon6 = data.PMS2.GetProteinPreserveIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon6 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Preserve</span>
+                                    </div>
+
+                                </div>
+
+                                <div>
+                                    <div class="h4">
+                                        MLH1
+                                    </div>
+                                    <div @onclick="() => data.MLH1.SetLoss()">
+                                        @{
+                                            string icon7 = data.MLH1.GetProteinLossIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon7 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Loss</span>
+                                    </div>
+                                    <div @onclick="() => data.MLH1.SetPreserve()">
+                                        @{
+                                            string icon8 = data.MLH1.GetProteinPreserveIcon();
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon8 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">Preserve</span>
+                                    </div>
+
+                                </div>
+
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </Content>
+        <FooterTemplate>
+            <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
+            <SfButton @onclick="@OnPickerCancel" CssClass='e-secondary'>取消</SfButton>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    [Parameter]
+    public EventCallback<MMRProteinSetting> OnConfirmCallback { get; set; }
+    [Parameter]
+    public MMRProteinSetting data { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    string DialogTitle = "設定 MMR Protein";
+    public bool ShowMessageBox { get; set; } = false;
+    public string MessageBoxBody { get; set; } = "";
+    public string MessageBoxTitle { get; set; } = "";
+
+    MMRProteinSetting keepMMRProteinSetting;
+
+    bool editMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override void OnParametersSet()
+    {
+        InitBuildSource();
+    }
+
+    void InitBuildSource()
+    {
+        keepMMRProteinSetting = data.Clone();
+    }
+
+    public void ShowDialog()
+    {
+        OpenPicker = true;
+    }
+
+    async Task OnPickerOK()
+    {
+        if(data == null)
+        {
+            var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 "沒有傳入任何 Protein 物件", ConfirmMessageBox.HiddenAsync);
+            OpenPicker = false;
+        }
+        OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(data);
+    }
+    async Task OnPickerCancel()
+    {
+        data = keepMMRProteinSetting;
+        await OnConfirmCallback.InvokeAsync(data);
+        OpenPicker = false;
+    }
+
+}

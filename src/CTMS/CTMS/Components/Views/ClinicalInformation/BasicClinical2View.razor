@@ -330,7 +330,14 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                        <button class="btn btn-primary"
+                                                @onclick=OnShowMMRProteinSetting>
+                                            設定
+                                        </button>
+                                        <div>
+                                            @patientData.臨床資訊.MMRProteinSetting.GetProteinResult()
+                                        </div>
+                                        @*                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
                                                         Placeholder="選擇一個值" DataSource="@ListMMRProtein"
                                                         @bind-Value="@SelectMMRProtein" class="flex-grow-1">
                                             <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
@@ -343,13 +350,12 @@
                                             <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                                 ValueChange="@OnMMRProteinDetailChanged"></DropDownListEvents>
-                                        </SfDropDownList>
-                                    }
+                                        </SfDropDownList> *@   
+                                        }
                                     else
                                     {
                                         <div>
-                                            @patientData.臨床資訊.MMRProtein
-                                            <span> @patientData.臨床資訊.MMRProteinDetail</span>
+                                            @patientData.臨床資訊.MMRProteinSetting.GetProteinResult()
                                         </div>
                                     }
                                 </td>
@@ -454,13 +460,34 @@
     </div>
 </div>
 
+<MMRProteinSettingDialog OpenPicker=ShowVisitCodeDialog
+                         data=patientData.臨床資訊.MMRProteinSetting
+                         OnConfirmCallback=OnMMRProteinSettingAsync />
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
 @code {
+
     [Parameter]
     public string Code { get; set; }
 
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
+
+    bool ShowVisitCodeDialog = false;
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
     protected override async Task OnInitializedAsync()
     {
@@ -471,7 +498,7 @@
         DropDownListDataInit();
     }
 
-
+    #region 拉霸選單物件宣告
     List<DropDownListDataModel> ListECOrOCC = new List<DropDownListDataModel>();
     DropDownListDataModel SelectECOrOCC = new DropDownListDataModel();
     List<DropDownListDataModel> List年齡Age = new List<DropDownListDataModel>();
@@ -502,6 +529,7 @@
     DropDownListDataModel Select組織型態 = new DropDownListDataModel();
     List<DropDownListDataModel> List組織型態Detail = new List<DropDownListDataModel>();
     DropDownListDataModel Select組織型態Detail = new DropDownListDataModel();
+    #endregion
 
     void DropDownListDataInit()
     {
@@ -651,7 +679,7 @@
             Select組織型態Detail = itemDetail;
         }
     }
- 
+
     void RefreshMMRProteinDetail()
     {
         // if (SelectMMRProtein == null) return;
@@ -663,7 +691,7 @@
             SelectMMRProteinDetail = itemDetail;
         }
     }
- 
+
     private async Task OnFIGO癌症分期Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value == null) return;
@@ -760,6 +788,20 @@
     }
 
     #endregion
+
+    void OnShowMMRProteinSetting()
+    {
+        ShowVisitCodeDialog = true;
+    }
+
+    async Task OnMMRProteinSettingAsync(MMRProteinSetting mMRProteinSetting)
+    {
+        if (mMRProteinSetting != null)
+        {
+            patientData.臨床資訊.MMRProteinSetting = mMRProteinSetting;
+        }
+        ShowVisitCodeDialog = false;
+    }
 
     void OnChangeEditMode()
     {
