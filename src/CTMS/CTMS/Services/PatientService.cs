@@ -1,14 +1,15 @@
-﻿using CTMS.EntityModel.Models;
-using CTMS.EntityModel;
-using Microsoft.EntityFrameworkCore;
-using CTMS.DataModel.Models;
+﻿using AutoMapper;
 using CTMS.AdapterModels;
-using AutoMapper;
-using CTMS.Business.Helpers;
 using CTMS.Business.Factories;
-using CTMS.DataModel.Models.ClinicalInformation;
+using CTMS.Business.Helpers;
 using CTMS.Business.Services.ClinicalInformation;
+using CTMS.DataModel.Dtos;
+using CTMS.DataModel.Models;
+using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.DataModel.Models.Questionnaire;
+using CTMS.EntityModel;
+using CTMS.EntityModel.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CTMS.Services;
 
@@ -176,6 +177,8 @@ public class PatientService
         try
         {
             Patient itemData = Mapper.Map<Patient>(paraObject);
+            PatientData patientData = new();
+            patientData.FromJson(itemData.JsonData);
 
             CleanTrackingHelper.Clean<Patient>(context);
             Patient item = await context.Patient
@@ -187,6 +190,8 @@ public class PatientService
             }
             else
             {
+                itemData.Name = patientData.臨床資訊.SubjectNo;
+                itemData.癌別 = patientData.臨床資訊.CancerType;
                 CleanTrackingHelper.Clean<Patient>(context);
                 context.Entry(itemData).State = EntityState.Modified;
                 await context.SaveChangesAsync();

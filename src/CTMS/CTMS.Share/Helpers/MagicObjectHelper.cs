@@ -116,5 +116,10 @@ namespace CTMS.Share.Helpers
         public const string ProteinUnknown = "Unknown";
         public const string Protein_dMMR = "dMMR";
         public const string Protein_pMMR = "pMMR";
+
+        public const string 實驗組 = "實驗組";
+        public const string 實驗組Message = "需";
+        public const string 對照組 = "對照組";
+        public const string 對照組Message = "不需";
     }
 }
