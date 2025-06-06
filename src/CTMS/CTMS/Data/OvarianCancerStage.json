@@ -1,0 +1,112 @@
+{
+  "Stage": [
+    {
+      "Name": "I",
+      "Children": [
+        { "Name": "T1" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IA",
+      "Children": [
+        { "Name": "T1a" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IB",
+      "Children": [
+        { "Name": "T1b" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IC",
+      "Children": [
+        { "Name": "T1c" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "II",
+      "Children": [
+        { "Name": "T2" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IIA",
+      "Children": [
+        { "Name": "T2a" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IIB",
+      "Children": [
+        { "Name": "T2b" },
+        { "Name": "N0" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IIIA1",
+      "Children": [
+        { "Name": "T1" },
+        { "Name": "T2" },
+        { "Name": "N1" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IIIA2",
+      "Children": [
+        { "Name": "T3a" },
+        { "Name": "N0" },
+        { "Name": "N1" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IIIB",
+      "Children": [
+        { "Name": "T3b" },
+        { "Name": "N0" },
+        { "Name": "N1" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IIIC",
+      "Children": [
+        { "Name": "T3c" },
+        { "Name": "N0" },
+        { "Name": "N1" },
+        { "Name": "M0" }
+      ]
+    },
+    {
+      "Name": "IVA",
+      "Children": [
+        { "Name": "T*" },
+        { "Name": "N*" },
+        { "Name": "M1a" }
+      ]
+    },
+    {
+      "Name": "IVB",
+      "Children": [
+        { "Name": "T*" },
+        { "Name": "N*" },
+        { "Name": "M1b" }
+      ]
+    }
+  ]
+}

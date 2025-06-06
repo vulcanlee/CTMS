@@ -521,7 +521,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CancerStageService.ReadEndometrial();
+        CancerStageService.ReadAll();
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
@@ -868,6 +868,11 @@
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCPathologicalStageT = args.Value.Key;
         patientData.臨床資訊.BuildStage();
+        patientData.臨床資訊.AJCCPathologicalStage = CancerStageService
+    .GetStageNames(patientData.臨床資訊.ECorOC,
+        patientData.臨床資訊.AJCCPathologicalStageT,
+        patientData.臨床資訊.AJCCPathologicalStageN,
+        patientData.臨床資訊.AJCCPathologicalStageM);
     }
 
     private async Task OnAJCC_P_StageNChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
@@ -875,6 +880,11 @@
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCPathologicalStageN = args.Value.Key;
         patientData.臨床資訊.BuildStage();
+        patientData.臨床資訊.AJCCPathologicalStage = CancerStageService
+        .GetStageNames(patientData.臨床資訊.ECorOC,
+            patientData.臨床資訊.AJCCPathologicalStageT,
+            patientData.臨床資訊.AJCCPathologicalStageN,
+            patientData.臨床資訊.AJCCPathologicalStageM);
     }
 
     private async Task OnAJCC_P_StageMChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
@@ -882,6 +892,11 @@
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCPathologicalStageM = args.Value.Key;
         patientData.臨床資訊.BuildStage();
+        patientData.臨床資訊.AJCCPathologicalStage = CancerStageService
+    .GetStageNames(patientData.臨床資訊.ECorOC,
+        patientData.臨床資訊.AJCCPathologicalStageT,
+        patientData.臨床資訊.AJCCPathologicalStageN,
+        patientData.臨床資訊.AJCCPathologicalStageM);
     }
 
     private async Task OnAJCC_C_StageChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
@@ -895,6 +910,11 @@
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCClinicalStageT = args.Value.Key;
         patientData.臨床資訊.BuildStage();
+        patientData.臨床資訊.AJCCClinicalStage =
+        CancerStageService.GetStageNames(patientData.臨床資訊.ECorOC,
+            patientData.臨床資訊.AJCCClinicalStageT,
+            patientData.臨床資訊.AJCCClinicalStageN,
+            patientData.臨床資訊.AJCCClinicalStageM);
     }
 
     private async Task OnAJCC_C_StageNChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
@@ -902,6 +922,11 @@
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCClinicalStageN = args.Value.Key;
         patientData.臨床資訊.BuildStage();
+        patientData.臨床資訊.AJCCClinicalStage =
+    CancerStageService.GetStageNames(patientData.臨床資訊.ECorOC,
+        patientData.臨床資訊.AJCCClinicalStageT,
+        patientData.臨床資訊.AJCCClinicalStageN,
+        patientData.臨床資訊.AJCCClinicalStageM);
     }
 
     private async Task OnAJCC_C_StageMChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
@@ -909,6 +934,11 @@
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCClinicalStageM = args.Value.Key;
         patientData.臨床資訊.BuildStage();
+        patientData.臨床資訊.AJCCClinicalStage =
+    CancerStageService.GetStageNames(patientData.臨床資訊.ECorOC,
+        patientData.臨床資訊.AJCCClinicalStageT,
+        patientData.臨床資訊.AJCCClinicalStageN,
+        patientData.臨床資訊.AJCCClinicalStageM);
     }
 
     private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)

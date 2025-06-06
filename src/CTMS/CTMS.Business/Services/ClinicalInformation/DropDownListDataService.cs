@@ -207,6 +207,8 @@ namespace CTMS.Business.Services.ClinicalInformation
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             result.Add(new DropDownListDataModel() { Key = $"M0", Name = $"M0" });
             result.Add(new DropDownListDataModel() { Key = $"M1", Name = $"M1" });
+            result.Add(new DropDownListDataModel() { Key = $"M1a", Name = $"M1a" });
+            result.Add(new DropDownListDataModel() { Key = $"M1b", Name = $"M1b" });
             return result;
         }
 

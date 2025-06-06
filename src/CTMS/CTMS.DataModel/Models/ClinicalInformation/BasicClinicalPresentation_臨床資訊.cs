@@ -261,8 +261,8 @@ public class BasicClinicalPresentation_臨床資訊
 
     public void BuildStage()
     {
-        AJCCClinicalStage = $"c{AJCCClinicalStageT}{AJCCClinicalStageN}{AJCCClinicalStageM}";
-        AJCCPathologicalStage = $"p{AJCCPathologicalStageT}{AJCCPathologicalStageN}{AJCCPathologicalStageM}";
+        //AJCCClinicalStage = $"c{AJCCClinicalStageT}{AJCCClinicalStageN}{AJCCClinicalStageM}";
+        //AJCCPathologicalStage = $"p{AJCCPathologicalStageT}{AJCCPathologicalStageN}{AJCCPathologicalStageM}";
     }
 
     public void CalculateCancerType()
