@@ -634,11 +634,7 @@
 
         #region FIGO癌症分期
         {
-            ListFIGO癌症分期 = DropDownListDataService.GetFIGO癌症分期();
-            var item = ListFIGO癌症分期.FirstOrDefault(x =>
-                x.Key == patientData.臨床資訊.FIGOStaging);
-            if (item != null)
-                SelectFIGO癌症分期 = item;
+            RefreshFIGO癌症分期();
         }
         #endregion
 
@@ -772,6 +768,26 @@
     }
 
     #region 下拉選單的事件
+
+    void RefreshFIGO癌症分期()
+    {
+        if (patientData.臨床資訊.ECorOC == "EC")
+        {
+            ListFIGO癌症分期 = DropDownListDataService.GetFIGO癌症分期子宮內膜癌EndometrialCancer();
+            var item = ListFIGO癌症分期.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.FIGOStaging);
+            if (item != null)
+                SelectFIGO癌症分期 = item;
+        }
+        else if (patientData.臨床資訊.ECorOC == "OC")
+        {
+            ListFIGO癌症分期 = DropDownListDataService.GetFIGO癌症分期卵巢癌OvarianCancer();
+            var item = ListFIGO癌症分期.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.FIGOStaging);
+            if (item != null)
+                SelectFIGO癌症分期 = item;
+        }
+    }
 
     void Refresh組織型態Detail()
     {
@@ -932,6 +948,7 @@
         if (args.Value == null) return;
         patientData.臨床資訊.ECorOC = args.Value.Key;
         patientData.臨床資訊.CalculateCancerType();
+        RefreshFIGO癌症分期();
     }
 
     #endregion

@@ -95,8 +95,56 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> GetFIGO癌症分期子宮內膜癌EndometrialCancer()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"IA", Name = $"IA" });
+            result.Add(new DropDownListDataModel() { Key = $"IB", Name = $"IB" });
+            result.Add(new DropDownListDataModel() { Key = $"IC", Name = $"IC" });
+            result.Add(new DropDownListDataModel() { Key = $"IIA", Name = $"IIA" });
+            result.Add(new DropDownListDataModel() { Key = $"IIB", Name = $"IIB" });
+            result.Add(new DropDownListDataModel() { Key = $"IIC", Name = $"IIC" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIA", Name = $"IIIA" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIB", Name = $"IIIB" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC1", Name = $"IIIC1" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC1i", Name = $"IIIC1i" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC1ii", Name = $"IIIC1ii" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC2", Name = $"IIIC2" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC2i", Name = $"IIIC2i" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC2ii", Name = $"IIIC2ii" });
+            result.Add(new DropDownListDataModel() { Key = $"IVA", Name = $"IVA" });
+            result.Add(new DropDownListDataModel() { Key = $"IVB", Name = $"IVB" });
+            result.Add(new DropDownListDataModel() { Key = $"IA3", Name = $"IA3" });
+            result.Add(new DropDownListDataModel() { Key = $"IAmPOLEmut", Name = $"IAmPOLEmut" });
+            result.Add(new DropDownListDataModel() { Key = $"IICmp53abn", Name = $"IICmp53abn" });
+
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetFIGO癌症分期卵巢癌OvarianCancer()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"IA", Name = $"IA" });
+            result.Add(new DropDownListDataModel() { Key = $"IB", Name = $"IB" });
+            result.Add(new DropDownListDataModel() { Key = $"IC1", Name = $"IC1" });
+            result.Add(new DropDownListDataModel() { Key = $"IC2", Name = $"IC2" });
+            result.Add(new DropDownListDataModel() { Key = $"IC3", Name = $"IC3" });
+            result.Add(new DropDownListDataModel() { Key = $"IIA", Name = $"IIA" });
+            result.Add(new DropDownListDataModel() { Key = $"IIB", Name = $"IIB" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIA1(i)", Name = $"IIIA1(i)" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIA1(ii)", Name = $"IIIA1(ii)" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIA2", Name = $"IIIA2" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIB", Name = $"IIIB" });
+            result.Add(new DropDownListDataModel() { Key = $"IIIC", Name = $"IIIC" });
+            result.Add(new DropDownListDataModel() { Key = $"IVA", Name = $"IVA" });
+            result.Add(new DropDownListDataModel() { Key = $"IVB", Name = $"IVB" });
+
+            return result;
+        }
+
         public List<DropDownListDataModel> Get日常體能狀態PS()
         {
+
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             result.Add(new DropDownListDataModel() { Key = $"0", Name = $"0" });
             result.Add(new DropDownListDataModel() { Key = $"1", Name = $"1" });
