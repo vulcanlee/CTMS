@@ -12,6 +12,8 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject BrowseAthleteService BrowseAthleteService
 @inject CurrentAthleteExamine CurrentAthleteExamine
+@using Microsoft.Extensions.Options
+@inject IOptions<CTMSSettings> options
 
 <PageTitle>主頁</PageTitle>
 
@@ -30,7 +32,7 @@ else
                 <h1>國立成功大學附設醫院</h1>
                 <h2>National Cheng Kung University Hospital</h2>
             </div>
-            <div class="version">Version</div>
+            <div class="version">Version:@options.Value.SystemInformation.SystemVersion</div>
         </div>
 
         <div class="back-button cursor-pointer" @onclick=OnBack>

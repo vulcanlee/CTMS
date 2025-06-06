@@ -216,10 +216,16 @@ public class BasicClinicalPresentation_臨床資訊
     /// AJCC c stage
     /// </summary>
     public string AJCCClinicalStage { get; set; }
+    public string AJCCClinicalStageT { get; set; }
+    public string AJCCClinicalStageN { get; set; }
+    public string AJCCClinicalStageM { get; set; }
     /// <summary>
     /// AJCC p stage
     /// </summary>
     public string AJCCPathologicalStage { get; set; }
+    public string AJCCPathologicalStageT { get; set; }
+    public string AJCCPathologicalStageN { get; set; }
+    public string AJCCPathologicalStageM { get; set; }
     /// <summary>
     /// 組織型態
     /// </summary>
@@ -252,6 +258,12 @@ public class BasicClinicalPresentation_臨床資訊
     /// Hormon status Positive Percentage
     /// </summary>
     public string HormonStatusPositivePercentage { get; set; }
+
+    public void BuildStage()
+    {
+        AJCCClinicalStage = $"c{AJCCClinicalStageT}{AJCCClinicalStageN}{AJCCClinicalStageM}";
+        AJCCPathologicalStage = $"p{AJCCPathologicalStageT}{AJCCPathologicalStageN}{AJCCPathologicalStageM}";
+    }
 
     public void CalculateCancerType()
     {

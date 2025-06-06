@@ -120,6 +120,48 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> GetAJCC_CP_StageT()
+        {
+            //TX, T0, T1, T1a, T1b, T2, T3, T3a, T3b, T4
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"TX", Name = $"TX" });
+            result.Add(new DropDownListDataModel() { Key = $"T0", Name = $"T0" });
+            result.Add(new DropDownListDataModel() { Key = $"T1", Name = $"T1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1a", Name = $"T1a" });
+            result.Add(new DropDownListDataModel() { Key = $"T1b", Name = $"T1b" });
+            result.Add(new DropDownListDataModel() { Key = $"T2", Name = $"T2" });
+            result.Add(new DropDownListDataModel() { Key = $"T3", Name = $"T3" });
+            result.Add(new DropDownListDataModel() { Key = $"T3a", Name = $"T3a" });
+            result.Add(new DropDownListDataModel() { Key = $"T3b", Name = $"T3b" });
+            result.Add(new DropDownListDataModel() { Key = $"T4", Name = $"T4" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetAJCC_CP_StageN()
+        {
+            // NX, N0, N0(i+), N1, N1mi, N1a, N2, N2mi, N2a
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"NX", Name = $"NX" });
+            result.Add(new DropDownListDataModel() { Key = $"N0", Name = $"N0" });
+            result.Add(new DropDownListDataModel() { Key = $"N0(i+)", Name = $"N0(i+)" });
+            result.Add(new DropDownListDataModel() { Key = $"N1", Name = $"N1" });
+            result.Add(new DropDownListDataModel() { Key = $"N1mi", Name = $"N1mi" });
+            result.Add(new DropDownListDataModel() { Key = $"N1a", Name = $"N1a" });
+            result.Add(new DropDownListDataModel() { Key = $"N2", Name = $"N2" });
+            result.Add(new DropDownListDataModel() { Key = $"N2mi", Name = $"N2mi" });
+            result.Add(new DropDownListDataModel() { Key = $"N2a", Name = $"N2a" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetAJCC_CP_StageM()
+        {
+            // M0, M1
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"M0", Name = $"M0" });
+            result.Add(new DropDownListDataModel() { Key = $"M1", Name = $"M1" });
+            return result;
+        }
+
         public List<DropDownListDataModel> GetMMRProtein()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();

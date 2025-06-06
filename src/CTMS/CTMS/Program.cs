@@ -115,6 +115,7 @@ namespace CTMS
                 builder.Services.AddTransient<SurveyService>();
                 builder.Services.AddTransient<SideEffectsService>();
                 builder.Services.AddTransient<SurveySideEffectsService>();
+                builder.Services.AddScoped<CancerStageService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

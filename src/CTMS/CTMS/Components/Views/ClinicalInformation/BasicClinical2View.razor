@@ -11,6 +11,8 @@
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
 
+@inject CancerStageService CancerStageService
+
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
 <div class="patient-info-page">
@@ -262,18 +264,32 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
+                                        <div>T</div>
                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_C_Stage"
-                                                        @bind-Value="@SelectAJCC_C_Stage" class="flex-grow-1">
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_C_StageT"
+                                                        @bind-Value="@SelectAJCC_C_StageT" class="flex-grow-1">
                                             <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnAJCC_C_StageChanged"></DropDownListEvents>
+                                                                ValueChange="@OnAJCC_C_StageTChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                        <div>N</div>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_C_StageN"
+                                                        @bind-Value="@SelectAJCC_C_StageN" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnAJCC_C_StageNChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                        <div>M</div>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_C_StageM"
+                                                        @bind-Value="@SelectAJCC_C_StageM" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnAJCC_C_StageMChanged"></DropDownListEvents>
                                         </SfDropDownList>
                                     }
-                                    else
-                                    {
-                                        @patientData.臨床資訊.AJCCClinicalStage
-                                    }
+                                    @patientData.臨床資訊.AJCCClinicalStage
                                 </td>
                             </tr>
                             <tr>
@@ -281,18 +297,32 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
+                                        <div>T</div>
                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_P_Stage"
-                                                        @bind-Value="@SelectAJCC_P_Stage" class="flex-grow-1">
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_P_StageT"
+                                                        @bind-Value="@SelectAJCC_P_StageT" class="flex-grow-1">
                                             <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnAJCC_P_StageChanged"></DropDownListEvents>
+                                                                ValueChange="@OnAJCC_P_StageTChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                        <div>N</div>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_P_StageN"
+                                                        @bind-Value="@SelectAJCC_P_StageN" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnAJCC_P_StageNChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                        <div>M</div>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListAJCC_P_StageM"
+                                                        @bind-Value="@SelectAJCC_P_StageM" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnAJCC_P_StageMChanged"></DropDownListEvents>
                                         </SfDropDownList>
                                     }
-                                    else
-                                    {
-                                        @patientData.臨床資訊.AJCCPathologicalStage
-                                    }
+                                    @patientData.臨床資訊.AJCCPathologicalStage
                                 </td>
                             </tr>
                             <tr>
@@ -491,11 +521,14 @@
 
     protected override async Task OnInitializedAsync()
     {
+        CancerStageService.ReadEndometrial();
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
         patientData.臨床資訊.CalculateCancerType();
         DropDownListDataInit();
+        patientData.臨床資訊.BuildStage();
+
     }
 
     #region 拉霸選單物件宣告
@@ -515,8 +548,20 @@
     DropDownListDataModel SelectFIGO癌症分期 = new DropDownListDataModel();
     List<DropDownListDataModel> ListAJCC_C_Stage = new List<DropDownListDataModel>();
     DropDownListDataModel SelectAJCC_C_Stage = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_C_StageT = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_C_StageT = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_C_StageN = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_C_StageN = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_C_StageM = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_C_StageM = new DropDownListDataModel();
     List<DropDownListDataModel> ListAJCC_P_Stage = new List<DropDownListDataModel>();
     DropDownListDataModel SelectAJCC_P_Stage = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_P_StageT = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_P_StageT = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_P_StageN = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_P_StageN = new DropDownListDataModel();
+    List<DropDownListDataModel> ListAJCC_P_StageM = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectAJCC_P_StageM = new DropDownListDataModel();
     List<DropDownListDataModel> ListMMRProtein = new List<DropDownListDataModel>();
     DropDownListDataModel SelectMMRProtein = new DropDownListDataModel();
     List<DropDownListDataModel> ListMMRProteinDetail = new List<DropDownListDataModel>();
@@ -607,6 +652,36 @@
         }
         #endregion
 
+        #region FIGOListAJCC_C_StageT
+        {
+            ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT();
+            var item = ListAJCC_C_StageT.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCClinicalStageT);
+            if (item != null)
+                SelectAJCC_C_StageT = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_StageN
+        {
+            ListAJCC_C_StageN = DropDownListDataService.GetAJCC_CP_StageN();
+            var item = ListAJCC_C_StageN.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCClinicalStageN);
+            if (item != null)
+                SelectAJCC_C_StageN = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_StageM
+        {
+            ListAJCC_C_StageM = DropDownListDataService.GetAJCC_CP_StageM();
+            var item = ListAJCC_C_StageM.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCClinicalStageM);
+            if (item != null)
+                SelectAJCC_C_StageM = item;
+        }
+        #endregion
+
         #region FIGOListAJCC_C_Stage
         {
             ListAJCC_P_Stage = DropDownListDataService.GetAJCC_CP_Stage();
@@ -614,6 +689,36 @@
                 x.Key == patientData.臨床資訊.AJCCPathologicalStage);
             if (item != null)
                 SelectAJCC_P_Stage = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_StageT
+        {
+            ListAJCC_P_StageT = DropDownListDataService.GetAJCC_CP_StageT();
+            var item = ListAJCC_P_StageT.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCPathologicalStageT);
+            if (item != null)
+                SelectAJCC_P_StageT = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_StageN
+        {
+            ListAJCC_P_StageN = DropDownListDataService.GetAJCC_CP_StageN();
+            var item = ListAJCC_P_StageN.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCPathologicalStageN);
+            if (item != null)
+                SelectAJCC_P_StageN = item;
+        }
+        #endregion
+
+        #region FIGOListAJCC_C_StageM
+        {
+            ListAJCC_P_StageM = DropDownListDataService.GetAJCC_CP_StageM();
+            var item = ListAJCC_P_StageM.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.AJCCPathologicalStageM);
+            if (item != null)
+                SelectAJCC_P_StageM = item;
         }
         #endregion
 
@@ -742,10 +847,52 @@
         patientData.臨床資訊.AJCCPathologicalStage = args.Value.Key;
     }
 
+    private async Task OnAJCC_P_StageTChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCPathologicalStageT = args.Value.Key;
+        patientData.臨床資訊.BuildStage();
+    }
+
+    private async Task OnAJCC_P_StageNChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCPathologicalStageN = args.Value.Key;
+        patientData.臨床資訊.BuildStage();
+    }
+
+    private async Task OnAJCC_P_StageMChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCPathologicalStageM = args.Value.Key;
+        patientData.臨床資訊.BuildStage();
+    }
+
     private async Task OnAJCC_C_StageChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value == null) return;
         patientData.臨床資訊.AJCCClinicalStage = args.Value.Key;
+    }
+
+    private async Task OnAJCC_C_StageTChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCClinicalStageT = args.Value.Key;
+        patientData.臨床資訊.BuildStage();
+    }
+
+    private async Task OnAJCC_C_StageNChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCClinicalStageN = args.Value.Key;
+        patientData.臨床資訊.BuildStage();
+    }
+
+    private async Task OnAJCC_C_StageMChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.AJCCClinicalStageM = args.Value.Key;
+        patientData.臨床資訊.BuildStage();
     }
 
     private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
