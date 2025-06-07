@@ -45,7 +45,8 @@ else
         <div class="page-body">
             <MudTabs PanelClass="pa-6">
                 <MudTabPanel Text="血液副作用 (Adverse event)">
-                    <HematologicSideEffectsView Code="@Code" />
+                    @* <HematologicSideEffectsView Code="@Code" /> *@
+                    <HematologicSideEffectsDemoView Code="@Code" />
                 </MudTabPanel>
                 <MudTabPanel Text="其他副作用1">
                     <Survey1SideEffectsView Code="@Code" />

@@ -1,0 +1,115 @@
+﻿.header {
+    background-color: #a8c8ec;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 32px;
+        color: #333;
+    }
+
+    .header .code {
+        font-size: 14px;
+        color: #666;
+    }
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-add {
+    background-color: #90EE90;
+}
+
+.btn-edit {
+    background-color: #FFD700;
+}
+
+.btn-delete {
+    background-color: #FFB6C1;
+}
+
+.visit-code {
+    padding: 8px 15px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    display: inline-block;
+    margin-left: 10px;
+    background-color: white;
+}
+
+.visit-code-container {
+    margin: 20px 0;
+    font-size: 24px;
+}
+
+.visit-info {
+    white-space: nowrap;
+    margin: 20px 0;
+    font-size: 24px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+    border: 2px solid #333;
+    padding: 12px;
+    text-align: center;
+    font-size: 24px;
+}
+
+th {
+    background-color: #f8c8c8;
+    font-weight: bold;
+}
+
+.grade-1 {
+    background-color: #e6f3ff;
+}
+
+.grade-2, .grade-3 {
+    background-color: #fff2cc;
+}
+
+.grade-4, .grade-5 {
+    background-color: #f0f0f0;
+}
+
+.grade-col {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.lln-text {
+    color: #4472C4;
+}
+
+.range-text {
+    color: #C55A5A;
+}
+
+.death-text {
+    font-weight: bold;
+    font-size: 24px;
+}
