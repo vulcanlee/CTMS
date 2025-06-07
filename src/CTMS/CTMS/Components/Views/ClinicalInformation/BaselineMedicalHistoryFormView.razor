@@ -15,66 +15,53 @@
 
 <div>
 
-    <div class="header" style="display: flex; align-items: center;">
-        <h1 style="margin: 0; flex-grow: 1;">臨床資料 Baseline-Medical History Form</h1>
-        @if (editMode)
-        {
-            <div class="btn-group" role="group" aria-label="按鈕組">
-                <button type="button" class="btn btn-primary save-button"
-                        @onclick=OnSave>
-                    儲存
-                </button>
-                <button type="button" class="btn btn-danger cancle-button"
-                        @onclick=OnCancel>
-                    取消
-                </button>
-            </div>
-        }
-        else
-        {
-            <span class="mx-3 mdi mdi-36px mdi-square-edit-outline command-icon-width cursor-pointer"
-                  @onclick=OnChangeEditMode></span>
-        }
-    </div>
-
-    <div>
-        <div>
+    <div class="header">
+        <div class="d-flex align-items-start">
+            <h1 style="margin: 0; flex-grow: 1;">臨床資料 Baseline-Medical History Form</h1>
             <div>
-                <span>Visit code : </span>
-                <span>
-                    <button class="btn btn-primary mx-2"
-                            @onclick=OnAddVisiteCode>
-                        新增
-                    </button>
-                </span>
-                <span>
-                    <button class="btn btn-success mx-2"
-                            @onclick=OnEditVisiteCode>
-                        修改
-                    </button>
-                </span>
-                <span>
-                    <button class="btn btn-danger mx-2"
-                            @onclick=OnVisiteCodeDeleteAsync>
-                        刪除
-                    </button>
-                </span>
+                @if (editMode)
+                {
+                    <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
+                        <button type="button" class="btn btn-sm btn-primary save-button"
+                                @onclick=OnSave>
+                            儲存
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger cancle-button"
+                                @onclick=OnCancel>
+                            取消
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <span class="edit-icon d-flex align-items-center cursor-pointer"
+                          @onclick="OnChangeEditMode">
+                        <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                    </span>
+                }
             </div>
         </div>
-        <div class="d-flex align-items-center">
-            <div class="flex-grow-1 ms-2">
-                <SfDropDownList @ref="VisitCodeDropDown"
-                                TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                Placeholder="選擇一個值" DataSource="@ListVisitCode"
-                                @bind-Value="@SelectVisitCode" class="flex-grow-1">
-                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                    <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                        ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
-                </SfDropDownList>
-            </div>
+        <div class="buttons">
+            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
+            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
+            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
         </div>
-
     </div>
+
+    <div class="visit-code-container d-flex align-items-center">
+        <div class="visit-info">Visit Code :</div>
+        <div class="flex-grow-1">
+            <SfDropDownList @ref="VisitCodeDropDown"
+                            TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                            Placeholder="選擇一個值" DataSource="@ListVisitCode"
+                            @bind-Value="@SelectVisitCode" class="w-100">
+                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                    ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
+            </SfDropDownList>
+        </div>
+    </div>
+
     @if (data != null)
     {
         <div class="view-container">
@@ -729,44 +716,46 @@
 
     async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
     {
-        if (VisitCodeOperateMode == "Add")
+        if (visitCodeModel != null)
         {
-            var newRecord = new BaselineMedicalHistoryFormNode()
+            if (VisitCodeOperateMode == "Add")
             {
-                VisitCode = visitCodeModel,
-            };
-            header.Items.Add(newRecord);
-            patientData.SyncData();
-            patientAdapterModel.JsonData = patientData.ToJson();
-            await PatientService.UpdateAsync(patientAdapterModel);
-            RefreshVisitCode();
-            RefreshDropDwonVisitCode();
-        }
-        else if (VisitCodeOperateMode == "Edit")
-        {
-            var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-            if (editItem != null)
-            {
-                data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                data.VisitCode.Timeline = visitCodeModel.Timeline;
+                var newRecord = new BaselineMedicalHistoryFormNode()
+                {
+                    VisitCode = visitCodeModel,
+                };
+                header.Items.Add(newRecord);
+                patientData.SyncData();
                 patientAdapterModel.JsonData = patientData.ToJson();
                 await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode(false);
+                RefreshVisitCode();
                 RefreshDropDwonVisitCode();
-                var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                if (foo != null)
+            }
+            else if (VisitCodeOperateMode == "Edit")
+            {
+                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
+                if (editItem != null)
                 {
-                    SelectVisitCode = foo;
-                }
-                else
-                {
-                    SelectVisitCode = null;
+                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
+                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
+                    data.VisitCode.Timeline = visitCodeModel.Timeline;
+                    patientAdapterModel.JsonData = patientData.ToJson();
+                    await PatientService.UpdateAsync(patientAdapterModel);
+                    RefreshVisitCode(false);
+                    RefreshDropDwonVisitCode();
+                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
+                    if (foo != null)
+                    {
+                        SelectVisitCode = foo;
+                    }
+                    else
+                    {
+                        SelectVisitCode = null;
+                    }
                 }
             }
         }
         ShowVisitCodeDialog = false;
-
     }
     #endregion
 

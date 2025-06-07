@@ -162,7 +162,7 @@
     }
     async Task OnPickerCancel()
     {
-        // await OnConfirmCallback.InvokeAsync(null);
+        await OnConfirmCallback.InvokeAsync(null);
         OpenPicker = false;
     }
 
