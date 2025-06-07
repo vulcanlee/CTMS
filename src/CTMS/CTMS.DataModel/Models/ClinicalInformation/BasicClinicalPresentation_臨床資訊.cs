@@ -258,6 +258,12 @@ public class BasicClinicalPresentation_臨床資訊
     /// Hormon status Positive Percentage
     /// </summary>
     public string HormonStatusPositivePercentage { get; set; }
+    /// <summary>
+    /// 上傳的影像檔案名稱
+    /// </summary>
+    public string Image { get; set; }
+    public string ImageDicom { get{ return $"{Image}.dicm"; } }
+    public string ImagePng { get{ return $"{Image}.png"; } }
 
     public void BuildStage()
     {

@@ -452,7 +452,7 @@
                         CT Image
                     </div>
                     <div class="empty-image-area">
-                        <!-- 空白的 CT Image 區域 -->
+                        <img src="UploadFiles/@patientData.臨床資訊.ImagePng" />
                     </div>
                 </div>
                 <div class="info-card report-card mt-3">
@@ -527,7 +527,16 @@
         patientData.臨床資訊.CalculateCancerType();
         DropDownListDataInit();
         patientData.臨床資訊.BuildStage();
-
+        #region Demo 使用
+        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
+        {
+            patientData.臨床資訊.Image = "ExperimentalGroup";
+        }
+        else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
+        {
+            patientData.臨床資訊.Image = "ControlGroup";
+        }
+        #endregion
     }
 
     #region 拉霸選單物件宣告
