@@ -121,5 +121,8 @@ namespace CTMS.Share.Helpers
         public const string 實驗組Message = "需";
         public const string 對照組 = "對照組";
         public const string 對照組Message = "不需";
-    }
+  
+        public const string StageC = "c";
+        public const string StageP = "p";
+  }
 }

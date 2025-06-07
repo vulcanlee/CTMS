@@ -35,7 +35,7 @@ public class CancerStageService
         return fooCancerStage;
     }
 
-    public string GetStageNames(string ECorOC, string t, string n, string m)
+    public string GetStageNames(string ECorOC, string stageCode, string t, string n, string m)
     {
         List<StageNode> stages = new();
         if (ECorOC == "EC")
@@ -54,7 +54,7 @@ public class CancerStageService
         }
         string result = string.Empty;
         string foundStage = stages.FirstOrDefault()?.Name ?? string.Empty;
-        result = $"{foundStage}({t}{n}{m})".Trim();
+        result = $"{foundStage}({stageCode}{t}{n}{m})".Trim();
         return result;
     }
 }
