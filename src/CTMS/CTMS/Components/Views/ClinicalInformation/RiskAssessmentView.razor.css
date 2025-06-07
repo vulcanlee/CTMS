@@ -1,4 +1,80 @@
-﻿.risk-assessment-container {
+﻿.header {
+    background-color: #a8c8ec;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 32px;
+        color: #333;
+    }
+
+    .header .code {
+        font-size: 14px;
+        color: #666;
+    }
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-add {
+    background-color: #90EE90;
+}
+
+.btn-edit {
+    background-color: #FFD700;
+}
+
+.btn-delete {
+    background-color: #FFB6C1;
+}
+
+.edit-icon {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #3776ab; /* 改為藍色，與標題顏色一致 */
+}
+
+.visit-code {
+    padding: 8px 15px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    display: inline-block;
+    margin-left: 10px;
+    background-color: white;
+}
+
+.visit-code-container {
+    margin: 6px 0;
+    font-size: 24px;
+}
+
+.visit-info {
+    white-space: nowrap;
+    margin: 6px 0;
+    font-size: 24px;
+}
+
+
+
+
+
+.risk-assessment-container {
     font-family: "微軟正黑體", "Microsoft JhengHei", sans-serif;
     width: 100%;
     background-color: #f5f5f5;
