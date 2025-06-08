@@ -254,6 +254,10 @@ public class BasicClinicalPresentation_臨床資訊
     /// Hormon status
     /// </summary>
     public string HormonStatus { get; set; }
+    public string HormonStatusER { get; set; }
+    public string HormonStatusERPercent { get; set; }
+    public string HormonStatusPR { get; set; }
+    public string HormonStatusPRPercent { get; set; }
     /// <summary>
     /// Hormon status Positive Percentage
     /// </summary>
@@ -265,6 +269,33 @@ public class BasicClinicalPresentation_臨床資訊
     public string ImageDicom { get{ return $"{Image}.dicm"; } }
     public string ImagePng { get{ return $"{Image}.png"; } }
 
+    public string GetErPrStatus()
+    {
+        if(HormonStatusER == null || HormonStatusPR == null)
+        {
+            return "ER/PR Status Not Set";
+        }
+        if (HormonStatusER.Contains("Positive") && HormonStatusPR.Contains("Positive"))
+        {
+            return $"ER Positive ({HormonStatusERPercent}%) / PR Positive ({HormonStatusPRPercent}%)";
+        }
+        else if (HormonStatusER.Contains("Negative") && HormonStatusPR.Contains("Negative"))
+        {
+            return $"ER / PR Negative";
+        }
+        else if (HormonStatusER.Contains("Positive") && HormonStatusPR.Contains("Negative"))
+        {
+            return $"ER Positive  ({HormonStatusERPercent}%) / PR Negative";
+        }
+        else if (HormonStatusER.Contains("Negative") && HormonStatusPR.Contains("Positive"))
+        {
+            return $"ER Negative / PR Positive ({HormonStatusPRPercent}%)";
+        }
+        else
+        {
+            return "Unknown ER/PR Status";
+        }
+    }
     public void BuildStage()
     {
         //AJCCClinicalStage = $"c{AJCCClinicalStageT}{AJCCClinicalStageN}{AJCCClinicalStageM}";

@@ -413,30 +413,34 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
+                                        <div>ER</div>
                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListHormonStatus"
-                                                        @bind-Value="@SelectHormonStatus" class="flex-grow-1">
+                                                        Placeholder="選擇一個值" DataSource="@ListHormonStatusER"
+                                                        @bind-Value="@SelectHormonStatusER" class="flex-grow-1">
                                             <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnHormonStatusChanged"></DropDownListEvents>
+                                                                ValueChange="@OnHormonStatusERChanged"></DropDownListEvents>
                                         </SfDropDownList>
-                                        @if (patientData.臨床資訊.HormonStatus != null &&
-                                                                            patientData.臨床資訊.HormonStatus.ToLower().Contains("positive"))
-                                        {
-                                            <SfTextBox @bind-Value="patientData.臨床資訊.HormonStatusPositivePercentage" CssClass="w-100" />
-                                        }
+                                        <div class="d-flex align-items-center">
+                                            <SfTextBox @bind-Value="patientData.臨床資訊.HormonStatusERPercent" CssClass="me-2" />
+                                            <span>%</span>
+                                        </div>
+                                        <div class="mt-2">PR</div>
+                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                        Placeholder="選擇一個值" DataSource="@ListHormonStatusPR"
+                                                        @bind-Value="@SelectHormonStatusPR" class="flex-grow-1">
+                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                ValueChange="@OnHormonStatusPRChanged"></DropDownListEvents>
+                                        </SfDropDownList>
+                                        <div class="d-flex align-items-center">
+                                            <SfTextBox @bind-Value="patientData.臨床資訊.HormonStatusPRPercent" CssClass="me-2" />
+                                            <span>%</span>
+                                        </div>
                                     }
                                     else
                                     {
-                                        @patientData.臨床資訊.HormonStatus
-                                        @if (patientData.臨床資訊.HormonStatus != null &&
-                                                                            patientData.臨床資訊.HormonStatus.ToLower().Contains("positive"))
-                                        {
-                                            <div>
-                                                @patientData.臨床資訊.HormonStatusPositivePercentage
-                                                <span> %</span>
-                                            </div>
-                                        }
+                                        @patientData.臨床資訊.GetErPrStatus()
                                     }
                                 </td>
                             </tr>
@@ -578,6 +582,10 @@
     DropDownListDataModel SelectP53 = new DropDownListDataModel();
     List<DropDownListDataModel> ListHormonStatus = new List<DropDownListDataModel>();
     DropDownListDataModel SelectHormonStatus = new DropDownListDataModel();
+    List<DropDownListDataModel> ListHormonStatusER = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectHormonStatusER = new DropDownListDataModel();
+    List<DropDownListDataModel> ListHormonStatusPR = new List<DropDownListDataModel>();
+    DropDownListDataModel SelectHormonStatusPR = new DropDownListDataModel();
     List<DropDownListDataModel> List組織型態 = new List<DropDownListDataModel>();
     DropDownListDataModel Select組織型態 = new DropDownListDataModel();
     List<DropDownListDataModel> List組織型態Detail = new List<DropDownListDataModel>();
@@ -751,11 +759,16 @@
 
         #region HormonStatus
         {
-            ListHormonStatus = DropDownListDataService.GetHormonStatus();
-            var item = ListHormonStatus.FirstOrDefault(x =>
-                x.Key == patientData.臨床資訊.HormonStatus);
+            ListHormonStatusER = DropDownListDataService.GetHormonStatusER();
+            var item = ListHormonStatusER.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.HormonStatusER);
             if (item != null)
-                SelectHormonStatus = item;
+                SelectHormonStatusER = item;
+            ListHormonStatusPR = DropDownListDataService.GetHormonStatusPR();
+            var itemPR = ListHormonStatusPR.FirstOrDefault(x =>
+                x.Key == patientData.臨床資訊.HormonStatusPR);
+            if (itemPR != null)
+                SelectHormonStatusPR = itemPR;
         }
         #endregion
 
@@ -844,6 +857,18 @@
     {
         if (args.Value == null) return;
         patientData.臨床資訊.HormonStatus = args.Value.Key;
+    }
+
+    private async Task OnHormonStatusERChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.HormonStatusER = args.Value.Key;
+    }
+
+    private async Task OnHormonStatusPRChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        patientData.臨床資訊.HormonStatusPR = args.Value.Key;
     }
 
     private async Task OnP53Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)

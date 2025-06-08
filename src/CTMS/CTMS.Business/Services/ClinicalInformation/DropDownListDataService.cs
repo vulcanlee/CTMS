@@ -251,6 +251,22 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> GetHormonStatusER()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"ER Positive(%)", Name = $"ER Positive(%)" });
+            result.Add(new DropDownListDataModel() { Key = $"ER Negative", Name = $"ER Negative" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetHormonStatusPR()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"PR Positive(%)", Name = $"PR Positive(%)" });
+            result.Add(new DropDownListDataModel() { Key = $"PR Negative", Name = $"PR Negative" });
+            return result;
+        }
+
         public List<DropDownListDataModel> Get組織型態()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
