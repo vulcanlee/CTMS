@@ -352,14 +352,14 @@ public class SideEffectsService
         #region 判斷副作用等級
         if (studycode.Contains("-E"))
         {
-            sideEffectsItem = hematologicSideEffects.WhiteBloodCell白血球;
-            sideEffectsItem.Grade2.ResetCssClassFoundHeigh();
-            sideEffectsItem = hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
-            sideEffectsItem.Grade3.ResetCssClassFoundHeigh();
-            sideEffectsItem = hematologicSideEffects.HemoglobinHb血色素;
-            sideEffectsItem.Grade1.ResetCssClassFoundLow();
-            sideEffectsItem = hematologicSideEffects.PlateletCount血小板;
-            sideEffectsItem.Grade1.ResetCssClassFoundLow();
+            //sideEffectsItem = hematologicSideEffects.WhiteBloodCell白血球;
+            //sideEffectsItem.Grade2.ResetCssClassFoundHeigh();
+            //sideEffectsItem = hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
+            //sideEffectsItem.Grade3.ResetCssClassFoundHeigh();
+            //sideEffectsItem = hematologicSideEffects.HemoglobinHb血色素;
+            //sideEffectsItem.Grade1.ResetCssClassFoundLow();
+            //sideEffectsItem = hematologicSideEffects.PlateletCount血小板;
+            //sideEffectsItem.Grade1.ResetCssClassFoundLow();
         }
         else if (studycode.Contains("-C"))
         {
