@@ -13,6 +13,7 @@ public class RiskAssessmentResult
         LAMA低密度肌肉區域 = "正常";
         NAMA正常密度肌肉區域 = "正常";
         Myosteatosis肌肉脂肪變性 = "正常";
+        Image = "ExperimentalGroupAI";
     }
     public void Demo對照組()
     {
@@ -23,6 +24,7 @@ public class RiskAssessmentResult
         LAMA低密度肌肉區域 = "異常";
         NAMA正常密度肌肉區域 = "異常";
         Myosteatosis肌肉脂肪變性 = "異常";
+        Image = "ControlGroupAI";
     }
     /// <summary>
     /// 實驗組或對照組
@@ -50,4 +52,10 @@ public class RiskAssessmentResult
     public string Myosteatosis肌肉脂肪變性 { get; set; } = "正常";
     public string CTImage1 { get; set; }
     public string CTImage2 { get; set; }
+    /// <summary>
+    /// AI分析後的影像檔案名稱
+    /// </summary>
+    public string Image { get; set; }
+    public string ImageDicom { get { return $"{Image}.dicm"; } }
+    public string ImagePng { get { return $"{Image}.jpg"; } }
 }

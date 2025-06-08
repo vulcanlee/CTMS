@@ -1,4 +1,4 @@
-﻿@* 風險評估視圖 *@
+﻿@inject PatientService PatientService
 
 <div>
     <div class="header">
@@ -68,8 +68,8 @@
 
             <div class="right-panel">
                 <div class="scan-images">
-                    <img src="/images/scan-image-1.png" alt="CT掃描影像1" class="scan-image" />
-                    <img src="/images/scan-image-2.png" alt="CT掃描影像2" class="scan-image" />
+                    <img src="UploadFiles/@patientData.臨床資訊.ImagePng" alt="CT掃描影像1" class="scan-image" />
+                    <img src="UploadFiles/@data.ImagePng" alt="CT掃描影像2" class="scan-image" />
                 </div>
             </div>
         </div>
@@ -77,8 +77,32 @@
 </div>
 
 @code {
-    RiskAssessmentResult data = new RiskAssessmentResult();
+    [Parameter]
+    public string Code { get; set; }
 
+    RiskAssessmentResult data = new RiskAssessmentResult();
+    PatientData patientData = new();
+    PatientAdapterModel patientAdapterModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate fetching data from a service
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        InitData();
+    }
+
+    void InitData()
+    {
+        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
+        {
+            data.Demo實驗組();
+        }
+        else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
+        {
+            data.Demo對照組();
+        }
+    }
     void OnDemo()
     {
         if (data.ExperimentalControl == MagicObjectHelper.實驗組)
