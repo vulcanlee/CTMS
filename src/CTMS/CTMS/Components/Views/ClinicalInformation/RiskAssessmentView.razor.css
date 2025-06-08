@@ -91,13 +91,11 @@
 .content-wrapper {
     display: flex;
     flex-wrap: wrap;
-    padding: 0 15px;
     justify-content: space-between;
 }
 
 .left-panel {
     flex: 0 0 30%;
-    padding: 0 10px;
 }
 
 .center-panel {
@@ -107,7 +105,6 @@
 
 .right-panel {
     flex: 0 0 30%;
-    padding: 0 10px;
 }
 
 .research-group-panel, .ai-result-panel, .details-panel {
