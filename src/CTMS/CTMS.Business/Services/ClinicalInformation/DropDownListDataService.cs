@@ -35,8 +35,8 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> Get月經狀態()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            result.Add(new DropDownListDataModel() { Key = $"0", Name = $"0 停經" });
-            result.Add(new DropDownListDataModel() { Key = $"1", Name = $"1 未停經" });
+            result.Add(new DropDownListDataModel() { Key = $"停經", Name = $"0 停經" });
+            result.Add(new DropDownListDataModel() { Key = $"未停經", Name = $"1 未停經" });
             return result;
         }
 
