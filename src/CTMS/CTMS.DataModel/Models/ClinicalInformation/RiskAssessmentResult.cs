@@ -7,24 +7,30 @@ public class RiskAssessmentResult
     public void Demo實驗組()
     {
         ExperimentalControl = MagicObjectHelper.實驗組;
-        SMI骨骼肌指標 = "低於正常值";
-        SMD骨骼肌密度 = "低於正常值";
-        IMAT肌間肌肉脂肪組織 = "高於正常值";
-        LAMA低密度肌肉區域 = "正常";
-        NAMA正常密度肌肉區域 = "正常";
-        Myosteatosis肌肉脂肪變性 = "正常";
+        風險程度 = "高風險";
+        是否需要降15Percent劑量 = "需要";
+        SMI骨骼肌指標 = "32.09";
+        SMD骨骼肌密度 = "27.3";
+        IMAT肌間肌肉脂肪組織 = "17.22";
+        LAMA低密度肌肉區域 = "35.82";
+        NAMA正常密度肌肉區域 = "41.27";
+        Myosteatosis肌肉脂肪變性 = "53.04";
         Image = "ExperimentalGroupAI";
+        ImageExtension = "jpg";
     }
     public void Demo對照組()
     {
         ExperimentalControl = MagicObjectHelper.對照組;
-        SMI骨骼肌指標 = "高於正常值";
-        SMD骨骼肌密度 = "高於正常值";
-        IMAT肌間肌肉脂肪組織 = "低於正常值";
-        LAMA低密度肌肉區域 = "異常";
-        NAMA正常密度肌肉區域 = "異常";
-        Myosteatosis肌肉脂肪變性 = "異常";
+        風險程度 = "高風險";
+        是否需要降15Percent劑量 = "需要";
+        SMI骨骼肌指標 = "34";
+        SMD骨骼肌密度 = "16.21";
+        IMAT肌間肌肉脂肪組織 = "30.88";
+        LAMA低密度肌肉區域 = "60.59";
+        NAMA正常密度肌肉區域 = "27.8";
+        Myosteatosis肌肉脂肪變性 = "91.47";
         Image = "ControlGroupAI";
+        ImageExtension = "png";
     }
     /// <summary>
     /// 實驗組或對照組
@@ -56,6 +62,7 @@ public class RiskAssessmentResult
     /// AI分析後的影像檔案名稱
     /// </summary>
     public string Image { get; set; }
+    public string ImageExtension { get; set; }
     public string ImageDicom { get { return $"{Image}.dicm"; } }
-    public string ImagePng { get { return $"{Image}.jpg"; } }
+    public string ImagePng { get { return $"{Image}.{ImageExtension}"; } }
 }
