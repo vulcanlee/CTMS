@@ -138,6 +138,25 @@ public class SideEffectsService
 
     }
 
+    public void Update副作用AllByDemo(string studycode, Main臨床資料 main臨床資料,
+        HematologicSideEffects血液副作用Node hematologicSideEffects)
+    {
+        if (studycode.Contains("-E"))
+        {
+            ComputeGradeByDemo(studycode, hematologicSideEffects);
+        }
+        else if (studycode.Contains("-C"))
+        {
+            ComputeGradeByDemo(studycode, hematologicSideEffects);
+        }
+        else
+        {
+            Update副作用WhiteBloodCell白血球(main臨床資料, hematologicSideEffects);
+            Update副作用HemoglobinHb血色素(main臨床資料, hematologicSideEffects);
+            Update副作用PlateletCount血小板(main臨床資料, hematologicSideEffects);
+        }
+    }
+
     public void Update副作用All(Main臨床資料 main臨床資料,
         HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
@@ -275,4 +294,86 @@ public class SideEffectsService
         }
         #endregion
     }
+
+    public void ComputeGradeByDemo(string studycode, 
+        HematologicSideEffects血液副作用Node hematologicSideEffects)
+    {
+        GradeItem grade;
+
+        GradeItemSideEffectsItem sideEffectsItem;
+       
+        #region Reset CssClass
+        sideEffectsItem = hematologicSideEffects.WhiteBloodCell白血球;
+        sideEffectsItem.Grade1.ResetCssClassNotFound();
+        sideEffectsItem.Grade2.ResetCssClassNotFound();
+        sideEffectsItem.Grade3.ResetCssClassNotFound();
+        sideEffectsItem.Grade4.ResetCssClassNotFound();
+        sideEffectsItem.Grade5.ResetCssClassNotFound();
+        sideEffectsItem.Grade1.Title = $"<LLN - 3000/mm3";
+        sideEffectsItem.Grade2.Title = $"<3000 - 2000/mm3";
+        sideEffectsItem.Grade3.Title = $"<2000 - 1000/mm3";
+        sideEffectsItem.Grade4.Title = $"<1000";
+        sideEffectsItem.Grade5.Title = $"-";
+        sideEffectsItem = hematologicSideEffects.HemoglobinHb血色素;
+        sideEffectsItem.Grade1.ResetCssClassNotFound();
+        sideEffectsItem.Grade2.ResetCssClassNotFound();
+        sideEffectsItem.Grade3.ResetCssClassNotFound();
+        sideEffectsItem.Grade4.ResetCssClassNotFound();
+        sideEffectsItem.Grade5.ResetCssClassNotFound();
+        sideEffectsItem.Grade1.Title = $" <LLN - 10.0 g/dL";
+        sideEffectsItem.Grade2.Title = $"Hgb <10.0 - 8.0 g/dL";
+        sideEffectsItem.Grade3.Title = $"Hgb <8.0 g/dL";
+        sideEffectsItem.Grade4.Title = $"-";
+        sideEffectsItem.Grade5.Title = $"Death";
+        sideEffectsItem = hematologicSideEffects.PlateletCount血小板;
+        sideEffectsItem.Grade1.ResetCssClassNotFound();
+        sideEffectsItem.Grade2.ResetCssClassNotFound();
+        sideEffectsItem.Grade3.ResetCssClassNotFound();
+        sideEffectsItem.Grade4.ResetCssClassNotFound();
+        sideEffectsItem.Grade5.ResetCssClassNotFound();
+        sideEffectsItem.Grade1.Title = $"<LLN - 75,000/mm3";
+        sideEffectsItem.Grade2.Title = $"<75,000 - 50,000/mm3 ";
+        sideEffectsItem.Grade3.Title = $"<50,000 - 25,000/mm3 ";
+        sideEffectsItem.Grade4.Title = $"<25,000/mm3";
+        sideEffectsItem.Grade5.Title = $"-";
+        sideEffectsItem = hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
+        sideEffectsItem.Grade1.ResetCssClassNotFound();
+        sideEffectsItem.Grade2.ResetCssClassNotFound();
+        sideEffectsItem.Grade3.ResetCssClassNotFound();
+        sideEffectsItem.Grade4.ResetCssClassNotFound();
+        sideEffectsItem.Grade5.ResetCssClassNotFound();
+        sideEffectsItem.Grade1.Title = $"<LLN - 1500/mm3";
+        sideEffectsItem.Grade2.Title = $"<1500 - 1000/mm3";
+        sideEffectsItem.Grade3.Title = $"<1000 - 500/mm3";
+        sideEffectsItem.Grade4.Title = $"<500";
+        sideEffectsItem.Grade5.Title = $"-";
+        #endregion
+
+        #region 判斷副作用等級
+        if (studycode.Contains("-E"))
+        {
+            sideEffectsItem = hematologicSideEffects.WhiteBloodCell白血球;
+            sideEffectsItem.Grade2.ResetCssClassFoundHeigh();
+            sideEffectsItem = hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
+            sideEffectsItem.Grade3.ResetCssClassFoundHeigh();
+            sideEffectsItem = hematologicSideEffects.HemoglobinHb血色素;
+            sideEffectsItem.Grade1.ResetCssClassFoundLow();
+            sideEffectsItem = hematologicSideEffects.PlateletCount血小板;
+            sideEffectsItem.Grade1.ResetCssClassFoundLow();
+        }
+        else if (studycode.Contains("-C"))
+        {
+            sideEffectsItem = hematologicSideEffects.WhiteBloodCell白血球;
+            sideEffectsItem.Grade2.ResetCssClassFoundHeigh();
+            sideEffectsItem = hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
+            sideEffectsItem.Grade3.ResetCssClassFoundHeigh();
+            sideEffectsItem = hematologicSideEffects.HemoglobinHb血色素;
+            sideEffectsItem.Grade1.ResetCssClassFoundLow();
+            sideEffectsItem = hematologicSideEffects.PlateletCount血小板;
+            sideEffectsItem.Grade1.ResetCssClassFoundLow();
+        }
+
+        #endregion
+    }
 }
+

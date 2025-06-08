@@ -110,6 +110,8 @@ namespace CTMS.Share.Helpers
 
         public const string NotFoundClass = "not-found";
         public const string FoundClass = "has-found";
+        public const string FoundLowClass = "grade-level-low";
+        public const string FoundHeighClass = "grade-level-heigh";
 
         public const string ProteinLoss = "Loss";
         public const string ProteinPreserve = "Preserve";

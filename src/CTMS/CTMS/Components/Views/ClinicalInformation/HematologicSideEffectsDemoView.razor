@@ -14,79 +14,83 @@
 
 <PageTitle>血液副作用 (Adverse event)</PageTitle>
 
-<div class="header">
-    <div>
-        <h1>血液副作用 (Adverse Event)</h1>
-        @* <div class="code">S-20250520074124</div> *@
+<div>
+    <div class="header">
+        <div>
+            <h1>血液副作用 (Adverse Event)</h1>
+            @* <div class="code">S-20250520074124</div> *@
+        </div>
+        <div class="buttons">
+            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
+            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
+            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
+        </div>
     </div>
-    <div class="buttons">
-        <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-        <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-        <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
+
+    <div class="visit-code-container d-flex align-items-center">
+        <div class="visit-info me-3">Visit Code :</div>
+        <div class="flex-grow-1">
+            <SfDropDownList @ref="VisitCodeDropDown"
+                            TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                            Placeholder="選擇一個值" DataSource="@ListVisitCode"
+                            @bind-Value="@SelectVisitCode" class="w-100">
+                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                    ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
+            </SfDropDownList>
+        </div>
     </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>White blood cell<br>白血球</th>
+                <th>Neutrophil count<br>絕對嗜中性白血球數</th>
+                <th>hemoglobin (Hb)<br>血色素</th>
+                <th>Platelet count<br>血小板</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="grade-1">
+                <td class="grade-col">grade 1</td>
+                <td><span class="@data.WhiteBloodCell白血球.Grade1.ApplyCssClass">@data.WhiteBloodCell白血球.Grade1.Title</span></td>
+                <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade1.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade1.Title</span></td>
+                <td><span class="@data.HemoglobinHb血色素.Grade1.ApplyCssClass">@data.HemoglobinHb血色素.Grade1.Title</span></td>
+                <td><span class="@data.PlateletCount血小板.Grade1.ApplyCssClass">@data.PlateletCount血小板.Grade1.Title</span></td>
+            </tr>
+            <tr class="grade-2">
+                <td class="grade-col">grade 2</td>
+                <td><span class="@data.WhiteBloodCell白血球.Grade2.ApplyCssClass">@data.WhiteBloodCell白血球.Grade2.Title</span></td>
+                <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade2.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade2.Title</span></td>
+                <td><span class="@data.HemoglobinHb血色素.Grade2.ApplyCssClass">@data.HemoglobinHb血色素.Grade2.Title</span></td>
+                <td><span class="@data.PlateletCount血小板.Grade2.ApplyCssClass">@data.PlateletCount血小板.Grade2.Title</span></td>
+            </tr>
+            <tr class="grade-3">
+                <td class="grade-col">grade 3</td>
+                <td><span class="@data.WhiteBloodCell白血球.Grade3.ApplyCssClass">@data.WhiteBloodCell白血球.Grade3.Title</span></td>
+                <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade3.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade3.Title</span></td>
+                <td><span class="@data.HemoglobinHb血色素.Grade3.ApplyCssClass">@data.HemoglobinHb血色素.Grade3.Title</span></td>
+                <td><span class="@data.PlateletCount血小板.Grade3.ApplyCssClass">@data.PlateletCount血小板.Grade3.Title</span></td>
+            </tr>
+            <tr class="grade-4">
+                <td class="grade-col">grade 4</td>
+                <td><span class="@data.WhiteBloodCell白血球.Grade4.ApplyCssClass">@data.WhiteBloodCell白血球.Grade4.Title</span></td>
+                <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade4.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade4.Title</span></td>
+                <td><span class="@data.HemoglobinHb血色素.Grade4.ApplyCssClass">@data.HemoglobinHb血色素.Grade4.Title</span></td>
+                <td><span class="@data.PlateletCount血小板.Grade4.ApplyCssClass">@data.PlateletCount血小板.Grade4.Title</span></td>
+            </tr>
+            <tr class="grade-5">
+                <td class="grade-col">grade 5</td>
+                <td><span class="@data.WhiteBloodCell白血球.Grade5.ApplyCssClass">@data.WhiteBloodCell白血球.Grade5.Title</span></td>
+                <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade5.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade5.Title</span></td>
+                <td><span class="@data.HemoglobinHb血色素.Grade5.ApplyCssClass">@data.HemoglobinHb血色素.Grade5.Title</span></td>
+                <td><span class="@data.PlateletCount血小板.Grade5.ApplyCssClass">@data.PlateletCount血小板.Grade5.Title</span></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<div class="visit-code-container d-flex align-items-center">
-    <div class="visit-info me-3">Visit Code :</div>
-    <div class="flex-grow-1">
-        <SfDropDownList @ref="VisitCodeDropDown"
-                        TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                        Placeholder="選擇一個值" DataSource="@ListVisitCode"
-                        @bind-Value="@SelectVisitCode" class="w-100">
-            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                ValueChange="@OnVisitCodeChanged"></DropDownListEvents>
-        </SfDropDownList>
-    </div>
-</div>
-<table>
-    <thead>
-        <tr>
-            <th></th>
-            <th>White blood cell<br>白血球</th>
-            <th>Neutrophil count<br>絕對嗜中性白血球數</th>
-            <th>hemoglobin (Hb)<br>血色素</th>
-            <th>Platelet count<br>血小板</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr class="grade-1">
-            <td class="grade-col">grade 1</td>
-            <td><span class="">&lt;LLN - 3000/mm3</span></td>
-            <td><span class="">&lt;LLN - 1500/mm3</span></td>
-            <td><span class="lln-text">&lt;LLN - 10.0 g/dL</span></td>
-            <td><span class="lln-text">&lt;LLN - 75,000/mm3</span></td>
-        </tr>
-        <tr class="grade-2">
-            <td class="grade-col">grade 2</td>
-            <td><span class="range-text">&lt;3000 - 2000/mm3</span></td>
-            <td>&lt;1500 - 1000/mm3</td>
-            <td>Hgb &lt;10.0 - 8.0 g/dL</td>
-            <td>&lt;75,000 - 50,000/mm3</td>
-        </tr>
-        <tr class="grade-3">
-            <td class="grade-col">grade 3</td>
-            <td>&lt;2000 - 1000/mm3</td>
-            <td><span class="range-text">&lt;1000 - 500/mm3</span></td>
-            <td>Hgb &lt;8.0 g/dL</td>
-            <td>&lt;50,000 - 25,000/mm3</td>
-        </tr>
-        <tr class="grade-4">
-            <td class="grade-col">grade 4</td>
-            <td>&lt;1000</td>
-            <td>&lt;500</td>
-            <td>-</td>
-            <td>&lt;25,000/mm3</td>
-        </tr>
-        <tr class="grade-5">
-            <td class="grade-col">grade 5</td>
-            <td>-</td>
-            <td>-</td>
-            <td class="death-text">Death</td>
-            <td>-</td>
-        </tr>
-    </tbody>
-</table>
 <VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
                                data=VisitCode
                                OnConfirmCallback=OnVisiteCodeConfirmAsync />
@@ -131,7 +135,17 @@
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-        InitData(true);
+
+        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001" ||
+        patientData.臨床資訊.SubjectNo == "NCKUH-C001")
+        {
+            data = new HematologicSideEffects血液副作用Node();
+            SideEffectsService.ComputeGradeByDemo(patientData.臨床資訊.SubjectNo, data);
+        }
+        else
+        {
+            InitData();
+        }
     }
 
     void InitData(bool isFirst = true)
@@ -251,9 +265,9 @@
             if (VisitCodeOperateMode == "Add")
             {
                 var newRecord = new HematologicSideEffects血液副作用Node()
-                    {
-                        VisitCode = visitCodeModel,
-                    };
+                {
+                    VisitCode = visitCodeModel,
+                };
 
                 SideEffectsService.InitAll(newRecord);
                 SideEffectsService.Update副作用All(patientData.臨床資料, newRecord);

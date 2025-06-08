@@ -38,5 +38,15 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         {
             ApplyCssClass = MagicObjectHelper.FoundClass;
         }
+
+        public void ResetCssClassFoundLow()
+        {
+            ApplyCssClass = MagicObjectHelper.FoundLowClass;
+        }
+
+        public void ResetCssClassFoundHeigh()
+        {
+            ApplyCssClass = MagicObjectHelper.FoundHeighClass;
+        }
     }
 }
