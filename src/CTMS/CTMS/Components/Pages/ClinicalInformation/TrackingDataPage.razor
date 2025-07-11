@@ -1,0 +1,94 @@
+﻿@page "/TrackingData/{code}"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject UploadFileService UploadFileService
+@inject ExcleService ExcleService
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+
+@using Microsoft.Extensions.Options
+@inject IOptions<CTMSSettings> options
+
+<PageTitle>臨床資料 追蹤資料</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+    <div>
+        <div>
+            <div class="header">
+                <img src="/images/nckuh2.png" alt="@MagicObjectHelper.國立成功大學醫學院附設醫院" class="hospital-logo" />
+                <div class="hospital-title">
+                    <h1>@MagicObjectHelper.國立成功大學醫學院附設醫院</h1>
+                    <h2>National Cheng Kung University Hospital</h2>
+                </div>
+                <div class="version">Version:@options.Value.SystemInformation.SystemVersion</div>
+            </div>
+
+            <div class="back-button cursor-pointer" @onclick=OnBack>
+                <i class="oi oi-arrow-left"></i> <span>返回上頁</span>
+            </div>
+        </div>
+
+        <div class="page-body">
+            <MudTabs PanelClass="pa-6">
+                <MudTabPanel Text="其他治療">
+                    <OtherTreatmentView Code="@Code" />
+                </MudTabPanel>
+                <MudTabPanel Text="其他治療-藥物">
+                    <OtherMedicationView Code="@Code" />
+                </MudTabPanel>
+                <MudTabPanel Text="其他治療-影像">
+                    <OtherImageView Code="@Code" />
+                </MudTabPanel>
+            </MudTabs>
+        </div>
+    </div>
+}
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public string Code { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    Athlete Athlete = new();
+
+    protected override void OnInitialized()
+    {
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+    void OnBack()
+    {
+        NavigationManager.NavigateTo($"/BasicClinical/{Code}");
+    }
+}
