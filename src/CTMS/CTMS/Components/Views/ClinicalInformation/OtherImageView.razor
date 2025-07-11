@@ -76,26 +76,28 @@
                 <table>
                     <tr>
                         <td class="w-20 data-title">
-                            Subject No.
+                            
                         </td>
                         <td class="w-16 data-title">
-                            BSA
+                            CXR
                         </td>
                         <td class="w-16 data-title">
-                            Regimen<br />
-                            Paclitaxel 175 mg/m2
+                            12-lead EKG
                         </td>
                         <td class="w-16 data-title">
-                            Regimen<br />
-                            Carboplatin AUC 5
+                            Chest CT
                         </td>
                         <td class="w-16 data-title">
-                            Reduction
+                            Abd CT
                         </td>
                         <td class="w-16 data-title">
-                            Bevacizumab<br />
-                            Kg/mg
-
+                            Brain MRI
+                        </td>
+                        <td class="w-16 data-title">
+                            Bone scan
+                        </td>
+                        <td class="w-16 data-title">
+                            other
                         </td>
                     </tr>
                     @foreach (var item in data.Items)
@@ -161,6 +163,30 @@
                                 {
                                     <div class="data-value">
                                         @item.Reduction
+                                    </div>
+                                }
+                            </td>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.Bevacizumab" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.Bevacizumab
+                                    </div>
+                                }
+                            </td>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.Bevacizumab" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.Bevacizumab
                                     </div>
                                 }
                             </td>

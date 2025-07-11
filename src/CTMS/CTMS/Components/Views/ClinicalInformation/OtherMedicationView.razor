@@ -76,26 +76,21 @@
                 <table>
                     <tr>
                         <td class="w-20 data-title">
-                            Subject No.
+                            
                         </td>
                         <td class="w-16 data-title">
-                            BSA
+                            Treatment Date
                         </td>
                         <td class="w-16 data-title">
-                            Regimen<br />
-                            Paclitaxel 175 mg/m2
+                            dose
                         </td>
                         <td class="w-16 data-title">
-                            Regimen<br />
-                            Carboplatin AUC 5
+                            Route Code
                         </td>
                         <td class="w-16 data-title">
-                            Reduction
+                            Unit Code
                         </td>
                         <td class="w-16 data-title">
-                            Bevacizumab<br />
-                            Kg/mg
-
                         </td>
                     </tr>
                     @foreach (var item in data.Items)
@@ -165,16 +160,6 @@
                                 }
                             </td>
                             <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.Bevacizumab" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.Bevacizumab
-                                    </div>
-                                }
                             </td>
                         </tr>
                     }
