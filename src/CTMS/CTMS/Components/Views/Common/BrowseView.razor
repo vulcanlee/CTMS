@@ -1,4 +1,14 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+
+@inject NavigationManager NavigationManager
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
@@ -7,6 +17,7 @@
 @inject PatientService PatientService
 @inject BrowsePatientService BrowsePatientService
 @inject NavigationManager NavigationManager
+@inject DropDownListDataService DropDownListDataService
 @inject AutoMapper.IMapper Mapper
 
 <div class="browse-container">
@@ -30,29 +41,43 @@
     <div class="filter-section">
         <div class="filter-header">
             <h2>篩選條件</h2>
-            <a href="#" class="clear-filter">清除所有篩選條件</a>
+            <a class="clear-filter"
+               @onclick="@(async () => await RemovellFilterAsync())">清除所有篩選條件</a>
         </div>
 
         <div class="filter-items">
             <div class="filter-group">
                 <label>醫院名稱</label>
                 <div class="select-container">
-                    <select>
-                        <option>請選擇醫院</option>
-                    </select>
+                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                    Placeholder="請選擇醫院名稱" DataSource="@List院別"
+                                    @bind-Value="@Select院別" class="flex-grow-1">
+                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                            ValueChange="@On院別Changed"></DropDownListEvents>
+                    </SfDropDownList>
                 </div>
             </div>
             <div class="filter-group">
                 <label>癌症類型</label>
                 <div class="select-container">
-                    <select>
-                        <option>請選擇癌症類型</option>
-                    </select>
+                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                    Placeholder="請選擇癌症類型" DataSource="@List癌別"
+                                    @bind-Value="@Select癌別" class="flex-grow-1">
+                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                            ValueChange="@On癌別Changed"></DropDownListEvents>
+                    </SfDropDownList>
                 </div>
             </div>
             <div class="filter-tags">
-                <div class="filter-tag">成大醫院 <span class="tag-remove">×</span></div>
-                <div class="filter-tag">子宮頸癌 <span class="tag-remove">×</span></div>
+                @foreach (var item in browseFilterCondition.Items)
+                {
+                    <div class="filter-tag">
+                        @item.Name
+                        <span class="tag-remove" @onclick="@(async () => await RemoveFilterAsync(item))">×</span>
+                    </div>
+                }
             </div>
         </div>
 
@@ -94,7 +119,7 @@
                         <td>@cancerType</td>
                         <td class="action-buttons">
                             <button class="btn-edit" title="修改"
-                            @onclick="@(async () => await OnEditAsync(iPatient))">
+                                    @onclick="@(async () => await OnEditAsync(iPatient))">
                                 <span class="icon-edit">✏️</span> 修改
                             </button>
                             <button class="btn-delete" title="刪除"
@@ -134,22 +159,17 @@
     List<PatientAdapterModel> patientsAdapterModel = new();
     PatientData patientData = new();
 
+    BrowseFilterCondition browseFilterCondition = new();
+    #region 拉霸選單物件宣告
+    List<DropDownListDataModel> List癌別 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select癌別 = new DropDownListDataModel();
+    List<DropDownListDataModel> List院別 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select院別 = new DropDownListDataModel();
+    #endregion
+
     protected override async Task OnInitializedAsync()
     {
-        //     var checkResult = await AuthenticationStateHelper
-        // .Check(authStateProvider, NavigationManager);
-        //     if (checkResult == true)
-        //     {
-        //         if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE主頁) == false)
-        //         {
-        //             RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
-        //         }
-        //         else
-        //         {
-        //         }
-        //     }
-
-
+        DropDownListDataInit();
         await ReloadAsync();
     }
 
@@ -179,14 +199,7 @@
 
         patientData.FromJson(patientAdapterModel.JsonData);
 
-        // var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px",
-        // "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
-        // ConfirmMessageBox.HiddenAsync);
-
-        // StateHasChanged(); // 更新 UI
-
-        // var confirmDelete = await checkTask;
-
+        // 使用 ConfirmMessageBox 來確認刪除操作
         var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
         "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
         ConfirmMessageBox.HiddenAsync);
@@ -233,6 +246,70 @@
 
     async Task OnRefreshAsync()
     {
+        await ReloadAsync();
+    }
+
+    void DropDownListDataInit()
+    {
+        #region 癌別
+        {
+            List癌別 = DropDownListDataService.Get癌別();
+        }
+        #endregion
+
+        #region 院別
+        {
+            List院別 = DropDownListDataService.Get院別();
+        }
+        #endregion
+
+    }
+
+    async Task RemoveFilterAsync(BrowseFilterConditionNode item)
+    {
+        if (item == null) return;
+        browseFilterCondition.Items.Remove(item);
+        await ReloadAsync();
+    }
+
+    async Task RemovellFilterAsync()
+    {
+        browseFilterCondition.Items.Clear();
+        await ReloadAsync();
+    }
+
+    async Task On院別Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+        // patientData.臨床資訊.ECorOC = args.Value.Key;
+
+        var item = browseFilterCondition.Items.FirstOrDefault(i => i.Name == args.Value.Name);
+        if (item == null)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode
+            {
+                Category = MagicObjectHelper.院別,
+                Name = args.Value.Name
+            });
+        }
+
+        await ReloadAsync();
+    }
+
+    async Task On癌別Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+
+        var item = browseFilterCondition.Items.FirstOrDefault(i => i.Name == args.Value.Name);
+        if (item == null)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode
+            {
+                Category = MagicObjectHelper.癌別,
+                Name = args.Value.Name
+            });
+        }
+
         await ReloadAsync();
     }
 }

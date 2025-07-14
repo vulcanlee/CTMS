@@ -27,8 +27,17 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> Get癌別()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            result.Add(new DropDownListDataModel() { Key = $"EC", Name = $"EC" });
-            result.Add(new DropDownListDataModel() { Key = $"OC", Name = $"OC" });
+            result.Add(new DropDownListDataModel() { Key = $"子宮內膜癌", Name = $"子宮內膜癌" });
+            result.Add(new DropDownListDataModel() { Key = $"卵巢癌", Name = $"卵巢癌" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> Get院別()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"成大醫院", Name = $"成大醫院" });
+            result.Add(new DropDownListDataModel() { Key = $"奇美醫院", Name = $"奇美醫院" });
+            result.Add(new DropDownListDataModel() { Key = $"郭綜合醫院", Name = $"郭綜合醫院" }); 
             return result;
         }
 

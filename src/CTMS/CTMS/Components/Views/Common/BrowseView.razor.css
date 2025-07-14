@@ -87,7 +87,8 @@
 
 .clear-filter {
     color: #f44336;
-    text-decoration: none;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .filter-items {
@@ -113,7 +114,7 @@
 }
 
 .select-container select {
-    width: 100%;
+    width: 200px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
