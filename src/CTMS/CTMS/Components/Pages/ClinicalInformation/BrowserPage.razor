@@ -12,8 +12,9 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject BrowseAthleteService BrowseAthleteService
 @inject CurrentAthleteExamine CurrentAthleteExamine
+@inject Microsoft.Extensions.Options.IOptions<CTMSSettings> options
 
-<PageTitle>主頁</PageTitle>
+<PageTitle>瀏覽</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -23,9 +24,11 @@
 }
 else
 {
+    <HeaderView BackUri=""/>
+   
     <div class="mw-100">
         <div class="container-custom">
-            <PatientView />
+            <BrowseView />
         </div>
     </div>
 }

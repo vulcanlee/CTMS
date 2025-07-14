@@ -1,0 +1,238 @@
+﻿@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+@inject PatientService PatientService
+@inject BrowsePatientService BrowsePatientService
+@inject NavigationManager NavigationManager
+@inject AutoMapper.IMapper Mapper
+
+<div class="browse-container">
+    <!-- 功能按鈕區域 -->
+    <div class="function-buttons">
+        <button class="btn btn-add" @onclick="@(async () => await OnAddAsync())">
+            <span class="icon-plus">+</span> 新增病患資料
+        </button>
+        <button class="btn btn-refresh" @onclick="@(async () => await OnRefreshAsync())">
+            <span class="icon-refresh">↻</span> 重新整理
+        </button>
+        <div class="search-container">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜尋病患編號" />
+            </div>
+        </div>
+    </div>
+
+    <!-- 篩選條件區域 -->
+    <div class="filter-section">
+        <div class="filter-header">
+            <h2>篩選條件</h2>
+            <a href="#" class="clear-filter">清除所有篩選條件</a>
+        </div>
+
+        <div class="filter-items">
+            <div class="filter-group">
+                <label>醫院名稱</label>
+                <div class="select-container">
+                    <select>
+                        <option>請選擇醫院</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>癌症類型</label>
+                <div class="select-container">
+                    <select>
+                        <option>請選擇癌症類型</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-tags">
+                <div class="filter-tag">成大醫院 <span class="tag-remove">×</span></div>
+                <div class="filter-tag">子宮頸癌 <span class="tag-remove">×</span></div>
+            </div>
+        </div>
+
+        <div class="filter-result">
+            <span class="result-icon">✓</span> 共找到10位符合條件的病患
+        </div>
+    </div>
+
+    <!-- 結果表格區域 -->
+    <div class="results-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>病人編號</th>
+                    <th>醫院名稱</th>
+                    <th>癌症類型</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var iPatient in patientsAdapterModel)
+                {
+                    patientData.FromJson(iPatient.JsonData);
+
+                    string id = patientData.臨床資訊.SubjectNo; // Accessing PatientId property
+
+                    @*                     string hospital = id.StartsWith("NCKUH") ? "成大醫院" :
+                    id.StartsWith("CMU") ? "奇美醫院" : "郭綜合醫院";
+
+                    string cancerType = patientData.臨床資訊.ECorOC == "EC" ? "子宮頸癌" : "卵巢癌";
+ *@
+                    string hospital = iPatient.醫院;
+
+                    string cancerType = iPatient.癌別;
+
+                    <tr>
+                        <td>@id</td>
+                        <td>@hospital</td>
+                        <td>@cancerType</td>
+                        <td class="action-buttons">
+                            <button class="btn-edit" title="修改"
+                            @onclick="@(async () => await OnEditAsync(iPatient))">
+                                <span class="icon-edit">✏️</span> 修改
+                            </button>
+                            <button class="btn-delete" title="刪除"
+                                    @onclick="@(async () => await OnDeleteAsync(iPatient))">
+                                <span class="icon-delete">🗑️</span> 刪除
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+
+@code {
+    HomePageModel HomePageModel = new();
+    string imagefile = "";
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    List<Patient> patients = new();
+    List<PatientAdapterModel> patientsAdapterModel = new();
+    PatientData patientData = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //     var checkResult = await AuthenticationStateHelper
+        // .Check(authStateProvider, NavigationManager);
+        //     if (checkResult == true)
+        //     {
+        //         if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE主頁) == false)
+        //         {
+        //             RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+        //         }
+        //         else
+        //         {
+        //         }
+        //     }
+
+
+        await ReloadAsync();
+    }
+
+    async Task ReloadAsync()
+    {
+        patientsAdapterModel = await PatientService.GetAsync();
+        StateHasChanged(); // 更新 UI
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+    async Task OnEditAsync(PatientAdapterModel patientAdapterModel)
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        var url = $"/BasicClinical/{patientAdapterModel.Code}";
+        NavigationManager.NavigateTo(url);
+
+    }
+
+    async Task OnDeleteAsync(PatientAdapterModel patientAdapterModel)
+    {
+
+        patientData.FromJson(patientAdapterModel.JsonData);
+
+        // var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px",
+        // "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
+        // ConfirmMessageBox.HiddenAsync);
+
+        // StateHasChanged(); // 更新 UI
+
+        // var confirmDelete = await checkTask;
+
+        var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
+        ConfirmMessageBox.HiddenAsync);
+
+        if (confirmDelete == true)
+        {
+            // 刪除病患資料的邏輯
+            var deleteResult = await PatientService.DeleteAsync(patientAdapterModel.Id);
+            if (deleteResult.Success)
+            {
+                // 刪除成功，顯示提示訊息
+                // await MessageBox.ShowAsync("400px", "200px", "成功", "病患資料已成功刪除。", MessageBox.HiddenAsync);
+                await ReloadAsync();
+            }
+            else
+            {
+                // 刪除失敗，顯示錯誤訊息
+                await MessageBox.ShowAsync("400px", "200px", "錯誤", deleteResult.Message, MessageBox.HiddenAsync);
+            }
+            StateHasChanged(); // 更新 UI
+        }
+        else
+        {
+            // 使用者取消刪除操作
+        }
+    }
+
+    async Task OnAddAsync()
+    {
+        // 呼叫新增病患的服務方法
+        var result = await PatientService.AddEmptyAsync();
+        if (result.Success)
+        {
+            // 新增成功，顯示提示訊息
+            await MessageBox.ShowAsync("400px", "200px", "成功", "病患資料已成功新增。", MessageBox.HiddenAsync);
+            await ReloadAsync();
+        }
+        else
+        {
+            // 新增失敗，顯示錯誤訊息
+            await MessageBox.ShowAsync("400px", "200px", "錯誤", result.Message, MessageBox.HiddenAsync);
+        }
+    }
+
+    async Task OnRefreshAsync()
+    {
+        await ReloadAsync();
+    }
+}

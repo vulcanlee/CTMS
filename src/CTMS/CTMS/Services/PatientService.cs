@@ -120,6 +120,28 @@ public class PatientService
         }
     }
 
+    public async Task<List<PatientAdapterModel>> GetAsync()
+
+    {
+        List<PatientAdapterModel> result = new List<PatientAdapterModel>();
+        List<Patient> items = await context.Patient
+            .AsNoTracking()
+            .ToListAsync();
+        if (items.Count > 0)
+        {
+            List<PatientAdapterModel> results = Mapper.Map<List<PatientAdapterModel>>(items);
+            foreach (var item in results)
+            {
+                await OhterDependencyData(item);
+            }
+            return results;
+        }
+        else
+        {
+            return result;
+        }
+    }
+
     public async Task<VerifyRecordResult> AddEmptyAsync()
     {
         try

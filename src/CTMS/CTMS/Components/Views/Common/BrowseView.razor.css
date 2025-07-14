@@ -1,0 +1,222 @@
+﻿.browse-container {
+    color: #333;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 功能按鈕區域 */
+.function-buttons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-add {
+    background-color: #e0f2dc;
+    color: #333;
+}
+
+.btn-refresh {
+    background-color: #d6e9fc;
+    color: #333;
+}
+
+.icon-plus, .icon-refresh {
+    margin-right: 5px;
+}
+
+.search-container {
+    margin-left: auto;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    padding: 8px 15px;
+    background-color: white;
+}
+
+.search-icon {
+    margin-right: 10px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    min-width: 250px;
+    font-size: 16px;
+}
+
+/* 篩選條件區域 */
+.filter-section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.filter-header h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.clear-filter {
+    color: #f44336;
+    text-decoration: none;
+}
+
+.filter-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.select-container {
+    position: relative;
+}
+
+.select-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat;
+    background-position: right 10px top 50%;
+    background-color: white;
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.filter-tag {
+    background-color: #e6f4ff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.tag-remove {
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.filter-result {
+    background-color: #f0f8eb;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.result-icon {
+    background-color: #4caf50;
+    color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* 結果表格區域 */
+.results-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f1f1f1;
+}
+
+th {
+    text-align: left;
+    padding: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-edit, .btn-delete {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #fff9e6;
+    color: #333;
+}
+
+.btn-delete {
+    background-color: #ffebee;
+    color: #333;
+}
+
+.icon-edit, .icon-delete {
+    margin-right: 5px;
+}
