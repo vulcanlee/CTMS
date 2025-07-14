@@ -97,78 +97,78 @@
                     @foreach (var item in data.Items)
                     {
                         <tr>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.First" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.First
+                                    </div>
+                                }
+                            </td>
                             <td class="w-20 data-title">
                                 @if (editMode)
                                 {
                                     <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                                  @bind-Value="@item.TreatmentDate"></SfDatePicker>
+                                                  @bind-Value="@item.Visit"></SfDatePicker>
                                 }
                                 else
                                 {
                                     <div class="data-value">
                                         <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
                                               @onclick="async()=> await OnDeleteAsync(item)"></span>
-                                        @item.TreatmentDate.ToString("yyyy-MM-dd")
+                                        @item.Visit.ToString("yyyy-MM-dd")
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.BSA" />
+                                    <SfTextBox @bind-Value="item.Treatment" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.BSA
+                                        @item.Treatment
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.RegimenPaclitaxel" />
+                                    <SfTextBox @bind-Value="item.Lab" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.RegimenPaclitaxel
+                                        @item.Lab
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.RegimenCarboplatin" />
+                                    <SfTextBox @bind-Value="item.Image" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.RegimenCarboplatin
+                                        @item.Image
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.Reduction" />
+                                    <SfTextBox @bind-Value="item.Others" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.Reduction
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.Bevacizumab" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.Bevacizumab
+                                        @item.Others
                                     </div>
                                 }
                             </td>
@@ -205,8 +205,8 @@
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
-    臨床資料化學治療Node data = new();
-    臨床資料化學治療 header = new();
+    OtherTreatmentNode data = new();
+    OtherTreatment header = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowVisitCodeDialog = false;
@@ -228,7 +228,7 @@
 
     void InitData(bool isFirst = true)
     {
-        header = patientData.臨床資料.臨床資料化學治療;
+        header = patientData.臨床資料.其他治療;
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
@@ -268,11 +268,11 @@
 
     async Task OnAddAsync()
     {
-        data.Items.Add(new 臨床資料化學治療Item());
+        data.Items.Add(new OtherTreatmentItem());
         await OnSave();
     }
 
-    async Task OnDeleteAsync(臨床資料化學治療Item item)
+    async Task OnDeleteAsync(OtherTreatmentItem item)
     {
         // Assuming we need to remove the last item for deletion
         if (data.Items.Count > 0)
@@ -377,7 +377,7 @@
         {
             if (VisitCodeOperateMode == "Add")
             {
-                var newRecord = new 臨床資料化學治療Node()
+                var newRecord = new OtherTreatmentNode()
                     {
                         VisitCode = visitCodeModel,
                     };

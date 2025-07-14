@@ -25,5 +25,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public HematologicSideEffects血液副作用 HematologicSideEffects血液副作用 { get; set; } = new();
         public Survey1SideEffects副作用 SurveySideEffects副作用1 { get; set; } = new();
         public Survey2SideEffects副作用 SurveySideEffects副作用2 { get; set; } = new();
+        public OtherTreatment 其他治療 { get; set; } = new();
+        public OtherMedication 其他治療藥物 { get; set; } = new();
+        public OtherTreatmentImage 其他治療影像 { get; set; } = new();
     }
 }

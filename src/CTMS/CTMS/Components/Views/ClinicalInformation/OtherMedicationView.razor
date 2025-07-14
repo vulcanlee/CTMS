@@ -96,6 +96,18 @@
                     @foreach (var item in data.Items)
                     {
                         <tr>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.Durg" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.Durg
+                                    </div>
+                                }
+                            </td>
                             <td class="w-20 data-title">
                                 @if (editMode)
                                 {
@@ -114,52 +126,38 @@
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.BSA" />
+                                    <SfTextBox @bind-Value="item.dose" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.BSA
+                                        @item.dose
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.RegimenPaclitaxel" />
+                                    <SfTextBox @bind-Value="item.RouteCode" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.RegimenPaclitaxel
+                                        @item.RouteCode
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.RegimenCarboplatin" />
+                                    <SfTextBox @bind-Value="item.UnitCode" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.RegimenCarboplatin
+                                        @item.UnitCode
                                     </div>
                                 }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.Reduction" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.Reduction
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
                             </td>
                         </tr>
                     }
@@ -194,8 +192,8 @@
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
-    臨床資料化學治療Node data = new();
-    臨床資料化學治療 header = new();
+   OtherMedicationNode data = new();
+   OtherMedication header = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowVisitCodeDialog = false;
@@ -217,7 +215,7 @@
 
     void InitData(bool isFirst = true)
     {
-        header = patientData.臨床資料.臨床資料化學治療;
+        header = patientData.臨床資料.其他治療藥物;
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
@@ -257,11 +255,11 @@
 
     async Task OnAddAsync()
     {
-        data.Items.Add(new 臨床資料化學治療Item());
+        data.Items.Add(new OtherMedicationItem());
         await OnSave();
     }
 
-    async Task OnDeleteAsync(臨床資料化學治療Item item)
+    async Task OnDeleteAsync(OtherMedicationItem item)
     {
         // Assuming we need to remove the last item for deletion
         if (data.Items.Count > 0)
@@ -366,7 +364,7 @@
         {
             if (VisitCodeOperateMode == "Add")
             {
-                var newRecord = new 臨床資料化學治療Node()
+                var newRecord = new OtherMedicationNode()
                     {
                         VisitCode = visitCodeModel,
                     };

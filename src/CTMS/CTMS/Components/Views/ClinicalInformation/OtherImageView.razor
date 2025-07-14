@@ -103,102 +103,101 @@
                     @foreach (var item in data.Items)
                     {
                         <tr>
-                            <td class="w-20 data-title">
+                            <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                                  @bind-Value="@item.TreatmentDate"></SfDatePicker>
+                                    <SfTextBox @bind-Value="item.First" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
                                         <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
-                                              @onclick="async()=> await OnDeleteAsync(item)"></span>
-                                        @item.TreatmentDate.ToString("yyyy-MM-dd")
+                                              @onclick="async () => await OnDeleteAsync(item)"></span>
+                                        @item.First
+                                    </div>
+        }
+                            </td>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.ChestXRay" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.ChestXRay
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.BSA" />
+                                    <SfTextBox @bind-Value="item.LeadEKG12" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.BSA
+                                        @item.LeadEKG12
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.RegimenPaclitaxel" />
+                                    <SfTextBox @bind-Value="item.ChestCT" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.RegimenPaclitaxel
+                                        @item.ChestCT
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.RegimenCarboplatin" />
+                                    <SfTextBox @bind-Value="item.AbdCT" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.RegimenCarboplatin
+                                        @item.AbdCT
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.Reduction" />
+                                    <SfTextBox @bind-Value="item.BrainMRI" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.Reduction
+                                        @item.BrainMRI
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.Bevacizumab" />
+                                    <SfTextBox @bind-Value="item.BoneScan" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.Bevacizumab
+                                        @item.BoneScan
                                     </div>
                                 }
                             </td>
                             <td class="w-16 data-title">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.Bevacizumab" />
+                                    <SfTextBox @bind-Value="item.Other" />
                                 }
                                 else
                                 {
                                     <div class="data-value">
-                                        @item.Bevacizumab
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.Bevacizumab" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.Bevacizumab
+                                        @item.Other
                                     </div>
                                 }
                             </td>
@@ -235,8 +234,8 @@
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
-    臨床資料化學治療Node data = new();
-    臨床資料化學治療 header = new();
+    OtherTreatmentImageNode data = new();
+    OtherTreatmentImage header = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowVisitCodeDialog = false;
@@ -258,7 +257,7 @@
 
     void InitData(bool isFirst = true)
     {
-        header = patientData.臨床資料.臨床資料化學治療;
+        header = patientData.臨床資料.其他治療影像;
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
@@ -298,11 +297,11 @@
 
     async Task OnAddAsync()
     {
-        data.Items.Add(new 臨床資料化學治療Item());
+        data.Items.Add(new OtherTreatmentImageItem());
         await OnSave();
     }
 
-    async Task OnDeleteAsync(臨床資料化學治療Item item)
+    async Task OnDeleteAsync(OtherTreatmentImageItem item)
     {
         // Assuming we need to remove the last item for deletion
         if (data.Items.Count > 0)
@@ -407,7 +406,7 @@
         {
             if (VisitCodeOperateMode == "Add")
             {
-                var newRecord = new 臨床資料化學治療Node()
+                var newRecord = new OtherTreatmentImageNode()
                     {
                         VisitCode = visitCodeModel,
                     };
