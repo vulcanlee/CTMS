@@ -10,15 +10,36 @@
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
-@inject SideEffectsService SideEffectsService
 
-<PageTitle>血液副作用 (Adverse event)</PageTitle>
+<PageTitle>追蹤資料 其他治療-藥物</PageTitle>
 
 <div>
+
     <div class="header">
-        <div>
-            <h1>血液副作用 (Adverse Event)</h1>
-            @* <div class="code">S-20250520074124</div> *@
+        <div class="d-flex align-items-start">
+            <h1 style="margin: 0; flex-grow: 1;">追蹤資料 其他治療-藥物</h1>
+            <div>
+                @if (editMode)
+                {
+                    <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
+                        <button type="button" class="btn btn-sm btn-primary save-button"
+                                @onclick=OnSave>
+                            儲存
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger cancle-button"
+                                @onclick=OnCancel>
+                            取消
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <span class="edit-icon d-flex align-items-center cursor-pointer"
+                          @onclick="OnChangeEditMode">
+                        <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                    </span>
+                }
+            </div>
         </div>
         <div class="buttons">
             <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
@@ -28,7 +49,7 @@
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
-        <div class="visit-info me-3">Visit Code :</div>
+        <div class="visit-info">Visit Code :</div>
         <div class="flex-grow-1">
             <SfDropDownList @ref="VisitCodeDropDown"
                             TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -43,54 +64,107 @@
 
     @if (data != null)
     {
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>White blood cell<br>白血球</th>
-                    <th>Neutrophil count<br>絕對嗜中性白血球數</th>
-                    <th>hemoglobin (Hb)<br>血色素</th>
-                    <th>Platelet count<br>血小板</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="grade-1">
-                    <td class="grade-col">grade 1</td>
-                    <td><span class="@data.WhiteBloodCell白血球.Grade1.ApplyCssClass">@data.WhiteBloodCell白血球.Grade1.Title</span></td>
-                    <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade1.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade1.Title</span></td>
-                    <td><span class="@data.HemoglobinHb血色素.Grade1.ApplyCssClass">@data.HemoglobinHb血色素.Grade1.Title</span></td>
-                    <td><span class="@data.PlateletCount血小板.Grade1.ApplyCssClass">@data.PlateletCount血小板.Grade1.Title</span></td>
-                </tr>
-                <tr class="grade-2">
-                    <td class="grade-col">grade 2</td>
-                    <td><span class="@data.WhiteBloodCell白血球.Grade2.ApplyCssClass">@data.WhiteBloodCell白血球.Grade2.Title</span></td>
-                    <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade2.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade2.Title</span></td>
-                    <td><span class="@data.HemoglobinHb血色素.Grade2.ApplyCssClass">@data.HemoglobinHb血色素.Grade2.Title</span></td>
-                    <td><span class="@data.PlateletCount血小板.Grade2.ApplyCssClass">@data.PlateletCount血小板.Grade2.Title</span></td>
-                </tr>
-                <tr class="grade-3">
-                    <td class="grade-col">grade 3</td>
-                    <td><span class="@data.WhiteBloodCell白血球.Grade3.ApplyCssClass">@data.WhiteBloodCell白血球.Grade3.Title</span></td>
-                    <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade3.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade3.Title</span></td>
-                    <td><span class="@data.HemoglobinHb血色素.Grade3.ApplyCssClass">@data.HemoglobinHb血色素.Grade3.Title</span></td>
-                    <td><span class="@data.PlateletCount血小板.Grade3.ApplyCssClass">@data.PlateletCount血小板.Grade3.Title</span></td>
-                </tr>
-                <tr class="grade-4">
-                    <td class="grade-col">grade 4</td>
-                    <td><span class="@data.WhiteBloodCell白血球.Grade4.ApplyCssClass">@data.WhiteBloodCell白血球.Grade4.Title</span></td>
-                    <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade4.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade4.Title</span></td>
-                    <td><span class="@data.HemoglobinHb血色素.Grade4.ApplyCssClass">@data.HemoglobinHb血色素.Grade4.Title</span></td>
-                    <td><span class="@data.PlateletCount血小板.Grade4.ApplyCssClass">@data.PlateletCount血小板.Grade4.Title</span></td>
-                </tr>
-                <tr class="grade-5">
-                    <td class="grade-col">grade 5</td>
-                    <td><span class="@data.WhiteBloodCell白血球.Grade5.ApplyCssClass">@data.WhiteBloodCell白血球.Grade5.Title</span></td>
-                    <td><span class="@data.NeutrophilCount絕對嗜中性白血球數.Grade5.ApplyCssClass">@data.NeutrophilCount絕對嗜中性白血球數.Grade5.Title</span></td>
-                    <td><span class="@data.HemoglobinHb血色素.Grade5.ApplyCssClass">@data.HemoglobinHb血色素.Grade5.Title</span></td>
-                    <td><span class="@data.PlateletCount血小板.Grade5.ApplyCssClass">@data.PlateletCount血小板.Grade5.Title</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="view-container">
+            <div>
+                @* 新增一筆紀錄按鈕 *@
+                <button class="btn btn-primary add-button" 
+                @onclick="async () =>await OnAddAsync()">
+                    新增一筆紀錄
+                </button>
+            </div>
+            <div class="left-table">
+                <table>
+                    <tr>
+                        <td class="w-20 data-title">
+                            
+                        </td>
+                        <td class="w-16 data-title">
+                            Treatment Date
+                        </td>
+                        <td class="w-16 data-title">
+                            dose
+                        </td>
+                        <td class="w-16 data-title">
+                            Route Code
+                        </td>
+                        <td class="w-16 data-title">
+                            Unit Code
+                        </td>
+                        <td class="w-16 data-title">
+                        </td>
+                    </tr>
+                    @foreach (var item in data.Items)
+                    {
+                        <tr>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.Durg" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.Durg
+                                    </div>
+                                }
+                            </td>
+                            <td class="w-20 data-title">
+                                @if (editMode)
+                                {
+                                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                                  @bind-Value="@item.TreatmentDate"></SfDatePicker>
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
+                                              @onclick="async()=> await OnDeleteAsync(item)"></span>
+                                        @item.TreatmentDate.ToString("yyyy-MM-dd")
+                                    </div>
+                                }
+                            </td>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.dose" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.dose
+                                    </div>
+                                }
+                            </td>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.RouteCode" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.RouteCode
+                                    </div>
+                                }
+                            </td>
+                            <td class="w-16 data-title">
+                                @if (editMode)
+                                {
+                                    <SfTextBox @bind-Value="item.UnitCode" />
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                        @item.UnitCode
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
     }
 </div>
 
@@ -117,11 +191,9 @@
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
-    HematologicSideEffects血液副作用Node data = new();
-    HematologicSideEffects血液副作用 header = new();
 
-    List<DropDownListDataModel> ListCardiovascularIncludeHtnYesNo = new List<DropDownListDataModel>();
-    List<string> ListYesNo = new List<string>();
+   OtherMedicationNode data = new();
+   OtherMedication header = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowVisitCodeDialog = false;
@@ -138,22 +210,12 @@
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
-
-        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001" ||
-        patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        {
-            data = new HematologicSideEffects血液副作用Node();
-            SideEffectsService.ComputeGradeByDemo(patientData.臨床資訊.SubjectNo, data);
-        }
-        else
-        {
-            InitData();
-        }
+        InitData(true);
     }
 
     void InitData(bool isFirst = true)
     {
-        header = patientData.臨床資料.HematologicSideEffects血液副作用;
+        header = patientData.臨床資料.其他治療藥物;
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
@@ -171,6 +233,42 @@
             }
         }
     }
+
+    void OnChangeEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    async Task OnSave()
+    {
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+        editMode = false;
+    }
+
+    async Task OnCancel()
+    {
+        patientData.FromJson(patientAdapterModel.JsonData);
+        InitData(false);
+        editMode = false;
+    }
+
+    async Task OnAddAsync()
+    {
+        data.Items.Add(new OtherMedicationItem());
+        await OnSave();
+    }
+
+    async Task OnDeleteAsync(OtherMedicationItem item)
+    {
+        // Assuming we need to remove the last item for deletion
+        if (data.Items.Count > 0)
+        {
+            data.Items.Remove(item);
+            await OnSave();
+        }
+    }
+
 
     #region 針對 VisitCode 的方法
     void OnAddVisiteCode()
@@ -236,10 +334,10 @@
             foreach (var nodeItem in header.Items)
             {
                 ListVisitCode.Add(new DropDownListDataModel()
-                {
-                    Key = nodeItem.VisitCode.Id,
-                    Name = nodeItem.VisitCode.VisitCodeTitle,
-                });
+                    {
+                        Key = nodeItem.VisitCode.Id,
+                        Name = nodeItem.VisitCode.VisitCodeTitle,
+                    });
             }
             if (reset)
             {
@@ -248,7 +346,6 @@
         }
         #endregion
     }
-
     void RefreshDropDwonVisitCode()
     {
         // 重置選擇項目
@@ -267,13 +364,10 @@
         {
             if (VisitCodeOperateMode == "Add")
             {
-                var newRecord = new HematologicSideEffects血液副作用Node()
-                {
-                    VisitCode = visitCodeModel,
-                };
-
-                SideEffectsService.InitAll(newRecord);
-                SideEffectsService.Update副作用All(patientData.臨床資料, newRecord);
+                var newRecord = new OtherMedicationNode()
+                    {
+                        VisitCode = visitCodeModel,
+                    };
                 header.Items.Add(newRecord);
                 patientData.SyncData();
                 patientAdapterModel.JsonData = patientData.ToJson();
@@ -289,7 +383,6 @@
                     data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
                     data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
                     data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    SideEffectsService.Update副作用All(patientData.臨床資料, data);
                     patientAdapterModel.JsonData = patientData.ToJson();
                     await PatientService.UpdateAsync(patientAdapterModel);
                     RefreshVisitCode(false);
@@ -309,5 +402,4 @@
         ShowVisitCodeDialog = false;
     }
     #endregion
-
 }

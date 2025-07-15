@@ -1,0 +1,21 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="logo-container">
+    <img src="images/splash.png" class="responsive-logo" alt="Logo" />
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(2000); // Simulate a delay for splash screen
+            NavigationManager.NavigateTo("/Browser", true, true);
+        }
+    }
+}

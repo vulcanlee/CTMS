@@ -44,6 +44,10 @@
                       @onclick="OnChangeEditMode">
                     <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
                 </span>
+                <span class="edit-icon d-flex align-items-center cursor-pointer"
+                      @onclick="OnShowVisitCode">
+                    <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>Visit Code
+                </span>
             }
         </div>
 
@@ -483,7 +487,7 @@
                     <button class="btn btn-light btn-blue w-100" @onclick=On問卷>問卷</button>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-light btn-pink w-100">追蹤資料</button>
+                    <button class="btn btn-light btn-pink w-100" @onclick=On追蹤資料>追蹤資料</button>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-light btn-yellow w-100" @onclick=On風險評估>風險評估</button>
@@ -493,9 +497,14 @@
     </div>
 </div>
 
-<MMRProteinSettingDialog OpenPicker=ShowVisitCodeDialog
+<MMRProteinSettingDialog OpenPicker=ShowMMRProteinSettingDialog
                          data=patientData.臨床資訊.MMRProteinSetting
                          OnConfirmCallback=OnMMRProteinSettingAsync />
+
+<VisitCodeDialog OpenPicker=ShowVisitCodeDialog
+                 Code="@Code"
+                 data=VisitCodeSetModel
+                 OnConfirmCallback=OnVisitCodeAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -518,9 +527,14 @@
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
+    bool ShowMMRProteinSettingDialog = false;
     bool ShowVisitCodeDialog = false;
+
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    VisitCodeSetModel VisitCodeSetModel = new();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -1018,6 +1032,13 @@
 
     void OnShowMMRProteinSetting()
     {
+        ShowMMRProteinSettingDialog = true;
+    }
+
+    void OnShowVisitCode()
+    {
+        patientData.臨床資料.CollectVisitCode(VisitCodeSetModel);
+
         ShowVisitCodeDialog = true;
     }
 
@@ -1027,9 +1048,20 @@
         {
             patientData.臨床資訊.MMRProteinSetting = mMRProteinSetting;
         }
-        ShowVisitCodeDialog = false;
+        ShowMMRProteinSettingDialog = false;
     }
 
+    async Task OnVisitCodeAsync(VisitCodeSetModel visitCodeSetModel)
+    {
+        if (visitCodeSetModel != null)
+        {
+            patientData.臨床資料.SyncData(visitCodeSetModel);
+            patientData.SyncData();
+            patientAdapterModel.JsonData = patientData.ToJson();
+            await PatientService.UpdateAsync(patientAdapterModel);
+        }
+        ShowVisitCodeDialog = false;
+    }
     void OnChangeEditMode()
     {
         editMode = !editMode;
@@ -1069,6 +1101,12 @@
     void On問卷()
     {
         var url = $"/Survey/{Code}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    void On追蹤資料()
+    {
+        var url = $"/TrackingData/{Code}";
         NavigationManager.NavigateTo(url);
     }
 

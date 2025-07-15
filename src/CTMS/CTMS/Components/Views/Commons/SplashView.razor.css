@@ -1,0 +1,12 @@
+﻿.responsive-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top; /* 從頂部開始顯示 */
+}
+
+.responsive-logo {
+    width: 100%;
+    height: 100vh; /* 或其他固定高度 */
+    overflow: hidden;
+}

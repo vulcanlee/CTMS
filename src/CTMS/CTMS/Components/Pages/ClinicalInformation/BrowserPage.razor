@@ -1,9 +1,9 @@
-﻿@page "/BloodTest/{code}"
-@using CTMS.Share.Helpers
+﻿@page "/Browser"
 @using Newtonsoft.Json
+@using CTMS.Share.Helpers
 @layout EmptyLayout
-@inject NavigationManager NavigationManager
 @inject UploadFileService UploadFileService
+@inject NavigationManager NavigationManager
 @inject ExcleService ExcleService
 
 @inject NavigationManager NavigationManager
@@ -12,11 +12,9 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject BrowseAthleteService BrowseAthleteService
 @inject CurrentAthleteExamine CurrentAthleteExamine
+@inject Microsoft.Extensions.Options.IOptions<CTMSSettings> options
 
-@using Microsoft.Extensions.Options
-@inject IOptions<CTMSSettings> options
-
-<PageTitle>抽血資料 儀錶板</PageTitle>
+<PageTitle>瀏覽</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -26,22 +24,11 @@
 }
 else
 {
-    <div>
-
-        @{
-            string backUri = $"/BasicClinical/{Code}";
-        }
-        <HeaderView BackUri=@backUri />
-
-        <div class="page-body">
-            <MudTabs PanelClass="pa-6">
-                <MudTabPanel Text="抽血檢驗(血液)">
-                    <BloodTestView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="抽血檢驗(生化)">
-                    <BloodChemistryTestView Code="@Code" />
-                </MudTabPanel>
-            </MudTabs>
+    <HeaderView BackUri=""/>
+   
+    <div class="mw-100">
+        <div class="container-custom">
+            <BrowseView />
         </div>
     </div>
 }
@@ -58,25 +45,27 @@ else
 
 <DialogBackground />
 
+
 @code {
-    [Parameter]
-    public string Code { get; set; }
+    HomePageModel HomePageModel = new();
+    string imagefile = "";
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
 
     Athlete Athlete = new();
-
-    protected override void OnInitialized()
-    {
-    }
+    NextGenerationSportsCTMSModel CTMSModel = new();
+    List<FileListNodeModel> fileList = new List<FileListNodeModel>();
 
     protected override async Task OnInitializedAsync()
     {
     }
-    void OnBack()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        NavigationManager.NavigateTo($"/BasicClinical/{Code}");
+        if (firstRender)
+        {
+        }
     }
 }

@@ -27,20 +27,10 @@
 else
 {
     <div>
-        <div>
-            <div class="header">
-                <img src="/images/nckuh2.png" alt="國立成功大學附設醫院" class="hospital-logo" />
-                <div class="hospital-title">
-                    <h1>國立成功大學附設醫院</h1>
-                    <h2>National Cheng Kung University Hospital</h2>
-                </div>
-                <div class="version">Version:@options.Value.SystemInformation.SystemVersion</div>
-            </div>
-
-            <div class="back-button cursor-pointer" @onclick=OnBack>
-                <i class="oi oi-arrow-left"></i> <span>返回上頁</span>
-            </div>
-        </div>
+        @{
+            string backUri = $"/BasicClinical/{Code}";
+        }
+        <HeaderView BackUri=@backUri />
 
         <div class="page-body pa-6">
             <RiskAssessmentView Code="@Code" />

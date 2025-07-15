@@ -1,0 +1,55 @@
+﻿@using Newtonsoft.Json
+@using CTMS.Share.Helpers
+@layout EmptyLayout
+@inject UploadFileService UploadFileService
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@inject BrowseAthleteService BrowseAthleteService
+@inject CurrentAthleteExamine CurrentAthleteExamine
+@using Microsoft.Extensions.Options
+@inject IOptions<CTMSSettings> options
+
+<div>
+    <div class="header">
+        <img src="/images/ncku_logo.svg" alt="@MagicObjectHelper.國立成功大學醫學院附設醫院"
+             class="hospital-logo" />
+        <div class="hospital-title">
+            <h1>@MagicObjectHelper.國立成功大學醫學院附設醫院</h1>
+            <h2>National Cheng Kung University Hospital</h2>
+        </div>
+        <div class="version">Version:@options.Value.SystemInformation.SystemVersion</div>
+    </div>
+
+    @if (string.IsNullOrEmpty(BackUri) == false)
+    {
+        <div class="back-button-container">
+            <button class="back-btn" @onclick=OnBack>
+                <i class="oi oi-arrow-left"></i> 返回上頁
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string BackUri { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+    void OnBack()
+    {
+        NavigationManager.NavigateTo(BackUri, true, true);
+    }
+}

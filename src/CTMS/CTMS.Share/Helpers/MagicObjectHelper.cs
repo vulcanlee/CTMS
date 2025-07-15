@@ -126,5 +126,9 @@ namespace CTMS.Share.Helpers
   
         public const string StageC = "c";
         public const string StageP = "p";
-  }
+  
+        public const string 國立成功大學醫學院附設醫院 = "國立成功大學醫學院附設醫院";
+        public const string 癌別 = "癌別";
+        public const string 院別 = "院別";
+    }
 }

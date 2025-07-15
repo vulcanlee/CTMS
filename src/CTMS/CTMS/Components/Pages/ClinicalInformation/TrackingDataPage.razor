@@ -1,4 +1,4 @@
-﻿@page "/BloodTest/{code}"
+﻿@page "/TrackingData/{code}"
 @using CTMS.Share.Helpers
 @using Newtonsoft.Json
 @layout EmptyLayout
@@ -16,7 +16,7 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
 
-<PageTitle>抽血資料 儀錶板</PageTitle>
+<PageTitle>臨床資料 追蹤資料</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -27,7 +27,6 @@
 else
 {
     <div>
-
         @{
             string backUri = $"/BasicClinical/{Code}";
         }
@@ -35,11 +34,14 @@ else
 
         <div class="page-body">
             <MudTabs PanelClass="pa-6">
-                <MudTabPanel Text="抽血檢驗(血液)">
-                    <BloodTestView Code="@Code" />
+                <MudTabPanel Text="其他治療">
+                    <OtherTreatmentView Code="@Code" />
                 </MudTabPanel>
-                <MudTabPanel Text="抽血檢驗(生化)">
-                    <BloodChemistryTestView Code="@Code" />
+                <MudTabPanel Text="其他治療-藥物">
+                    <OtherMedicationView Code="@Code" />
+                </MudTabPanel>
+                <MudTabPanel Text="其他治療-影像">
+                    <OtherImageView Code="@Code" />
                 </MudTabPanel>
             </MudTabs>
         </div>
