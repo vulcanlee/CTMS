@@ -24,149 +24,155 @@
                 @foreach (var itemVisitCode in data.VisitCodes)
                 {
                     var visitCodeSetNodeModel = data.GetVisitCodeSetNodeModel(itemVisitCode);
+                    var expanded = data.GetExpanded(itemVisitCode);
                     <div class="visit-section">
                         <div class="visit-header">
-                            <span class="toggle-icon">▼</span>
-                            <span class="visit-title">@itemVisitCode.GetVisitCodeTitle()</span>
+                            <div @onclick="() => ToggleExpanded(itemVisitCode)">
+                                <span class="toggle-icon">@((expanded) ? "▼" : "▶")</span>
+                                <span class="visit-title">@itemVisitCode.GetVisitCodeTitle()</span>
+                            </div>
                             <button class="btn-edit">修改</button>
                             <button class="btn-delete">刪除</button>
                         </div>
 
-                        <div class="visit-content">
-                            <div class="item-header">
-                                <span class="toggle-icon">▼</span>
-                                <span class="item-title">臨床資料</span>
-                            </div>
-                            <div class="sub-items">
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料手術" />
-                                    <span class="sub-item-title">@DataTabeEnums.臨床資料手術.ToString()</span>
+                        @if (expanded)
+                        {
+                            <div class="visit-content">
+                                <div class="item-header">
+                                    <span class="toggle-icon">▼</span>
+                                    <span class="item-title">臨床資料</span>
                                 </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料病理報告" />
-                                    <span class="sub-item-title">@DataTabeEnums.臨床資料病理報告.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料化學治療" />
-                                    <span class="sub-item-title">@DataTabeEnums.臨床資料化學治療.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料合併用藥" />
-                                    <span class="sub-item-title">@DataTabeEnums.臨床資料合併用藥.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedBaselineMedicalHistoryForm" />
-                                    <span class="sub-item-title">@DataTabeEnums.BaselineMedicalHistoryForm.ToString()</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="visit-content">
-                            <div class="item-header">
-                                <span class="toggle-icon">▼</span>
-                                <span class="item-title">抽血資料</span>
-                            </div>
-                            <div class="sub-items">
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked抽血檢驗血液" />
-                                    <span class="sub-item-title">@DataTabeEnums.抽血檢驗血液.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked抽血檢驗生化" />
-                                    <span class="sub-item-title">@DataTabeEnums.抽血檢驗生化.ToString()</span>
+                                <div class="sub-items">
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料手術" />
+                                        <span class="sub-item-title">@DataTabeEnums.臨床資料手術.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料病理報告" />
+                                        <span class="sub-item-title">@DataTabeEnums.臨床資料病理報告.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料化學治療" />
+                                        <span class="sub-item-title">@DataTabeEnums.臨床資料化學治療.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked臨床資料合併用藥" />
+                                        <span class="sub-item-title">@DataTabeEnums.臨床資料合併用藥.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedBaselineMedicalHistoryForm" />
+                                        <span class="sub-item-title">@DataTabeEnums.BaselineMedicalHistoryForm.ToString()</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="visit-content">
-                            <div class="item-header">
-                                <span class="toggle-icon">▼</span>
-                                <span class="item-title">問卷</span>
-                            </div>
-                            <div class="sub-items">
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey化療副作用" />
-                                    <span class="sub-item-title">@DataTabeEnums.Survey化療副作用.ToString()</span>
+                            <div class="visit-content">
+                                <div class="item-header">
+                                    <span class="toggle-icon">▼</span>
+                                    <span class="item-title">抽血資料</span>
                                 </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey標靶副作用" />
-                                    <span class="sub-item-title">@DataTabeEnums.Survey標靶副作用.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey放療副作用" />
-                                    <span class="sub-item-title">@DataTabeEnums.Survey放療副作用.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurveyWhooqol問卷" />
-                                    <span class="sub-item-title">@DataTabeEnums.SurveyWhooqol問卷.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey個人史問卷" />
-                                    <span class="sub-item-title">@DataTabeEnums.Survey個人史問卷.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey家族史問卷" />
-                                    <span class="sub-item-title">@DataTabeEnums.Survey家族史問卷.ToString()</span>
+                                <div class="sub-items">
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked抽血檢驗血液" />
+                                        <span class="sub-item-title">@DataTabeEnums.抽血檢驗血液.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked抽血檢驗生化" />
+                                        <span class="sub-item-title">@DataTabeEnums.抽血檢驗生化.ToString()</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="visit-content">
-                            <div class="item-header">
-                                <span class="toggle-icon">▼</span>
-                                <span class="item-title">副作用</span>
-                            </div>
-                            <div class="sub-items">
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedHematologicSideEffects血液副作用" />
-                                    <span class="sub-item-title">@DataTabeEnums.HematologicSideEffects血液副作用.ToString()</span>
+                            <div class="visit-content">
+                                <div class="item-header">
+                                    <span class="toggle-icon">▼</span>
+                                    <span class="item-title">問卷</span>
                                 </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurveySideEffects副作用1" />
-                                    <span class="sub-item-title">@DataTabeEnums.SurveySideEffects副作用1.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurveySideEffects副作用2" />
-                                    <span class="sub-item-title">@DataTabeEnums.SurveySideEffects副作用2.ToString()</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="visit-content">
-                            <div class="item-header">
-                                <span class="toggle-icon">▼</span>
-                                <span class="item-title">追蹤資料</span>
-                            </div>
-                            <div class="sub-items">
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked其他治療" />
-                                    <span class="sub-item-title">@DataTabeEnums.其他治療.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked其他治療藥物" />
-                                    <span class="sub-item-title">@DataTabeEnums.其他治療藥物.ToString()</span>
-                                </div>
-                                <div class="sub-item-header">
-                                    <span class="toggle-icon">►</span>
-                                    <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked其他治療影像" />
-                                    <span class="sub-item-title">@DataTabeEnums.其他治療影像.ToString()</span>
+                                <div class="sub-items">
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey化療副作用" />
+                                        <span class="sub-item-title">@DataTabeEnums.Survey化療副作用.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey標靶副作用" />
+                                        <span class="sub-item-title">@DataTabeEnums.Survey標靶副作用.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey放療副作用" />
+                                        <span class="sub-item-title">@DataTabeEnums.Survey放療副作用.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurveyWhooqol問卷" />
+                                        <span class="sub-item-title">@DataTabeEnums.SurveyWhooqol問卷.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey個人史問卷" />
+                                        <span class="sub-item-title">@DataTabeEnums.Survey個人史問卷.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey家族史問卷" />
+                                        <span class="sub-item-title">@DataTabeEnums.Survey家族史問卷.ToString()</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="visit-content">
+                                <div class="item-header">
+                                    <span class="toggle-icon">▼</span>
+                                    <span class="item-title">副作用</span>
+                                </div>
+                                <div class="sub-items">
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedHematologicSideEffects血液副作用" />
+                                        <span class="sub-item-title">@DataTabeEnums.HematologicSideEffects血液副作用.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurveySideEffects副作用1" />
+                                        <span class="sub-item-title">@DataTabeEnums.SurveySideEffects副作用1.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurveySideEffects副作用2" />
+                                        <span class="sub-item-title">@DataTabeEnums.SurveySideEffects副作用2.ToString()</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="visit-content">
+                                <div class="item-header">
+                                    <span class="toggle-icon">▼</span>
+                                    <span class="item-title">追蹤資料</span>
+                                </div>
+                                <div class="sub-items">
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked其他治療" />
+                                        <span class="sub-item-title">@DataTabeEnums.其他治療.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked其他治療藥物" />
+                                        <span class="sub-item-title">@DataTabeEnums.其他治療藥物.ToString()</span>
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.Checked其他治療影像" />
+                                        <span class="sub-item-title">@DataTabeEnums.其他治療影像.ToString()</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 }
             </div>
@@ -209,7 +215,7 @@
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
-    string DialogTitle = "設定 MMR Protein";
+    string DialogTitle = "設定 Visit Code";
     public bool ShowMessageBox { get; set; } = false;
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";
@@ -272,5 +278,10 @@
     void OnShowVisitCodeEditor()
     {
         ShowVisitCodeEditorDialog = true;
+    }
+
+    void ToggleExpanded(VisitCodeModel itemVisitCode)
+    {
+        data.ToggleExpanded(itemVisitCode);
     }
 }

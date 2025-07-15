@@ -34,6 +34,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         {
             VisitCodeSetModel.VisitCodes.Clear();
             VisitCodeSetModel.Nodes.Clear();
+            VisitCodeSetModel.Expanded.Clear();
             foreach (var item in 臨床資料手術.Items)
                 CheckVisitCode(VisitCodeSetModel, DataTabeEnums.臨床資料手術, item.VisitCode);
             foreach (var item in 臨床資料病理報告.Items)
@@ -72,6 +73,12 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                 CheckVisitCode(VisitCodeSetModel, DataTabeEnums.其他治療藥物, item.VisitCode);
             foreach (var item in 其他治療影像.Items)
                 CheckVisitCode(VisitCodeSetModel, DataTabeEnums.其他治療影像, item.VisitCode);
+
+            var totalCount = VisitCodeSetModel.VisitCodes.Count;
+            for (int idx = 0; idx < totalCount; idx++)
+            {
+                VisitCodeSetModel.Expanded.Add(false);
+            }
         }
 
         public void CheckVisitCode(VisitCodeSetModel VisitCodeSetModel,

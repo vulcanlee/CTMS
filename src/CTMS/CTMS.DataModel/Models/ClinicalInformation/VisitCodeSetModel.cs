@@ -13,6 +13,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     {
         public List<VisitCodeModel> VisitCodes { get; set; } = new();
         public List<VisitCodeSetNodeModel> Nodes { get; set; }= new();
+        public List<bool> Expanded { get; set; } = new();
 
         public int GetVisitCodeIndex(VisitCodeModel visitCodeModel)
         {
@@ -28,13 +29,33 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             }
             return null;
         }
-  
+
+        public bool GetExpanded(VisitCodeModel visitCodeModel)
+        {
+            int index = GetVisitCodeIndex(visitCodeModel);
+            if (index >= 0 && index < Nodes.Count)
+            {
+                return Expanded[index];
+            }
+            return false;
+        }
+
+        public void ToggleExpanded(VisitCodeModel visitCodeModel)
+        {
+            int index = GetVisitCodeIndex(visitCodeModel);
+            if (index >= 0 && index < Nodes.Count)
+            {
+                Expanded[index]=!Expanded[index];
+            }
+        }
+
         public void AddVisitCode(VisitCodeModel visitCodeModel)
         {
             if (visitCodeModel != null && !VisitCodes.Any(x => x.CompareTo(visitCodeModel)))
             {
                 VisitCodes.Add(visitCodeModel);
                 Nodes.Add(new VisitCodeSetNodeModel());
+                Expanded.Add(false);
             }
         }
     }
