@@ -28,7 +28,17 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             }
             return null;
         }
+  
+        public void AddVisitCode(VisitCodeModel visitCodeModel)
+        {
+            if (visitCodeModel != null && !VisitCodes.Any(x => x.CompareTo(visitCodeModel)))
+            {
+                VisitCodes.Add(visitCodeModel);
+                Nodes.Add(new VisitCodeSetNodeModel());
+            }
+        }
     }
+   
     public class VisitCodeSetNodeModel
     {
         public bool Checked臨床資料手術 { get; set; } = false;

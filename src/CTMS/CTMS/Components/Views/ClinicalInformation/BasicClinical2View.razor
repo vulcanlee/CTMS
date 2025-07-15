@@ -503,7 +503,7 @@
 
 <VisitCodeDialog OpenPicker=ShowVisitCodeDialog
                  Code="@Code"
-                 data=patientData.臨床資訊.MMRProteinSetting
+                 data=VisitCodeSetModel
                  OnConfirmCallback=OnVisitCodeAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
@@ -532,6 +532,9 @@
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    VisitCodeSetModel VisitCodeSetModel = new();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -1034,6 +1037,8 @@
 
     void OnShowVisitCode()
     {
+        patientData.臨床資料.CollectVisitCode(VisitCodeSetModel);
+
         ShowVisitCodeDialog = true;
     }
 
@@ -1046,11 +1051,14 @@
         ShowMMRProteinSettingDialog = false;
     }
 
-    async Task OnVisitCodeAsync(MMRProteinSetting mMRProteinSetting)
+    async Task OnVisitCodeAsync(VisitCodeSetModel visitCodeSetModel)
     {
-        if (mMRProteinSetting != null)
+        if (visitCodeSetModel != null)
         {
-            patientData.臨床資訊.MMRProteinSetting = mMRProteinSetting;
+            patientData.臨床資料.SyncData(visitCodeSetModel);
+            patientData.SyncData();
+            patientAdapterModel.JsonData = patientData.ToJson();
+            await PatientService.UpdateAsync(patientAdapterModel);
         }
         ShowVisitCodeDialog = false;
     }
