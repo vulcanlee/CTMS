@@ -1030,50 +1030,44 @@
     {
         if (visitCodeModel != null)
         {
-            if (SelectVisitCode != null)
+            if (VisitCodeOperateMode == "Add")
             {
-                if (visitCodeModel != null)
+                var newRecord = new 臨床資料手術Node()
                 {
-                    if (VisitCodeOperateMode == "Add")
+                    VisitCode = visitCodeModel,
+                };
+                header.Items.Add(newRecord);
+                patientData.SyncData();
+                patientAdapterModel.JsonData = patientData.ToJson();
+                await PatientService.UpdateAsync(patientAdapterModel);
+                RefreshVisitCode();
+                RefreshDropDwonVisitCode();
+            }
+            else if (VisitCodeOperateMode == "Edit")
+            {
+                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
+                if (editItem != null)
+                {
+                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
+                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
+                    data.VisitCode.Timeline = visitCodeModel.Timeline;
+                    patientAdapterModel.JsonData = patientData.ToJson();
+                    await PatientService.UpdateAsync(patientAdapterModel);
+                    RefreshVisitCode(false);
+                    RefreshDropDwonVisitCode();
+                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
+                    if (foo != null)
                     {
-                        var newRecord = new 臨床資料手術Node()
-                            {
-                                VisitCode = visitCodeModel,
-                            };
-                        header.Items.Add(newRecord);
-                        patientData.SyncData();
-                        patientAdapterModel.JsonData = patientData.ToJson();
-                        await PatientService.UpdateAsync(patientAdapterModel);
-                        RefreshVisitCode();
-                        RefreshDropDwonVisitCode();
+                        SelectVisitCode = foo;
                     }
-                    else if (VisitCodeOperateMode == "Edit")
+                    else
                     {
-                        var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                        if (editItem != null)
-                        {
-                            data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                            data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                            data.VisitCode.Timeline = visitCodeModel.Timeline;
-                            patientAdapterModel.JsonData = patientData.ToJson();
-                            await PatientService.UpdateAsync(patientAdapterModel);
-                            RefreshVisitCode(false);
-                            RefreshDropDwonVisitCode();
-                            var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                            if (foo != null)
-                            {
-                                SelectVisitCode = foo;
-                            }
-                            else
-                            {
-                                SelectVisitCode = null;
-                            }
-                        }
+                        SelectVisitCode = null;
                     }
                 }
             }
         }
-        ShowVisitCodeDialog = false;   
+        ShowVisitCodeDialog = false;
     }
 
     void RefreshDropDwonVisitCode()
