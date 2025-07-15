@@ -16,6 +16,22 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public string Timeline { get; set; }
         public int CycleMonth { get; set; }
 
+        public bool CompareTo(VisitCodeModel other)
+        {
+            if (other == null) return false;
+            if (this.AssessmentDate.HasValue && other.AssessmentDate.HasValue)
+            {
+                return this.AssessmentDate.Value.Date == other.AssessmentDate.Value.Date &&
+                       this.Timeline == other.Timeline &&
+                       this.CycleMonth == other.CycleMonth;
+            }
+            else
+            {
+                return this.Timeline == other.Timeline &&
+                       this.CycleMonth == other.CycleMonth;
+            }
+        }
+
         public string VisitCodeTitle
         {
             get { return GetVisitCodeTitle(); }
