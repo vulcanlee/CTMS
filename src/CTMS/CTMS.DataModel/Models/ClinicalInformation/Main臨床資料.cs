@@ -661,5 +661,508 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                     break;
             }
         }
+
+        public void RemoveVisitCode(VisitCodeModel VisitCodeModel)
+        {
+            foreach (var item in 臨床資料手術.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.臨床資料手術, VisitCodeModel);
+            foreach (var item in 臨床資料病理報告.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.臨床資料病理報告, VisitCodeModel);
+            foreach (var item in 臨床資料化學治療.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.臨床資料化學治療, VisitCodeModel);
+            foreach (var item in 臨床資料合併用藥.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.臨床資料合併用藥, VisitCodeModel);
+            foreach (var item in BaselineMedicalHistoryForm.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.BaselineMedicalHistoryForm, VisitCodeModel);
+            foreach (var item in 抽血檢驗血液.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.抽血檢驗血液, VisitCodeModel);
+            foreach (var item in 抽血檢驗生化.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.抽血檢驗生化, VisitCodeModel);
+            foreach (var item in Survey化療副作用.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey化療副作用, VisitCodeModel);
+            foreach (var item in Survey標靶副作用.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey標靶副作用, VisitCodeModel);
+            foreach (var item in Survey放療副作用.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey放療副作用, VisitCodeModel);
+            foreach (var item in SurveyWhooqol問卷.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.SurveyWhooqol問卷, VisitCodeModel);
+            foreach (var item in Survey個人史問卷.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey個人史問卷, VisitCodeModel);
+            foreach (var item in Survey家族史問卷.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey家族史問卷, VisitCodeModel);
+            foreach (var item in HematologicSideEffects血液副作用.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.HematologicSideEffects血液副作用, VisitCodeModel);
+            foreach (var item in SurveySideEffects副作用1.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.SurveySideEffects副作用1, VisitCodeModel);
+            foreach (var item in SurveySideEffects副作用2.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.SurveySideEffects副作用2, VisitCodeModel);
+            foreach (var item in 其他治療.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.其他治療, VisitCodeModel);
+            foreach (var item in 其他治療藥物.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.其他治療藥物, VisitCodeModel);
+            foreach (var item in 其他治療影像.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.其他治療影像, VisitCodeModel);
+        }
+
+        public void RemoveVisitCodeItem(
+            DataTabeEnums DataTabeEnums, VisitCodeModel visitCodeModel)
+        {
+            if (visitCodeModel != null)
+            {
+                #region 刪除存在的 VisitCode
+                {
+                    switch (DataTabeEnums)
+                    {
+                        case DataTabeEnums.臨床資料手術:
+                            {
+                                var item = 臨床資料手術.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    臨床資料手術.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.臨床資料病理報告:
+                            {
+                                var item = 臨床資料病理報告.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    臨床資料病理報告.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.臨床資料化學治療:
+                            {
+                                var item = 臨床資料化學治療.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    臨床資料化學治療.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.臨床資料合併用藥:
+                            {
+                                var item = 臨床資料合併用藥.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    臨床資料合併用藥.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.BaselineMedicalHistoryForm:
+                            {
+                                var item = BaselineMedicalHistoryForm.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    BaselineMedicalHistoryForm.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.抽血檢驗血液:
+                            {
+                                var item = 抽血檢驗血液.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    抽血檢驗血液.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.抽血檢驗生化:
+                            {
+                                var item = 抽血檢驗生化.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    抽血檢驗生化.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey化療副作用:
+                            {
+                                var item = Survey化療副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey化療副作用.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey標靶副作用:
+                            {
+                                var item = Survey標靶副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey標靶副作用.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey放療副作用:
+                            {
+                                var item = Survey放療副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey放療副作用.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.SurveyWhooqol問卷:
+                            {
+                                var item = SurveyWhooqol問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    SurveyWhooqol問卷.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey個人史問卷:
+                            {
+                                var item = Survey個人史問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey個人史問卷.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey家族史問卷:
+                            {
+                                var item = Survey家族史問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey家族史問卷.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.HematologicSideEffects血液副作用:
+                            {
+                                var item = HematologicSideEffects血液副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    HematologicSideEffects血液副作用.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.SurveySideEffects副作用1:
+                            {
+                                var item = SurveySideEffects副作用1.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    SurveySideEffects副作用1.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.SurveySideEffects副作用2:
+                            {
+                                var item = SurveySideEffects副作用2.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    SurveySideEffects副作用2.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.其他治療:
+                            {
+                                var item = 其他治療.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    其他治療.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.其他治療藥物:
+                            {
+                                var item = 其他治療藥物.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    其他治療藥物.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.其他治療影像:
+                            {
+                                var item = 其他治療影像.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    其他治療影像.Items.Remove(item);
+                                }
+                            }
+                            break;
+                    }
+                    #endregion
+                }
+
+            }
+        }
+
+        public void ReplaceVisitCode(VisitCodeModel source, VisitCodeModel target)
+        {
+            VisitCodeSetModel VisitCodeSetModel = new();
+            CollectVisitCode(VisitCodeSetModel);
+            var foundTarget = VisitCodeSetModel.VisitCodes
+                .FirstOrDefault(x => x.CompareTo(target));
+            if (foundTarget != null)
+                return;
+
+            foreach (var item in 臨床資料手術.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.臨床資料手術, source, target);
+            foreach (var item in 臨床資料病理報告.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.臨床資料病理報告, source, target);
+            foreach (var item in 臨床資料化學治療.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.臨床資料化學治療, source, target);
+            foreach (var item in 臨床資料合併用藥.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.臨床資料合併用藥, source, target);
+            foreach (var item in BaselineMedicalHistoryForm.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.BaselineMedicalHistoryForm, source, target);
+            foreach (var item in 抽血檢驗血液.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.抽血檢驗血液, source, target);
+            foreach (var item in 抽血檢驗生化.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.抽血檢驗生化, source, target);
+            foreach (var item in Survey化療副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey化療副作用, source, target);
+            foreach (var item in Survey標靶副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey標靶副作用, source, target);
+            foreach (var item in Survey放療副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey放療副作用, source, target);
+            foreach (var item in SurveyWhooqol問卷.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.SurveyWhooqol問卷, source, target);
+            foreach (var item in Survey個人史問卷.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey個人史問卷, source, target);
+            foreach (var item in Survey家族史問卷.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey家族史問卷, source, target);
+            foreach (var item in HematologicSideEffects血液副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.HematologicSideEffects血液副作用, source, target);
+            foreach (var item in SurveySideEffects副作用1.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.SurveySideEffects副作用1, source, target);
+            foreach (var item in SurveySideEffects副作用2.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.SurveySideEffects副作用2, source, target);
+            foreach (var item in 其他治療.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.其他治療, source, target);
+            foreach (var item in 其他治療藥物.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.其他治療藥物, source, target);
+            foreach (var item in 其他治療影像.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.其他治療影像, source, target);
+        }
+
+        public void ReplaceVisitCodeItem(
+            DataTabeEnums DataTabeEnums,
+            VisitCodeModel source, VisitCodeModel target)
+        {
+            if (source != null && target != null)
+            {
+                #region 更新存在的 VisitCode
+                {
+                    switch (DataTabeEnums)
+                    {
+                        case DataTabeEnums.臨床資料手術:
+                            {
+                                var item = 臨床資料手術.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.臨床資料病理報告:
+                            {
+                                var item = 臨床資料病理報告.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.臨床資料化學治療:
+                            {
+                                var item = 臨床資料化學治療.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.臨床資料合併用藥:
+                            {
+                                var item = 臨床資料合併用藥.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.BaselineMedicalHistoryForm:
+                            {
+                                var item = BaselineMedicalHistoryForm.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.抽血檢驗血液:
+                            {
+                                var item = 抽血檢驗血液.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.抽血檢驗生化:
+                            {
+                                var item = 抽血檢驗生化.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey化療副作用:
+                            {
+                                var item = Survey化療副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey標靶副作用:
+                            {
+                                var item = Survey標靶副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey放療副作用:
+                            {
+                                var item = Survey放療副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.SurveyWhooqol問卷:
+                            {
+                                var item = SurveyWhooqol問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey個人史問卷:
+                            {
+                                var item = Survey個人史問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey家族史問卷:
+                            {
+                                var item = Survey家族史問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.HematologicSideEffects血液副作用:
+                            {
+                                var item = HematologicSideEffects血液副作用.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.SurveySideEffects副作用1:
+                            {
+                                var item = SurveySideEffects副作用1.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.SurveySideEffects副作用2:
+                            {
+                                var item = SurveySideEffects副作用2.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.其他治療:
+                            {
+                                var item = 其他治療.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.其他治療藥物:
+                            {
+                                var item = 其他治療藥物.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.其他治療影像:
+                            {
+                                var item = 其他治療影像.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(source));
+                                if (item != null)
+                                {
+                                    item.VisitCode = target;
+                                }
+                            }
+                            break;
+                    }
+                    #endregion
+                }
+            }
+        }
     }
 }

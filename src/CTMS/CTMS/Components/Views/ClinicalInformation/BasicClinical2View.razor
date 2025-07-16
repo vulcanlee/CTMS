@@ -537,13 +537,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CancerStageService.ReadAll();
-        // Simulate fetching data from a service
-        patientAdapterModel = await PatientService.GetAsync(Code);
-        patientData.FromJson(patientAdapterModel.JsonData);
-        patientData.臨床資訊.CalculateCancerType();
-        DropDownListDataInit();
-        patientData.臨床資訊.BuildStage();
+        await GetData();
         #region Demo 使用
         if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
         {
@@ -556,6 +550,16 @@
         #endregion
     }
 
+    async Task GetData()
+    {
+        CancerStageService.ReadAll();
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        patientData.臨床資訊.CalculateCancerType();
+        DropDownListDataInit();
+        patientData.臨床資訊.BuildStage();
+
+    }
     #region 拉霸選單物件宣告
     List<DropDownListDataModel> ListECOrOCC = new List<DropDownListDataModel>();
     DropDownListDataModel SelectECOrOCC = new DropDownListDataModel();
@@ -1052,6 +1056,7 @@
 
     async Task OnVisitCodeAsync(VisitCodeSetModel visitCodeSetModel)
     {
+        await GetData();
         if (visitCodeSetModel != null)
         {
             patientData.臨床資料.SyncData(visitCodeSetModel);

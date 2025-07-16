@@ -58,6 +58,18 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                 Expanded.Add(false);
             }
         }
+
+        public void UpdateVisitCode(VisitCodeModel visitCodeModel)
+        {
+            if (visitCodeModel != null)
+            {
+                int index = GetVisitCodeIndex(visitCodeModel);
+                if (index >= 0)
+                {
+                    VisitCodes[index] = visitCodeModel;
+                }
+            }
+        }
     }
    
     public class VisitCodeSetNodeModel

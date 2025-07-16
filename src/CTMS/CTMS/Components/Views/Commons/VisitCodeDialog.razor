@@ -1,6 +1,4 @@
-﻿@page "/visit"
-
-@using Syncfusion.Blazor
+﻿@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Popups
@@ -31,8 +29,10 @@
                                 <span class="toggle-icon">@((expanded) ? "▼" : "▶")</span>
                                 <span class="visit-title">@itemVisitCode.GetVisitCodeTitle()</span>
                             </div>
-                            <button class="btn-edit">修改</button>
-                            <button class="btn-delete">刪除</button>
+                            <button class="btn-edit" 
+                            @onclick="async () =>await OnEditVisitCodeAsync(itemVisitCode)">修改</button>
+                            <button class="btn-delete"
+                            @onclick="async () => await OnDeleteVisitCodeAsync(itemVisitCode)">刪除</button>
                         </div>
 
                         @if (expanded)
@@ -222,6 +222,8 @@
 
     bool ShowVisitCodeEditorDialog = false;
     VisitCodeModel VisitCode = new();
+    VisitCodeModel VisitCodeBackup = new();
+    string VisitCodeMode = "";
 
     // List<VisitCodeModel> VisitCodes = new();
     PatientData patientData = new();
@@ -230,6 +232,11 @@
     bool editMode = false;
 
     protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+    }
+
+    async Task GetData()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
@@ -270,14 +277,61 @@
     {
         if (visitCodeModel != null)
         {
-            data.AddVisitCode(visitCodeModel);
+            if (VisitCodeMode == "Edit")
+            {
+                await GetData();
+                patientData.臨床資料.ReplaceVisitCode(VisitCodeBackup, visitCodeModel);
+
+                patientData.SyncData();
+                patientAdapterModel = await PatientService.GetAsync(Code);
+                patientAdapterModel.JsonData = patientData.ToJson();
+
+                await PatientService.UpdateAsync(patientAdapterModel);
+
+                OpenPicker = false;
+                await OnConfirmCallback.InvokeAsync(null);
+            }
+            else if (VisitCodeMode == "Add")
+            {
+                data.AddVisitCode(visitCodeModel);
+            }
+            else
+            {
+                // MessageBox.Show("未知的模式: " + VisitCodeMode, "錯誤");
+                // return;
+            }
         }
         ShowVisitCodeEditorDialog = false;
     }
 
     void OnShowVisitCodeEditor()
     {
+        VisitCode = new();
+        VisitCodeMode = "Add";
         ShowVisitCodeEditorDialog = true;
+    }
+
+    async Task OnEditVisitCodeAsync(VisitCodeModel itemVisitCode)
+    {
+        VisitCode = itemVisitCode; 
+        VisitCodeBackup = itemVisitCode.Clone();
+        VisitCodeMode = "Edit";
+        ShowVisitCodeEditorDialog = true;
+    }
+
+    async Task OnDeleteVisitCodeAsync(VisitCodeModel itemVisitCode)
+    {
+        await GetData();
+        patientData.臨床資料.RemoveVisitCode(itemVisitCode);
+
+        patientData.SyncData();
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientAdapterModel.JsonData = patientData.ToJson();
+
+        await PatientService.UpdateAsync(patientAdapterModel);
+
+        OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(null);
     }
 
     void ToggleExpanded(VisitCodeModel itemVisitCode)
