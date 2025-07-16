@@ -1,0 +1,97 @@
+﻿.sample-table-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.sample-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #333;
+    background-color: white;
+}
+
+    .sample-table th,
+    .sample-table td {
+        border: 1px solid #333;
+        padding: 8px 12px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* 表頭樣式 */
+    .sample-table thead th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+.header-item {
+    width: 40%;
+}
+
+.header-reference {
+    width: 20%;
+}
+
+.header-result {
+    width: 20%;
+}
+
+.header-sampling {
+    width: 20%;
+}
+
+/* 一般行樣式 */
+.row-normal {
+    background-color: white;
+}
+
+/* 強調行樣式 (淺黃色背景) */
+.row-highlighted {
+    background-color: #fff8dc;
+}
+
+/* 儲存格樣式 */
+.item-cell {
+    text-align: left;
+    font-size: 13px;
+    padding-left: 15px;
+}
+
+.reference-cell,
+.result-cell,
+.sampling-cell {
+    text-align: center;
+    font-size: 13px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .sample-table {
+        font-size: 12px;
+    }
+
+        .sample-table th,
+        .sample-table td {
+            padding: 6px 8px;
+        }
+
+    .item-cell {
+        padding-left: 8px;
+    }
+}
+
+/* 當有數據時的樣式 */
+.result-cell:not(:empty) {
+    font-weight: bold;
+    color: #0066cc;
+}
+
+/* 滑鼠懸停效果 */
+.sample-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.row-highlighted:hover {
+    background-color: #fff5b3;
+}
