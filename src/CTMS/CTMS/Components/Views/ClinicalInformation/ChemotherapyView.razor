@@ -41,11 +41,6 @@
                 }
             </div>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -64,14 +59,59 @@
 
     @if (data != null)
     {
-        <div class="view-container">
-            <div>
+        <div class="regimen-table-container">
+            <div class="py-3">
                 @* 新增一筆紀錄按鈕 *@
                 <button class="btn btn-primary add-button" 
                 @onclick="async () =>await OnAddAsync()">
                     新增一筆紀錄
                 </button>
             </div>
+
+            <table class="regimen-table">
+                <thead>
+                    <tr>
+                        <th>Subject No.</th>
+                        <th>BSA</th>
+                        <th>Regimen<br />Paclitaxel 175 mg/m2</th>
+                        <th>Regimen<br />Carboplatin AUC 5</th>
+                        <th>Reduction</th>
+                        <th>Bevacizumab<br />Kg/mg</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in data.Items)
+                    {
+                        <tr>
+                            <td>
+                                                         @if (editMode)
+                                {
+                                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                                  @bind-Value="@item.TreatmentDate"></SfDatePicker>
+                                }
+                                else
+                                {
+                                    <div class="data-value">
+                                       <button class="delete-button"
+                                       @onclick="async()=> await OnDeleteAsync(item)">
+                                            <i class="oi oi-trash"></i>
+                                        </button>
+                                        <span class="subject-no">@item.TreatmentDate.ToString("yyyy-MM-dd")</span>
+                                    </div>
+                                }
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="view-container">
             <div class="left-table">
                 <table>
                     <tr>
@@ -288,45 +328,6 @@
 
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        if (SelectVisitCode != null)
-        {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-            if (checkTask)
-            {
-                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-                if (itemDelete != null)
-                {
-                    SelectVisitCode = null;
-                    data = null;
-                    header.Items.Remove(itemDelete);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode();
-                    RefreshDropDwonVisitCode();
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value != null)
