@@ -60,10 +60,10 @@
     @if (data != null)
     {
         <div class="regimen-table-container">
-            <div class="py-3">
+            <div class="">
                 @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" 
-                @onclick="async () =>await OnAddAsync()">
+                <button class="btn btn-primary add-button"
+                        @onclick="async () => await OnAddAsync()">
                     新增一筆紀錄
                 </button>
             </div>
@@ -84,64 +84,6 @@
                     {
                         <tr>
                             <td>
-                                                         @if (editMode)
-                                {
-                                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                                  @bind-Value="@item.TreatmentDate"></SfDatePicker>
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                       <button class="delete-button"
-                                       @onclick="async()=> await OnDeleteAsync(item)">
-                                            <i class="oi oi-trash"></i>
-                                        </button>
-                                        <span class="subject-no">@item.TreatmentDate.ToString("yyyy-MM-dd")</span>
-                                    </div>
-                                }
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        <div class="view-container">
-            <div class="left-table">
-                <table>
-                    <tr>
-                        <td class="w-20 data-title">
-                            Subject No.
-                        </td>
-                        <td class="w-16 data-title">
-                            BSA
-                        </td>
-                        <td class="w-16 data-title">
-                            Regimen<br />
-                            Paclitaxel 175 mg/m2
-                        </td>
-                        <td class="w-16 data-title">
-                            Regimen<br />
-                            Carboplatin AUC 5
-                        </td>
-                        <td class="w-16 data-title">
-                            Reduction
-                        </td>
-                        <td class="w-16 data-title">
-                            Bevacizumab<br />
-                            Kg/mg
-
-                        </td>
-                    </tr>
-                    @foreach (var item in data.Items)
-                    {
-                        <tr>
-                            <td class="w-20 data-title">
                                 @if (editMode)
                                 {
                                     <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
@@ -150,13 +92,15 @@
                                 else
                                 {
                                     <div class="data-value">
-                                        <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
-                                              @onclick="async()=> await OnDeleteAsync(item)"></span>
-                                        @item.TreatmentDate.ToString("yyyy-MM-dd")
+                                        <button class="delete-button"
+                                                @onclick="async () => await OnDeleteAsync(item)">
+                                            <i class="oi oi-trash"></i>
+                                        </button>
+                                        <span class="subject-no">@item.TreatmentDate.ToString("yyyy-MM-dd")</span>
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.BSA" />
@@ -168,7 +112,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.RegimenPaclitaxel" />
@@ -180,7 +124,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.RegimenCarboplatin" />
@@ -192,7 +136,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Reduction" />
@@ -204,7 +148,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Bevacizumab" />
@@ -218,9 +162,8 @@
                             </td>
                         </tr>
                     }
-
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     }
 </div>
@@ -352,10 +295,10 @@
             foreach (var nodeItem in header.Items)
             {
                 ListVisitCode.Add(new DropDownListDataModel()
-                    {
-                        Key = nodeItem.VisitCode.Id,
-                        Name = nodeItem.VisitCode.VisitCodeTitle,
-                    });
+                {
+                    Key = nodeItem.VisitCode.Id,
+                    Name = nodeItem.VisitCode.VisitCodeTitle,
+                });
             }
             if (reset)
             {
@@ -383,9 +326,9 @@
             if (VisitCodeOperateMode == "Add")
             {
                 var newRecord = new 臨床資料化學治療Node()
-                    {
-                        VisitCode = visitCodeModel,
-                    };
+                {
+                    VisitCode = visitCodeModel,
+                };
                 header.Items.Add(newRecord);
                 patientData.SyncData();
                 patientAdapterModel.JsonData = patientData.ToJson();
