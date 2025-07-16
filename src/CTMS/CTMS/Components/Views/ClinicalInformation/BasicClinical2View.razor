@@ -10,6 +10,8 @@
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
+@inject Main臨床資料HelperService Main臨床資料HelperService
+@inject BloodExameService BloodExameService
 
 @inject CancerStageService CancerStageService
 
@@ -560,6 +562,7 @@
         patientData.臨床資訊.BuildStage();
 
     }
+
     #region 拉霸選單物件宣告
     List<DropDownListDataModel> ListECOrOCC = new List<DropDownListDataModel>();
     DropDownListDataModel SelectECOrOCC = new DropDownListDataModel();
@@ -1059,7 +1062,7 @@
         await GetData();
         if (visitCodeSetModel != null)
         {
-            patientData.臨床資料.SyncData(visitCodeSetModel);
+            Main臨床資料HelperService.SyncData(patientData.臨床資料, visitCodeSetModel);
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();
             await PatientService.UpdateAsync(patientAdapterModel);

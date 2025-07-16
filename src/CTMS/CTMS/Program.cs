@@ -87,6 +87,7 @@ namespace CTMS
                 #endregion
 
                 #region 註冊專案客制用的服務
+                builder.Services.AddTransient<Main臨床資料HelperService>();
                 builder.Services.AddTransient<BrowsePatientService>();
                 builder.Services.AddTransient<BrowseAthleteService>();
                 builder.Services.AddTransient<ExcleService>();
