@@ -1,56 +1,198 @@
 @page "/Sample"
 @layout EmptyLayout
 
-<div class="clinical-table-container">
-    <table class="medical-table">
+<div class="clinical-tracking-container">
+    <table class="tracking-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Visit</th>
+                <th>Treatment</th>
+                <th>Lab</th>
+                <th>Image</th>
+                <th>Others</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <td class="category-cell"><span class="bracket-text">Subject NO.</span></td>
-                <td class="category-cell"><span class="bracket-text">手術日期</span></td>
-                <td class="category-cell"><span class="bracket-text">術式</span></td>
-                <td class="category-cell"><span class="bracket-text">OP outcome</span></td>
+            <tr class="clinics-rower-row">
+                <td class="location-cell">Admission</td>
+                <td>
+                    <div class="date-range-picker">
+                        <span class="calendar-icon">&#128197;</span>
+                        <span>~</span>
+                        <span class="calendar-icon">&#128197;</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="treatment-options">
+                        <div class="treatment-option">
+                            <input type="checkbox" id="admission-medication" />
+                            <label for="admission-medication">Medication</label>
+                        </div>
+                        <div class="treatment-option">
+                            <input type="checkbox" id="admission-blood" />
+                            <label for="admission-blood">Blood transfusion</label>
+                        </div>
+                        <div class="treatment-option">
+                            <input type="checkbox" id="admission-iv" />
+                            <label for="admission-iv">IV fluid</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown-control">
+                        <input type="text" class="dropdown-input" />
+                        <button class="dropdown-button">&#9662;</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="image-options">
+                        <div class="image-option">
+                            <input type="checkbox" id="admission-xray" />
+                            <label for="admission-xray">Xray</label>
+                        </div>
+                        <div class="image-option">
+                            <input type="checkbox" id="admission-ekg" />
+                            <label for="admission-ekg">EKG</label>
+                        </div>
+                        <div class="image-option">
+                            <input type="checkbox" id="admission-ct" />
+                            <label for="admission-ct">CT</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="other-options">
+                        <div class="other-option">
+                            <input type="checkbox" id="admission-nurse" />
+                            <label for="admission-nurse">Nurse exam</label>
+                        </div>
+                        <div class="other-option">
+                            <input type="checkbox" id="admission-doctor" />
+                            <label for="admission-doctor">Doctor exam</label>
+                        </div>
+                    </div>
+                </td>
             </tr>
-            <tr>
-                <td class="subject-cell">NCKUH-E001</td>
-                <td class="date-cell">0001-01-01</td>
-                <td class="procedure-cell"></td>
-                <td class="outcome-cell"></td>
+            <tr class="er-row">
+                <td class="location-cell">ER</td>
+                <td>
+                    <div class="date-range-picker">
+                        <span class="calendar-icon">&#128197;</span>
+                        <span>~</span>
+                        <span class="calendar-icon">&#128197;</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="treatment-options">
+                        <div class="treatment-option">
+                            <input type="checkbox" id="er-medication" />
+                            <label for="er-medication">Medication</label>
+                        </div>
+                        <div class="treatment-option">
+                            <input type="checkbox" id="er-blood" />
+                            <label for="er-blood">Blood transfusion</label>
+                        </div>
+                        <div class="treatment-option">
+                            <input type="checkbox" id="er-iv" />
+                            <label for="er-iv">IV fluid</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown-control">
+                        <input type="text" class="dropdown-input" />
+                        <button class="dropdown-button">&#9662;</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="image-options">
+                        <div class="image-option">
+                            <input type="checkbox" id="er-xray" />
+                            <label for="er-xray">Xray</label>
+                        </div>
+                        <div class="image-option">
+                            <input type="checkbox" id="er-ekg" />
+                            <label for="er-ekg">EKG</label>
+                        </div>
+                        <div class="image-option">
+                            <input type="checkbox" id="er-ct" />
+                            <label for="er-ct">CT</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="other-options">
+                        <div class="other-option">
+                            <input type="checkbox" id="er-nurse" />
+                            <label for="er-nurse">Nurse exam</label>
+                        </div>
+                        <div class="other-option">
+                            <input type="checkbox" id="er-doctor" />
+                            <label for="er-doctor">Doctor exam</label>
+                        </div>
+                    </div>
+                </td>
             </tr>
-            <tr>
-                <td class="category-cell"><span class="bracket-text">【Ascites】</span></td>
-                <td class="category-cell"><span class="bracket-text">【Uterus】</span></td>
-                <td class="category-cell"><span class="bracket-text">【Cervix】</span></td>
-                <td class="category-cell"><span class="bracket-text">【Endometrium】</span></td>
-            </tr>
-            <tr>
-                <td class="normal-cell">No</td>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-            </tr>
-            <tr>
-                <td class="category-cell"><span class="bracket-text">【Myometrium】</span></td>
-                <td class="category-cell"><span class="bracket-text">【Cul de sac】</span></td>
-                <td class="category-cell">Ovarian surface rupture or not</td>
-                <td class="category-cell">Ovarian surface rupture or not</td>
-            </tr>
-            <tr>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-            </tr>
-            <tr>
-                <td class="category-cell"><span class="bracket-text">【Left adnexa】</span></td>
-                <td class="category-cell"><span class="bracket-text">【Right adnexa】</span></td>
-                <td class="category-cell">Pelvic peritoneal cavity</td>
-                <td class="category-cell">Extrapelvic peritoneal cavity</td>
-            </tr>
-            <tr>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
-                <td class="normal-cell">normal</td>
+            <tr class="clinics-row">
+                <td class="location-cell">Clinics</td>
+                <td>
+                    <div class="date-range-picker">
+                        <span class="calendar-icon">&#128197;</span>
+                        <span>~</span>
+                        <span class="calendar-icon">&#128197;</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="treatment-options">
+                        <div class="treatment-option">
+                            <input type="checkbox" id="clinics-medication" />
+                            <label for="clinics-medication">Medication</label>
+                        </div>
+                        <div class="treatment-option">
+                            <input type="checkbox" id="clinics-blood" />
+                            <label for="clinics-blood">Blood transfusion</label>
+                        </div>
+                        <div class="treatment-option">
+                            <input type="checkbox" id="clinics-iv" />
+                            <label for="clinics-iv">IV fluid</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown-control">
+                        <input type="text" class="dropdown-input" />
+                        <button class="dropdown-button">&#9662;</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="image-options">
+                        <div class="image-option">
+                            <input type="checkbox" id="clinics-xray" />
+                            <label for="clinics-xray">Xray</label>
+                        </div>
+                        <div class="image-option">
+                            <input type="checkbox" id="clinics-ekg" />
+                            <label for="clinics-ekg">EKG</label>
+                        </div>
+                        <div class="image-option">
+                            <input type="checkbox" id="clinics-ct" />
+                            <label for="clinics-ct">CT</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="other-options">
+                        <div class="other-option">
+                            <input type="checkbox" id="clinics-nurse" />
+                            <label for="clinics-nurse">Nurse exam</label>
+                        </div>
+                        <div class="other-option">
+                            <input type="checkbox" id="clinics-doctor" />
+                            <label for="clinics-doctor">Doctor exam</label>
+                        </div>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>

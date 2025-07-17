@@ -13,15 +13,50 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public VisitCodeModel VisitCode { get; set; } = new();
         public string SubjectNo { get; set; }
         public List<OtherTreatmentItem> Items { get; set; } = new();
+
+        public void BuildItem()
+        {
+            OtherTreatmentItem item;
+            item = new OtherTreatmentItem
+            {
+                First = "Admission",
+                Visit = null,
+                Treatment = "",
+                Lab = "",
+                Image = "",
+                Others = ""
+            };
+            Items.Add(item);
+            item = new OtherTreatmentItem
+            {
+                First = "ER",
+                Visit = null,
+                Treatment = "",
+                Lab = "",
+                Image = "",
+                Others = ""
+            };
+            Items.Add(item);
+            item = new OtherTreatmentItem
+            {
+                First = "Clinics",
+                Visit = null,
+                Treatment = "",
+                Lab = "",
+                Image = "",
+                Others = ""
+            };
+            Items.Add(item);
+        }
     }
 
     public class OtherTreatmentItem
     {
-        public DateTime Visit { get; set; }
+        public string First { get; set; }
+        public DateTime? Visit { get; set; }
         public string Treatment { get; set; }
         public string Lab { get; set; }
         public string Image { get; set; }
         public string Others { get; set; }
-        public string First { get; set; }
     }
 }

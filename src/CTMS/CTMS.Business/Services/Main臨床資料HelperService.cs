@@ -458,6 +458,7 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+                        item.BuildItem();
                         Main臨床資料.其他治療.Items.Add(item);
                     }
                     else

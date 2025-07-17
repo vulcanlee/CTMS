@@ -59,119 +59,90 @@
 
     @if (data != null)
     {
+        int index = 0;
+        string rowClass = string.Empty;
+
         <div class="view-container">
-            <div>
-                @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" 
-                @onclick="async () =>await OnAddAsync()">
-                    新增一筆紀錄
-                </button>
-            </div>
-            <div class="left-table">
-                <table>
+            <table class="tracking-table">
+                <thead>
                     <tr>
-                        <td class="w-20 data-title">
-                            
-                        </td>
-                        <td class="w-16 data-title">
-                            Visit
-                        </td>
-                        <td class="w-16 data-title">
-                            Treatment
-                        </td>
-                        <td class="w-16 data-title">
-                            Lab
-                        </td>
-                        <td class="w-16 data-title">
-                            Image
-                        </td>
-                        <td class="w-16 data-title">
-                            Others
-                        </td>
+                        <th></th>
+                        <th>Visit</th>
+                        <th>Treatment</th>
+                        <th>Lab</th>
+                        <th>Image</th>
+                        <th>Others</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach (var item in data.Items)
                     {
-                        <tr>
-                            <td class="w-16 data-title">
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "clinics-rower-row";
+                        }
+                        else
+                        {
+                            rowClass = "er-row";
+                        }
+                   
+                        <tr class="@rowClass">
+                            <td class="location-cell">@item.First</td>
+                            <td>
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.First" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.First
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-20 data-title">
-                                @if (editMode)
-                                {
-                                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
                                                   @bind-Value="@item.Visit"></SfDatePicker>
                                 }
                                 else
                                 {
-                                    <div class="data-value">
-                                        <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
-                                              @onclick="async()=> await OnDeleteAsync(item)"></span>
-                                        @item.Visit.ToString("yyyy-MM-dd")
-                                    </div>
+                                        @item.Visit?.ToString("yyyy-MM-dd")
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Treatment" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
                                         @item.Treatment
-                                    </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Lab" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
                                         @item.Lab
-                                    </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Image" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
                                         @item.Image
-                                    </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Others" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
                                         @item.Others
-                                    </div>
                                 }
                             </td>
                         </tr>
                     }
-
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     }
 </div>
