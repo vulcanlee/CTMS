@@ -20,11 +20,6 @@
         <div class="d-flex align-items-start">
             <h1 style="margin: 0; flex-grow: 1;">其他副作用 2</h1>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -166,10 +161,6 @@
     }
 </div>
 
-<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
-                               data=VisitCode
-                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
-
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
             Title="@MessageBox.Title" Message="@MessageBox.Body"
@@ -235,45 +226,6 @@
     }
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        if (SelectVisitCode != null)
-        {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-            if (checkTask)
-            {
-                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-                if (itemDelete != null)
-                {
-                    SelectVisitCode = null;
-                    data = null;
-                    header.Items.Remove(itemDelete);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode();
-                    RefreshDropDwonVisitCode();
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value != null)
@@ -321,54 +273,6 @@
         {
             InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
         }
-    }
-
-    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
-    {
-        if (visitCodeModel != null)
-        {
-            if (VisitCodeOperateMode == "Add")
-            {
-                var newRecord = new Survey2SideEffects副作用Node()
-                    {
-                        VisitCode = visitCodeModel,
-                    };
-
-                SurveySideEffectsService.Init2All(newRecord);
-                SurveySideEffectsService.Update副作用2All(patientData.臨床資料, newRecord);
-                header.Items.Add(newRecord);
-                patientData.SyncData();
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-            else if (VisitCodeOperateMode == "Edit")
-            {
-                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                if (editItem != null)
-                {
-                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                    data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    SurveySideEffectsService.Update副作用2All(patientData.臨床資料, data);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode(false);
-                    RefreshDropDwonVisitCode();
-                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                    if (foo != null)
-                    {
-                        SelectVisitCode = foo;
-                    }
-                    else
-                    {
-                        SelectVisitCode = null;
-                    }
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
     }
     #endregion
 
