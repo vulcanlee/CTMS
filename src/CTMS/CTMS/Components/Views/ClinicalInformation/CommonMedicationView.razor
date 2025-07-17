@@ -41,11 +41,6 @@
                 }
             </div>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -64,40 +59,31 @@
 
     @if (data != null)
     {
-        <div class="view-container">
-            <div>
+        <div class="regimen-table-container">
+            <div class="">
                 @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" 
-                @onclick="async () =>await OnAddAsync()">
+                <button class="btn btn-primary add-button"
+                        @onclick="async () => await OnAddAsync()">
                     新增一筆紀錄
                 </button>
             </div>
-            <div class="left-table">
-                <table>
+
+            <table class="regimen-table">
+                <thead>
                     <tr>
-                        <td class="w-20 data-title">
-                            @data.SubjectNo
-                        </td>
-                        <td class="w-16 data-title">
-                            Treatment Date
-                        </td>
-                        <td class="w-16 data-title">
-                            Durg
-                        </td>
-                        <td class="w-16 data-title">
-                            Dose
-                        </td>
-                        <td class="w-16 data-title">
-                            Route Code
-                        </td>
-                        <td class="w-16 data-title">
-                            Unit Code
-                        </td>
+                        <th>@data.SubjectNo</th>
+                        <th>Treatment Date</th>
+                        <th>Durg</th>
+                        <th>Dose</th>
+                        <th>Route Code</th>
+                        <th>Unit Code</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach (var item in data.Items)
                     {
                         <tr>
-                            <td class="w-20 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <span> No.</span>
@@ -106,13 +92,16 @@
                                 else
                                 {
                                     <div class="data-value">
-                                        <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
-                                              @onclick="async()=> await OnDeleteAsync(item)"></span>
+                                        <button class="delete-button"
+                                                @onclick="async () => await OnDeleteAsync(item)">
+                                            <i class="oi oi-trash"></i>
+                                        </button>
                                         <span> No.</span>@item.Index
                                     </div>
                                 }
+
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
@@ -125,7 +114,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Durg" />
@@ -137,7 +126,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.Dose" />
@@ -149,7 +138,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.RouteCode" />
@@ -161,7 +150,7 @@
                                     </div>
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.UnitCode" />
@@ -175,16 +164,13 @@
                             </td>
                         </tr>
                     }
-
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     }
-</div>
 
-<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
-                               data=VisitCode
-                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
+
+</div>
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -296,45 +282,6 @@
 
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        if (SelectVisitCode != null)
-        {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-            if (checkTask)
-            {
-                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-                if (itemDelete != null)
-                {
-                    SelectVisitCode = null;
-                    data = null;
-                    header.Items.Remove(itemDelete);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode();
-                    RefreshDropDwonVisitCode();
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value != null)
@@ -381,50 +328,6 @@
         {
             InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
         }
-    }
-
-    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
-    {
-        if (visitCodeModel != null)
-        {
-            if (VisitCodeOperateMode == "Add")
-            {
-                var newRecord = new 臨床資料合併用藥Node()
-                    {
-                        VisitCode = visitCodeModel,
-                    };
-                header.Items.Add(newRecord);
-                patientData.SyncData();
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-            else if (VisitCodeOperateMode == "Edit")
-            {
-                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                if (editItem != null)
-                {
-                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                    data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode(false);
-                    RefreshDropDwonVisitCode();
-                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                    if (foo != null)
-                    {
-                        SelectVisitCode = foo;
-                    }
-                    else
-                    {
-                        SelectVisitCode = null;
-                    }
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
     }
     #endregion
 }
