@@ -40,11 +40,6 @@
                 }
             </div>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -64,37 +59,26 @@
     @if (data != null)
     {
         <div class="view-container">
-            <!-- Left Table -->
-            <div class="left-table">
-                <table>
+            <table class="medical-table">
+                <tbody>
                     <tr>
-                        <td class="w-25 data-title">
-                            Subject No.
-                        </td>
-                        <td class="w-25 data-title">
-                            手術日期
-                        </td>
-                        <td class="w-25 data-title">
-                            術式
-                        </td>
-                        <td class="w-25 data-title">
-                            OP outcome
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">Subject NO.</span></td>
+                        <td class="category-cell"><span class="bracket-text">手術日期</span></td>
+                        <td class="category-cell"><span class="bracket-text">術式</span></td>
+                        <td class="category-cell"><span class="bracket-text">OP outcome</span></td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="subject-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.SubjectNo" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.SubjectNo
-                                </div>
+                                @data.SubjectNo
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="date-cell">
                             @if (editMode)
                             {
                                 <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
@@ -102,52 +86,38 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.手術日期.ToString("yyyy-MM-dd")
-                                </div>
+                                @data.手術日期.ToString("yyyy-MM-dd")
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="procedure-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.術式" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.術式
-                                </div>
+                                @data.術式
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="outcome-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.OPOutcome" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.OPOutcome
-                                </div>
+                                @data.OPOutcome
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
-                            【Ascites】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Uterus】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Cervix】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Endometrium】
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Ascites】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Uterus】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Cervix】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Endometrium】</span></td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -160,12 +130,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Ascites
-                                </div>
+                                @data.Ascites
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -205,24 +173,22 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Uterus
-                                    @if (data.Uterus == "abnormal")
-                                    {
-                                        <div>
-                                            site: @data.UterusSite
-                                        </div>
-                                        <div>
-                                            Tumor number: @data.UterusTumorNumber
-                                        </div>
-                                        <div>
-                                            Tumor size: @data.UterusTumorSize
-                                        </div>
-                                    }
-                                </div>
+                                @data.Uterus
+                                @if (data.Uterus == "abnormal")
+                                {
+                                    <div>
+                                        site: @data.UterusSite
+                                    </div>
+                                    <div>
+                                        Tumor number: @data.UterusTumorNumber
+                                    </div>
+                                    <div>
+                                        Tumor size: @data.UterusTumorSize
+                                    </div>
+                                }
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -258,21 +224,19 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Cervix
-                                    @if (data.Cervix == "abnormal")
-                                    {
-                                        <div>
-                                            site: @data.CervixSite
-                                        </div>
-                                        <div>
-                                            Tumor number: @data.CervixTumorNumber
-                                        </div>
-                                    }
-                                </div>
+                                @data.Cervix
+                                @if (data.Cervix == "abnormal")
+                                {
+                                    <div>
+                                        site: @data.CervixSite
+                                    </div>
+                                    <div>
+                                        Tumor number: @data.CervixTumorNumber
+                                    </div>
+                                }
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -285,52 +249,38 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Endometrium
-                                </div>
+                                @data.Endometrium
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
-                            【Myometrium】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Cul de sac】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Ovarian surface rupture or not】-Right ovary
-                        </td>
-                        <td class="w-25 data-title">
-                            【Ovarian surface rupture or not】-Left ovary
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Myometrium】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Cul de sac】</span></td>
+                        <td class="category-cell">【Ovarian surface rupture or not】-Right ovary</td>
+                        <td class="category-cell">【Ovarian surface rupture or not】-Left ovary</td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Myometrium" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Myometrium
-                                </div>
+                                @data.Myometrium
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.CulDeSac" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.CulDeSac
-                                </div>
+                                @data.CulDeSac
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -343,12 +293,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.OvarianSurfaceRuptureOrNotLeftOvary
-                                </div>
+                                @data.OvarianSurfaceRuptureOrNotLeftOvary
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -361,28 +309,18 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.OvarianSurfaceRuptureOrNotRightOvary
-                                </div>
+                                @data.OvarianSurfaceRuptureOrNotRightOvary
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
-                            【Left adnexa】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Right adnexa】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Pelvic peritoneal cavity】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Extrapelvic peritoneal cavity】
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Left adnexa】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Right adnexa】</span></td>
+                        <td class="category-cell">【Pelvic peritoneal cavity】</td>
+                        <td class="category-cell">【Extrapelvic peritoneal cavity】</td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -412,21 +350,19 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.LeftAdnexa
-                                    @if (data.LeftAdnexa == "abnormal")
-                                    {
-                                        <div>
-                                            Tumor number: @data.LeftAdnexaTumorNumber
-                                        </div>
-                                        <div>
-                                            Tumor size: @data.LeftAdnexaTumorSize
-                                        </div>
-                                    }
-                                </div>
+                                @data.LeftAdnexa
+                                @if (data.LeftAdnexa == "abnormal")
+                                {
+                                    <div>
+                                        Tumor number: @data.LeftAdnexaTumorNumber
+                                    </div>
+                                    <div>
+                                        Tumor size: @data.LeftAdnexaTumorSize
+                                    </div>
+                                }
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -456,21 +392,19 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.RightAdnexa
-                                    @if (data.RightAdnexa == "abnormal")
-                                    {
-                                        <div>
-                                            Tumor number: @data.RightAdnexaTumorNumber
-                                        </div>
-                                        <div>
-                                            Tumor size: @data.RightAdnexaTumorSize
-                                        </div>
-                                    }
-                                </div>
+                                @data.RightAdnexa
+                                @if (data.RightAdnexa == "abnormal")
+                                {
+                                    <div>
+                                        Tumor number: @data.RightAdnexaTumorNumber
+                                    </div>
+                                    <div>
+                                        Tumor size: @data.RightAdnexaTumorSize
+                                    </div>
+                                }
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -490,69 +424,54 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.RightAdnexa
-                                    @if (data.RightAdnexa == "abnormal")
-                                    {
-                                        <div>
-                                            Tumor size: @data.RightAdnexaTumorSize
-                                        </div>
-                                    }
-                                </div>
+                                @data.RightAdnexa
+                                @if (data.RightAdnexa == "abnormal")
+                                {
+                                    <div>
+                                        Tumor size: @data.RightAdnexaTumorSize
+                                    </div>
+                                }
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.ExtrapelvicPeritonealCavity" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.ExtrapelvicPeritonealCavity
-                                </div>
+                                @data.ExtrapelvicPeritonealCavity
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
-                            【Other organ involvement (gross looking)】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Optimal】
-                        </td>
-                        <td class="w-25 data-title">
-                            【Residual tumor】
-                        </td>
-                        <td class="w-25 data-title">
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Other organ involvement (gross looking)】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Optimal】</span></td>
+                        <td class="category-cell">【Residual tumor】</td>
+                        <td class="category-cell"></td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.OtherOrganInvolvementGrossLooking" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.OtherOrganInvolvementGrossLooking
-                                </div>
+                                @data.OtherOrganInvolvementGrossLooking
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Optimal" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Optimal
-                                </div>
+                                @data.Optimal
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
@@ -565,23 +484,16 @@
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.ResidualTumor
-                                </div>
+                                @data.ResidualTumor
                             }
                         </td>
-                        <td class="w-25 data-title">
-                        </td>
+                        <td class="normal-cell"></td>
                     </tr>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     }
 </div>
-
-<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
-                               data=VisitCode
-                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -990,86 +902,6 @@
     }
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-             $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-        if (checkTask)
-        {
-            var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-            if (itemDelete != null)
-            {
-                SelectVisitCode = null;
-                data = null;
-                header.Items.Remove(itemDelete);
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
-    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
-    {
-        if (visitCodeModel != null)
-        {
-            if (VisitCodeOperateMode == "Add")
-            {
-                var newRecord = new 臨床資料手術Node()
-                {
-                    VisitCode = visitCodeModel,
-                };
-                header.Items.Add(newRecord);
-                patientData.SyncData();
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-            else if (VisitCodeOperateMode == "Edit")
-            {
-                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                if (editItem != null)
-                {
-                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                    data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode(false);
-                    RefreshDropDwonVisitCode();
-                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                    if (foo != null)
-                    {
-                        SelectVisitCode = foo;
-                    }
-                    else
-                    {
-                        SelectVisitCode = null;
-                    }
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     void RefreshDropDwonVisitCode()
     {
         // 重置選擇項目

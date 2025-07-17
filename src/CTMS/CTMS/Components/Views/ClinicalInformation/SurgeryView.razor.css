@@ -79,32 +79,6 @@
     grid-gap: 10px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    border: 3px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-table td, table th {
-    vertical-align: top;
-}
-
-table tr:nth-child(odd) {
-    background-color: #E6F0F7;
-}
-
-table tr:nth-child(even) {
-    background-color: #33A1DE;
-}
 .left-table {
     background-color: #f8e6f3;
 }
@@ -220,3 +194,76 @@ table tr:nth-child(even) {
     font-size: 24px;
     width: 100%;
 }
+
+
+
+
+
+
+
+
+.medical-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .medical-table th,
+    .medical-table td {
+        border: 2px solid #333;
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .medical-table th {
+        background-color: #f8d7da;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .medical-table td {
+        background-color: #f8d7da;
+    }
+
+.header-row {
+    background-color: #f8d7da !important;
+}
+
+.medical-table tbody tr:nth-child(even) td {
+    background-color: white;
+}
+
+.subject-cell {
+    font-weight: bold;
+    min-width: 150px;
+}
+
+.date-cell {
+    min-width: 120px;
+}
+
+.procedure-cell {
+    min-width: 180px;
+}
+
+.outcome-cell {
+    min-width: 200px;
+}
+
+.category-cell {
+    background-color: #f8d7da;
+    font-weight: bold;
+}
+
+.normal-cell {
+    background-color: #f8d7da;
+}
+
+.bracket-text {
+    font-weight: bold;
+}
+
