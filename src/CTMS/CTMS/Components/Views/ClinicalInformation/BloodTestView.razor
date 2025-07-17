@@ -42,11 +42,6 @@
                 }
             </div>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -65,6 +60,9 @@
 
     @if (data != null)
     {
+        var index = 0;
+        string rowClass = string.Empty;
+
         <div class="sample-table-container">
             <table class="sample-table">
                 <thead>
@@ -76,118 +74,51 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="row-normal">
-                        <td class="item-cell">白血球計數 WBC(10^3/μL)</td>
-                        <td class="reference-cell">3.4-9.5</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                    <tr class="row-highlighted">
-                        <td class="item-cell">紅血球計數 RBC(10^6/μL)</td>
-                        <td class="reference-cell">4.26-5.78</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                    <tr class="row-normal">
-                        <td class="item-cell">血色素 Hb(g/dL)</td>
-                        <td class="reference-cell">13.3-17.2</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                    <tr class="row-highlighted">
-                        <td class="item-cell">血比容 Hct (%)</td>
-                        <td class="reference-cell">39.1-50.2</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                    <tr class="row-normal">
-                        <td class="item-cell">平均紅血球容積 MCV (fL)</td>
-                        <td class="reference-cell">81.9-98.4</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                    <tr class="row-highlighted">
-                        <td class="item-cell">紅血球血紅素MCH (pg)</td>
-                        <td class="reference-cell">27.5-33.7</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                    <tr class="row-normal">
-                        <td class="item-cell">平均紅血球血紅素濃度 MCHC(g/dL)</td>
-                        <td class="reference-cell">32.8-35.4</td>
-                        <td class="result-cell"></td>
-                        <td class="sampling-cell"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-
-
-
-        <div class="view-container">
-            <div class="left-table">
-                <table>
-                    <tr>
-                        <td class="w-40 data-title">檢驗項目</td>
-                        <td class="w-20 data-title">參考區間</td>
-                        <td class="w-20 data-title">檢驗數據</td>
-                        <td class="w-20 data-title">Samplin</td>
-                    </tr>
                     @foreach (var item in data.抽血檢驗血液)
                     {
-                        <tr>
-                            <td class="w-40 data-title">
-                                <div class="data-value @item.TextClassName">
-                                    @item.項目名稱
-                                </div>
-                            </td>
-                            <td class="w-20 data-title">
-                                <div class="data-value @item.TextClassName">
-                                    @item.參考區間
-                                </div>
-                            </td>
-                            <td class="w-20 data-title">
+                        if(index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            <td class="item-cell @item.TextClassName">@item.項目名稱</td>
+                            <td class="reference-cell @item.TextClassName">@item.參考區間</td>
+                            <td class="result-cell @item.TextClassName">
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.檢驗數值" />
                                 }
                                 else
                                 {
-                                    <div class="data-value @item.TextClassName">
                                         @item.檢驗數值
-                                    </div>
                                 }
                             </td>
-                            <td class="w-20 data-title">
-                                @if (editMode)
+                            <td class="sampling-cell @item.TextClassName">
+                                                                @if (editMode)
                                 {
                                     <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
                                                   @bind-Value="@item.SamplingDate"></SfDatePicker>
                                 }
                                 else
                                 {
-                                    <div class="data-value @item.TextClassName">
                                         @if (item.SamplingDate.HasValue)
                                         {
                                             @item.SamplingDate.Value.ToString("yyyy-MM-dd")
                                         }
-                                    </div>
                                 }
                             </td>
                         </tr>
-                    }
 
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     }
 </div>
-
-<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
-                               data=VisitCode
-                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -276,44 +207,6 @@
     }
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        if (SelectVisitCode != null)
-        {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-            if (checkTask)
-            {
-                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-                if (itemDelete != null)
-                {
-                    SelectVisitCode = null;
-                    data = null;
-                    header.Items.Remove(itemDelete);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode();
-                    RefreshDropDwonVisitCode();
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value != null)
@@ -360,51 +253,6 @@
         {
             InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
         }
-    }
-
-    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
-    {
-        if (visitCodeModel != null)
-        {
-            if (VisitCodeOperateMode == "Add")
-            {
-                var newRecord = new BloodTest抽血檢驗血液Node() 
-                    {
-                        VisitCode = visitCodeModel,
-                    };
-                BloodExameService.Read血液Node(newRecord);
-                header.Items.Add(newRecord);
-                patientData.SyncData();
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-            else if (VisitCodeOperateMode == "Edit")
-            {
-                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                if (editItem != null)
-                {
-                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                    data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode(false);
-                    RefreshDropDwonVisitCode();
-                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                    if (foo != null)
-                    {
-                        SelectVisitCode = foo;
-                    }
-                    else
-                    {
-                        SelectVisitCode = null;
-                    }
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
     }
     #endregion
 }
