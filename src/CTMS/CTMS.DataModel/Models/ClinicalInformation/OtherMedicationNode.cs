@@ -17,8 +17,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 
     public class OtherMedicationItem
     {
-        public string Durg { get; set; }
-        public DateTime TreatmentDate  { get; set; }
+        public string Drug { get; set; }
+        public DateTime? TreatmentDate  { get; set; }
         public string dose { get; set; }
         public string RouteCode { get; set; }
         public string UnitCode { get; set; }

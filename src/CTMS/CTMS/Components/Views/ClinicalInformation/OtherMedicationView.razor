@@ -59,6 +59,9 @@
 
     @if (data != null)
     {
+        int index = 0;
+        string rowClass = string.Empty;
+
         <div class="view-container">
             <div>
                 @* 新增一筆紀錄按鈕 *@
@@ -67,98 +70,86 @@
                     新增一筆紀錄
                 </button>
             </div>
-            <div class="left-table">
-                <table>
+
+            <table class="tracking-table">
+                <thead>
                     <tr>
-                        <td class="w-20 data-title">
-                            
-                        </td>
-                        <td class="w-16 data-title">
-                            Treatment Date
-                        </td>
-                        <td class="w-16 data-title">
-                            dose
-                        </td>
-                        <td class="w-16 data-title">
-                            Route Code
-                        </td>
-                        <td class="w-16 data-title">
-                            Unit Code
-                        </td>
-                        <td class="w-16 data-title">
-                        </td>
+                        <th>Drug</th>
+                        <th>Treatment Date</th>
+                        <th>dose</th>
+                        <th>Route Code</th>
+                        <th>Unit Code</th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach (var item in data.Items)
                     {
-                        <tr>
-                            <td class="w-16 data-title">
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "clinics-rower-row";
+                        }
+                        else
+                        {
+                            rowClass = "er-row";
+                        }
+
+                        <tr class="@rowClass">
+                            <td class="location-cell">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.Durg" />
+                                    <SfTextBox @bind-Value="item.Drug" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
-                                        @item.Durg
-                                    </div>
+                                    @item.Drug
                                 }
                             </td>
-                            <td class="w-20 data-title">
+                            <td>
                                 @if (editMode)
                                 {
-                                    <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
                                                   @bind-Value="@item.TreatmentDate"></SfDatePicker>
                                 }
                                 else
                                 {
-                                    <div class="data-value">
-                                        <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
-                                              @onclick="async()=> await OnDeleteAsync(item)"></span>
-                                        @item.TreatmentDate.ToString("yyyy-MM-dd")
-                                    </div>
+                                    @item.TreatmentDate?.ToString("yyyy-MM-dd")
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.dose" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
-                                        @item.dose
-                                    </div>
+                                    @item.dose
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.RouteCode" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
-                                        @item.RouteCode
-                                    </div>
+                                    @item.RouteCode
                                 }
                             </td>
-                            <td class="w-16 data-title">
+                            <td>
                                 @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="item.UnitCode" />
                                 }
                                 else
                                 {
-                                    <div class="data-value">
-                                        @item.UnitCode
-                                    </div>
+                                    @item.UnitCode
                                 }
                             </td>
                         </tr>
                     }
+                </tbody>
+            </table>
 
-                </table>
-            </div>
         </div>
     }
 </div>
