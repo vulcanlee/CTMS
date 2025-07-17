@@ -41,11 +41,6 @@
                 }
             </div>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -65,180 +60,133 @@
     @if (data != null)
     {
         <div class="view-container">
-            <!-- Left Table -->
-            <div class="left-table">
-                <table>
+            <table class="medical-table">
+                <tbody>
                     <tr>
-                        <td class="w-25 data-title">
-                            Subject No.
-                        </td>
-                        <td class="w-25 data-title">
-                            切片日期
-                        </td>
-                        <td class="w-25 data-title">
-                            Histology
-                        </td>
-                        <td class="w-25 data-title">
-                            TNM Stage
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">Subject NO.</span></td>
+                        <td class="category-cell"><span class="bracket-text">切片日期</span></td>
+                        <td class="category-cell"><span class="bracket-text">Histology</span></td>
+                        <td class="category-cell"><span class="bracket-text">TNM Stage</span></td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="subject-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.SubjectNo" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.SubjectNo
-                                </div>
+                                @data.SubjectNo
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="date-cell">
                             @if (editMode)
                             {
                                 <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
-                                @bind-Value="data.切片日期"></SfDatePicker>
+                                              @bind-Value="data.切片日期"></SfDatePicker>
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.切片日期.ToString("yyyy-MM-dd")
-                                </div>
+                                @data.切片日期.ToString("yyyy-MM-dd")
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="procedure-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Histology" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Histology
-                                </div>
+                                @data.Histology
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="outcome-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.TnmStage" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.TnmStage
-                                </div>
+                                @data.TnmStage
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-25 data-title">
-                            Myometrium
-                        </td>
-                        <td class="w-25 data-title">
-                            Uterine Serosa Involvement
-                        </td>
-                        <td class="w-25 data-title">
-                            Blood/lymphatic vessel invasion
-                        </td>
-                        <td class="w-25 data-title">
-                            Cervix
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Myometrium】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Uterine Serosa Involvement】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Blood/lymphatic vessel invasion】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Cervix】</span></td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Myometrium" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Myometrium
-                                </div>
+                                @data.Myometrium
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.UterineSerosaInvolvement" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.UterineSerosaInvolvement
-                                </div>
+                                @data.UterineSerosaInvolvement
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.BloodLymphaticVesselInvasion" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.BloodLymphaticVesselInvasion
-                                </div>
+                                @data.BloodLymphaticVesselInvasion
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Cervix" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Cervix
-                                </div>
+                                @data.Cervix
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-25 data-title">
-                            Parametrium
-                        </td>
-                        <td class="w-25 data-title">
-                            Ovary-Right
-                        </td>
-                        <td class="w-25 data-title">
-                            Ovary-Left
-                        </td>
-                        <td class="w-25 data-title">
-                            Fallopian tube - Right
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Parametrium】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Ovary-Right】</span></td>
+                        <td class="category-cell">【Ovary-Left】</td>
+                        <td class="category-cell">【Fallopian tube - Right】</td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Parametrium" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.Parametrium
-                                </div>
+                                @data.Parametrium
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.OvaryRight" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.OvaryRight
-                                </div>
+                                @data.OvaryRight
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.OvaryLeft" />
@@ -250,72 +198,55 @@
                                 </div>
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.FallopianTubeRight" />
                             }
                             else
                             {
-                                <div class="data-value">
-                                    @data.FallopianTubeRight
-                                </div>
+                                @data.FallopianTubeRight
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-25 data-title">
-                            Fallopian tube - Left
-                        </td>
-                        <td class="w-25 data-title">
-                            Vagina
-                        </td>
-                        <td class="w-25 data-title">
-                            Regional Lymph Nodes
-                        </td>
-                        <td class="w-25 data-title">
-                            Isolated tumor cells
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Fallopian tube - Left】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Vagina】</span></td>
+                        <td class="category-cell">【Regional Lymph Nodes】</td>
+                        <td class="category-cell">【Isolated tumor cells】</td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.FallopianTubeLeft" />
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.FallopianTubeLeft
-                                </div>
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.Vagina" />
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Vagina
-                                </div>
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.RegionalLymphNodes" />
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.RegionalLymphNodes
-                                </div>
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.IsolatedTumorCells" />
@@ -328,69 +259,60 @@
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-25 data-title">
-                            Additional pathological findings
-                        </td>
-                        <td class="w-25 data-title">
-                            Immunohistochemical test
-                        </td>
-                        <td class="w-25 data-title">
-                        </td>
-                        <td class="w-25 data-title">
-                        </td>
+                        <td class="category-cell"><span class="bracket-text">【Additional pathological findings】</span></td>
+                        <td class="category-cell"><span class="bracket-text">【Immunohistochemical test】</span></td>
+                        <td class="category-cell"></td>
+                        <td class="category-cell"></td>
                     </tr>
                     <tr>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.AdditionalPathologicalFindings" />
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.AdditionalPathologicalFindings
-                                </div>
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfTextBox @bind-Value="data.ImmunohistochemicalTest" />
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.ImmunohistochemicalTest
-                                </div>
                             }
                         </td>
-                        <td class="w-25 data-title">
+                        <td class="normal-cell">
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="data.ImmunohistochemicalTest" />
+                            }
+                            else
+                            {
+                                    @data.ImmunohistochemicalTest
+                            }
                         </td>
-                        <td class="w-25 data-title">
-                        </td>
+                        <td class="normal-cell"></td>
                     </tr>
-
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     }
 </div>
 
-<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
-data=VisitCode
-OnConfirmCallback=OnVisiteCodeConfirmAsync />
-
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
-IsVisible="@MessageBox.IsVisible"
-Title="@MessageBox.Title" Message="@MessageBox.Body"
-Callback="MessageBox.MessageDelegate" />
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
 
 <ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
-IsVisible="@ConfirmMessageBox.IsVisible"
-Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
-Callback="ConfirmMessageBox.ConfirmDelegate" />
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
 
 <DialogBackground />
 
@@ -464,44 +386,6 @@ Callback="ConfirmMessageBox.ConfirmDelegate" />
     }
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        if (SelectVisitCode != null)
-        {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-            if (checkTask)
-            {
-                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-                if (itemDelete != null)
-                {
-                    SelectVisitCode = null;
-                    data = null;
-                    header.Items.Remove(itemDelete);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode();
-                    RefreshDropDwonVisitCode();
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value != null)
@@ -526,10 +410,10 @@ Callback="ConfirmMessageBox.ConfirmDelegate" />
             foreach (var nodeItem in header.Items)
             {
                 ListVisitCode.Add(new DropDownListDataModel()
-                    {
-                        Key = nodeItem.VisitCode.Id,
-                        Name = nodeItem.VisitCode.VisitCodeTitle,
-                    });
+                {
+                    Key = nodeItem.VisitCode.Id,
+                    Name = nodeItem.VisitCode.VisitCodeTitle,
+                });
             }
             if (reset)
             {
@@ -548,50 +432,6 @@ Callback="ConfirmMessageBox.ConfirmDelegate" />
         {
             InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
         }
-    }
-
-    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
-    {
-        if (visitCodeModel != null)
-        {
-            if (VisitCodeOperateMode == "Add")
-            {
-                var newRecord = new 臨床資料病理報告Node()
-                    {
-                        VisitCode = visitCodeModel,
-                    };
-                header.Items.Add(newRecord);
-                patientData.SyncData();
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-            else if (VisitCodeOperateMode == "Edit")
-            {
-                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                if (editItem != null)
-                {
-                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                    data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode(false);
-                    RefreshDropDwonVisitCode();
-                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                    if (foo != null)
-                    {
-                        SelectVisitCode = foo;
-                    }
-                    else
-                    {
-                        SelectVisitCode = null;
-                    }
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
     }
     #endregion
 }
