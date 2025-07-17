@@ -41,11 +41,6 @@
                 }
             </div>
         </div>
-        <div class="buttons">
-            <button class="btn btn-add" @onclick=OnAddVisiteCode>新增</button>
-            <button class="btn btn-edit" @onclick=OnEditVisiteCode>修改</button>
-            <button class="btn btn-delete" @onclick=OnVisiteCodeDeleteAsync>刪除</button>
-        </div>
     </div>
 
     <div class="visit-code-container d-flex align-items-center">
@@ -65,20 +60,21 @@
     @if (data != null)
     {
         <div class="view-container">
-            <!-- Left Table -->
-            <div class="left-table">
-                <table>
+            <table class="medical-table">
+                <tbody>
                     <tr>
-                        <td class="w-15 data-title"></td>
-                        <td class="w-17 data-title">Cardiovascular<br />(include HTN )</td>
-                        <td class="w-17 data-title">Peripheral Vascular</td>
-                        <td class="w-17 data-title">Respiratory</td>
-                        <td class="w-17 data-title">Gastrointestinal</td>
-                        <td class="w-17 data-title">Renal</td>
+                        <td class="category-cell"><span class="bracket-text"></span></td>
+                        <td class="category-cell"><span class="bracket-text">Cardiovascular<br />(include HTN )</span></td>
+                        <td class="category-cell"><span class="bracket-text">Peripheral Vascular</span></td>
+                        <td class="category-cell"><span class="bracket-text">Respiratory</span></td>
+                        <td class="category-cell"><span class="bracket-text">Gastrointestinal</span></td>
+                        <td class="category-cell"><span class="bracket-text">Renal</span></td>
                     </tr>
                     <tr>
-                        <td class="w-15 data-title">Yes/No</td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
+                            Yes/No
+                        </td>
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -88,12 +84,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.CardiovascularIncludeHtn
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -103,12 +97,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.PeripheralVascular
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -118,12 +110,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Respiratory
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -133,12 +123,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Gastrointestinal
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -148,24 +136,23 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Renal
-                                </div>
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-15 data-title"></td>
-                        <td class="w-17 data-title">Genitourinary</td>
-                        <td class="w-17 data-title">Metabolic<br />(Include Diabetes)</td>
-                        <td class="w-17 data-title">Hematologic-Lymphatic</td>
-                        <td class="w-17 data-title">Musculoskeletal</td>
-                        <td class="w-17 data-title">Dermatologic</td>
+                        <td class="category-cell"><span class="bracket-text"></span></td>
+                        <td class="category-cell"><span class="bracket-text">Genitourinary</span></td>
+                        <td class="category-cell"><span class="bracket-text">Metabolic<br />(Include Diabetes)</span></td>
+                        <td class="category-cell"><span class="bracket-text">Hematologic-Lymphatic</span></td>
+                        <td class="category-cell"><span class="bracket-text">Musculoskeletal</span></td>
+                        <td class="category-cell"><span class="bracket-text">Dermatologic</span></td>
                     </tr>
                     <tr>
-                        <td class="w-15 data-title">Yes/No</td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
+                            Yes/No
+                        </td>
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -175,12 +162,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Genitourinary
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -190,12 +175,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.EndocrineMetabolicIncludeDiabetes
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -205,12 +188,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.HematologicLymphatic
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -220,12 +201,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Musculoskeletal
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -235,24 +214,23 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Dermatologic
-                                </div>
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-15 data-title"></td>
-                        <td class="w-17 data-title">Drug Abuse</td>
-                        <td class="w-17 data-title">Tobacco</td>
-                        <td class="w-17 data-title">Neurologic</td>
-                        <td class="w-17 data-title">Psychiatric</td>
-                        <td class="w-17 data-title">Allergies</td>
+                        <td class="category-cell"><span class="bracket-text"></span></td>
+                        <td class="category-cell"><span class="bracket-text">Drug Abuse</span></td>
+                        <td class="category-cell"><span class="bracket-text">Tobacco</span></td>
+                        <td class="category-cell">Neurologic</td>
+                        <td class="category-cell">Psychiatric</td>
+                        <td class="category-cell">Allergies</td>
                     </tr>
                     <tr>
-                        <td class="w-15 data-title">Yes/No</td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
+                            Yes/No
+                        </td>
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -262,12 +240,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.DrugAbuse
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -277,12 +253,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Tobacco
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -292,12 +266,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Neurologic
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -307,12 +279,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Psychiatric
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -322,24 +292,23 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Allergies
-                                </div>
                             }
                         </td>
                     </tr>
-
                     <tr>
-                        <td class="w-15 data-title"></td>
-                        <td class="w-17 data-title">Neoplasia</td>
-                        <td class="w-17 data-title">Alcohol Use</td>
-                        <td class="w-17 data-title">immunity (Include HIV)</td>
-                        <td class="w-17 data-title">Hepatobiliary(Include HBV/HCV)</td>
-                        <td class="w-17 data-title">other (specify)</td>
+                        <td class="category-cell"><span class="bracket-text"></span></td>
+                        <td class="category-cell"><span class="bracket-text">Neoplasia</span></td>
+                        <td class="category-cell"><span class="bracket-text">Alcohol Use</span></td>
+                        <td class="category-cell">immunity (Include HIV)</td>
+                        <td class="category-cell">Hepatobiliary(Include HBV/HCV)</td>
+                        <td class="category-cell">other (specify)</td>
                     </tr>
                     <tr>
-                        <td class="w-15 data-title">Yes/No</td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
+                            Yes/No
+                        </td>
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -349,12 +318,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.Neoplasia
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -364,12 +331,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.AlcoholUse
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -379,12 +344,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.ImmunityIncludeHiv
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -394,12 +357,10 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.HepatobiliaryIncludeHbvHcv
-                                </div>
                             }
                         </td>
-                        <td class="w-17 data-title">
+                        <td class="normal-cell">
                             @if (editMode)
                             {
                                 <SfDropDownList TValue="string" TItem="string"
@@ -409,22 +370,15 @@
                             }
                             else
                             {
-                                <div class="data-value">
                                     @data.OtherSpecify
-                                </div>
                             }
                         </td>
                     </tr>
-
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     }
 </div>
-
-<VisitCodeAssessmentDateDialog OpenPicker=ShowVisitCodeDialog
-                               data=VisitCode
-                               OnConfirmCallback=OnVisiteCodeConfirmAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -627,45 +581,6 @@
 
 
     #region 針對 VisitCode 的方法
-    void OnAddVisiteCode()
-    {
-        VisitCode = new();
-        VisitCodeOperateMode = "Add";
-        ShowVisitCodeDialog = true;
-    }
-
-    void OnEditVisiteCode()
-    {
-
-        VisitCode = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key)?.VisitCode;
-        VisitCodeOperateMode = "Edit";
-        ShowVisitCodeDialog = true;
-    }
-
-    async Task OnVisiteCodeDeleteAsync()
-    {
-        if (SelectVisitCode != null)
-        {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
-            if (checkTask)
-            {
-                var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-                if (itemDelete != null)
-                {
-                    SelectVisitCode = null;
-                    data = null;
-                    header.Items.Remove(itemDelete);
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode();
-                    RefreshDropDwonVisitCode();
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
-    }
-
     private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
         if (args.Value != null)
@@ -712,50 +627,6 @@
         {
             InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
         }
-    }
-
-    async Task OnVisiteCodeConfirmAsync(VisitCodeModel visitCodeModel)
-    {
-        if (visitCodeModel != null)
-        {
-            if (VisitCodeOperateMode == "Add")
-            {
-                var newRecord = new BaselineMedicalHistoryFormNode()
-                {
-                    VisitCode = visitCodeModel,
-                };
-                header.Items.Add(newRecord);
-                patientData.SyncData();
-                patientAdapterModel.JsonData = patientData.ToJson();
-                await PatientService.UpdateAsync(patientAdapterModel);
-                RefreshVisitCode();
-                RefreshDropDwonVisitCode();
-            }
-            else if (VisitCodeOperateMode == "Edit")
-            {
-                var editItem = header.Items.FirstOrDefault(x => x.VisitCode.Id == visitCodeModel.Id);
-                if (editItem != null)
-                {
-                    data.VisitCode.AssessmentDate = visitCodeModel.AssessmentDate;
-                    data.VisitCode.CycleMonth = visitCodeModel.CycleMonth;
-                    data.VisitCode.Timeline = visitCodeModel.Timeline;
-                    patientAdapterModel.JsonData = patientData.ToJson();
-                    await PatientService.UpdateAsync(patientAdapterModel);
-                    RefreshVisitCode(false);
-                    RefreshDropDwonVisitCode();
-                    var foo = ListVisitCode.FirstOrDefault(x => x.Key == visitCodeModel.Id);
-                    if (foo != null)
-                    {
-                        SelectVisitCode = foo;
-                    }
-                    else
-                    {
-                        SelectVisitCode = null;
-                    }
-                }
-            }
-        }
-        ShowVisitCodeDialog = false;
     }
     #endregion
 
