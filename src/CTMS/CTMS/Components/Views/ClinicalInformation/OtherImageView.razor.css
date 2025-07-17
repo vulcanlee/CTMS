@@ -79,32 +79,6 @@
     grid-gap: 10px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    border: 3px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-table td, table th {
-    vertical-align: top;
-}
-
-table tr:nth-child(odd) {
-    background-color: #E6F0F7;
-}
-
-table tr:nth-child(even) {
-    background-color: #33A1DE;
-}
 .left-table {
     background-color: #f8e6f3;
 }
@@ -227,4 +201,56 @@ table tr:nth-child(even) {
 
 .w-16{
     width: 16%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.clinical-tracking-container {
+    width: 100%;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tracking-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+    .tracking-table th {
+        background-color: #ffebee;
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid #ddd;
+    }
+
+    .tracking-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        vertical-align: top;
+    }
+
+.location-cell {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.admission-row {
+    background-color: #ffebee; /* 淡粉紅色 */
+}
+
+.er-row {
+    background-color: #fff9c4; /* 淡黃色 */
 }

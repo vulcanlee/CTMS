@@ -62,147 +62,153 @@
     @if (data != null)
     {
         <div class="view-container">
-            <div>
-                @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" 
-                @onclick="async () =>await OnAddAsync()">
-                    新增一筆紀錄
-                </button>
-            </div>
-            <div class="left-table">
-                <table>
+            <table class="tracking-table">
+                <thead>
                     <tr>
-                        <td class="w-20 data-title">
-                            
+                        <th></th>
+                        <th>CXR</th>
+                        <th>12-lead EKG</th>
+                        <th>Chest CT</th>
+                        <th>Abd CT</th>
+                        <th>Brain MRI</th>
+                        <th>Bone scan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="clinics-rower-row">
+                        <td class="location-cell">Examination Date</td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.Item.ChestXRayDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                @data.Item.ChestXRayDate?.ToString("yyyy-MM-dd")
+                            }
                         </td>
-                        <td class="w-16 data-title">
-                            CXR
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.Item.LeadEKG12Date"></SfDatePicker>
+                            }
+                            else
+                            {
+                                @data.Item.LeadEKG12Date?.ToString("yyyy-MM-dd")
+                            }
                         </td>
-                        <td class="w-16 data-title">
-                            12-lead EKG
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.Item.ChestCTDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                @data.Item.ChestCTDate?.ToString("yyyy-MM-dd")
+                            }
                         </td>
-                        <td class="w-16 data-title">
-                            Chest CT
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.Item.AbdCTDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                @data.Item.AbdCTDate?.ToString("yyyy-MM-dd")
+                            }
                         </td>
-                        <td class="w-16 data-title">
-                            Abd CT
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.Item.BrainMRIDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                @data.Item.BrainMRIDate?.ToString("yyyy-MM-dd")
+                            }
                         </td>
-                        <td class="w-16 data-title">
-                            Brain MRI
-                        </td>
-                        <td class="w-16 data-title">
-                            Bone scan
-                        </td>
-                        <td class="w-16 data-title">
-                            other
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                              @bind-Value="@data.Item.BoneScanDate"></SfDatePicker>
+                            }
+                            else
+                            {
+                                @data.Item.BoneScanDate?.ToString("yyyy-MM-dd")
+                            }
                         </td>
                     </tr>
-                    @foreach (var item in data.Items)
-                    {
-                        <tr>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.First" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        <span class="mx-3 mdi mdi-24px mdi-delete-circle command-icon-width cursor-pointer text-danger"
-                                              @onclick="async () => await OnDeleteAsync(item)"></span>
-                                        @item.First
-                                    </div>
-        }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.ChestXRay" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.ChestXRay
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.LeadEKG12" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.LeadEKG12
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.ChestCT" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.ChestCT
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.AbdCT" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.AbdCT
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.BrainMRI" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.BrainMRI
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.BoneScan" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.BoneScan
-                                    </div>
-                                }
-                            </td>
-                            <td class="w-16 data-title">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.Other" />
-                                }
-                                else
-                                {
-                                    <div class="data-value">
-                                        @item.Other
-                                    </div>
-                                }
-                            </td>
-                        </tr>
-                    }
-
-                </table>
-            </div>
+                    <tr class="er-row">
+                        <td class="location-cell">Report</td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="@data.Item.ChestXRay" />
+                            }
+                            else
+                            {
+                                @data.Item.ChestXRay
+                            }
+                        </td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="@data.Item.LeadEKG12" />
+                            }
+                            else
+                            {
+                                @data.Item.LeadEKG12
+                            }
+                        </td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="@data.Item.ChestCT" />
+                            }
+                            else
+                            {
+                                @data.Item.ChestCT
+                            }
+                        </td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="@data.Item.AbdCT" />
+                            }
+                            else
+                            {
+                                @data.Item.AbdCT
+                            }
+                        </td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="@data.Item.BrainMRI" />
+                            }
+                            else
+                            {
+                                @data.Item.BrainMRI
+                            }
+                        </td>
+                        <td>
+                            @if (editMode)
+                            {
+                                <SfTextBox @bind-Value="@data.Item.BoneScan" />
+                            }
+                            else
+                            {
+                                @data.Item.BoneScan
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     }
 </div>
@@ -290,18 +296,10 @@
 
     async Task OnAddAsync()
     {
-        data.Items.Add(new OtherTreatmentImageItem());
-        await OnSave();
     }
 
     async Task OnDeleteAsync(OtherTreatmentImageItem item)
     {
-        // Assuming we need to remove the last item for deletion
-        if (data.Items.Count > 0)
-        {
-            data.Items.Remove(item);
-            await OnSave();
-        }
     }
 
 
@@ -330,10 +328,10 @@
             foreach (var nodeItem in header.Items)
             {
                 ListVisitCode.Add(new DropDownListDataModel()
-                    {
-                        Key = nodeItem.VisitCode.Id,
-                        Name = nodeItem.VisitCode.VisitCodeTitle,
-                    });
+                {
+                    Key = nodeItem.VisitCode.Id,
+                    Name = nodeItem.VisitCode.VisitCodeTitle,
+                });
             }
             if (reset)
             {
