@@ -12,10 +12,13 @@ namespace CTMS.Business.Services;
 public class Main臨床資料HelperService
 {
     private readonly BloodExameService bloodExameService;
+    private readonly SurveyService surveyService;
 
-    public Main臨床資料HelperService(BloodExameService bloodExameService)
+    public Main臨床資料HelperService(BloodExameService bloodExameService,
+        SurveyService surveyService)
     {
         this.bloodExameService = bloodExameService;
+        this.surveyService = surveyService;
     }
     public void Check(Main臨床資料 Main臨床資料)
     {
@@ -242,6 +245,17 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.化療副作用.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
                         Main臨床資料.Survey化療副作用.Items.Add(item);
                     }
                     else
@@ -266,6 +280,17 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.標靶副作用.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
                         Main臨床資料.Survey標靶副作用.Items.Add(item);
                     }
                     else
@@ -290,6 +315,17 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.放療副作用.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
                         Main臨床資料.Survey放療副作用.Items.Add(item);
                     }
                     else
@@ -314,6 +350,17 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.whooqol問卷.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
                         Main臨床資料.SurveyWhooqol問卷.Items.Add(item);
                     }
                     else
@@ -338,6 +385,17 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.個人史問卷.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
                         Main臨床資料.Survey個人史問卷.Items.Add(item);
                     }
                     else
@@ -362,6 +420,17 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.家族史問卷.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
                         Main臨床資料.Survey家族史問卷.Items.Add(item);
                     }
                     else
