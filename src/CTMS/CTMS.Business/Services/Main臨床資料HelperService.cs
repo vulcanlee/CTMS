@@ -1,4 +1,5 @@
 ﻿using CTMS.Business.Services.ClinicalInformation;
+using CTMS.DataModel.Dtos;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
 using System;
@@ -13,12 +14,18 @@ public class Main臨床資料HelperService
 {
     private readonly BloodExameService bloodExameService;
     private readonly SurveyService surveyService;
+    private readonly SideEffectsService sideEffectsService;
+    private readonly SurveySideEffectsService surveySideEffectsService;
 
     public Main臨床資料HelperService(BloodExameService bloodExameService,
-        SurveyService surveyService)
+        SurveyService surveyService,
+        SideEffectsService sideEffectsService,
+        SurveySideEffectsService surveySideEffectsService)
     {
         this.bloodExameService = bloodExameService;
         this.surveyService = surveyService;
+        this.sideEffectsService = sideEffectsService;
+        this.surveySideEffectsService = surveySideEffectsService;
     }
     public void Check(Main臨床資料 Main臨床資料)
     {
@@ -455,6 +462,10 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        sideEffectsService.InitAll(item);
+                        sideEffectsService.Update副作用All(Main臨床資料, item);
+
                         Main臨床資料.HematologicSideEffects血液副作用.Items.Add(item);
                     }
                     else
@@ -463,6 +474,7 @@ public class Main臨床資料HelperService
                         {
                             return;
                         }
+
                         Main臨床資料.HematologicSideEffects血液副作用.Items.Remove(item);
                     }
                 }
@@ -479,6 +491,10 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        surveySideEffectsService.Init1All(item);
+                        surveySideEffectsService.Update副作用1All(Main臨床資料, item);
+
                         Main臨床資料.SurveySideEffects副作用1.Items.Add(item);
                     }
                     else
@@ -503,6 +519,10 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
+
+                        surveySideEffectsService.Init2All(item);
+                        surveySideEffectsService.Update副作用2All(Main臨床資料, item);
+                        
                         Main臨床資料.SurveySideEffects副作用2.Items.Add(item);
                     }
                     else
