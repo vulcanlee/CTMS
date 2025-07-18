@@ -616,7 +616,7 @@
     {
         #region 癌別
         {
-            ListECOrOCC = DropDownListDataService.Get癌別();
+            ListECOrOCC = DropDownListDataService.Get癌別Code();
             var item = ListECOrOCC.FirstOrDefault(x => x.Key == patientData.臨床資訊.ECorOC);
             if (item != null)
                 SelectECOrOCC = item;

@@ -38,128 +38,132 @@
 
     @if (data != null)
     {
-        <div class="view-container">
+        <div class="">
             <!-- Left Table -->
-            <div class="left-table">
+            <div class="">
                 <table>
-                    <tr>
-                        <td class="w-10 data-title"></td>
-                        <td class="w-15 data-title">Nausea<br />（噁心）</td>
-                        <td class="w-15 data-title">Vomiting<br />（嘔吐）</td>
-                        <td class="w-15 data-title">Mucositis oral<br />（口腔炎）</td>
-                        <td class="w-15 data-title">Diarrhea<br />（拉肚子）</td>
-                        <td class="w-15 data-title">Constipation<br />便秘</td>
-                        <td class="w-15 data-title">食慾不振</td>
-                    </tr>
-                    <tr>
-                        <td class="w-10 data-value">grade 1</td>
-                        <td class="w-15 data-value @data.Nausea噁心.Grade1.ApplyCssClass">
-                            @data.Nausea噁心.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.Vomiting嘔吐.Grade1.ApplyCssClass">
-                            @data.Vomiting嘔吐.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.MucositisOral口腔炎.Grade1.ApplyCssClass">
-                            @data.MucositisOral口腔炎.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.Diarrhea拉肚子.Grade1.ApplyCssClass">
-                            @data.Diarrhea拉肚子.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.Constipation便秘.Grade1.ApplyCssClass">
-                            @data.Constipation便秘.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.Anorexia食慾不振.Grade1.ApplyCssClass">
-                            @data.Anorexia食慾不振.Grade1.Title
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th class="w-10"></th>
+                            <th class="w-15">Nausea<br />（噁心）</th>
+                            <th class="w-15">Vomiting<br />（嘔吐）</th>
+                            <th class="w-15">Mucositis oral<br />（口腔炎）</th>
+                            <th class="w-15">Diarrhea<br />（拉肚子）</th>
+                            <th class="w-15">Constipation<br />便秘</th>
+                            <th class="w-15">食慾不振</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="grade-1">
+                            <td class="w-10 ">grade 1</td>
+                            <td class="w-15  @data.Nausea噁心.Grade1.ApplyCssClass">
+                                @data.Nausea噁心.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.Vomiting嘔吐.Grade1.ApplyCssClass">
+                                @data.Vomiting嘔吐.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.MucositisOral口腔炎.Grade1.ApplyCssClass">
+                                @data.MucositisOral口腔炎.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.Diarrhea拉肚子.Grade1.ApplyCssClass">
+                                @data.Diarrhea拉肚子.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.Constipation便秘.Grade1.ApplyCssClass">
+                                @data.Constipation便秘.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.Anorexia食慾不振.Grade1.ApplyCssClass">
+                                @data.Anorexia食慾不振.Grade1.Title
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 2</td>
-                        <td class="w-15 data-value @data.Nausea噁心.Grade2.ApplyCssClass">
-                            @data.Nausea噁心.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.Vomiting嘔吐.Grade2.ApplyCssClass">
-                            @data.Vomiting嘔吐.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.MucositisOral口腔炎.Grade2.ApplyCssClass">
-                            @data.MucositisOral口腔炎.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.Diarrhea拉肚子.Grade2.ApplyCssClass">
-                            @data.Diarrhea拉肚子.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.Constipation便秘.Grade2.ApplyCssClass">
-                            @data.Constipation便秘.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.Anorexia食慾不振.Grade2.ApplyCssClass">
-                            @data.Anorexia食慾不振.Grade2.Title
-                        </td>
-                    </tr>
+                        <tr class="grade-2">
+                            <td class="w-10 ">grade 2</td>
+                            <td class="w-15  @data.Nausea噁心.Grade2.ApplyCssClass">
+                                @data.Nausea噁心.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.Vomiting嘔吐.Grade2.ApplyCssClass">
+                                @data.Vomiting嘔吐.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.MucositisOral口腔炎.Grade2.ApplyCssClass">
+                                @data.MucositisOral口腔炎.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.Diarrhea拉肚子.Grade2.ApplyCssClass">
+                                @data.Diarrhea拉肚子.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.Constipation便秘.Grade2.ApplyCssClass">
+                                @data.Constipation便秘.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.Anorexia食慾不振.Grade2.ApplyCssClass">
+                                @data.Anorexia食慾不振.Grade2.Title
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 3</td>
-                        <td class="w-15 data-value @data.Nausea噁心.Grade3.ApplyCssClass">
-                            @data.Nausea噁心.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.Vomiting嘔吐.Grade3.ApplyCssClass">
-                            @data.Vomiting嘔吐.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.MucositisOral口腔炎.Grade3.ApplyCssClass">
-                            @data.MucositisOral口腔炎.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.Diarrhea拉肚子.Grade3.ApplyCssClass">
-                            @data.Diarrhea拉肚子.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.Constipation便秘.Grade3.ApplyCssClass">
-                            @data.Constipation便秘.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.Anorexia食慾不振.Grade3.ApplyCssClass">
-                            @data.Anorexia食慾不振.Grade3.Title
-                        </td>
-                    </tr>
+                        <tr class="grade-3">
+                            <td class="w-10 ">grade 3</td>
+                            <td class="w-15  @data.Nausea噁心.Grade3.ApplyCssClass">
+                                @data.Nausea噁心.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.Vomiting嘔吐.Grade3.ApplyCssClass">
+                                @data.Vomiting嘔吐.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.MucositisOral口腔炎.Grade3.ApplyCssClass">
+                                @data.MucositisOral口腔炎.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.Diarrhea拉肚子.Grade3.ApplyCssClass">
+                                @data.Diarrhea拉肚子.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.Constipation便秘.Grade3.ApplyCssClass">
+                                @data.Constipation便秘.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.Anorexia食慾不振.Grade3.ApplyCssClass">
+                                @data.Anorexia食慾不振.Grade3.Title
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 4</td>
-                        <td class="w-15 data-value @data.Nausea噁心.Grade4.ApplyCssClass">
-                            @data.Nausea噁心.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.Vomiting嘔吐.Grade4.ApplyCssClass">
-                            @data.Vomiting嘔吐.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.MucositisOral口腔炎.Grade4.ApplyCssClass">
-                            @data.MucositisOral口腔炎.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.Diarrhea拉肚子.Grade4.ApplyCssClass">
-                            @data.Diarrhea拉肚子.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.Constipation便秘.Grade4.ApplyCssClass">
-                            @data.Constipation便秘.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.Anorexia食慾不振.Grade4.ApplyCssClass">
-                            @data.Anorexia食慾不振.Grade4.Title
-                        </td>
-                    </tr>
+                        <tr class="grade-4">
+                            <td class="w-10 ">grade 4</td>
+                            <td class="w-15  @data.Nausea噁心.Grade4.ApplyCssClass">
+                                @data.Nausea噁心.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.Vomiting嘔吐.Grade4.ApplyCssClass">
+                                @data.Vomiting嘔吐.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.MucositisOral口腔炎.Grade4.ApplyCssClass">
+                                @data.MucositisOral口腔炎.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.Diarrhea拉肚子.Grade4.ApplyCssClass">
+                                @data.Diarrhea拉肚子.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.Constipation便秘.Grade4.ApplyCssClass">
+                                @data.Constipation便秘.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.Anorexia食慾不振.Grade4.ApplyCssClass">
+                                @data.Anorexia食慾不振.Grade4.Title
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 5</td>
-                        <td class="w-15 data-value @data.Nausea噁心.Grade5.ApplyCssClass">
-                            @data.Nausea噁心.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.Vomiting嘔吐.Grade5.ApplyCssClass">
-                            @data.Vomiting嘔吐.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.MucositisOral口腔炎.Grade5.ApplyCssClass">
-                            @data.MucositisOral口腔炎.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.Diarrhea拉肚子.Grade5.ApplyCssClass">
-                            @data.Diarrhea拉肚子.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.Constipation便秘.Grade5.ApplyCssClass">
-                            @data.Constipation便秘.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.Anorexia食慾不振.Grade5.ApplyCssClass">
-                            @data.Anorexia食慾不振.Grade5.Title
-                        </td>
-                    </tr>
+                        <tr class="grade-5">
+                            <td class="w-10 ">grade 5</td>
+                            <td class="w-15  @data.Nausea噁心.Grade5.ApplyCssClass">
+                                @data.Nausea噁心.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.Vomiting嘔吐.Grade5.ApplyCssClass">
+                                @data.Vomiting嘔吐.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.MucositisOral口腔炎.Grade5.ApplyCssClass">
+                                @data.MucositisOral口腔炎.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.Diarrhea拉肚子.Grade5.ApplyCssClass">
+                                @data.Diarrhea拉肚子.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.Constipation便秘.Grade5.ApplyCssClass">
+                                @data.Constipation便秘.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.Anorexia食慾不振.Grade5.ApplyCssClass">
+                                @data.Anorexia食慾不振.Grade5.Title
+                            </td>
+                        </tr>
+                    </tbody>
 
                 </table>
             </div>

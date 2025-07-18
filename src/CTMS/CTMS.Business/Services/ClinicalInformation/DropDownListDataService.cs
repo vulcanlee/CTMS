@@ -32,6 +32,14 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> Get癌別Code()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"EC", Name = $"EC" });
+            result.Add(new DropDownListDataModel() { Key = $"OC", Name = $"OC" });
+            return result;
+        }
+
         public List<DropDownListDataModel> Get院別()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();

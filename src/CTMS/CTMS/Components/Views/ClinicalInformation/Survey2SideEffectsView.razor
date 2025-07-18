@@ -38,123 +38,127 @@
 
     @if (data != null)
     {
-        <div class="view-container">
+        <div class="">
             <!-- Left Table -->
-            <div class="left-table">
+            <div class="">
                 <table>
-                    <tr>
-                        <td class="w-10 data-title"></td>
-                        <td class="w-15 data-title">周邊感覺神經異常</td>
-                        <td class="w-15 data-title">疲倦</td>
-                        <td class="w-15 data-title">紅疹</td>
-                        <td class="w-15 data-title">手足症候群</td>
-                        <td class="w-15 data-title">掉髮</td>
-                        <td class="w-15 data-title"></td>
-                    </tr>
-                    <tr>
-                        <td class="w-10 data-value">grade 1</td>
-                        <td class="w-15 data-value @data.PeripheralNeuropathy周邊感覺神經異常.Grade1.ApplyCssClass">
-                            @data.PeripheralNeuropathy周邊感覺神經異常.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.Fatigue疲倦.Grade1.ApplyCssClass">
-                            @data.Fatigue疲倦.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.SkinRash紅疹.Grade1.ApplyCssClass">
-                            @data.SkinRash紅疹.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.HandFootSyndrome手足症候群.Grade1.ApplyCssClass">
-                            @data.HandFootSyndrome手足症候群.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value @data.Alopecia掉髮.Grade1.ApplyCssClass">
-                            @data.Alopecia掉髮.Grade1.Title
-                        </td>
-                        <td class="w-15 data-value ">
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>周邊感覺神經異常</th>
+                            <th>疲倦</th>
+                            <th>紅疹</th>
+                            <th>手足症候群</th>
+                            <th>掉髮</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="grade-1">
+                            <td class="w-10 ">grade 1</td>
+                            <td class="w-15  @data.PeripheralNeuropathy周邊感覺神經異常.Grade1.ApplyCssClass">
+                                @data.PeripheralNeuropathy周邊感覺神經異常.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.Fatigue疲倦.Grade1.ApplyCssClass">
+                                @data.Fatigue疲倦.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.SkinRash紅疹.Grade1.ApplyCssClass">
+                                @data.SkinRash紅疹.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.HandFootSyndrome手足症候群.Grade1.ApplyCssClass">
+                                @data.HandFootSyndrome手足症候群.Grade1.Title
+                            </td>
+                            <td class="w-15  @data.Alopecia掉髮.Grade1.ApplyCssClass">
+                                @data.Alopecia掉髮.Grade1.Title
+                            </td>
+                            <td class="w-15  ">
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 2</td>
-                        <td class="w-15 data-value @data.PeripheralNeuropathy周邊感覺神經異常.Grade2.ApplyCssClass">
-                            @data.PeripheralNeuropathy周邊感覺神經異常.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.Fatigue疲倦.Grade2.ApplyCssClass">
-                            @data.Fatigue疲倦.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.SkinRash紅疹.Grade2.ApplyCssClass">
-                            @data.SkinRash紅疹.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.HandFootSyndrome手足症候群.Grade2.ApplyCssClass">
-                            @data.HandFootSyndrome手足症候群.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value @data.Alopecia掉髮.Grade2.ApplyCssClass">
-                            @data.Alopecia掉髮.Grade2.Title
-                        </td>
-                        <td class="w-15 data-value ">
-                        </td>
-                    </tr>
+                        <tr class="grade-2">
+                            <td class="w-10 ">grade 2</td>
+                            <td class="w-15  @data.PeripheralNeuropathy周邊感覺神經異常.Grade2.ApplyCssClass">
+                                @data.PeripheralNeuropathy周邊感覺神經異常.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.Fatigue疲倦.Grade2.ApplyCssClass">
+                                @data.Fatigue疲倦.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.SkinRash紅疹.Grade2.ApplyCssClass">
+                                @data.SkinRash紅疹.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.HandFootSyndrome手足症候群.Grade2.ApplyCssClass">
+                                @data.HandFootSyndrome手足症候群.Grade2.Title
+                            </td>
+                            <td class="w-15  @data.Alopecia掉髮.Grade2.ApplyCssClass">
+                                @data.Alopecia掉髮.Grade2.Title
+                            </td>
+                            <td class="w-15  ">
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 3</td>
-                        <td class="w-15 data-value @data.PeripheralNeuropathy周邊感覺神經異常.Grade3.ApplyCssClass">
-                            @data.PeripheralNeuropathy周邊感覺神經異常.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.Fatigue疲倦.Grade3.ApplyCssClass">
-                            @data.Fatigue疲倦.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.SkinRash紅疹.Grade3.ApplyCssClass">
-                            @data.SkinRash紅疹.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.HandFootSyndrome手足症候群.Grade3.ApplyCssClass">
-                            @data.HandFootSyndrome手足症候群.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value @data.Alopecia掉髮.Grade3.ApplyCssClass">
-                            @data.Alopecia掉髮.Grade3.Title
-                        </td>
-                        <td class="w-15 data-value ">
-                        </td>
-                    </tr>
+                        <tr class="grade-3">
+                            <td class="w-10 ">grade 3</td>
+                            <td class="w-15  @data.PeripheralNeuropathy周邊感覺神經異常.Grade3.ApplyCssClass">
+                                @data.PeripheralNeuropathy周邊感覺神經異常.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.Fatigue疲倦.Grade3.ApplyCssClass">
+                                @data.Fatigue疲倦.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.SkinRash紅疹.Grade3.ApplyCssClass">
+                                @data.SkinRash紅疹.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.HandFootSyndrome手足症候群.Grade3.ApplyCssClass">
+                                @data.HandFootSyndrome手足症候群.Grade3.Title
+                            </td>
+                            <td class="w-15  @data.Alopecia掉髮.Grade3.ApplyCssClass">
+                                @data.Alopecia掉髮.Grade3.Title
+                            </td>
+                            <td class="w-15  ">
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 4</td>
-                        <td class="w-15 data-value @data.PeripheralNeuropathy周邊感覺神經異常.Grade4.ApplyCssClass">
-                            @data.PeripheralNeuropathy周邊感覺神經異常.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.Fatigue疲倦.Grade4.ApplyCssClass">
-                            @data.Fatigue疲倦.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.SkinRash紅疹.Grade4.ApplyCssClass">
-                            @data.SkinRash紅疹.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.HandFootSyndrome手足症候群.Grade4.ApplyCssClass">
-                            @data.HandFootSyndrome手足症候群.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value @data.Alopecia掉髮.Grade4.ApplyCssClass">
-                            @data.Alopecia掉髮.Grade4.Title
-                        </td>
-                        <td class="w-15 data-value ">
-                        </td>
-                    </tr>
+                        <tr class="grade-4">
+                            <td class="w-10 ">grade 4</td>
+                            <td class="w-15  @data.PeripheralNeuropathy周邊感覺神經異常.Grade4.ApplyCssClass">
+                                @data.PeripheralNeuropathy周邊感覺神經異常.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.Fatigue疲倦.Grade4.ApplyCssClass">
+                                @data.Fatigue疲倦.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.SkinRash紅疹.Grade4.ApplyCssClass">
+                                @data.SkinRash紅疹.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.HandFootSyndrome手足症候群.Grade4.ApplyCssClass">
+                                @data.HandFootSyndrome手足症候群.Grade4.Title
+                            </td>
+                            <td class="w-15  @data.Alopecia掉髮.Grade4.ApplyCssClass">
+                                @data.Alopecia掉髮.Grade4.Title
+                            </td>
+                            <td class="w-15  ">
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td class="w-10 data-value">grade 5</td>
-                        <td class="w-15 data-value @data.PeripheralNeuropathy周邊感覺神經異常.Grade5.ApplyCssClass">
-                            @data.PeripheralNeuropathy周邊感覺神經異常.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.Fatigue疲倦.Grade5.ApplyCssClass">
-                            @data.Fatigue疲倦.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.SkinRash紅疹.Grade5.ApplyCssClass">
-                            @data.SkinRash紅疹.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.HandFootSyndrome手足症候群.Grade5.ApplyCssClass">
-                            @data.HandFootSyndrome手足症候群.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value @data.Alopecia掉髮.Grade5.ApplyCssClass">
-                            @data.Alopecia掉髮.Grade5.Title
-                        </td>
-                        <td class="w-15 data-value ">
-                        </td>
-                    </tr>
+                        <tr class="grade-5">
+                            <td class="w-10 ">grade 5</td>
+                            <td class="w-15  @data.PeripheralNeuropathy周邊感覺神經異常.Grade5.ApplyCssClass">
+                                @data.PeripheralNeuropathy周邊感覺神經異常.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.Fatigue疲倦.Grade5.ApplyCssClass">
+                                @data.Fatigue疲倦.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.SkinRash紅疹.Grade5.ApplyCssClass">
+                                @data.SkinRash紅疹.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.HandFootSyndrome手足症候群.Grade5.ApplyCssClass">
+                                @data.HandFootSyndrome手足症候群.Grade5.Title
+                            </td>
+                            <td class="w-15  @data.Alopecia掉髮.Grade5.ApplyCssClass">
+                                @data.Alopecia掉髮.Grade5.Title
+                            </td>
+                            <td class="w-15  ">
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
