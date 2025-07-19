@@ -1,0 +1,105 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject DropDownListDataService DropDownListDataService
+
+<SfDialog @bind-Visible="@OpenPicker" IsModal="true"
+          Width="30%" Height="20%" >
+    <DialogTemplates>
+        <Header>@DialogTitle</Header>
+        <Content>
+
+            <div class="visit-code-dialog">
+                <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                Placeholder="請選擇醫院名稱" DataSource="@List院別"
+                                @bind-Value="@Select院別" class="flex-grow-1">
+                    <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                    
+                </SfDropDownList>
+
+            </div>
+
+        </Content>
+        <FooterTemplate>
+            <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
+            <SfButton @onclick="@OnPickerCancel" CssClass='e-secondary'>取消</SfButton>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    [Parameter]
+    public EventCallback<string> OnConfirmCallback { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    string DialogTitle = "新增病患資料";
+    public bool ShowMessageBox { get; set; } = false;
+    public string MessageBoxBody { get; set; } = "";
+    public string MessageBoxTitle { get; set; } = "";
+
+    bool ShowAddPatientDialog = false;
+
+    List<DropDownListDataModel> List院別 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select院別 = new DropDownListDataModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+    }
+
+    async Task GetData()
+    {
+        List院別 = DropDownListDataService.Get院別();
+        Select院別 = List院別.FirstOrDefault();
+    }
+
+    async Task Init()
+    {
+        //patientData.臨床資料.CollectVisitCode(data);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //Init();
+        }
+    }
+
+    async Task OnPickerOK()
+    {
+        OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(Select院別.Key);
+    }
+
+    async Task OnPickerCancel()
+    {
+        OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(null);
+    }
+
+}

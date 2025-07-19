@@ -105,9 +105,9 @@ public class PatientViewModel
             //isNewRecordMode = true;
             //IsShowEditRecord = true;
 
-            var verifyRecordResult = await CurrentService.AddEmptyAsync();
-            await TranscationResultHelper.CheckDatabaseResult(MessageBox, verifyRecordResult);
-            dataGrid.RefreshGrid();
+            //var verifyRecordResult = await CurrentService.AddEmptyAsync();
+            //await TranscationResultHelper.CheckDatabaseResult(MessageBox, verifyRecordResult);
+            //dataGrid.RefreshGrid();
         }
         else if (args.Item.Id == ButtonIdHelper.ButtonIdRefresh)
         {

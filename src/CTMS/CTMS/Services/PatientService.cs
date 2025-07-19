@@ -142,23 +142,64 @@ public class PatientService
         }
     }
 
-    public async Task<VerifyRecordResult> AddEmptyAsync()
+    public async Task<VerifyRecordResult> AddEmptyAsync(string hospital)
     {
         try
         {
             CleanTrackingHelper.Clean<Patient>(context);
             PatientData patientData = new();
-            string name = "0-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-            patientData.臨床資訊.SubjectNo = name;
+
+            #region 依據院別，產生出 Name
+            string subjectNoPrefix = "";
+            switch (hospital)
+            {
+                case "成大醫院":
+                    subjectNoPrefix = "NCKUH";
+                    break;
+                case "奇美醫院":
+                    subjectNoPrefix = "CHIMEIH";
+                    break;
+                case "郭綜合醫院":
+                    subjectNoPrefix = "KGH";
+                    break;
+                default:
+                    break;
+            }
+            var lastPatient = await context.Patient
+                .AsNoTracking()
+                .Where(x => x.醫院.StartsWith(hospital))
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            int lastSubjectNo = 0;
+            if (lastPatient != null)
+            {
+                var lastSerial = lastPatient.Name.Split('-')[1];
+                lastSubjectNo = Convert.ToInt32(lastSerial);
+            }
+            else
+            {
+                lastPatient = new Patient();
+            }
+            #endregion
+
+            //PatientAdapterModel patientAdapterModel = Mapper.Map<PatientAdapterModel>(lastPatient);
+            //await OhterDependencyData(patientAdapterModel);
+            //patientData.FromJson(patientAdapterModel.JsonData);
+
+            lastSubjectNo++;
+            string subjectNo = $"{subjectNoPrefix}-{lastSubjectNo.ToString("D4")}";
+            patientData.臨床資訊.SubjectNo = subjectNo;
+
             //survey.Read(patientData.臨床資料.問卷);
             //bloodExameService.Read(patientData.臨床資料.抽血檢驗);
             Patient itemParameter = new()
             {
                 Id = 0,
                 Code = Guid.NewGuid().ToString(),
-                Name = name,
+                Name = subjectNo,
                 JsonData = patientData.ToJson(),
-                醫院 = "NA",
+                醫院 = hospital,
                 癌別 = "NA",
             };
             await context.Patient

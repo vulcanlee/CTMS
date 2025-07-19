@@ -134,6 +134,8 @@
     </div>
 </div>
 
+<AddPatientDialog OpenPicker=@ShowAddPatientDialog OnConfirmCallback=OnAddPatientAsync />
+
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
             Title="@MessageBox.Title" Message="@MessageBox.Body"
@@ -154,6 +156,8 @@
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
+
+    bool ShowAddPatientDialog = false;
 
     List<Patient> patients = new();
     List<PatientAdapterModel> patientsAdapterModel = new();
@@ -229,8 +233,22 @@
 
     async Task OnAddAsync()
     {
+        ShowAddPatientDialog = true;
+    }
+
+    async Task OnAddPatientAsync(string Hospital)
+    {
+        if (Hospital != null)
+        {
+            await AddNewPatientAsync(Hospital);
+        }
+        ShowAddPatientDialog = false;
+    }
+
+    async Task AddNewPatientAsync(string Hospital)
+    {
         // 呼叫新增病患的服務方法
-        var result = await PatientService.AddEmptyAsync();
+        var result = await PatientService.AddEmptyAsync(Hospital);
         if (result.Success)
         {
             // 新增成功，顯示提示訊息
@@ -243,6 +261,7 @@
             await MessageBox.ShowAsync("400px", "200px", "錯誤", result.Message, MessageBox.HiddenAsync);
         }
     }
+
 
     async Task OnRefreshAsync()
     {
