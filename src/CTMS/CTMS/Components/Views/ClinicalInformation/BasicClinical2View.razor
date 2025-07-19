@@ -466,7 +466,7 @@
                     </div>
                 </div>
                 <div class="info-card report-card mt-3">
-                    <div class="header blue-header">
+                    <div class="header blue-header" @onclick=OnUploadBtn>
                         上傳
                     </div>
                 </div>
@@ -508,6 +508,10 @@
                  data=VisitCodeSetModel
                  OnConfirmCallback=OnVisitCodeAsync />
 
+<UploadDicomDialog OpenPicker=ShowUploadDicomDialog
+                   SubjectNo="@SubjectNo"
+                   OnConfirmCallback=OnUploadDicomAsync />
+
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
             Title="@MessageBox.Title" Message="@MessageBox.Body"
@@ -531,24 +535,27 @@
 
     bool ShowMMRProteinSettingDialog = false;
     bool ShowVisitCodeDialog = false;
+    bool ShowUploadDicomDialog = false;
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
     VisitCodeSetModel VisitCodeSetModel = new();
 
+    string SubjectNo = "";
+
     protected override async Task OnInitializedAsync()
     {
         await GetData();
         #region Demo 使用
-        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
-        {
-            patientData.臨床資訊.Image = "ExperimentalGroup";
-        }
-        else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        {
-            patientData.臨床資訊.Image = "ControlGroup";
-        }
+        // if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
+        // {
+        //     patientData.臨床資訊.Image = "ExperimentalGroup";
+        // }
+        // else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
+        // {
+        //     patientData.臨床資訊.Image = "ControlGroup";
+        // }
         #endregion
     }
 
@@ -560,6 +567,8 @@
         patientData.臨床資訊.CalculateCancerType();
         DropDownListDataInit();
         patientData.臨床資訊.BuildStage();
+
+        SubjectNo = patientData.臨床資訊.SubjectNo;
 
     }
 
@@ -1036,6 +1045,11 @@
 
     #endregion
 
+    void OnUploadBtn()
+    {
+        ShowUploadDicomDialog = true;
+    }
+
     void OnShowMMRProteinSetting()
     {
         ShowMMRProteinSettingDialog = true;
@@ -1069,6 +1083,16 @@
         }
         ShowVisitCodeDialog = false;
     }
+ 
+    async Task OnUploadDicomAsync(string filename)
+    {
+        if (filename != null)
+        {
+        }
+        ShowUploadDicomDialog = false;
+        await GetData();
+    }
+
     void OnChangeEditMode()
     {
         editMode = !editMode;

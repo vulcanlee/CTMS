@@ -1,0 +1,135 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject DropDownListDataService DropDownListDataService
+
+<SfDialog @bind-Visible="@OpenPicker" IsModal="true"
+          Width="60%" Height="40%">
+    <DialogTemplates>
+        <Header>@DialogTitle</Header>
+        <Content>
+
+            <div class="visit-code-dialog">
+                <div class="upload-files-control">
+                    <SfUploader @ref="upload1" AutoUpload="true" AllowMultiple="false"
+                                MaxFileSize="100971520"
+                                ShowProgressBar="true">
+                        <UploaderEvents ValueChange="UploaderChange"></UploaderEvents>
+                    </SfUploader>
+                </div>
+            </div>
+
+        </Content>
+        <FooterTemplate>
+            <SfButton @onclick="@OnPickerCancel" CssClass='e-secondary'>取消</SfButton>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    [Parameter]
+    public string SubjectNo { get; set; }
+    [Parameter]
+    public EventCallback<string> OnConfirmCallback { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    SfUploader upload1;
+
+    string DialogTitle = "上傳 DICOM 檔案";
+    public bool ShowMessageBox { get; set; } = false;
+    public string MessageBoxBody { get; set; } = "";
+    public string MessageBoxTitle { get; set; } = "";
+
+    bool ShowAddPatientDialog = false;
+
+    string targetPath = MagicObjectHelper.UploadFinalPath;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+    }
+
+    async Task GetData()
+    {
+    }
+
+    async Task Init()
+    {
+        //patientData.臨床資料.CollectVisitCode(data);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //Init();
+        }
+    }
+
+    async Task OnPickerOK()
+    {
+    }
+
+    async Task OnPickerCancel()
+    {
+        OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(null);
+    }
+
+
+    public async Task UploaderChange(UploadChangeEventArgs args)
+    {
+        await Task.Delay(100);
+        var inputFileName = "";
+        foreach (var uploadFile in args.Files)
+        {
+            var file = uploadFile.File;
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+            }
+            using (var inputStream = file.OpenReadStream(20 * 1024 * 1024))
+            {
+                inputFileName = $"{SubjectNo}.dicm";
+
+                // 將 inputFileName 內容複製到指定 path 目錄下，檔案名稱要相同
+                var fileTargetPath = Path.Combine(targetPath, inputFileName);
+                using (var fileStream = new FileStream(fileTargetPath, FileMode.Create, FileAccess.Write))
+                {
+                    await inputStream.CopyToAsync(fileStream);
+                }
+            }
+            OpenPicker = false;
+            await OnConfirmCallback.InvokeAsync(inputFileName);
+            break;
+        }
+        await Task.Delay(100);
+        StateHasChanged();
+    }
+}
