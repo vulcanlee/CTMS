@@ -19,6 +19,7 @@
 @inject NavigationManager NavigationManager
 @inject DropDownListDataService DropDownListDataService
 @inject AutoMapper.IMapper Mapper
+@inject BrowseSearchingService BrowseSearchingService
 
 <div class="browse-container">
     <!-- 功能按鈕區域 -->
@@ -31,8 +32,8 @@
         </button>
         <div class="search-container">
             <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" placeholder="搜尋病患編號" />
+                <span class="search-icon" @onclick=OnSetKeyword>🔍</span>
+                <input type="text" placeholder="搜尋病患編號" @bind="Keyword" />
             </div>
         </div>
     </div>
@@ -164,6 +165,8 @@
     PatientData patientData = new();
 
     BrowseFilterCondition browseFilterCondition = new();
+    string Keyword = string.Empty;
+
     #region 拉霸選單物件宣告
     List<DropDownListDataModel> List癌別 = new List<DropDownListDataModel>();
     DropDownListDataModel Select癌別 = new DropDownListDataModel();
@@ -173,8 +176,30 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Keyword = BrowseSearchingService.BrowseSearchingModel.SearchKeyword;
+        foreach (var item in BrowseSearchingService.BrowseSearchingModel.院別)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode()
+            {
+                Category = MagicObjectHelper.院別,
+                Name = item,
+            });
+        }
+        foreach (var item in BrowseSearchingService.BrowseSearchingModel.癌別)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode()
+            {
+                Category = MagicObjectHelper.癌別,
+                Name = item,
+            });
+        }
         DropDownListDataInit();
         await ReloadAsync();
+    }
+
+    async Task OnSetKeyword()
+    {
+        BrowseSearchingService.SetSearchKeyword(Keyword);
     }
 
     async Task ReloadAsync()
@@ -288,12 +313,18 @@
     {
         if (item == null) return;
         browseFilterCondition.Items.Remove(item);
+        if (item.Category == MagicObjectHelper.院別)
+            BrowseSearchingService.RemoveHospital(item.Name);
+        else if (item.Category == MagicObjectHelper.癌別)
+            BrowseSearchingService.RemoveCancerType(item.Name);
         await ReloadAsync();
     }
 
     async Task RemovellFilterAsync()
     {
+        BrowseSearchingService.Reset();
         browseFilterCondition.Items.Clear();
+        BrowseSearchingService.Reset();
         await ReloadAsync();
     }
 
@@ -310,6 +341,7 @@
                 Category = MagicObjectHelper.院別,
                 Name = args.Value.Name
             });
+            BrowseSearchingService.AddHospital(args.Value.Name);
         }
 
         await ReloadAsync();
@@ -327,6 +359,7 @@
                 Category = MagicObjectHelper.癌別,
                 Name = args.Value.Name
             });
+            BrowseSearchingService.AddCancerType(args.Value.Name);
         }
 
         await ReloadAsync();

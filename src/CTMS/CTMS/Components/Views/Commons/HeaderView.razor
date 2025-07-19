@@ -1,5 +1,6 @@
-﻿@using Newtonsoft.Json
+﻿@using CTMS.DataModel.Models.Systems
 @using CTMS.Share.Helpers
+@using Newtonsoft.Json
 @layout EmptyLayout
 @inject UploadFileService UploadFileService
 
@@ -50,6 +51,6 @@
 
     void OnBack()
     {
-        NavigationManager.NavigateTo(BackUri, true, true);
+        NavigationManager.NavigateTo(BackUri);
     }
 }
