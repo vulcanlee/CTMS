@@ -7,6 +7,7 @@ using CTMS.DataModel.Dtos;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.DataModel.Models.Questionnaire;
+using CTMS.DataModel.Models.Systems;
 using CTMS.EntityModel;
 using CTMS.EntityModel.Models;
 using Microsoft.EntityFrameworkCore;
@@ -127,6 +128,57 @@ public class PatientService
         List<Patient> items = await context.Patient
             .AsNoTracking()
             .ToListAsync();
+        if (items.Count > 0)
+        {
+            List<PatientAdapterModel> results = Mapper.Map<List<PatientAdapterModel>>(items);
+            foreach (var item in results)
+            {
+                await OhterDependencyData(item);
+            }
+            return results;
+        }
+        else
+        {
+            return result;
+        }
+    }
+
+    public async Task<List<PatientAdapterModel>> GetAsync(BrowseSearchingModel browseSearching)
+
+    {
+        List<PatientAdapterModel> result = new List<PatientAdapterModel>();
+        List<Patient> items = new();
+        List<Patient> tempItems = await context.Patient
+            .AsNoTracking()
+            .ToListAsync();
+
+        foreach (var item in tempItems)
+        {
+            if(browseSearching.院別.Count>0)
+            {
+                if(!browseSearching.院別.Contains(item.醫院))
+                {
+                    continue;
+                }
+            }
+            if (browseSearching.癌別.Count > 0)
+            {
+                if (!browseSearching.癌別.Contains(item.癌別))
+                {
+                    continue;
+                }
+            }
+            if(!string.IsNullOrEmpty(browseSearching.SearchKeyword))
+            {
+                if (!(item.癌別.Contains(browseSearching.SearchKeyword) ||
+                    item.醫院.Contains(browseSearching.SearchKeyword)))
+                {
+                    continue;
+                }
+            }
+
+            items.Add(item);
+        }
         if (items.Count > 0)
         {
             List<PatientAdapterModel> results = Mapper.Map<List<PatientAdapterModel>>(items);

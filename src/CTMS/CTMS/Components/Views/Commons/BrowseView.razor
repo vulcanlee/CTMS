@@ -83,7 +83,7 @@
         </div>
 
         <div class="filter-result">
-            <span class="result-icon">✓</span> 共找到10位符合條件的病患
+            <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的病患
         </div>
     </div>
 
@@ -166,6 +166,7 @@
 
     BrowseFilterCondition browseFilterCondition = new();
     string Keyword = string.Empty;
+    int FoundCount = 0;
 
     #region 拉霸選單物件宣告
     List<DropDownListDataModel> List癌別 = new List<DropDownListDataModel>();
@@ -200,11 +201,13 @@
     async Task OnSetKeyword()
     {
         BrowseSearchingService.SetSearchKeyword(Keyword);
+        await ReloadAsync();
     }
 
     async Task ReloadAsync()
     {
-        patientsAdapterModel = await PatientService.GetAsync();
+        patientsAdapterModel = await PatientService.GetAsync(BrowseSearchingService.BrowseSearchingModel);
+        FoundCount = patientsAdapterModel.Count;
         StateHasChanged(); // 更新 UI
     }
 
