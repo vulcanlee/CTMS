@@ -266,8 +266,8 @@ public class BasicClinicalPresentation_臨床資訊
     /// 上傳的影像檔案名稱
     /// </summary>
     public string Image { get; set; }
-    public string ImageDicom { get{ return $"{SubjectNo}.dicm"; } }
-    public string ImagePng { get{ return $"{SubjectNo}.png"; } }
+    public string ImageDicom { get{ return $"{Image}.dicm"; } }
+    public string ImagePng { get{ return $"{Image}.png"; } }
 
     public string GetErPrStatus()
     {
