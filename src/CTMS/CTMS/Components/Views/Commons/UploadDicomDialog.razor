@@ -9,6 +9,7 @@
 @using Syncfusion.Blazor.Calendars
 @inject NavigationManager NavigationManager
 @inject DropDownListDataService DropDownListDataService
+@inject DicomService DicomService
 
 <SfDialog @bind-Visible="@OpenPicker" IsModal="true"
           Width="60%" Height="40%">
@@ -21,7 +22,8 @@
                     <SfUploader @ref="upload1" AutoUpload="true" AllowMultiple="false"
                                 MaxFileSize="100971520"
                                 ShowProgressBar="true">
-                        <UploaderEvents ValueChange="UploaderChange"></UploaderEvents>
+                        <UploaderEvents ValueChange="UploaderChange" 
+                                         ></UploaderEvents>
                     </SfUploader>
                 </div>
             </div>
@@ -66,8 +68,6 @@
 
     bool ShowAddPatientDialog = false;
 
-    string targetPath = MagicObjectHelper.UploadFinalPath;
-
     protected override async Task OnInitializedAsync()
     {
         await GetData();
@@ -104,7 +104,10 @@
     public async Task UploaderChange(UploadChangeEventArgs args)
     {
         await Task.Delay(100);
-        var inputFileName = "";
+        var sourceDicomFileName = "";
+        var sourceDicomPath = "";
+        var targetImageFileName = "";
+        var targetImagePath = "";
         foreach (var uploadFile in args.Files)
         {
             var file = uploadFile.File;
@@ -116,20 +119,31 @@
             }
             using (var inputStream = file.OpenReadStream(20 * 1024 * 1024))
             {
-                inputFileName = $"{SubjectNo}.dicm";
+                sourceDicomFileName = $"{SubjectNo}.dicm";
 
                 // 將 inputFileName 內容複製到指定 path 目錄下，檔案名稱要相同
-                var fileTargetPath = Path.Combine(targetPath, inputFileName);
-                using (var fileStream = new FileStream(fileTargetPath, FileMode.Create, FileAccess.Write))
+                sourceDicomPath = Path.Combine(MagicObjectHelper.UploadFinalPath, sourceDicomFileName);
+                using (var fileStream = new FileStream(sourceDicomPath, FileMode.Create, FileAccess.Write))
                 {
                     await inputStream.CopyToAsync(fileStream);
                 }
             }
+
+            #region 將DICOM 轉成圖片
+            string pngFile = $"{SubjectNo}.png";
+            string dicomFilePath = sourceDicomPath;
+            string pngFilePath = Path.Combine(MagicObjectHelper.UploadFinalPath, pngFile);
+
+            // 轉換單個檔案
+            DicomService.ConvertSingleFile(dicomFilePath, pngFilePath);
+            #endregion
+
             OpenPicker = false;
-            await OnConfirmCallback.InvokeAsync(inputFileName);
+            await OnConfirmCallback.InvokeAsync(sourceDicomPath);
             break;
         }
         await Task.Delay(100);
         StateHasChanged();
     }
+
 }

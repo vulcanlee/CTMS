@@ -1,9 +1,16 @@
 ﻿using CTMS.DataModel.Models.ClinicalInformation;
+using Microsoft.Extensions.Logging;
 
 namespace CTMS.Business.Services.ClinicalInformation;
 
 public class SurveyService
 {
+    private readonly ILogger<SurveyService> logger;
+
+    public SurveyService(ILogger<SurveyService> logger)
+    {
+        this.logger = logger;
+    }
     public void Read(Survey問卷 survey)
     {
         survey.化療副作用 = ReadFile("化療副作用自填問卷.json");

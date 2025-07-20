@@ -23,6 +23,7 @@ using CTMS.EntityModel.Models;
 using CTMS.Business.Helpers;
 using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models.Systems;
+using CTMS.Business.Services.Dicoms;
 
 namespace CTMS
 {
@@ -120,6 +121,7 @@ namespace CTMS
                 builder.Services.AddTransient<SurveySideEffectsService>();
                 builder.Services.AddScoped<CancerStageService>();
                 builder.Services.AddScoped<BrowseSearchingService>();
+                builder.Services.AddScoped<DicomService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

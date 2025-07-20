@@ -1,12 +1,13 @@
-﻿@using Syncfusion.Blazor
-@using Syncfusion.Blazor.Data
-@using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Inputs
-@using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Navigations
+﻿@using CTMS.Business.Services.Dicoms
+@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Popups
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
@@ -543,6 +544,7 @@
     VisitCodeSetModel VisitCodeSetModel = new();
 
     string SubjectNo = "";
+    string image = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -569,7 +571,7 @@
         patientData.臨床資訊.BuildStage();
 
         SubjectNo = patientData.臨床資訊.SubjectNo;
-
+        image = Path.Combine(MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImagePng);
     }
 
     #region 拉霸選單物件宣告
@@ -1083,7 +1085,7 @@
         }
         ShowVisitCodeDialog = false;
     }
- 
+
     async Task OnUploadDicomAsync(string filename)
     {
         if (filename != null)
@@ -1091,6 +1093,9 @@
         }
         ShowUploadDicomDialog = false;
         await GetData();
+        StateHasChanged();
+        await Task.Delay(500); // 等待圖片更新
+        StateHasChanged();
     }
 
     void OnChangeEditMode()
