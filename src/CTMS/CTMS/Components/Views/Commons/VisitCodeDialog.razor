@@ -321,17 +321,29 @@
 
     async Task OnDeleteVisitCodeAsync(VisitCodeModel itemVisitCode)
     {
-        await GetData();
-        patientData.臨床資料.RemoveVisitCode(itemVisitCode);
+        var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        "警告", $"確定要刪除 Visit Code : {itemVisitCode.GetVisitCodeTitle()} 嗎？",
+        ConfirmMessageBox.HiddenAsync);
 
-        patientData.SyncData();
-        patientAdapterModel = await PatientService.GetAsync(Code);
-        patientAdapterModel.JsonData = patientData.ToJson();
+        if (confirmDelete == true)
+        {
+            await GetData();
+            patientData.臨床資料.RemoveVisitCode(itemVisitCode);
 
-        await PatientService.UpdateAsync(patientAdapterModel);
+            patientData.SyncData();
+            patientAdapterModel = await PatientService.GetAsync(Code);
+            patientAdapterModel.JsonData = patientData.ToJson();
 
-        OpenPicker = false;
-        await OnConfirmCallback.InvokeAsync(null);
+            await PatientService.UpdateAsync(patientAdapterModel);
+
+            OpenPicker = false;
+            await OnConfirmCallback.InvokeAsync(null);
+        }
+        else
+        {
+            // 使用者取消刪除操作
+        }
+
     }
 
     void ToggleExpanded(VisitCodeModel itemVisitCode)
