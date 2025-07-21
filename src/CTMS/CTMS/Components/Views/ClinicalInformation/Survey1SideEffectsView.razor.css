@@ -113,3 +113,7 @@ th {
     font-weight: bold;
     font-size: 24px;
 }
+
+.has-found {
+    color: red;
+}
