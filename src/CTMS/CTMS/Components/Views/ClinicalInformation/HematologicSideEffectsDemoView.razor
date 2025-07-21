@@ -130,16 +130,17 @@
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
 
-        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001" ||
-        patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        {
-            data = new HematologicSideEffects血液副作用Node();
-            SideEffectsService.ComputeGradeByDemo(patientData.臨床資訊.SubjectNo, data);
-        }
-        else
-        {
-            InitData();
-        }
+        // if (patientData.臨床資訊.SubjectNo == "NCKUH-E001" ||
+        // patientData.臨床資訊.SubjectNo == "NCKUH-C001")
+        // {
+        //     data = new HematologicSideEffects血液副作用Node();
+        //     SideEffectsService.ComputeGradeByDemo(patientData.臨床資訊.SubjectNo, data);
+        // }
+        // else
+        // {
+        //     InitData();
+        // }
+        InitData();
     }
 
     void InitData(bool isFirst = true)
