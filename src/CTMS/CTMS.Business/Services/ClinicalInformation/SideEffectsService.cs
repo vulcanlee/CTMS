@@ -262,31 +262,31 @@ public class SideEffectsService
             #region 判斷副作用等級
             if (sideEffectsItem.Grade1.GradeValue1.ToDouble() <=
                 sideEffectsItem.RetriveValue.ToDouble() &&
-                sideEffectsItem.RetriveValue.ToDouble() <=
+                sideEffectsItem.RetriveValue.ToDouble() <
                 sideEffectsItem.Grade1.GradeValue2.ToDouble())
                 sideEffectsItem.Grade1.ResetCssClassFound();
 
             if (sideEffectsItem.Grade2.GradeValue1.ToDouble() <=
                 sideEffectsItem.RetriveValue.ToDouble() &&
-                sideEffectsItem.RetriveValue.ToDouble() <=
+                sideEffectsItem.RetriveValue.ToDouble() <
                 sideEffectsItem.Grade2.GradeValue2.ToDouble())
                 sideEffectsItem.Grade2.ResetCssClassFound();
 
             if (sideEffectsItem.Grade3.GradeValue1.ToDouble() <=
                 sideEffectsItem.RetriveValue.ToDouble() &&
-                sideEffectsItem.RetriveValue.ToDouble() <=
+                sideEffectsItem.RetriveValue.ToDouble() <
                 sideEffectsItem.Grade3.GradeValue2.ToDouble())
                 sideEffectsItem.Grade3.ResetCssClassFound();
 
             if (sideEffectsItem.Grade4.GradeValue1.ToDouble() <=
                 sideEffectsItem.RetriveValue.ToDouble() &&
-                sideEffectsItem.RetriveValue.ToDouble() <=
+                sideEffectsItem.RetriveValue.ToDouble() <
                 sideEffectsItem.Grade4.GradeValue2.ToDouble())
                 sideEffectsItem.Grade4.ResetCssClassFound();
 
             if (sideEffectsItem.Grade5.GradeValue1.ToDouble() <=
                 sideEffectsItem.RetriveValue.ToDouble() &&
-                sideEffectsItem.RetriveValue.ToDouble() <=
+                sideEffectsItem.RetriveValue.ToDouble() <
                 sideEffectsItem.Grade5.GradeValue2.ToDouble())
                 sideEffectsItem.Grade5.ResetCssClassFound();
 
