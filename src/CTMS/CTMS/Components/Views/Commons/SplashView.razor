@@ -1,10 +1,17 @@
 ﻿@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
 
 <div class="logo-container">
     <img src="images/splash.png" class="responsive-logo" alt="Logo" />
 </div>
 
 @code {
+
+    #region 使用者身分檢查
+    string RoleMessage = string.Empty;
+    #endregion
 
     protected override async Task OnInitializedAsync()
     {
@@ -14,8 +21,13 @@
     {
         if (firstRender)
         {
-            await Task.Delay(2000); // Simulate a delay for splash screen
-            NavigationManager.NavigateTo("/Browser", true, true);
+            var checkResult = await AuthenticationStateHelper
+            .Check(authStateProvider, NavigationManager);
+            if (checkResult == true)
+            {
+                await Task.Delay(2000); // Simulate a delay for splash screen
+                NavigationManager.NavigateTo("/Browser", true, true);
+            }
         }
     }
 }

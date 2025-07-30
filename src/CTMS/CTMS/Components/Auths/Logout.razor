@@ -21,6 +21,7 @@
     protected override async Task OnInitializedAsync()
     {
         await HttpContext.SignOutAsync(MagicObjectHelper.CookieScheme);
+        await Task.Delay(200);
         NavigationManager.NavigateTo("/Auths/Login", forceLoad: true);
     }
 }

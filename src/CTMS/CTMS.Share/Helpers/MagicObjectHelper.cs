@@ -66,8 +66,9 @@ namespace CTMS.Share.Helpers
         public const string 預設角色 = "Default Role";
         public const string 預設檢驗時間 = "2025-01-01";
         public const string 你沒有權限存取此頁面 = "你沒有權限存取此頁面";
-        public const string ROLE主頁 = "主頁";
         public const string ROLE瀏覽 = "瀏覽";
+        public const string ROLE新增病患 = "瀏覽";
+        public const string ROLE主頁 = "主頁";
         public const string ROLE動作能力 = "動作能力";
         public const string ROLE心肺功能 = "心肺功能";
         public const string ROLE心理韌性 = "心理韌性";
