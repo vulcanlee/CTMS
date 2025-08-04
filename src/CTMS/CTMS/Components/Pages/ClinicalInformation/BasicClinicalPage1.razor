@@ -114,7 +114,7 @@ else
 
     void OnDescription()
     {
-        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE主頁) == false)
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE臨床資訊) == false)
         {
             var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
                  MagicObjectHelper.你沒有權限存取此頁面, ConfirmMessageBox.HiddenAsync);

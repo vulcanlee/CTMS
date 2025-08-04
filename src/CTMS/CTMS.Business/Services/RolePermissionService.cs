@@ -16,19 +16,13 @@ namespace CTMS.Business.Services
             return new List<string>
             {
                 MagicObjectHelper.ROLE瀏覽,
-                MagicObjectHelper.ROLE主頁,
-                MagicObjectHelper.ROLE動作能力,
-                MagicObjectHelper.ROLE心肺功能,
-                MagicObjectHelper.ROLE心理韌性,
-                MagicObjectHelper.ROLE身體組成,
-                MagicObjectHelper.ROLE基因體分析,
-                MagicObjectHelper.ROLE代謝體分析,
-                MagicObjectHelper.ROLE抽血檢驗,
-                MagicObjectHelper.ROLE綜合評估建議,
-                MagicObjectHelper.ROLE綜合評估建議編輯,
-                MagicObjectHelper.ROLE報告摘要輸入,
-                MagicObjectHelper.ROLE下載PDF,
-                MagicObjectHelper.ROLE上傳資料,
+                MagicObjectHelper.ROLE臨床資訊,
+                MagicObjectHelper.ROLE臨床資料,
+                MagicObjectHelper.ROLE抽血資料,
+                MagicObjectHelper.ROLE副作用,
+                MagicObjectHelper.ROLE問卷,
+                MagicObjectHelper.ROLE追蹤資料,
+                MagicObjectHelper.ROLE風險評估,
                 MagicObjectHelper.ROLE備份還原
             };
         }
