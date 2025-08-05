@@ -13,6 +13,7 @@
 @inject DropDownListDataService DropDownListDataService
 @inject Main臨床資料HelperService Main臨床資料HelperService
 @inject BloodExameService BloodExameService
+@inject AuthenticationStateHelper AuthenticationStateHelper
 
 @inject CancerStageService CancerStageService
 
@@ -1126,36 +1127,54 @@
 
     void On臨床資料()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE臨床資訊, ConfirmMessageBox) == false)
+            return;
+
         var url = $"/ClinicalInformation/{Code}";
         NavigationManager.NavigateTo(url);
     }
 
     void On抽血資料()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE抽血資料, ConfirmMessageBox) == false)
+            return;
+
         var url = $"/BloodTest/{Code}";
         NavigationManager.NavigateTo(url);
     }
 
     void On副作用()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE副作用, ConfirmMessageBox) == false)
+            return;
+
         var url = $"/SideEffectPage/{Code}";
         NavigationManager.NavigateTo(url);
     }
 
     void On問卷()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE問卷, ConfirmMessageBox) == false)
+            return;
+
         var url = $"/Survey/{Code}";
         NavigationManager.NavigateTo(url);
     }
 
     void On追蹤資料()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE追蹤資料, ConfirmMessageBox) == false)
+            return;
+
         var url = $"/TrackingData/{Code}";
         NavigationManager.NavigateTo(url);
     }
 
     void On風險評估()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE風險評估, ConfirmMessageBox) == false)
+            return;
+
         var url = $"/RiskAssessment/{Code}";
         NavigationManager.NavigateTo(url);
     }

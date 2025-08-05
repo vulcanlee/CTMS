@@ -17,7 +17,7 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
 
-<PageTitle>問卷 儀錶板</PageTitle>
+<PageTitle>風險評估 儀錶板</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -67,6 +67,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var checkResult = await AuthenticationStateHelper
+        .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE風險評估) == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+            }
+        }
     }
     void OnBack()
     {

@@ -16,6 +16,7 @@ namespace CTMS.Business.Services
             return new List<string>
             {
                 MagicObjectHelper.ROLE瀏覽,
+                MagicObjectHelper.ROLE新增病患,
                 MagicObjectHelper.ROLE臨床資訊,
                 MagicObjectHelper.ROLE臨床資料,
                 MagicObjectHelper.ROLE抽血資料,

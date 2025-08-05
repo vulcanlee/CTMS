@@ -4,6 +4,7 @@ using CTMS.Business.Services;
 using CTMS.DataModel.Models;
 using CTMS.ExcelUtility.Extensions;
 using CTMS.Services;
+using CTMS.Share.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
@@ -118,6 +119,18 @@ public class AuthenticationStateHelper
     public bool CheckAccessPage(string name)
     {
         var result = currentUserService.CurrentUser.RoleList.Contains(name);
+        return result;
+    }
+
+    public bool CheckShowPage(string name, ConfirmBoxModel ConfirmMessageBox)
+    {
+        var result = CheckAccessPage(name);
+        if (result==false)
+        {
+            var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+                 MagicObjectHelper.你沒有權限存取此頁面, ConfirmMessageBox.HiddenAsync);
+            return result;
+        }
         return result;
     }
 }

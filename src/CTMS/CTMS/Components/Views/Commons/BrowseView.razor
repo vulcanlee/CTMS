@@ -261,6 +261,9 @@
 
     async Task OnAddAsync()
     {
+        if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE新增病患, ConfirmMessageBox) == false)
+            return;
+
         ShowAddPatientDialog = true;
     }
 

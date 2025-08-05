@@ -75,6 +75,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var checkResult = await AuthenticationStateHelper
+        .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE抽血資料) == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+            }
+        }
     }
     void OnBack()
     {

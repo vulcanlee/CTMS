@@ -73,27 +73,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
-
-        //     var checkResult = await AuthenticationStateHelper
-        // .Check(authStateProvider, NavigationManager);
-        //     if (checkResult == true)
-        //     {
-        //         if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE主頁) == false)
-        //         {
-        //             RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
-        //         }
-        //         else
-        //         {
-        //             Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
-        //             (CTMSModel, var fileList) = await BrowseAthleteService
-        //             .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
-
-        //             imagefile = FileListHelper.GetPhoto(fileList);
-        //             // imagefile = Path.Combine(Directory.GetCurrentDirectory(), imagefile);
-        //         }
-        //     }
-
+        var checkResult = await AuthenticationStateHelper
+        .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE瀏覽) == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+            }
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -101,29 +92,10 @@ else
         if (firstRender)
         {
         }
-
-        // Athlete = await BrowseAthleteService.GetByCodeAsync(Code, CurrentAthleteExamine);
-        // (CTMSModel, var fileList) = await BrowseAthleteService
-        // .GetCurrentDataAsync(Athlete, CurrentAthleteExamine);
-
-        // imagefile = FileListHelper.GetPhoto(fileList);
-        // HomePageModel = CTMSModel.Home首頁2;
-        // StateHasChanged();
     }
 
     void OnBack()
     {
         NavigationManager.NavigateTo("/Browser", true, true);
-    }
-
-    void OnDescription()
-    {
-        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE臨床資訊) == false)
-        {
-            var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
-                 MagicObjectHelper.你沒有權限存取此頁面, ConfirmMessageBox.HiddenAsync);
-            return;
-        }
-        NavigationManager.NavigateTo($"/Description/{Code}", replace: true);
     }
 }
