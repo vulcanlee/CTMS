@@ -1,0 +1,19 @@
+﻿.subject-number {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    position: relative; /* 添加相對定位以便子元素可以絕對定位 */
+}
+
+.subject-number-title {
+    font-size: 30px;
+    margin: 0;
+}
+
+.hospital-title h2 {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}

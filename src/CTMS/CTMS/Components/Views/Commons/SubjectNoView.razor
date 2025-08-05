@@ -1,0 +1,51 @@
+﻿@using CTMS.DataModel.Models.Systems
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+<div>
+    <div class="subject-number">
+        <div class="subject-number-title">
+            <div>@SubjectNo (<span>@組別</span>)</div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public PatientAdapterModel PatientAdapterModel { get; set; }
+
+    PatientData patientData = new();
+
+    string SubjectNo = "";
+    string 組別 = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (PatientAdapterModel != null && PatientAdapterModel.JsonData != null)
+        {
+            BuildSubjectNo();
+        }
+    }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        return base.SetParametersAsync(parameters);
+    }
+
+    void BuildSubjectNo()
+    {
+        patientData.FromJson(PatientAdapterModel.JsonData);
+        SubjectNo = patientData.臨床資訊.SubjectNo;
+        組別 = PatientAdapterModel.組別;
+    }
+}

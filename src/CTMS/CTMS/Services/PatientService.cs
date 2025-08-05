@@ -154,9 +154,9 @@ public class PatientService
 
         foreach (var item in tempItems)
         {
-            if(browseSearching.院別.Count>0)
+            if (browseSearching.院別.Count > 0)
             {
-                if(!browseSearching.院別.Contains(item.醫院))
+                if (!browseSearching.院別.Contains(item.醫院))
                 {
                     continue;
                 }
@@ -168,7 +168,7 @@ public class PatientService
                     continue;
                 }
             }
-            if(!string.IsNullOrEmpty(browseSearching.SearchKeyword))
+            if (!string.IsNullOrEmpty(browseSearching.SearchKeyword))
             {
                 if (!(item.癌別.Contains(browseSearching.SearchKeyword) ||
                     item.醫院.Contains(browseSearching.SearchKeyword)))
@@ -240,7 +240,7 @@ public class PatientService
             //patientData.FromJson(patientAdapterModel.JsonData);
 
             lastSubjectNo++;
-            string subjectNo = $"{subjectNoPrefix}-{lastSubjectNo.ToString("D4")}";
+            string subjectNo = $"{subjectNoPrefix}-{lastSubjectNo.ToString("D3")}";
             patientData.臨床資訊.SubjectNo = subjectNo;
 
             //survey.Read(patientData.臨床資料.問卷);
@@ -253,6 +253,8 @@ public class PatientService
                 JsonData = patientData.ToJson(),
                 醫院 = hospital,
                 癌別 = "NA",
+                AI評估 = "NA",
+                組別 = "NA"
             };
             await context.Patient
                 .AddAsync(itemParameter);
