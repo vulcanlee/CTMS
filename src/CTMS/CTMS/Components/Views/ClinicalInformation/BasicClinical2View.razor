@@ -28,7 +28,10 @@
     <div class="px-4">
         <!-- 標題 -->
         <div class="title-section d-flex align-items-start">
-            <h1 class="mb-0">Basic clinical presentation 臨床資訊</h1>
+            <div>
+                <h1 class="mb-0">Basic clinical presentation 臨床資訊</h1>
+                <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+            </div>
             @if (editMode)
             {
                 <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
@@ -53,7 +56,6 @@
                     <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>Visit Code
                 </span>
             }
-            <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
         </div>
 
         <div class="row g-3">

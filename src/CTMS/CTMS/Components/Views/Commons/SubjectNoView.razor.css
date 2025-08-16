@@ -1,14 +1,13 @@
 ﻿.subject-number {
-    display: flex;
+/*    display: flex;
     align-items: center;
-    background-color: #f0f0f0;
     padding: 10px 20px;
     border-bottom: 1px solid #ddd;
-    position: relative; /* 添加相對定位以便子元素可以絕對定位 */
-}
+    position: relative;
+*/}
 
 .subject-number-title {
-    font-size: 30px;
+    font-size: 16px;
     margin: 0;
 }
 
