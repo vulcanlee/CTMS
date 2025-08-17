@@ -17,7 +17,10 @@
 
     <div class="header">
         <div class="d-flex align-items-start">
-            <h1 style="margin: 0; flex-grow: 1;">臨床資料 合併用藥</h1>
+            <div>
+                <h1 style="margin: 0; flex-grow: 1;">臨床資料 合併用藥</h1>
+                <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+            </div>
             <div>
                 @if (editMode)
                 {

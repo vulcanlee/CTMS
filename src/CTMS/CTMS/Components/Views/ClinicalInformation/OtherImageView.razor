@@ -17,7 +17,10 @@
 
     <div class="header">
         <div class="d-flex align-items-start">
-            <h1 style="margin: 0; flex-grow: 1;">追蹤資料 其他治療-影像</h1>
+            <div>
+                <h1 style="margin: 0; flex-grow: 1;">追蹤資料 其他治療-影像</h1>
+                <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+            </div>
             <div>
                 @if (editMode)
                 {
