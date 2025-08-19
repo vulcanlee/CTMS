@@ -118,12 +118,24 @@ namespace CTMS.Share.Helpers
         public const string 實驗組Message = "需";
         public const string 對照組 = "對照組";
         public const string 對照組Message = "不需";
-  
+
         public const string StageC = "c";
         public const string StageP = "p";
-  
+
         public const string 國立成功大學醫學院附設醫院 = "國立成功大學醫學院附設醫院";
         public const string 癌別 = "癌別";
         public const string 院別 = "院別";
+
+        public const string RandomListDefaultFile = "RandomList.xlsx";
+        public const string RandomListRuntimeFile = "RandomListRuntime.xlsx";
+        public const string TreatmentDr = "Dr";
+        public const string TreatmentAI = "AI";
+        public const string Sheet成大Early = "成大Early";
+        public const string Sheet成大Advance = "成大Advance";
+        public const string Sheet奇美Early = "奇美Early";
+        public const string Sheet奇美Advance = "奇美Advance";
+        public const string Sheet郭綜合Early = "郭綜合Early";
+        public const string Sheet郭綜合Advance = "郭綜合Advance";
+        public const string Sheet預計收案人數 = "預計收案人數";
     }
 }

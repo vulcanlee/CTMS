@@ -122,6 +122,7 @@ namespace CTMS
                 builder.Services.AddScoped<CancerStageService>();
                 builder.Services.AddScoped<BrowseSearchingService>();
                 builder.Services.AddScoped<DicomService>();
+                builder.Services.AddTransient<RandomListService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();
