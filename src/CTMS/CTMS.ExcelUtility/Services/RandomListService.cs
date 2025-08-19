@@ -39,7 +39,6 @@ public class RandomListService
 
             string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
 
-            //A existing workbook is opened.             
             using (FileStream sampleFile = new FileStream(filenameRandomList, FileMode.Open))
             {
                 IWorkbook workbook = application.Workbooks.Open(sampleFile);
@@ -83,7 +82,7 @@ public class RandomListService
 
         for (int i = 2; i < 2000; i++)
         {
-            randomListItem.Reset();
+            randomListItem = new();
             randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
             randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
             randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
