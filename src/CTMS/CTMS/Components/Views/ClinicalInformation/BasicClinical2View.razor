@@ -66,14 +66,15 @@
                         <div class="header pink-header">
                             病人編號 Subject No
                             <span class="ms-2">
-                                @if (editMode)
+                                @patientData.臨床資訊.SubjectNo
+                                @* @if (editMode)
                                 {
                                     <SfTextBox @bind-Value="patientData.臨床資訊.SubjectNo" CssClass="w-100" />
                                 }
                                 else
                                 {
                                     @patientData.臨床資訊.SubjectNo
-                                }
+                                } *@
                             </span><br />
                             <span class="small-info"><small>(E代表內膜癌, O代表卵巢癌)</small></span>
                         </div>
