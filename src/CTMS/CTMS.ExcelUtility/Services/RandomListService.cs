@@ -167,6 +167,8 @@ public class RandomListService
                 earlyOrAdvance = "Early";
             }
         }
+        else
+            return sheetName;
 
         #region 依據院別，產生出 Name
         string subjectNoPrefix = "";
@@ -195,7 +197,9 @@ public class RandomListService
 
             string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
 
-            using (FileStream sampleFile = new FileStream(filenameRandomList, FileMode.Open))
+
+            using (FileStream sampleFile = new FileStream(filenameRandomList,
+                FileMode.Open, FileAccess.ReadWrite))
             {
                 IWorkbook workbook = application.Workbooks.Open(sampleFile);
                 IWorksheet worksheet = workbook.Worksheets[sheetName];

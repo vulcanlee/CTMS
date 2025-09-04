@@ -14,6 +14,7 @@
 @inject Main臨床資料HelperService Main臨床資料HelperService
 @inject BloodExameService BloodExameService
 @inject AuthenticationStateHelper AuthenticationStateHelper
+@inject RandomListService RandomListService
 
 @inject CancerStageService CancerStageService
 
@@ -536,6 +537,7 @@
     public string Code { get; set; }
 
     PatientData patientData = new();
+    PatientData beforePatientData = new();
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
@@ -1114,10 +1116,20 @@
     void OnChangeEditMode()
     {
         editMode = !editMode;
+        var beforeJson = patientData.ToJson();
+        PatientData temp = new PatientData();
+        temp.FromJson(beforeJson);
+        beforePatientData = temp;
     }
 
     async Task OnSave()
     {
+        RandomListService.AssignRandomToStudyCode(new RandomParameterMode()
+        {
+            SubjectNo = patientData.臨床資訊.SubjectNo,
+            FIGO = patientData.臨床資訊.FIGOStaging,
+        });
+
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;

@@ -7,14 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Data\RandomList.xlsx" />
 		<None Remove="PdfFiles\readme.md" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="Data\RandomList.xlsx">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
