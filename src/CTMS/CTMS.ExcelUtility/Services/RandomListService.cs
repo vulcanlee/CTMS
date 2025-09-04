@@ -1,11 +1,6 @@
-﻿using CTMS.DataModel.Models;
-using CTMS.DataModel.Models.ClinicalInformation;
-using CTMS.ExcelUtility.Extensions;
-using CTMS.ExcelUtility.Services;
+﻿using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Share.Helpers;
 using Syncfusion.XlsIO;
-using Syncfusion.XlsIO.Calculate;
-using System;
 
 namespace SyncExcel.Services;
 
@@ -90,7 +85,7 @@ public class RandomListService
             randomListItem.StudyCode = worksheet.Range[$"E{i}"].DisplayText;
 
             if (string.IsNullOrEmpty(randomListItem.Id))
-                break;
+                continue;
 
             sheetData.Add(randomListItem);
         }
@@ -122,7 +117,7 @@ public class RandomListService
 
                 for (int i = 2; i < 2000; i++)
                 {
-                    randomListItem.Reset();
+                    randomListItem = new();
                     randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
                     randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
                     randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
@@ -130,7 +125,7 @@ public class RandomListService
                     randomListItem.StudyCode = worksheet.Range[$"E{i}"].DisplayText;
 
                     if (string.IsNullOrEmpty(randomListItem.Id))
-                        break;
+                        continue;
 
                     if (randomListItem.Id == id)
                     {
@@ -147,6 +142,93 @@ public class RandomListService
                 }
             }
         }
+    }
+    #endregion
+
+    #region 支援方法
+    public string AssignRandomToStudyCode(RandomParameterMode randomParameterMode)
+    {
+        RandomListItem randomListItem = new();
+        bool isUpdated = false;
+
+        string sheetName = string.Empty;
+        string FIGO = randomParameterMode.FIGO;
+        string subjectNo = randomParameterMode.SubjectNo;
+        string earlyOrAdvance = string.Empty;
+        string hospital = string.Empty;
+        if (string.IsNullOrEmpty(FIGO) == false)
+        {
+            if (FIGO.StartsWith("IIII") || FIGO.StartsWith("III"))
+            {
+                earlyOrAdvance = "Advance";
+            }
+            else if (FIGO.StartsWith("II") || FIGO.StartsWith("I"))
+            {
+                earlyOrAdvance = "Early";
+            }
+        }
+
+        #region 依據院別，產生出 Name
+        string subjectNoPrefix = "";
+        if (subjectNo.Contains(MagicObjectHelper.prefix奇美醫院))
+        {
+            hospital = MagicObjectHelper.PrefixSheetName奇美醫院;
+        }
+        else if (subjectNo.Contains(MagicObjectHelper.prefix郭綜合醫院))
+        {
+            hospital = MagicObjectHelper.PrefixSheetName郭綜合醫院;
+        }
+        else
+        {
+            hospital = MagicObjectHelper.PrefixSheetName成大醫院;
+        }
+        #endregion
+
+        sheetName = $"{hospital}{earlyOrAdvance}";
+        using (ExcelEngine excelEngine = new ExcelEngine())
+        {
+            //Instantiate the Excel application object
+            IApplication application = excelEngine.Excel;
+
+            //Assigns default application version
+            application.DefaultVersion = ExcelVersion.Xlsx;
+
+            string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
+
+            using (FileStream sampleFile = new FileStream(filenameRandomList, FileMode.Open))
+            {
+                IWorkbook workbook = application.Workbooks.Open(sampleFile);
+                IWorksheet worksheet = workbook.Worksheets[sheetName];
+
+                for (int i = 2; i < 2000; i++)
+                {
+                    randomListItem = new();
+                    randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
+                    randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
+                    randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
+                    randomListItem.Treatment = worksheet.Range[$"D{i}"].DisplayText;
+                    randomListItem.StudyCode = worksheet.Range[$"E{i}"].DisplayText;
+
+                    if (string.IsNullOrEmpty(randomListItem.StudyCode))
+                    {
+                        randomParameterMode.RandomId = randomListItem.Id;
+                        worksheet.Range[$"E{i}"].Text = subjectNo; // 更新 Study Code
+                        isUpdated = true;
+                        break;
+                    }
+
+                }
+
+                if (isUpdated)
+                {
+                    workbook.SaveAs(sampleFile);
+                }
+
+            }
+        }
+
+
+        return sheetName;
     }
     #endregion
 }

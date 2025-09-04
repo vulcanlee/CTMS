@@ -137,5 +137,12 @@ namespace CTMS.Share.Helpers
         public const string Sheet郭綜合Early = "郭綜合Early";
         public const string Sheet郭綜合Advance = "郭綜合Advance";
         public const string Sheet預計收案人數 = "預計收案人數";
+
+        public const string prefix成大醫院 = "NCKUH";
+        public const string prefix奇美醫院 = "CHIMEIH";
+        public const string prefix郭綜合醫院 = "KGH";
+        public const string PrefixSheetName成大醫院 = "成大";
+        public const string PrefixSheetName奇美醫院 = "奇美";
+        public const string PrefixSheetName郭綜合醫院 = "郭綜合";
     }
 }
