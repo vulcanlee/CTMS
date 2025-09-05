@@ -2,6 +2,8 @@
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
+@inject RandomListService RandomListService
+@inject SubjectNoGeneratorService SubjectNoGeneratorService
 
 <div class="logo-container">
     <img src="images/splash.png" class="responsive-logo" alt="Logo" />
@@ -21,6 +23,10 @@
     {
         if (firstRender)
         {
+            await RandomListService.InitialAsync();
+            RandomListService.ReadExcel();
+            await SubjectNoGeneratorService.InitialAsync();
+
             var checkResult = await AuthenticationStateHelper
             .Check(authStateProvider, NavigationManager);
             if (checkResult == true)

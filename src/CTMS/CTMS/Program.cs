@@ -123,6 +123,7 @@ namespace CTMS
                 builder.Services.AddScoped<BrowseSearchingService>();
                 builder.Services.AddScoped<DicomService>();
                 builder.Services.AddTransient<RandomListService>();
+                builder.Services.AddTransient<SubjectNoGeneratorService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

@@ -10,6 +10,7 @@ using CTMS.DataModel.Models.Questionnaire;
 using CTMS.DataModel.Models.Systems;
 using CTMS.EntityModel;
 using CTMS.EntityModel.Models;
+using CTMS.Share.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace CTMS.Services;
@@ -20,6 +21,7 @@ public class PatientService
     private readonly BackendDBContext context;
     private readonly BloodExameService bloodExameService;
     private readonly SurveyService survey;
+    private readonly SubjectNoGeneratorService subjectNoGeneratorService;
 
     public IMapper Mapper { get; }
     public IConfiguration Configuration { get; }
@@ -29,7 +31,8 @@ public class PatientService
     #region 建構式
     public PatientService(BackendDBContext context, IMapper mapper,
         IConfiguration configuration, ILogger<PatientService> logger,
-        BloodExameService bloodExameService, SurveyService survey)
+        BloodExameService bloodExameService, SurveyService survey,
+        SubjectNoGeneratorService subjectNoGeneratorService)
     {
         this.context = context;
         Mapper = mapper;
@@ -37,6 +40,7 @@ public class PatientService
         Logger = logger;
         this.bloodExameService = bloodExameService;
         this.survey = survey;
+        this.subjectNoGeneratorService = subjectNoGeneratorService;
     }
     #endregion
 
@@ -206,41 +210,42 @@ public class PatientService
             switch (hospital)
             {
                 case "成大醫院":
-                    subjectNoPrefix = "NCKUH";
+                    subjectNoPrefix = MagicObjectHelper.prefix成大醫院;
                     break;
                 case "奇美醫院":
-                    subjectNoPrefix = "CHIMEIH";
+                    subjectNoPrefix = MagicObjectHelper.prefix奇美醫院;
                     break;
                 case "郭綜合醫院":
-                    subjectNoPrefix = "KGH";
+                    subjectNoPrefix = MagicObjectHelper.prefix郭綜合醫院;
                     break;
                 default:
                     break;
             }
-            var lastPatient = await context.Patient
-                .AsNoTracking()
-                .Where(x => x.醫院.StartsWith(hospital))
-                .OrderByDescending(x => x.Id)
-                .FirstOrDefaultAsync();
 
-            int lastSubjectNo = 0;
-            if (lastPatient != null)
-            {
-                var lastSerial = lastPatient.Name.Split('-')[1];
-                lastSubjectNo = Convert.ToInt32(lastSerial);
-            }
-            else
-            {
-                lastPatient = new Patient();
-            }
+            string newSubjectNo = await subjectNoGeneratorService.GenerateAsync(subjectNoPrefix);
+            //var lastPatient = await context.Patient
+            //    .AsNoTracking()
+            //    .Where(x => x.醫院.StartsWith(hospital))
+            //    .OrderByDescending(x => x.Id)
+            //    .FirstOrDefaultAsync();
+
+            //int lastSubjectNo = 0;
+            //if (lastPatient != null)
+            //{
+            //    var lastSerial = lastPatient.Name.Split('-')[1];
+            //    lastSubjectNo = Convert.ToInt32(lastSerial);
+            //}
+            //else
+            //{
+            //    lastPatient = new Patient();
+            //}
             #endregion
 
             //PatientAdapterModel patientAdapterModel = Mapper.Map<PatientAdapterModel>(lastPatient);
             //await OhterDependencyData(patientAdapterModel);
             //patientData.FromJson(patientAdapterModel.JsonData);
 
-            lastSubjectNo++;
-            string subjectNo = $"{subjectNoPrefix}-{lastSubjectNo.ToString("D3")}";
+            string subjectNo = newSubjectNo;
             patientData.臨床資訊.SubjectNo = subjectNo;
 
             //survey.Read(patientData.臨床資料.問卷);

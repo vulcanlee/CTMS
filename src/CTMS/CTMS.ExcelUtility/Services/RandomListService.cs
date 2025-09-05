@@ -1,6 +1,7 @@
 ﻿using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Share.Helpers;
 using Syncfusion.XlsIO;
+using System.Threading.Tasks;
 
 namespace SyncExcel.Services;
 
@@ -8,19 +9,22 @@ public class RandomListService
 {
     public RandomListModel RandomList { get; set; } = new();
 
-    public async Task CheckRandomListXlsx()
+    #region 讀取 Excel 內的資料
+    public async Task InitialAsync()
     {
         string filenameDefault = Path.Combine("Data", MagicObjectHelper.RandomListDefaultFile);
-        string filenameRuntime = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
+        string filenameRuntime = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeJsonFile);
 
         if (File.Exists(filenameRuntime) == false)
         {
-            File.Copy(filenameDefault, filenameRuntime, true);
-            return;
+            ReadExcel();
+            await RandomList.SaveAsync();
+        }
+        else
+        {
+            await RandomList.ReadAsync();
         }
     }
-
-    #region 讀取 Excel 內的資料
 
     public void ReadExcel()
     {
@@ -32,207 +36,110 @@ public class RandomListService
             //Assigns default application version
             application.DefaultVersion = ExcelVersion.Xlsx;
 
-            string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
+            string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListDefaultFile);
 
             using (FileStream sampleFile = new FileStream(filenameRandomList, FileMode.Open))
             {
                 IWorkbook workbook = application.Workbooks.Open(sampleFile);
 
-                ReadSheet(workbook, MagicObjectHelper.Sheet成大Early);
-                ReadSheet(workbook, MagicObjectHelper.Sheet成大Advance);
-                ReadSheet(workbook, MagicObjectHelper.Sheet奇美Early);
-                ReadSheet(workbook, MagicObjectHelper.Sheet奇美Advance);
-                ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Early);
-                ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Advance);
+                ReadSheet(workbook, MagicObjectHelper.Sheet成大Early,
+                    MagicObjectHelper.PrefixSheetName成大醫院, MagicObjectHelper.RandomEarly);
+                ReadSheet(workbook, MagicObjectHelper.Sheet成大Advance,
+                    MagicObjectHelper.PrefixSheetName成大醫院, MagicObjectHelper.RandomAdvance);
+                ReadSheet(workbook, MagicObjectHelper.Sheet奇美Early,
+                    MagicObjectHelper.PrefixSheetName奇美醫院, MagicObjectHelper.RandomEarly);
+                ReadSheet(workbook, MagicObjectHelper.Sheet奇美Advance,
+                    MagicObjectHelper.PrefixSheetName奇美醫院, MagicObjectHelper.RandomAdvance);
+                ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Early,
+                    MagicObjectHelper.PrefixSheetName郭綜合醫院, MagicObjectHelper.RandomEarly);
+                ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Advance,
+                    MagicObjectHelper.PrefixSheetName郭綜合醫院, MagicObjectHelper.RandomAdvance);
             }
         }
     }
 
-    private void ReadSheet(IWorkbook workbook, string sheetName)
+    private void ReadSheet(IWorkbook workbook, string sheetName,
+        string hospital, string EarlyOrAdvance)
     {
         RandomListItem randomListItem = new();
-        List<RandomListItem> sheetData = new();
-        switch (sheetName)
-        {
-            case MagicObjectHelper.Sheet成大Early:
-                sheetData = RandomList.成大Early;
-                break;
-            case MagicObjectHelper.Sheet成大Advance:
-                sheetData = RandomList.成大Advance;
-                break;
-            case MagicObjectHelper.Sheet奇美Early:
-                sheetData = RandomList.奇美Early;
-                break;
-            case MagicObjectHelper.Sheet奇美Advance:
-                sheetData = RandomList.奇美Advance;
-                break;
-            case MagicObjectHelper.Sheet郭綜合Early:
-                sheetData = RandomList.郭綜合Early;
-                break;
-            case MagicObjectHelper.Sheet郭綜合Advance:
-                sheetData = RandomList.郭綜合Advance;
-                break;
-        }
         IWorksheet worksheet = workbook.Worksheets[sheetName];
 
         for (int i = 2; i < 2000; i++)
         {
             randomListItem = new();
+            randomListItem.Hospital = hospital;
+            randomListItem.EarlyOrAdvance = EarlyOrAdvance;
             randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
             randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
             randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
             randomListItem.Treatment = worksheet.Range[$"D{i}"].DisplayText;
-            randomListItem.StudyCode = worksheet.Range[$"E{i}"].DisplayText;
+            randomListItem.SubjectNo = worksheet.Range[$"E{i}"].DisplayText;
 
             if (string.IsNullOrEmpty(randomListItem.Id))
                 continue;
 
-            sheetData.Add(randomListItem);
+            RandomList.Items.Add(randomListItem);
         }
     }
 
     #endregion
 
-    #region 更新 Study Code
-    public void UpdateStudyCode(string sheetName, string id, string studyCode)
+    #region 維護 Study Code
+    public async Task<string> AssignRandomToStudyCodeAsync(RandomParameterMode randomParameterModeBefore,
+           RandomParameterMode randomParameterModeAfter)
     {
-        RandomListItem randomListItem = new();
-        bool isUpdated = false;
-
-        using (ExcelEngine excelEngine = new ExcelEngine())
+        await RandomList.ReadAsync();
+        string result = string.Empty;
+        if (randomParameterModeBefore.EarlyOrAdvance != randomParameterModeAfter.EarlyOrAdvance)
         {
-            //Instantiate the Excel application object
-            IApplication application = excelEngine.Excel;
-
-            //Assigns default application version
-            application.DefaultVersion = ExcelVersion.Xlsx;
-
-            string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
-
-            // 開啟並更新 Excel 內的資料
-            using (FileStream sampleFile = new FileStream(filenameRandomList, FileMode.Open, FileAccess.ReadWrite))
+            var foundOldItem = RandomList.Items
+                .FirstOrDefault(x => x.SubjectNo == randomParameterModeBefore.SubjectNo);
+            if (foundOldItem != null)
             {
-                IWorkbook workbook = application.Workbooks.Open(sampleFile);
-                IWorksheet worksheet = workbook.Worksheets[sheetName];
-
-                for (int i = 2; i < 2000; i++)
-                {
-                    randomListItem = new();
-                    randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
-                    randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
-                    randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
-                    randomListItem.Treatment = worksheet.Range[$"D{i}"].DisplayText;
-                    randomListItem.StudyCode = worksheet.Range[$"E{i}"].DisplayText;
-
-                    if (string.IsNullOrEmpty(randomListItem.Id))
-                        continue;
-
-                    if (randomListItem.Id == id)
-                    {
-                        randomListItem.StudyCode = studyCode;
-                        worksheet.Range[$"E{i}"].Text = studyCode; // 更新 Study Code
-                        isUpdated = true;
-                        break;
-                    }
-                }
-
-                if (isUpdated)
-                {
-                    workbook.SaveAs(sampleFile);
-                }
+                foundOldItem.SubjectNo = string.Empty;
             }
-        }
-    }
-    #endregion
 
-    #region 支援方法
-    public string AssignRandomToStudyCode(RandomParameterMode randomParameterMode)
-    {
-        RandomListItem randomListItem = new();
-        bool isUpdated = false;
-
-        string sheetName = string.Empty;
-        string FIGO = randomParameterMode.FIGO;
-        string subjectNo = randomParameterMode.SubjectNo;
-        string earlyOrAdvance = string.Empty;
-        string hospital = string.Empty;
-        if (string.IsNullOrEmpty(FIGO) == false)
-        {
-            if (FIGO.StartsWith("IIII") || FIGO.StartsWith("III"))
+            var foundNewItem = RandomList.Items
+                .Where(x => x.Hospital == randomParameterModeAfter.Hospital &&
+                x.EarlyOrAdvance == randomParameterModeAfter.EarlyOrAdvance &&
+                x.SubjectNo == "")
+                .OrderBy(x => x.Id)
+                .FirstOrDefault();
+            if (foundNewItem != null)
             {
-                earlyOrAdvance = "Advance";
+                foundNewItem.SubjectNo = randomParameterModeAfter.SubjectNo;
+                result = foundNewItem.Treatment;
             }
-            else if (FIGO.StartsWith("II") || FIGO.StartsWith("I"))
-            {
-                earlyOrAdvance = "Early";
-            }
-        }
-        else
-            return sheetName;
-
-        #region 依據院別，產生出 Name
-        string subjectNoPrefix = "";
-        if (subjectNo.Contains(MagicObjectHelper.prefix奇美醫院))
-        {
-            hospital = MagicObjectHelper.PrefixSheetName奇美醫院;
-        }
-        else if (subjectNo.Contains(MagicObjectHelper.prefix郭綜合醫院))
-        {
-            hospital = MagicObjectHelper.PrefixSheetName郭綜合醫院;
+            await RandomList.SaveAsync();
         }
         else
         {
-            hospital = MagicObjectHelper.PrefixSheetName成大醫院;
-        }
-        #endregion
-
-        sheetName = $"{hospital}{earlyOrAdvance}";
-        using (ExcelEngine excelEngine = new ExcelEngine())
-        {
-            //Instantiate the Excel application object
-            IApplication application = excelEngine.Excel;
-
-            //Assigns default application version
-            application.DefaultVersion = ExcelVersion.Xlsx;
-
-            string filenameRandomList = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeFile);
-
-
-            using (FileStream sampleFile = new FileStream(filenameRandomList,
-                FileMode.Open, FileAccess.ReadWrite))
+            var foundItem = RandomList.Items
+                .FirstOrDefault(x => x.SubjectNo == randomParameterModeAfter.SubjectNo);
+            if (foundItem != null)
             {
-                IWorkbook workbook = application.Workbooks.Open(sampleFile);
-                IWorksheet worksheet = workbook.Worksheets[sheetName];
-
-                for (int i = 2; i < 2000; i++)
-                {
-                    randomListItem = new();
-                    randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
-                    randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
-                    randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
-                    randomListItem.Treatment = worksheet.Range[$"D{i}"].DisplayText;
-                    randomListItem.StudyCode = worksheet.Range[$"E{i}"].DisplayText;
-
-                    if (string.IsNullOrEmpty(randomListItem.StudyCode))
-                    {
-                        randomParameterMode.RandomId = randomListItem.Id;
-                        worksheet.Range[$"E{i}"].Text = subjectNo; // 更新 Study Code
-                        isUpdated = true;
-                        break;
-                    }
-
-                }
-
-                if (isUpdated)
-                {
-                    workbook.SaveAs(sampleFile);
-                }
-
+                result = foundItem.Treatment;
             }
         }
-
-
-        return sheetName;
+        return result;
     }
+
+    public async Task RemoveAsync(RandomParameterMode randomParameterModeAfter)
+    {
+        await RandomList.ReadAsync();
+        string result = string.Empty;
+        if (randomParameterModeAfter.EarlyOrAdvance != "")
+        {
+            var foundOldItem = RandomList.Items
+                .FirstOrDefault(x => x.SubjectNo == randomParameterModeAfter.SubjectNo);
+            if (foundOldItem != null)
+            {
+                foundOldItem.SubjectNo = string.Empty;
+                await RandomList.SaveAsync();
+            }
+        }
+        return ;
+    }
+
     #endregion
 }

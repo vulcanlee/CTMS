@@ -128,6 +128,8 @@ namespace CTMS.Share.Helpers
 
         public const string RandomListDefaultFile = "RandomList.xlsx";
         public const string RandomListRuntimeFile = "RandomListRuntime.xlsx";
+        public const string RandomListRuntimeJsonFile = "RandomListRuntime.json";
+        public const string SubjectNoGeneratorJsonFile = "SubjectNoGenerator.json";
         public const string TreatmentDr = "Dr";
         public const string TreatmentAI = "AI";
         public const string Sheet成大Early = "成大Early";
@@ -138,6 +140,8 @@ namespace CTMS.Share.Helpers
         public const string Sheet郭綜合Advance = "郭綜合Advance";
         public const string Sheet預計收案人數 = "預計收案人數";
 
+        public const string RandomEarly = "Early";
+        public const string RandomAdvance = "Advance";
         public const string prefix成大醫院 = "NCKUH";
         public const string prefix奇美醫院 = "CHIMEIH";
         public const string prefix郭綜合醫院 = "KGH";

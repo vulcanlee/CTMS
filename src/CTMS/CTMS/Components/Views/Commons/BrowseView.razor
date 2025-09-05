@@ -20,6 +20,7 @@
 @inject DropDownListDataService DropDownListDataService
 @inject AutoMapper.IMapper Mapper
 @inject BrowseSearchingService BrowseSearchingService
+@inject RandomListService RandomListService
 
 <div class="browse-container">
     <!-- 功能按鈕區域 -->
@@ -234,7 +235,8 @@
     {
 
         patientData.FromJson(patientAdapterModel.JsonData);
-
+        string subjectNo = patientData.臨床資訊.SubjectNo;
+        string FIGO = patientData.臨床資訊.FIGOStaging;
         // 使用 ConfirmMessageBox 來確認刪除操作
         var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
         "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
@@ -246,6 +248,16 @@
             var deleteResult = await PatientService.DeleteAsync(patientAdapterModel.Id);
             if (deleteResult.Success)
             {
+
+                RandomParameterMode randomParameterModeAfter = new RandomParameterMode()
+                {
+                    SubjectNo = subjectNo,
+                    FIGO = FIGO,
+                };
+                randomParameterModeAfter.Parse();
+                await RandomListService.RemoveAsync(randomParameterModeAfter);
+
+
                 // 刪除成功，顯示提示訊息
                 // await MessageBox.ShowAsync("400px", "200px", "成功", "病患資料已成功刪除。", MessageBox.HiddenAsync);
                 await ReloadAsync();
@@ -277,7 +289,13 @@
         {
             await AddNewPatientAsync(Hospital);
         }
-        ShowAddPatientDialog = false;
+        else
+        {
+            ShowAddPatientDialog = false;
+            StateHasChanged(); // 更新 UI
+            await Task.Delay(100); // 等待對話框關閉動畫完成
+                                   // 使用者取消新增操作
+        }
     }
 
     async Task AddNewPatientAsync(string Hospital)
@@ -286,8 +304,11 @@
         var result = await PatientService.AddEmptyAsync(Hospital);
         if (result.Success)
         {
-            // 新增成功，顯示提示訊息
-            await MessageBox.ShowAsync("400px", "200px", "成功", "病患資料已成功新增。", MessageBox.HiddenAsync);
+            ShowAddPatientDialog = false;
+            StateHasChanged(); // 更新 UI
+            await Task.Delay(100); // 等待對話框關閉動畫完成
+                                   // 新增成功，顯示提示訊息
+            MessageBox.Show("400px", "200px", "成功", "病患資料已成功新增。", MessageBox.HiddenAsync);
             await ReloadAsync();
         }
         else

@@ -16,6 +16,7 @@
 @inject Microsoft.Extensions.Options.IOptions<CTMSSettings> options
 
 @inject RandomListService RandomListService
+@inject RandomListService SubjectNoGeneratorService
 
 <PageTitle>瀏覽</PageTitle>
 
@@ -81,8 +82,6 @@ else
     {
         if (firstRender)
         {
-            await RandomListService.CheckRandomListXlsx();
-            RandomListService.ReadExcel();
-        }
+       }
     }
 }

@@ -568,7 +568,7 @@
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             await GetData();
             StateHasChanged();
@@ -1124,12 +1124,22 @@
 
     async Task OnSave()
     {
-        RandomListService.AssignRandomToStudyCode(new RandomParameterMode()
+        RandomParameterMode randomParameterModeAfter = new RandomParameterMode()
         {
             SubjectNo = patientData.臨床資訊.SubjectNo,
             FIGO = patientData.臨床資訊.FIGOStaging,
-        });
+        };
+        randomParameterModeAfter.Parse();
+        RandomParameterMode randomParameterModeBefore = new RandomParameterMode()
+        {
+            SubjectNo = beforePatientData.臨床資訊.SubjectNo,
+            FIGO = beforePatientData.臨床資訊.FIGOStaging,
+        };
+        randomParameterModeBefore.Parse();
+        var Treatment = await RandomListService.AssignRandomToStudyCodeAsync(
+            randomParameterModeBefore, randomParameterModeAfter);
 
+        patientAdapterModel.組別 = Treatment;
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;

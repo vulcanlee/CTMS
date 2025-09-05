@@ -42,9 +42,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        RandomListService.ReadExcel();
+        await RandomListService.InitialAsync();
         NCKUH.Clear();
-        foreach (var item in RandomListService.RandomList.成大Early.Take(10))
+        foreach (var item in RandomListService.RandomList
+            .Items.Where(x=>x.SubjectNo!="").Take(10))
         {
             NCKUH.Add(JsonConvert.SerializeObject(item));
         }
