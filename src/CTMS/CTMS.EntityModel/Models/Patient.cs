@@ -16,6 +16,7 @@ namespace CTMS.EntityModel.Models
         public string 癌別 { get; set; }
         public string 組別 { get; set; }
         public string AI評估 { get; set; }
+        public string AI處理 { get; set; }
         public string JsonData { get; set; }
 
     }

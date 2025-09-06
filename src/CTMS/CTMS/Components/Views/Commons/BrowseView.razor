@@ -98,6 +98,7 @@
                     <th>癌症類型</th>
                     <th>組別</th>
                     <th>AI評估</th>
+                    <th>AI處理</th>
                     <th></th>
                 </tr>
             </thead>
@@ -123,6 +124,7 @@
                         <td>@cancerType</td>
                         <td>@iPatient.組別</td>
                         <td>@iPatient.AI評估</td>
+                        <td>@iPatient.AI處理</td>
                         <td class="action-buttons">
                             <button class="btn-edit" title="修改"
                                     @onclick="@(async () => await OnEditAsync(iPatient))">
