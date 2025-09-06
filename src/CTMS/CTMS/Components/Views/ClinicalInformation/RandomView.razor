@@ -1,0 +1,111 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject BloodExameService BloodExameService
+@inject RandomListService RandomListService
+
+<div>
+
+    @if (Items != null && Items.Count > 0)
+    {
+        var index = 0;
+        string rowClass = string.Empty;
+
+        <div class="sample-table-container">
+            <table class="sample-table">
+                <thead>
+                    <tr>
+                        <th class="header-item">Hospital</th>
+                        <th class="header-item">ECorOC</th>
+                        <th class="header-item">EarlyOrAdvance</th>
+                        <th class="header-item">Id</th>
+                        <th class="header-item">BlockId</th>
+                        <th class="header-item">BlockSize</th>
+                        <th class="header-item">Treatment</th>
+                        <th class="header-item">SubjectNo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Items)
+                    {
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            <td class="item-cell ">@item.Hospital</td>
+                            <td class="item-cell ">@item.ECorOC</td>
+                            <td class="item-cell ">@item.EarlyOrAdvance</td>
+                            <td class="item-cell ">@item.Id</td>
+                            <td class="item-cell ">@item.BlockId</td>
+                            <td class="item-cell ">@item.BlockSize</td>
+                            <td class="item-cell ">@item.Treatment</td>
+                            <td class="item-cell ">@item.SubjectNo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public string ECorOC { get; set; }
+    [Parameter]
+    public string Hospital { get; set; }
+    [Parameter]
+    public string EarlyOrAdvance { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    List<RandomListItem> Items = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RandomListService.InitialAsync();
+        Items = RandomListService.RandomList.Items
+        .Where(x => x.ECorOC == ECorOC &&
+            x.Hospital == Hospital &&
+            x.EarlyOrAdvance == EarlyOrAdvance)
+            .OrderBy(x => x.Id)
+            .ToList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            InitData(true);
+        }
+    }
+
+    void InitData(bool isFirst = true)
+    {
+    }
+}

@@ -43,17 +43,17 @@ public class RandomListService
                 IWorkbook workbook = application.Workbooks.Open(sampleFile);
 
                 ReadSheet(workbook, MagicObjectHelper.Sheet成大Early,
-                    MagicObjectHelper.PrefixSheetName成大醫院, MagicObjectHelper.RandomEarly);
+                    MagicObjectHelper.prefix成大醫院, MagicObjectHelper.RandomEarly);
                 ReadSheet(workbook, MagicObjectHelper.Sheet成大Advance,
-                    MagicObjectHelper.PrefixSheetName成大醫院, MagicObjectHelper.RandomAdvance);
+                    MagicObjectHelper.prefix成大醫院, MagicObjectHelper.RandomAdvance);
                 ReadSheet(workbook, MagicObjectHelper.Sheet奇美Early,
-                    MagicObjectHelper.PrefixSheetName奇美醫院, MagicObjectHelper.RandomEarly);
+                    MagicObjectHelper.prefix奇美醫院, MagicObjectHelper.RandomEarly);
                 ReadSheet(workbook, MagicObjectHelper.Sheet奇美Advance,
-                    MagicObjectHelper.PrefixSheetName奇美醫院, MagicObjectHelper.RandomAdvance);
+                    MagicObjectHelper.prefix奇美醫院, MagicObjectHelper.RandomAdvance);
                 ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Early,
-                    MagicObjectHelper.PrefixSheetName郭綜合醫院, MagicObjectHelper.RandomEarly);
+                    MagicObjectHelper.prefix郭綜合醫院, MagicObjectHelper.RandomEarly);
                 ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Advance,
-                    MagicObjectHelper.PrefixSheetName郭綜合醫院, MagicObjectHelper.RandomAdvance);
+                    MagicObjectHelper.prefix郭綜合醫院, MagicObjectHelper.RandomAdvance);
             }
         }
     }

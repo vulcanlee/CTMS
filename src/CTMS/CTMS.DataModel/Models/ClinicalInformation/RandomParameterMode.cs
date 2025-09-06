@@ -31,15 +31,15 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 
             if (SubjectNo.Contains(MagicObjectHelper.prefix奇美醫院))
             {
-                Hospital = MagicObjectHelper.PrefixSheetName奇美醫院;
+                Hospital = MagicObjectHelper.prefix奇美醫院;
             }
             else if (SubjectNo.Contains(MagicObjectHelper.prefix郭綜合醫院))
             {
-                Hospital = MagicObjectHelper.PrefixSheetName郭綜合醫院;
+                Hospital = MagicObjectHelper.prefix郭綜合醫院;
             }
             else if (SubjectNo.Contains(MagicObjectHelper.prefix成大醫院))
             {
-                Hospital = MagicObjectHelper.PrefixSheetName成大醫院;
+                Hospital = MagicObjectHelper.prefix成大醫院;
             }
         }
     }
