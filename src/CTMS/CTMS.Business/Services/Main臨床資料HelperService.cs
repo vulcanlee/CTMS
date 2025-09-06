@@ -31,7 +31,9 @@ public class Main臨床資料HelperService
     {
     }
 
-    public void SyncData(Main臨床資料 Main臨床資料,
+    public void SyncData(
+        string subjectNo,
+        Main臨床資料 Main臨床資料,
         VisitCodeSetModel VisitCodeSetModel)
     {
         int count = VisitCodeSetModel.VisitCodes.Count;
@@ -46,8 +48,8 @@ public class Main臨床資料HelperService
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.臨床資料化學治療);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.臨床資料合併用藥);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.BaselineMedicalHistoryForm);
-            SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.抽血檢驗血液);
-            SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.抽血檢驗生化);
+            SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.抽血檢驗血液, subjectNo);
+            SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.抽血檢驗生化, subjectNo);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey化療副作用);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey標靶副作用);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey放療副作用);
@@ -66,7 +68,8 @@ public class Main臨床資料HelperService
     public void SyncItem(Main臨床資料 Main臨床資料,
         VisitCodeModel visitCodeModel,
         VisitCodeSetNodeModel node,
-        DataTabeEnums DataTabeEnums)
+        DataTabeEnums DataTabeEnums,
+        string subjectNo = "")
     {
         switch (DataTabeEnums)
         {
@@ -202,7 +205,7 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
-                        bloodExameService.Read血液Node(item);
+                        bloodExameService.Read血液Node(item, subjectNo);
                         Main臨床資料.抽血檢驗血液.Items.Add(item);
                     }
                     else
@@ -227,7 +230,7 @@ public class Main臨床資料HelperService
                         {
                             VisitCode = visitCodeModel
                         };
-                        bloodExameService.Read生化Node(item);
+                        bloodExameService.Read生化Node(item, subjectNo);
                         Main臨床資料.抽血檢驗生化.Items.Add(item);
                     }
                     else

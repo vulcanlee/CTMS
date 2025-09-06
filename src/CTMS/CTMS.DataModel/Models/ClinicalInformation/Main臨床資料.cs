@@ -664,8 +664,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                             }
                             break;
                     }
-                    #endregion
                 }
+                #endregion
             }
         }
     }

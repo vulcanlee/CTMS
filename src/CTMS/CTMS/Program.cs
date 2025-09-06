@@ -124,6 +124,7 @@ namespace CTMS
                 builder.Services.AddScoped<DicomService>();
                 builder.Services.AddTransient<RandomListService>();
                 builder.Services.AddTransient<SubjectNoGeneratorService>();
+                builder.Services.AddTransient<SubjectNoHelper>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

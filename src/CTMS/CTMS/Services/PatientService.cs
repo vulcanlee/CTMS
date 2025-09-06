@@ -257,6 +257,7 @@ public class PatientService
                 醫院 = hospital,
                 癌別 = MagicObjectHelper.NA,
                 AI評估 = MagicObjectHelper.NA,
+                AI處理 = MagicObjectHelper.NA,
                 組別 = MagicObjectHelper.NA
             };
             await context.Patient

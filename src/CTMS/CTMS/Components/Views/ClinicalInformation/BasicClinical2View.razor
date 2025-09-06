@@ -1092,7 +1092,7 @@
         await GetData();
         if (visitCodeSetModel != null)
         {
-            Main臨床資料HelperService.SyncData(patientData.臨床資料, visitCodeSetModel);
+            Main臨床資料HelperService.SyncData(patientData.臨床資訊.SubjectNo, patientData.臨床資料, visitCodeSetModel);
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();
             await PatientService.UpdateAsync(patientAdapterModel);

@@ -120,6 +120,15 @@
         public const string 癌別 = "癌別";
         public const string 院別 = "院別";
 
+        public const string Blood抽血檢驗血液 = "抽血檢驗血液";
+        public const string Blood抽血檢驗生化 = "抽血檢驗生化";
+
+        public const string 成醫抽血檢驗血液File = "抽血檢驗血液.json";
+        public const string 成醫抽血檢驗生化File = "抽血檢驗生化.json";
+        public const string 奇美抽血檢驗血液File = "抽血檢驗血液1.json";
+        public const string 奇美抽血檢驗生化File = "抽血檢驗生化1.json";
+        public const string 郭綜合抽血檢驗血液File = "抽血檢驗血液2.json";
+        public const string 郭綜合抽血檢驗生化File = "抽血檢驗生化2.json";
         public const string RandomListDefaultFile = "RandomList.xlsx";
         public const string RandomListRuntimeFile = "RandomListRuntime.xlsx";
         public const string RandomListRuntimeJsonFile = "RandomListRuntime.json";
@@ -145,5 +154,7 @@
         public const string OC = "OC";
         public const string EC = "EC";
         public const string NA = "NA";
+
+
     }
 }
