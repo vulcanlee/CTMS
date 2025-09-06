@@ -8,9 +8,7 @@ using CTMS.EntityModel;
 using CTMS.Services;
 using CTMS.Share.Helpers;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Syncfusion.Blazor.Grids;
-using Syncfusion.Blazor.Maps;
 using Syncfusion.Blazor.Navigations;
 
 namespace CTMS.ViewModels;
