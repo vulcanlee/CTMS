@@ -257,9 +257,9 @@ public class PatientService
                 Name = subjectNo,
                 JsonData = patientData.ToJson(),
                 醫院 = hospital,
-                癌別 = "NA",
-                AI評估 = "NA",
-                組別 = "NA"
+                癌別 = MagicObjectHelper.NA,
+                AI評估 = MagicObjectHelper.NA,
+                組別 = MagicObjectHelper.NA
             };
             await context.Patient
                 .AddAsync(itemParameter);

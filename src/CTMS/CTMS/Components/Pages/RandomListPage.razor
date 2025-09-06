@@ -45,7 +45,8 @@
         await RandomListService.InitialAsync();
         NCKUH.Clear();
         foreach (var item in RandomListService.RandomList
-            .Items.Where(x=>x.SubjectNo!="").Take(10))
+            .Items.Where(x=>x.SubjectNo!=""
+            && x.SubjectNo.StartsWith("**")==false).Take(10))
         {
             NCKUH.Add(JsonConvert.SerializeObject(item));
         }

@@ -17,6 +17,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public string Treatment { get; set; } = string.Empty;
         public string EarlyOrAdvance { get; set; } = string.Empty;
         public string Hospital { get; set; } = string.Empty;
+        public string ECorOC { get; set; } = string.Empty;
 
         public void Parse()
         {

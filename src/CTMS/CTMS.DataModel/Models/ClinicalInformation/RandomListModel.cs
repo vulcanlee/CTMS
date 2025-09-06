@@ -62,9 +62,10 @@ public class RandomListModel
     }
 }
 
-public class RandomListItem
+public class RandomListItem:ICloneable
 {
     public string Hospital { get; set; } = string.Empty;
+    public string ECorOC { get; set; } = string.Empty;
     public string EarlyOrAdvance { get; set; } = string.Empty;
     public string Id { get; set; } = string.Empty;
     public string BlockId { get; set; } = string.Empty;
@@ -76,11 +77,22 @@ public class RandomListItem
     {
         Hospital = string.Empty;
         EarlyOrAdvance = string.Empty;
+        ECorOC = string.Empty;
 
         Id = string.Empty;
         BlockId = string.Empty;
         BlockSize = string.Empty;
         Treatment = string.Empty;
         SubjectNo = string.Empty;
+    }
+
+    public RandomListItem Clone()
+    {
+       return ((ICloneable)this).Clone() as RandomListItem;
+    }
+
+    object ICloneable.Clone()
+    {
+       return this.MemberwiseClone();
     }
 }

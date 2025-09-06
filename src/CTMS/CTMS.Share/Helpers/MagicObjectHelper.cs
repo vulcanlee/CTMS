@@ -148,5 +148,8 @@ namespace CTMS.Share.Helpers
         public const string PrefixSheetName成大醫院 = "成大";
         public const string PrefixSheetName奇美醫院 = "奇美";
         public const string PrefixSheetName郭綜合醫院 = "郭綜合";
+        public const string OC = "OC";
+        public const string EC = "EC";
+        public const string NA = "NA";
     }
 }

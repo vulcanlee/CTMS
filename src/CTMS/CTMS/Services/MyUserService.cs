@@ -141,6 +141,7 @@ public class MyUserService
         try
         {
             MyUser itemParameter = Mapper.Map<MyUser>(paraObject);
+            itemParameter.RoleView = null;
 
             #region 對使用者權限做處理
             var permissions = paraObject.RolePermission;
@@ -166,6 +167,7 @@ public class MyUserService
         try
         {
             MyUser itemData = Mapper.Map<MyUser>(paraObject);
+            itemData.RoleView = null;
 
             #region 對使用者權限做處理
             var permissions = paraObject.RolePermission;

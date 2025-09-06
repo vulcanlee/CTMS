@@ -61,46 +61,61 @@ public class RandomListService
     private void ReadSheet(IWorkbook workbook, string sheetName,
         string hospital, string EarlyOrAdvance)
     {
-        RandomListItem randomListItem = new();
+        RandomListItem randomListItem1 = new();
+        RandomListItem randomListItem2 = new();
         IWorksheet worksheet = workbook.Worksheets[sheetName];
 
         for (int i = 2; i < 2000; i++)
         {
-            randomListItem = new();
-            randomListItem.Hospital = hospital;
-            randomListItem.EarlyOrAdvance = EarlyOrAdvance;
-            randomListItem.Id = worksheet.Range[$"A{i}"].DisplayText;
-            randomListItem.BlockId = worksheet.Range[$"B{i}"].DisplayText;
-            randomListItem.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
-            randomListItem.Treatment = worksheet.Range[$"D{i}"].DisplayText;
-            randomListItem.SubjectNo = worksheet.Range[$"E{i}"].DisplayText;
+            randomListItem1 = new();
+            randomListItem1.Hospital = hospital;
+            randomListItem1.ECorOC = MagicObjectHelper.EC;
+            randomListItem1.EarlyOrAdvance = EarlyOrAdvance;
+            randomListItem1.Id = worksheet.Range[$"A{i}"].DisplayText;
+            randomListItem1.BlockId = worksheet.Range[$"B{i}"].DisplayText;
+            randomListItem1.BlockSize = worksheet.Range[$"C{i}"].DisplayText;
+            randomListItem1.Treatment = worksheet.Range[$"D{i}"].DisplayText;
+            randomListItem1.SubjectNo = worksheet.Range[$"E{i}"].DisplayText;
 
-            if (string.IsNullOrEmpty(randomListItem.Id))
+            randomListItem2 = randomListItem1.Clone();
+            randomListItem2.ECorOC = MagicObjectHelper.OC;
+
+            if (string.IsNullOrEmpty(randomListItem1.Id))
                 continue;
 
-            RandomList.Items.Add(randomListItem);
+            RandomList.Items.AddRange(randomListItem1, randomListItem2);
         }
     }
 
     #endregion
 
-    #region 維護 Study Code
+    #region 維護 Subject No
     public async Task<string> AssignRandomToStudyCodeAsync(RandomParameterMode randomParameterModeBefore,
            RandomParameterMode randomParameterModeAfter)
     {
         await RandomList.ReadAsync();
-        string result = string.Empty;
-        if (randomParameterModeBefore.EarlyOrAdvance != randomParameterModeAfter.EarlyOrAdvance)
+        string result = MagicObjectHelper.NA;
+
+        if(randomParameterModeAfter.EarlyOrAdvance == "" ||
+            randomParameterModeAfter.ECorOC == "")
+            return result;
+
+        if (randomParameterModeBefore.EarlyOrAdvance != 
+            randomParameterModeAfter.EarlyOrAdvance)
         {
             var foundOldItem = RandomList.Items
-                .FirstOrDefault(x => x.SubjectNo == randomParameterModeBefore.SubjectNo);
+                .FirstOrDefault(x => 
+                x.SubjectNo == randomParameterModeBefore.SubjectNo);
             if (foundOldItem != null)
             {
-                foundOldItem.SubjectNo = string.Empty;
+                // 有被用過的亂數碼，標記為已使用，不會重覆再使用
+                foundOldItem.SubjectNo = $"**{foundOldItem.SubjectNo}";
             }
 
             var foundNewItem = RandomList.Items
-                .Where(x => x.Hospital == randomParameterModeAfter.Hospital &&
+                .Where(x => 
+                x.Hospital == randomParameterModeAfter.Hospital &&
+                x.ECorOC == randomParameterModeAfter.ECorOC &&
                 x.EarlyOrAdvance == randomParameterModeAfter.EarlyOrAdvance &&
                 x.SubjectNo == "")
                 .OrderBy(x => x.Id)

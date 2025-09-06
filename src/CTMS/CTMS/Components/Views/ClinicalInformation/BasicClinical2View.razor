@@ -1128,12 +1128,14 @@
         {
             SubjectNo = patientData.臨床資訊.SubjectNo,
             FIGO = patientData.臨床資訊.FIGOStaging,
+            ECorOC = patientData.臨床資訊.ECorOC,
         };
         randomParameterModeAfter.Parse();
         RandomParameterMode randomParameterModeBefore = new RandomParameterMode()
         {
             SubjectNo = beforePatientData.臨床資訊.SubjectNo,
             FIGO = beforePatientData.臨床資訊.FIGOStaging,
+            ECorOC = beforePatientData.臨床資訊.ECorOC,
         };
         randomParameterModeBefore.Parse();
         var Treatment = await RandomListService.AssignRandomToStudyCodeAsync(
