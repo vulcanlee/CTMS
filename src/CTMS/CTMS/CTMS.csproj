@@ -7,10 +7,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="PdfFiles\readme.md" />
+		<Content Remove="Data\RandomListRuntime.json" />
+		<Content Remove="Data\SubjectNoGenerator.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="Data\RandomList.xlsx">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<Content Include="PdfFiles\readme.md">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
@@ -84,6 +88,11 @@
 	<ItemGroup>
 	  <Folder Include="Controllers\" />
 	  <Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Data\RandomListRuntime.json" />
+	  <None Include="Data\SubjectNoGenerator.json" />
 	</ItemGroup>
 
 </Project>
