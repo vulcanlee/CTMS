@@ -4,15 +4,11 @@
 @using Newtonsoft.Json
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
-@inject UploadFileService UploadFileService
-@inject ExcleService ExcleService
 
 @inject NavigationManager NavigationManager
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
-@inject BrowseAthleteService BrowseAthleteService
-@inject CurrentAthleteExamine CurrentAthleteExamine
 
 @using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
@@ -69,8 +65,6 @@ else
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
-
-    Athlete Athlete = new();
 
     protected override void OnInitialized()
     {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CTMS.EntityModel.Migrations
 {
     [DbContext(typeof(BackendDBContext))]
-    [Migration("20250409062256_Init")]
+    [Migration("20250907020813_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,74 +20,6 @@ namespace CTMS.EntityModel.Migrations
             modelBuilder
                 .UseCollation("Chinese_Taiwan_Stroke_CI_AS")
                 .HasAnnotation("ProductVersion", "9.0.3");
-
-            modelBuilder.Entity("CTMS.EntityModel.Models.Athlete", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ExamineTime")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ExcelData")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilesData")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Athlete");
-                });
-
-            modelBuilder.Entity("CTMS.EntityModel.Models.Examine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AthleteId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ExamineTime")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ExcelData")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilesData")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AthleteId");
-
-                    b.ToTable("Examine");
-                });
 
             modelBuilder.Entity("CTMS.EntityModel.Models.MyUser", b =>
                 {
@@ -139,6 +71,14 @@ namespace CTMS.EntityModel.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AI處理")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AI評估")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -152,6 +92,10 @@ namespace CTMS.EntityModel.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("癌別")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("組別")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -234,27 +178,6 @@ namespace CTMS.EntityModel.Migrations
                     b.ToTable("ProjectRoleView");
                 });
 
-            modelBuilder.Entity("CTMS.EntityModel.Models.Athlete", b =>
-                {
-                    b.HasOne("CTMS.EntityModel.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("CTMS.EntityModel.Models.Examine", b =>
-                {
-                    b.HasOne("CTMS.EntityModel.Models.Athlete", "Athlete")
-                        .WithMany("Examine")
-                        .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Athlete");
-                });
-
             modelBuilder.Entity("CTMS.EntityModel.Models.MyUser", b =>
                 {
                     b.HasOne("CTMS.EntityModel.Models.RoleView", "RoleView")
@@ -297,11 +220,6 @@ namespace CTMS.EntityModel.Migrations
                         .HasForeignKey("RoleViewId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CTMS.EntityModel.Models.Athlete", b =>
-                {
-                    b.Navigation("Examine");
                 });
 
             modelBuilder.Entity("CTMS.EntityModel.Models.Project", b =>

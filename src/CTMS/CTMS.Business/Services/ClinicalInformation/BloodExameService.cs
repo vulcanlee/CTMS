@@ -1,6 +1,6 @@
 ﻿using CTMS.Business.Helpers;
 using CTMS.DataModel.Models.ClinicalInformation;
-using CTMS.ExcelUtility.Extensions;
+using CTMS.Share.Extensions;
 using CTMS.Share.Helpers;
 namespace CTMS.Business.Services.ClinicalInformation;
 

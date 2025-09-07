@@ -14,4 +14,8 @@
 		<ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
+	</ItemGroup>
+
 </Project>

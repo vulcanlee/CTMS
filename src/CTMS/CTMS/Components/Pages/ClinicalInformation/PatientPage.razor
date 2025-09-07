@@ -7,10 +7,6 @@
 @using Syncfusion.Blazor.Buttons
 @inject IJSRuntime JSRuntime
 @layout EmptyLayout
-@inject UploadFileService UploadFileService
-@inject DeleteFileService DeleteFileService
-@inject NavigationManager NavigationManager
-@inject GeneratePdfService GeneratePdfService
 @inject RequestInfoService RequestInfoService
 @inject ILogger<Patient> logger
 @inject RequestInformation RequestInformation
@@ -54,7 +50,6 @@ else
 <DialogBackground />
 
 @code {
-    List<Athlete> Athletes = new List<Athlete>();
     bool Maintaining = false;
     string FullUrl = "";
     int index = 0;

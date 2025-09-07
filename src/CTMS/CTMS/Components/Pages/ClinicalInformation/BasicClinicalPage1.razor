@@ -2,16 +2,12 @@
 @using Newtonsoft.Json
 @using CTMS.Share.Helpers
 @layout EmptyLayout
-@inject UploadFileService UploadFileService
 @inject NavigationManager NavigationManager
-@inject ExcleService ExcleService
 
 @inject NavigationManager NavigationManager
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
-@inject BrowseAthleteService BrowseAthleteService
-@inject CurrentAthleteExamine CurrentAthleteExamine
 
 <PageTitle>主頁</PageTitle>
 
@@ -62,10 +58,7 @@ else
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
 
-    Athlete Athlete = new();
-    NextGenerationSportsCTMSModel CTMSModel = new();
     List<FileListNodeModel> fileList = new List<FileListNodeModel>();
-
 
     protected override async Task OnInitializedAsync()
     {

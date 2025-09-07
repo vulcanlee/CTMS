@@ -91,23 +91,12 @@ namespace CTMS
                 #region 註冊專案客制用的服務
                 builder.Services.AddTransient<Main臨床資料HelperService>();
                 builder.Services.AddTransient<BrowsePatientService>();
-                builder.Services.AddTransient<BrowseAthleteService>();
-                builder.Services.AddTransient<ExcleService>();
-                builder.Services.AddTransient<UploadFileService>();
-                builder.Services.AddTransient<DownloadFileService>();
-                builder.Services.AddTransient<RestoreFileService>();
-                builder.Services.AddTransient<DownloadFileServiceV1>();
-                builder.Services.AddTransient<RestoreFileServiceV1>();
-                builder.Services.AddTransient<DeleteFileService>();
                 builder.Services.AddTransient<GptService>();
-                builder.Services.AddTransient<GeneratePdfService>();
                 builder.Services.AddTransient<TranscationResultHelper>();
                 builder.Services.AddTransient<AuthenticationStateHelper>();
-                builder.Services.AddTransient<MigrationExamineService>();
                 builder.Services.AddScoped<RequestInfoService>();
                 builder.Services.AddScoped<CurrentUserService>();
                 builder.Services.AddScoped<CurrentProject>();
-                builder.Services.AddScoped<CurrentAthleteExamine>();
                 builder.Services.AddTransient<RolePermissionService>();
                 builder.Services.AddHttpContextAccessor();
                 builder.Services.AddSingleton<RequestInformation>();
@@ -183,7 +172,6 @@ namespace CTMS
                 {
                     using var scope = app.Services.CreateScope();
                     using var dbContext = scope.ServiceProvider.GetRequiredService<BackendDBContext>();
-                    var migrationExamineService = scope.ServiceProvider.GetRequiredService<MigrationExamineService>();
                     dbContext.Database.Migrate();
 
                     Project projectItemNew = null;
@@ -277,7 +265,7 @@ namespace CTMS
                         support.Password =
                             PasswordHelper.GetPasswordSHA(support.Salt, MagicObjectHelper.開發者帳號);
                         support.IsAdmin = true;
-                        if(roleViewItemNew!= null)
+                        if (roleViewItemNew != null)
                             support.RoleViewId = roleViewItemNew.Id;
                         else
                             support.RoleViewId = roleViewItem.Id;

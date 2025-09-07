@@ -3,16 +3,12 @@
 @using CTMS.Share.Helpers
 @using Newtonsoft.Json
 @layout EmptyLayout
-@inject UploadFileService UploadFileService
 @inject NavigationManager NavigationManager
-@inject ExcleService ExcleService
 
 @inject NavigationManager NavigationManager
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
-@inject BrowseAthleteService BrowseAthleteService
-@inject CurrentAthleteExamine CurrentAthleteExamine
 @using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
 
@@ -66,8 +62,6 @@ else
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
 
-    Athlete Athlete = new();
-    NextGenerationSportsCTMSModel CTMSModel = new();
     List<FileListNodeModel> fileList = new List<FileListNodeModel>();
 
 

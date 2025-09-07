@@ -20,6 +20,9 @@ namespace CTMS.EntityModel.Migrations
                     Code = table.Column<string>(type: "TEXT", nullable: false),
                     醫院 = table.Column<string>(type: "TEXT", nullable: false),
                     癌別 = table.Column<string>(type: "TEXT", nullable: false),
+                    組別 = table.Column<string>(type: "TEXT", nullable: false),
+                    AI評估 = table.Column<string>(type: "TEXT", nullable: false),
+                    AI處理 = table.Column<string>(type: "TEXT", nullable: false),
                     JsonData = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -52,30 +55,6 @@ namespace CTMS.EntityModel.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RoleView", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Athlete",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Code = table.Column<string>(type: "TEXT", nullable: false),
-                    FilesData = table.Column<string>(type: "TEXT", nullable: false),
-                    ExcelData = table.Column<string>(type: "TEXT", nullable: false),
-                    ExamineTime = table.Column<string>(type: "TEXT", nullable: false),
-                    ProjectId = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Athlete", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Athlete_Project_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Project",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,39 +134,6 @@ namespace CTMS.EntityModel.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Examine",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Code = table.Column<string>(type: "TEXT", nullable: false),
-                    ExamineTime = table.Column<string>(type: "TEXT", nullable: false),
-                    FilesData = table.Column<string>(type: "TEXT", nullable: false),
-                    ExcelData = table.Column<string>(type: "TEXT", nullable: false),
-                    AthleteId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Examine", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Examine_Athlete_AthleteId",
-                        column: x => x.AthleteId,
-                        principalTable: "Athlete",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Athlete_ProjectId",
-                table: "Athlete",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Examine_AthleteId",
-                table: "Examine",
-                column: "AthleteId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_MyUser_RoleViewId",
                 table: "MyUser",
@@ -213,9 +159,6 @@ namespace CTMS.EntityModel.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Examine");
-
-            migrationBuilder.DropTable(
                 name: "MyUser");
 
             migrationBuilder.DropTable(
@@ -228,13 +171,10 @@ namespace CTMS.EntityModel.Migrations
                 name: "RoleViewProject");
 
             migrationBuilder.DropTable(
-                name: "Athlete");
+                name: "Project");
 
             migrationBuilder.DropTable(
                 name: "RoleView");
-
-            migrationBuilder.DropTable(
-                name: "Project");
         }
     }
 }

@@ -2,8 +2,6 @@
 {
     public class MagicObjectHelper
     {
-        public const string CT身體組成WorkSheetName = "CT身體組成";
-        public const string BIA身體組成WorkSheetName = "BIA身體組成(初版)";
         public const string DefaultSQLiteConnectionString = "SQLiteDefaultConnection";
         public const string CTMSSettings = "CTMSSettings";
         public const string PdfFilesPath = "PdfFiles";
@@ -19,30 +17,6 @@
         public const string NoUpdateSymbol = "NA";
 
         #region 第二階段的需求修正
-        public const string 主頁20241212WorkSheetName = "主頁";
-        public const string 動作分析能力20241212WorkSheetName = "動作分析能力";
-        public const string 心肺功能20241212心肺功能 = "心肺功能";
-        public const string 身體組成_肌肉質量20241212WorkSheetName = "身體組成-肌肉質量";
-        public const string 身體組成_肌肉品質20241212WorkSheetName = "身體組成-肌肉品質";
-        public const string 身體組成_脂肪分析20241212WorkSheetName = "身體組成-脂肪分析";
-        public const string 基因體分析20241212WorkSheetName = "基因體分析";
-        public const string 基因體細項20241212WorkSheetName = "基因體細項";
-        public const string 代謝體分析20241212WorkSheetName = "代謝體分析";
-        public const string 抽血檢驗_血液20241212WorkSheetName = "抽血檢驗(血液)";
-        public const string 抽血檢驗_生化20241212WorkSheetName = "抽血檢驗(生化)";
-        public const string 抽血檢驗_特殊20241212WorkSheetName = "抽血檢驗(特殊)";
-        public const string 綜合評估建議20241212WorkSheetName = "綜合評估建議";
-        public const string CT身體組成原始擋20241212WorkSheetName = "CT身體組成原始擋";
-        public const string BIA身體組成原始擋20241212WorkSheetName = "BIA身體組成原始擋";
-        public const string 心肺功能原始擋20241212WorkSheetName = "心肺功能原始擋";
-        public const string 心理韌性原始擋20241212WorkSheetName = "心理韌性原始檔";
-        public const string 代謝物含量壓力情緒指標原始檔20241212WorkSheetName = "代謝物含量-壓力情緒指標原始檔";
-        public const string 基因體分析定義20241212WorkSheetName = "基因體分析";
-        public const string 基因體分析原始擋20241212WorkSheetName = "基因體分析原始擋";
-        public const string 代謝体分析原始擋20241212WorkSheetName = "代謝体分析原始擋";
-        public const string 抽血檢驗_血液原始檔20241212WorkSheetName = "抽血檢驗(血液)原始檔";
-        public const string 抽血檢驗_生化原始檔20241212WorkSheetName = "抽血檢驗(生化)原始檔";
-        public const string 抽血檢驗_特殊原始檔20241212WorkSheetName = "抽血檢驗(特殊)原始檔";
 
         public const string 參考區間類型_區間 = "參考區間類型_區間";
         public const string 參考區間類型_小於 = "參考區間類型_小於";
@@ -58,7 +32,6 @@
         public const string 開發者帳號 = "support";
         public const string 預設專案 = "Default Project";
         public const string 預設角色 = "Default Role";
-        public const string 預設檢驗時間 = "2025-01-01";
         public const string 你沒有權限存取此頁面 = "你沒有權限存取此頁面";
         public const string ROLE瀏覽 = "瀏覽";
         public const string ROLE新增病患 = "新增病患";
