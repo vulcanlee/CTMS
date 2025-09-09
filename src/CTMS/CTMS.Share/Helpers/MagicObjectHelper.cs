@@ -128,6 +128,10 @@
         public const string EC = "EC";
         public const string NA = "NA";
 
+        #region AIAgent 專用
+        public const string Agentsetting = "Agentsetting";
+        public const string PrefixPatientData = "PatientData";
 
+        #endregion
     }
 }

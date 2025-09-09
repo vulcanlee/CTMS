@@ -9,5 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AIAgent.Business\AIAgent.Business.csproj" />
+    <ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
   </ItemGroup>
 </Project>
