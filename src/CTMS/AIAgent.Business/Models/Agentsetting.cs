@@ -19,10 +19,10 @@ public class Agentsetting
     public string GetInboundQueuePath() => Path.Combine(QueueFolderPath, InBoundQueueName);
     public string GetPhase1QueuePath() => Path.Combine(QueueFolderPath, Phase1QueueName);
     public string GetPhase1WaitingQueuePath() => Path.Combine(QueueFolderPath, Phase1WaitingQueueName);
-    public string GetPhase1TmpFolderPath() => Path.Combine(QueueFolderPath, Phase1TmpFolder);
+    public string GetPhase1TmpFolderPath() => Path.Combine(Phase1TmpFolder);
     public string GetPhase2QueuePath() => Path.Combine(QueueFolderPath, Phase2QueueName);
     public string GetPhase2WaitingQueuePath() => Path.Combine(QueueFolderPath, Phase2WaitingQueueName);
-    public string GetPhase2TmpFolderPath() => Path.Combine(QueueFolderPath, Phase2TmpFolder);
+    public string GetPhase2TmpFolderPath() => Path.Combine(Phase2TmpFolder);
     public string GetPhase3QueuePath() => Path.Combine(QueueFolderPath, Phase3QueueName);
     public string GetPhase3WaitingQueuePath() => Path.Combine(QueueFolderPath, Phase3WaitingQueueName);
     public string GetOutBoundQueuePath() => Path.Combine(QueueFolderPath, OutBoundQueueName);

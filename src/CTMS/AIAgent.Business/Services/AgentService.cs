@@ -33,6 +33,7 @@ namespace AIAgent.Services
         {
             await ProceeInBoundAsync();
             await ProceePhase1Async();
+            await ProceePhase1WaitingAsync();
         }
 
         #region 不同階段的處理作法
@@ -59,6 +60,36 @@ namespace AIAgent.Services
             foreach (var folder in inBoundDirectories)
             {
                 var files = Directory.GetFiles(folder, "*.json");
+                string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+                Phase1LabelGeneration phase1LabelGeneration =
+                    phase1Phase2Service.BuildPhase1標註生成Json(patientAIInfo, agentsetting);
+                phase1Phase2Service.SavePhase1標註生成Json(phase1LabelGeneration, patientAIInfo, agentsetting);
+                //    await Task.Delay(1000); // 模擬處理時間\
+                //    var folderName = Path.GetFileName(folder);
+                //    Directory.Move(folder,
+                //        Path.Combine(agentsetting.GetPhase1QueuePath(), folderName));
+            }
+            #endregion
+        }
+
+        async Task ProceePhase1WaitingAsync()
+        {
+            List<string> phase1WaitingDirectories = Directory.GetDirectories(agentsetting.GetPhase1WaitingQueuePath()).ToList();
+            List<string> phase1TmpDirectories = Directory.GetDirectories(agentsetting.GetPhase1TmpFolderPath()).ToList();
+
+            #region 將該資料夾搬到 Phase 1 資料夾內
+            foreach (var folder in phase1WaitingDirectories)
+            {
+                var waitingFolderName = Path.GetFileName(folder);
+                var tmpFolder = phase1TmpDirectories
+                    .FirstOrDefault(x => Path.GetFileName(x) == waitingFolderName);
+                if (tmpFolder != null)
+                {
+
+                }
+
+                    var files = Directory.GetFiles(folder, "*.json");
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
                 Phase1LabelGeneration phase1LabelGeneration =
