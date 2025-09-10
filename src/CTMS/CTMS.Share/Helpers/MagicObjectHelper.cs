@@ -131,6 +131,8 @@
         #region AIAgent 專用
         public const string Agentsetting = "Agentsetting";
         public const string PrefixPatientData = "PatientData";
+        public const string Phase1ResultPath = "Phase1Result";
+        public const string Phase2ResultPath = "Phase2Result";
 
         #endregion
     }

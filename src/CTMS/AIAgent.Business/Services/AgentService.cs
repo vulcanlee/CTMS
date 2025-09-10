@@ -17,16 +17,19 @@ namespace AIAgent.Services
         private readonly Agentsetting agentsetting;
         private readonly PatientAIInfoService patientAIInfoService;
         private readonly Phase1Phase2Service phase1Phase2Service;
+        private readonly DirectoryHelperService directoryHelperService;
 
         public AgentService(ILogger<AgentService> logger,
             IOptions<Agentsetting> agentsettingOptions,
             PatientAIInfoService patientAIInfoService,
-            Phase1Phase2Service phase1Phase2Service)
+            Phase1Phase2Service phase1Phase2Service,
+            DirectoryHelperService directoryHelperService)
         {
             logger = logger;
             this.agentsetting = agentsettingOptions.Value;
             this.patientAIInfoService = patientAIInfoService;
             this.phase1Phase2Service = phase1Phase2Service;
+            this.directoryHelperService = directoryHelperService;
         }
 
         public async Task RunAsync()
@@ -34,6 +37,7 @@ namespace AIAgent.Services
             await ProceeInBoundAsync();
             await ProceePhase1Async();
             await ProceePhase1WaitingAsync();
+            await ProceePhase2Async();
         }
 
         #region 不同階段的處理作法
@@ -54,21 +58,28 @@ namespace AIAgent.Services
 
         async Task ProceePhase1Async()
         {
+            // Queue Phase 1 資料夾內的所有病患資料夾
             List<string> inBoundDirectories = Directory.GetDirectories(agentsetting.GetPhase1QueuePath()).ToList();
 
             #region 將該資料夾搬到 Phase 1 資料夾內
             foreach (var folder in inBoundDirectories)
             {
+                string folderName = Path.GetFileName(folder);
+                string destFolder = Path.Combine(agentsetting.GetPhase1WaitingQueuePath(), folderName);
+                if (Directory.Exists(destFolder))
+                {
+                    Directory.Delete(destFolder, true);
+                }
+
                 var files = Directory.GetFiles(folder, "*.json");
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+
                 Phase1LabelGeneration phase1LabelGeneration =
                     phase1Phase2Service.BuildPhase1標註生成Json(patientAIInfo, agentsetting);
                 phase1Phase2Service.SavePhase1標註生成Json(phase1LabelGeneration, patientAIInfo, agentsetting);
-                //    await Task.Delay(1000); // 模擬處理時間\
-                //    var folderName = Path.GetFileName(folder);
-                //    Directory.Move(folder,
-                //        Path.Combine(agentsetting.GetPhase1QueuePath(), folderName));
+
+                await phase1Phase2Service.MoveToPhase1Waiting(patientAIInfo, agentsetting);
             }
             #endregion
         }
@@ -86,25 +97,52 @@ namespace AIAgent.Services
                     .FirstOrDefault(x => Path.GetFileName(x) == waitingFolderName);
                 if (tmpFolder != null)
                 {
+                    var sourcePath = Path.Combine(agentsetting.GetPhase1TmpFolderPath(), tmpFolder);
+                    var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase1ResultPath);
 
-                }
+                    directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
 
                     var files = Directory.GetFiles(folder, "*.json");
+                    string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                    PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+                    phase1Phase2Service.MoveToPhase2(patientAIInfo, agentsetting);
+                }
+
+            }
+            #endregion
+        }
+
+        async Task ProceePhase2Async()
+        {
+            // Queue Phase 2 資料夾內的所有病患資料夾
+            List<string> inBoundDirectories = Directory.GetDirectories(agentsetting.GetPhase2QueuePath()).ToList();
+
+            #region 將該資料夾搬到 Phase 2 資料夾內
+            foreach (var folder in inBoundDirectories)
+            {
+                string folderName = Path.GetFileName(folder);
+                string destFolder = Path.Combine(agentsetting.GetPhase2WaitingQueuePath(), folderName);
+                if (Directory.Exists(destFolder))
+                {
+                    Directory.Delete(destFolder, true);
+                }
+
+                var files = Directory.GetFiles(folder, "*.json");
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
-                Phase1LabelGeneration phase1LabelGeneration =
-                    phase1Phase2Service.BuildPhase1標註生成Json(patientAIInfo, agentsetting);
-                phase1Phase2Service.SavePhase1標註生成Json(phase1LabelGeneration, patientAIInfo, agentsetting);
-                //    await Task.Delay(1000); // 模擬處理時間\
-                //    var folderName = Path.GetFileName(folder);
-                //    Directory.Move(folder,
-                //        Path.Combine(agentsetting.GetPhase1QueuePath(), folderName));
+
+                Phase2QuantitativeAnalysis phase2LabelGeneration =
+                    phase1Phase2Service.BuildPhase2標註生成Json(patientAIInfo, agentsetting);
+                phase1Phase2Service.SavePhase1定量分析Json(phase2LabelGeneration, patientAIInfo, agentsetting);
+
+                await phase1Phase2Service.MoveToPhase2Waiting(patientAIInfo, agentsetting);
             }
             #endregion
         }
 
         #endregion
 
+        #region 初始化作業
         public async Task PrepareQueueDirectoryAsync()
         {
             string queueFolderPath = agentsetting.QueueFolderPath;
@@ -172,6 +210,6 @@ namespace AIAgent.Services
             var json = patientAIInfo.ToJson();
             File.WriteAllText(patientAIInfo.DestionatioPatientJSONFilename, json, Encoding.UTF8);
         }
-
+        #endregion
     }
 }

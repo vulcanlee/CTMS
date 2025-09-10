@@ -38,6 +38,7 @@ namespace AIAgent
                 builder.Services.AddTransient<AgentService>();
                 builder.Services.AddTransient<PatientAIInfoService>();
                 builder.Services.AddTransient<Phase1Phase2Service>();
+                builder.Services.AddTransient<DirectoryHelperService>();
 
                 #region 加入設定強型別注入宣告
                 builder.Services.Configure<Agentsetting>(builder.Configuration
