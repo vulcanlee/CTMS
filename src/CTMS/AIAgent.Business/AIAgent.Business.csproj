@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
+    <ProjectReference Include="..\CTMS.ExcelUtility\CTMS.ExcelUtility.csproj" />
   </ItemGroup>
 
 </Project>

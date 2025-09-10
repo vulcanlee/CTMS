@@ -25,6 +25,34 @@ public class Phase1Phase2Service
         directoryHelperService.MoveDirectoryRecursive(sourcePath, destinationPath, overwrite: true);
     }
 
+    public async Task MoveToPhase3(PatientAIInfo patientAIInfo,
+        Agentsetting agentsetting)
+    {
+        var phase3Path = agentsetting.GetPhase3QueuePath();
+        var phase2WaitingPath = agentsetting.GetPhase2WaitingQueuePath();
+
+        var sourcePath = Path.Combine(phase2WaitingPath, patientAIInfo.KeyName);
+        var destinationPath = Path.Combine(phase3Path, patientAIInfo.KeyName);
+
+        directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+
+        Directory.Delete(sourcePath, recursive: true);
+    }
+
+    public async Task CopyToOutBound(PatientAIInfo patientAIInfo,
+        Agentsetting agentsetting)
+    {
+        var outboundPath = agentsetting.GetOutBoundQueuePath();
+        var phase3WaitingPath = agentsetting.GetPhase3WaitingQueuePath();
+
+        var sourcePath = Path.Combine(phase3WaitingPath, patientAIInfo.KeyName);
+        var destinationPath = Path.Combine(outboundPath, patientAIInfo.KeyName);
+
+        directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+
+        //Directory.Delete(sourcePath, recursive: true);
+    }
+
     public async Task MoveToPhase1Waiting(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
@@ -42,6 +70,34 @@ public class Phase1Phase2Service
     {
         var phase1Path = agentsetting.GetPhase2QueuePath();
         var phase1WaitingPath = agentsetting.GetPhase2WaitingQueuePath();
+
+        var sourcePath = Path.Combine(phase1Path, patientAIInfo.KeyName);
+        var destinationPath = Path.Combine(phase1WaitingPath, patientAIInfo.KeyName);
+
+        directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+
+        Directory.Delete(sourcePath, recursive: true);
+    }
+
+    public async Task MoveToPhase3Waiting(PatientAIInfo patientAIInfo,
+        Agentsetting agentsetting)
+    {
+        var phase1Path = agentsetting.GetPhase3QueuePath();
+        var phase1WaitingPath = agentsetting.GetPhase3WaitingQueuePath();
+
+        var sourcePath = Path.Combine(phase1Path, patientAIInfo.KeyName);
+        var destinationPath = Path.Combine(phase1WaitingPath, patientAIInfo.KeyName);
+
+        directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+
+        Directory.Delete(sourcePath, recursive: true);
+    }
+
+    public async Task MoveToCompletionWaiting(PatientAIInfo patientAIInfo,
+        Agentsetting agentsetting)
+    {
+        var phase1Path = agentsetting.GetOutBoundQueuePath();
+        var phase1WaitingPath = agentsetting.GetCompleteQueuePath();
 
         var sourcePath = Path.Combine(phase1Path, patientAIInfo.KeyName);
         var destinationPath = Path.Combine(phase1WaitingPath, patientAIInfo.KeyName);

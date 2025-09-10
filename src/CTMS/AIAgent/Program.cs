@@ -3,6 +3,7 @@ using AIAgent.Services;
 using CTMS.Share.Helpers;
 using NLog;
 using NLog.Web;
+using SyncExcel.Services;
 using System.Diagnostics;
 
 namespace AIAgent
@@ -39,6 +40,7 @@ namespace AIAgent
                 builder.Services.AddTransient<PatientAIInfoService>();
                 builder.Services.AddTransient<Phase1Phase2Service>();
                 builder.Services.AddTransient<DirectoryHelperService>();
+                builder.Services.AddTransient<RiskAssessmentExcelService>();
 
                 #region 加入設定強型別注入宣告
                 builder.Services.Configure<Agentsetting>(builder.Configuration

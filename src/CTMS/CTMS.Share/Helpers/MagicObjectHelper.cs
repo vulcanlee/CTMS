@@ -133,6 +133,9 @@
         public const string PrefixPatientData = "PatientData";
         public const string Phase1ResultPath = "Phase1Result";
         public const string Phase2ResultPath = "Phase2Result";
+        public const string Phase3ResultPath = "Phase3Result";
+        public const string 風險評估輸入csv = "input.csv";
+        public const string 風險評估輸出csv = "output.csv";
 
         #endregion
     }

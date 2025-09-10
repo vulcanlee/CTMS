@@ -3,8 +3,11 @@ using CTMS.DataModel.Models.AIAgent;
 using CTMS.Share.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SyncExcel.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,18 +21,21 @@ namespace AIAgent.Services
         private readonly PatientAIInfoService patientAIInfoService;
         private readonly Phase1Phase2Service phase1Phase2Service;
         private readonly DirectoryHelperService directoryHelperService;
+        private readonly RiskAssessmentExcelService riskAssessmentExcelService;
 
         public AgentService(ILogger<AgentService> logger,
             IOptions<Agentsetting> agentsettingOptions,
             PatientAIInfoService patientAIInfoService,
             Phase1Phase2Service phase1Phase2Service,
-            DirectoryHelperService directoryHelperService)
+            DirectoryHelperService directoryHelperService,
+            RiskAssessmentExcelService riskAssessmentExcelService)
         {
             logger = logger;
             this.agentsetting = agentsettingOptions.Value;
             this.patientAIInfoService = patientAIInfoService;
             this.phase1Phase2Service = phase1Phase2Service;
             this.directoryHelperService = directoryHelperService;
+            this.riskAssessmentExcelService = riskAssessmentExcelService;
         }
 
         public async Task RunAsync()
@@ -38,6 +44,10 @@ namespace AIAgent.Services
             await ProceePhase1Async();
             await ProceePhase1WaitingAsync();
             await ProceePhase2Async();
+            await ProceePhase2WaitingAsync();
+            await ProceePhase3Async();
+            await ProceePhase3WaitingAsync();
+            await ProceeCompleteAsync();
         }
 
         #region 不同階段的處理作法
@@ -138,6 +148,169 @@ namespace AIAgent.Services
                 await phase1Phase2Service.MoveToPhase2Waiting(patientAIInfo, agentsetting);
             }
             #endregion
+        }
+
+        async Task ProceePhase2WaitingAsync()
+        {
+            List<string> phase2WaitingDirectories = Directory.GetDirectories(agentsetting.GetPhase2WaitingQueuePath()).ToList();
+            List<string> phase2TmpDirectories = Directory.GetDirectories(agentsetting.GetPhase2TmpFolderPath()).ToList();
+
+            #region 將該資料夾搬到 Phase 2 資料夾內
+            foreach (var folder in phase2WaitingDirectories)
+            {
+                var waitingFolderName = Path.GetFileName(folder);
+                var tmpFolder = phase2TmpDirectories
+                    .FirstOrDefault(x => Path.GetFileName(x) == waitingFolderName);
+                if (tmpFolder != null)
+                {
+                    var sourcePath = Path.Combine(agentsetting.GetPhase2TmpFolderPath(), tmpFolder);
+                    var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase2ResultPath);
+
+                    directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+
+                    var files = Directory.GetFiles(folder, "*.json");
+                    string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                    PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+                    phase1Phase2Service.MoveToPhase3(patientAIInfo, agentsetting);
+                }
+
+            }
+            #endregion
+        }
+
+        async Task ProceePhase3Async()
+        {
+            // Queue Phase 2 資料夾內的所有病患資料夾
+            List<string> inBoundDirectories = Directory.GetDirectories(agentsetting.GetPhase3QueuePath()).ToList();
+
+            #region 將該資料夾搬到 Phase 2 資料夾內
+            foreach (var folder in inBoundDirectories)
+            {
+                string folderName = Path.GetFileName(folder);
+                string destFolder = Path.Combine(agentsetting.GetPhase3WaitingQueuePath(), folderName);
+                if (Directory.Exists(destFolder))
+                {
+                    Directory.Delete(destFolder, true);
+                }
+
+                var files = Directory.GetFiles(folder, "*.json");
+                string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+
+                await phase1Phase2Service.MoveToPhase3Waiting(patientAIInfo, agentsetting);
+            }
+            #endregion
+        }
+
+        async Task ProceeCompleteAsync()
+        {
+            List<string> inBoundDirectories = Directory.GetDirectories(agentsetting.GetOutBoundQueuePath()).ToList();
+
+            #region 將該資料夾搬到 Phase 2 資料夾內
+            foreach (var folder in inBoundDirectories)
+            {
+                var files = Directory.GetFiles(folder, "*.json");
+                string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+
+                string folderName = Path.GetFileName(folder);
+                string checkResultPath = Path.Combine(folder, MagicObjectHelper.Phase3ResultPath);
+
+                string checkOutputFile = Path.Combine(checkResultPath, MagicObjectHelper.風險評估輸出csv);
+
+                if (!File.Exists(checkOutputFile))
+                {
+                    continue;
+                }
+                string destFolder = Path.Combine(agentsetting.GetCompleteQueuePath(), folderName);
+                await phase1Phase2Service.MoveToCompletionWaiting(patientAIInfo, agentsetting);
+            }
+            #endregion
+        }
+
+        async Task ProceePhase3WaitingAsync()
+        {
+            List<string> phase3WaitingDirectories = Directory.GetDirectories(agentsetting.GetPhase3WaitingQueuePath()).ToList();
+
+            foreach (var folder in phase3WaitingDirectories)
+            {
+                var files = Directory.GetFiles(folder, "*.json");
+                string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+                phase1Phase2Service.CopyToOutBound(patientAIInfo, agentsetting);
+
+                var waitingFolderName = Path.GetFileName(folder);
+                string excelFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase2ResultPath, $"{waitingFolderName}.csv");
+                string resultCsvFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase3ResultPath, MagicObjectHelper.風險評估輸入csv);
+                if(!Directory.Exists(Path.GetDirectoryName(resultCsvFile)))
+                {
+                     Directory.CreateDirectory(Path.GetDirectoryName(resultCsvFile)!);
+                }
+                var checkFolder = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName);
+                if(!Directory.Exists(checkFolder))
+                {
+                    Directory.CreateDirectory(checkFolder);
+                }
+                var outputPath = Path.Combine(checkFolder, MagicObjectHelper.風險評估輸出csv);
+
+                #region 產生出要計算風險評估的 CSV
+                var riskResult = riskAssessmentExcelService.ReadExcel(excelFile);
+
+                // 若需要從病患資訊推 Tumor Grade，可在此調整
+                string tumorGrade = "1";
+
+                // 建立輸出 CSV 內容
+                var sb = new StringBuilder();
+                sb.AppendLine("ID,Age,Tumor.Grade,body.height.cm,body.weight.kg,Vertebral.Body.Area.cm2,Total.SMD,Total.ImatA,Total.LamaA,Total.NamaA,VatA,SatA");
+                sb.AppendLine(string.Join(",", new string[] {
+                    riskResult.ID,
+                    riskResult.Age.ToLower().Replace("y",""),
+                    tumorGrade,
+                    riskResult.BodyHeight,
+                    riskResult.BodyWeight,
+                    riskResult.VertebralBodyAreaCm2,
+                    riskResult.TotalSMD,
+                    riskResult.TotalImatA,
+                    riskResult.TotalLamaA,
+                    riskResult.TotalNamaA,
+                    riskResult.VatA,
+                    riskResult.SatA
+                }.Select(v => v?.Trim() ?? "")));
+
+                File.WriteAllText(resultCsvFile, sb.ToString(), Encoding.UTF8);
+                #endregion
+
+                #region 在此處理風險評估
+                Directory.Delete(folder, true);
+
+                string workingPath = agentsetting.風險評估模型;
+                string command = $"Rscript Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i {resultCsvFile} -o {outputPath}";
+
+                try
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = command,
+                        Arguments = "",
+                        WorkingDirectory = workingPath,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+
+                    var process = new Process { StartInfo = psi, EnableRaisingEvents = true };
+                    //process.Start();
+                    //string output = await process.StandardOutput.ReadToEndAsync();
+                    //string error = await process.StandardError.ReadToEndAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "執行風險評估命令時發生例外");
+                }
+                #endregion
+            }
         }
 
         #endregion

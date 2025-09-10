@@ -13,6 +13,7 @@ public class Agentsetting
     public string Phase3QueueName { get; set; }
     public string Phase3WaitingQueueName { get; set; }
     public string OutBoundQueueName { get; set; }
+    public string CompleteQueueName { get; set; }
     public string InferencePath { get; set; }
     public string 風險評估模型 { get; set; }
 
@@ -26,6 +27,8 @@ public class Agentsetting
     public string GetPhase3QueuePath() => Path.Combine(QueueFolderPath, Phase3QueueName);
     public string GetPhase3WaitingQueuePath() => Path.Combine(QueueFolderPath, Phase3WaitingQueueName);
     public string GetOutBoundQueuePath() => Path.Combine(QueueFolderPath, OutBoundQueueName);
+    public string GetCompleteQueuePath() => Path.Combine(QueueFolderPath, CompleteQueueName);
+
     public string GetInferencePath() => InferencePath;
 
 }

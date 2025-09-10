@@ -15,5 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AIAgent.Business\AIAgent.Business.csproj" />
     <ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
+    <ProjectReference Include="..\CTMS.ExcelUtility\CTMS.ExcelUtility.csproj" />
   </ItemGroup>
 </Project>
