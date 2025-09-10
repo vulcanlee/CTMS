@@ -1,0 +1,13 @@
+﻿{
+    "KeyName": "20250909171331305",
+    "Code": "P2024001",
+    "SubjectCode": "S2024001",
+    "Height": "183.0",
+    "Weight": "55",
+    "Age": "49",
+    "Gender": "M",
+    "癌別": "EC",
+    "DicomFilename": "C:\\temp\\Dicom\\20250909171331305.DCM",
+    "DestionatioDicomFilename": "C:\\temp\\CTMS\\Queue\\InBound\\202509091713313054\\20250909171331305.DCM",
+    "DestionatioPatientJSONFilename": "C:\\temp\\CTMS\\Queue\\InBound\\20250909171331305\\PatientDataS2024001.json"
+}

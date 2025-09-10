@@ -2,6 +2,7 @@
 
 public class Agentsetting
 {
+    public string DicomFolderPath { get; set; }
     public string QueueFolderPath { get; set; }
     public string InBoundQueueName { get; set; }
     public string Phase1QueueName { get; set; }
@@ -17,7 +18,9 @@ public class Agentsetting
     public string InferencePath { get; set; }
     public string 風險評估模型 { get; set; }
 
+    public string GetDicomFolderPath() => DicomFolderPath;
     public string GetInboundQueuePath() => Path.Combine(QueueFolderPath, InBoundQueueName);
+
     public string GetPhase1QueuePath() => Path.Combine(QueueFolderPath, Phase1QueueName);
     public string GetPhase1WaitingQueuePath() => Path.Combine(QueueFolderPath, Phase1WaitingQueueName);
     public string GetPhase1TmpFolderPath() => Path.Combine(Phase1TmpFolder);

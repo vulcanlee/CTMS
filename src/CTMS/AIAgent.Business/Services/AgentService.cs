@@ -85,6 +85,7 @@ namespace AIAgent.Services
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
 
+                await phase1Phase2Service.CopyDicomAsync(patientAIInfo, agentsetting);
                 Phase1LabelGeneration phase1LabelGeneration =
                     phase1Phase2Service.BuildPhase1標註生成Json(patientAIInfo, agentsetting);
                 phase1Phase2Service.SavePhase1標註生成Json(phase1LabelGeneration, patientAIInfo, agentsetting);
@@ -242,16 +243,16 @@ namespace AIAgent.Services
                 var waitingFolderName = Path.GetFileName(folder);
                 string excelFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase2ResultPath, $"{waitingFolderName}.csv");
                 string resultCsvFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase3ResultPath, MagicObjectHelper.風險評估輸入csv);
-                if(!Directory.Exists(Path.GetDirectoryName(resultCsvFile)))
+                if (!Directory.Exists(Path.GetDirectoryName(resultCsvFile)))
                 {
-                     Directory.CreateDirectory(Path.GetDirectoryName(resultCsvFile)!);
+                    Directory.CreateDirectory(Path.GetDirectoryName(resultCsvFile)!);
                 }
                 var checkFolder = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName);
-                if(!Directory.Exists(checkFolder))
+                if (!Directory.Exists(checkFolder))
                 {
                     Directory.CreateDirectory(checkFolder);
                 }
-                var outputPath = Path.Combine(checkFolder, MagicObjectHelper.風險評估輸出csv);
+                var outputPath = Path.Combine(checkFolder, MagicObjectHelper.Phase3ResultPath, MagicObjectHelper.風險評估輸出csv);
 
                 #region 產生出要計算風險評估的 CSV
                 var riskResult = riskAssessmentExcelService.ReadExcel(excelFile);
@@ -284,14 +285,14 @@ namespace AIAgent.Services
                 Directory.Delete(folder, true);
 
                 string workingPath = agentsetting.風險評估模型;
-                string command = $"Rscript Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i {resultCsvFile} -o {outputPath}";
+                string command = $" Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i {resultCsvFile} -o {outputPath}";
 
                 try
                 {
                     var psi = new ProcessStartInfo
                     {
-                        FileName = command,
-                        Arguments = "",
+                        FileName = "Rscript",
+                        Arguments = command,
                         WorkingDirectory = workingPath,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
@@ -300,7 +301,7 @@ namespace AIAgent.Services
                     };
 
                     var process = new Process { StartInfo = psi, EnableRaisingEvents = true };
-                    //process.Start();
+                    process.Start();
                     //string output = await process.StandardOutput.ReadToEndAsync();
                     //string error = await process.StandardError.ReadToEndAsync();
 
@@ -318,6 +319,12 @@ namespace AIAgent.Services
         #region 初始化作業
         public async Task PrepareQueueDirectoryAsync()
         {
+            string completionFolderPath = agentsetting.GetCompleteQueuePath();
+            if (!Directory.Exists(completionFolderPath))
+                Directory.CreateDirectory(completionFolderPath);
+            string dicomFolderPath = agentsetting.GetDicomFolderPath();
+            if (!Directory.Exists(dicomFolderPath))
+                Directory.CreateDirectory(dicomFolderPath);
             string queueFolderPath = agentsetting.QueueFolderPath;
             if (!Directory.Exists(queueFolderPath))
                 Directory.CreateDirectory(queueFolderPath);

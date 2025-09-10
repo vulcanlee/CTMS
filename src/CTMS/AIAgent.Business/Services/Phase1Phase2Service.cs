@@ -13,6 +13,21 @@ public class Phase1Phase2Service
         this.directoryHelperService = directoryHelperService;
     }
 
+    public async Task CopyDicomAsync(PatientAIInfo patientAIInfo,
+        Agentsetting agentsetting)
+    {
+        var phase2Path = agentsetting.GetPhase1QueuePath();
+        var phase1WaitingPath = agentsetting.GetPhase1WaitingQueuePath();
+
+        var sourceFile = Path.Combine(phase2Path, patientAIInfo.KeyName, $"{patientAIInfo.KeyName}.dcm");
+        var destinationFile = Path.Combine(agentsetting.DicomFolderPath, $"{patientAIInfo.KeyName}.dcm");
+        //var sourcePath = Path.Combine(phase1WaitingPath, patientAIInfo.KeyName);
+        //var destinationPath = Path.Combine(phase1WaitingPath, patientAIInfo.KeyName);
+
+        File.Copy(sourceFile, destinationFile, overwrite: true);
+        //directoryHelperService.MoveDirectoryRecursive(sourcePath, destinationPath, overwrite: true);
+    }
+
     public async Task MoveToPhase2(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
@@ -179,6 +194,7 @@ public class Phase1Phase2Service
             files = new List<string> { patientAIInfo.DicomFilename },
             tmp_folder = Path.Combine(agentsetting.GetPhase1TmpFolderPath(), patientAIInfo.KeyName),
         };
+        
         return phase1LabelGeneration;
     }
 
@@ -198,8 +214,9 @@ public class Phase1Phase2Service
             },
             files = new List<string> { patientAIInfo.DicomFilename },
             jsons = new List<string> { phase1ResultJsonPath },
-            tmp_folder = Path.Combine(agentsetting.GetPhase1TmpFolderPath(), patientAIInfo.KeyName),
+            tmp_folder = Path.Combine(agentsetting.GetPhase2TmpFolderPath(), patientAIInfo.KeyName),
         };
+
         return phase2LabelGeneration;
     }
 
@@ -207,6 +224,10 @@ public class Phase1Phase2Service
         PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
+        if(!Directory.Exists(phase1LabelGeneration.tmp_folder))
+        {
+            Directory.CreateDirectory(phase1LabelGeneration.tmp_folder);
+        }
         string json = phase1LabelGeneration.ToJson();
         string fileName = $"{patientAIInfo.KeyName}.json";
         string fullPath = Path.Combine(agentsetting.GetInferencePath(), fileName);
@@ -218,6 +239,10 @@ public class Phase1Phase2Service
         PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
+        if (!Directory.Exists(phase2LabelGeneration.tmp_folder))
+        {
+            Directory.CreateDirectory(phase2LabelGeneration.tmp_folder);
+        }
         string json = phase2LabelGeneration.ToJson();
         string fileName = $"{patientAIInfo.KeyName}.json";
         string fullPath = Path.Combine(agentsetting.GetInferencePath(), fileName);

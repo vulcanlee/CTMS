@@ -11,7 +11,7 @@ public class Phase1LabelGeneration
 {
     public Phase1LabelGeneration()
     {
-        GPU = "0";
+        GPU = "";
         optional = new();
         files = new();
         tmp_folder = "";
