@@ -1,29 +1,31 @@
+using AIAgent.Models;
+using AIAgent.Services;
+using CTMS.AdapterModels;
+using CTMS.Business.Events;
+using CTMS.Business.Helpers;
+using CTMS.Business.Services;
+using CTMS.Business.Services.ClinicalInformation;
+using CTMS.Business.Services.Dicoms;
 using CTMS.Components;
+using CTMS.DataModel.Dtos;
 using CTMS.DataModel.Models;
+using CTMS.DataModel.Models.Systems;
 using CTMS.EntityModel;
+using CTMS.EntityModel.Models;
+using CTMS.Helper;
+using CTMS.Middlewares;
+using CTMS.Services;
 using CTMS.Share.Helpers;
+using CTMS.ViewModels;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
+using NLog;
+using NLog.Web;
+using Prism.Events;
 using SyncExcel.Services;
 using Syncfusion.Blazor;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Http.Features;
-using NLog.Web;
-using NLog;
-using Prism.Events;
-using CTMS.Services;
-using CTMS.Middlewares;
-using CTMS.Business.Events;
-using CTMS.Business.Services;
-using CTMS.Helper;
-using CTMS.ViewModels;
-using CTMS.AdapterModels;
-using CTMS.DataModel.Dtos;
-using CTMS.EntityModel.Models;
-using CTMS.Business.Helpers;
-using CTMS.Business.Services.ClinicalInformation;
-using CTMS.DataModel.Models.Systems;
-using CTMS.Business.Services.Dicoms;
 
 namespace CTMS
 {
@@ -114,6 +116,12 @@ namespace CTMS
                 builder.Services.AddTransient<RandomListService>();
                 builder.Services.AddTransient<SubjectNoGeneratorService>();
                 builder.Services.AddTransient<SubjectNoHelper>();
+                builder.Services.AddTransient<AIIntegrateService>();
+                builder.Services.AddTransient<AgentService>();
+                builder.Services.AddTransient<PatientAIInfoService>();
+                builder.Services.AddTransient<Phase1Phase2Service>();
+                builder.Services.AddTransient<DirectoryHelperService>();
+                builder.Services.AddTransient<RiskAssessmentExcelService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();
@@ -159,6 +167,8 @@ namespace CTMS
                 #region 加入設定強型別注入宣告
                 builder.Services.Configure<CTMSSettings>(builder.Configuration
                     .GetSection(MagicObjectHelper.CTMSSettings));
+                builder.Services.Configure<Agentsetting>(builder.Configuration
+            .GetSection(MagicObjectHelper.Agentsetting));
                 #endregion
 
                 #region AutoMapper 使用的宣告

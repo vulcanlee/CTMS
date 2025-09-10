@@ -385,6 +385,7 @@ namespace AIAgent.Services
             #region 將病患資料與DICOM 寫入到 Inbound 資料夾
 
             #endregion
+
             File.Copy(patientAIInfo.DicomFilename,
                 Path.Combine(patientFolder, patientAIInfo.DestionatioDicomFilename), true);
             var json = patientAIInfo.ToJson();
