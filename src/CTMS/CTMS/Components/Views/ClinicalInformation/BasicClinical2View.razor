@@ -1,5 +1,6 @@
 ﻿@using AutoMapper
 @using CTMS.Business.Services.Dicoms
+@using CTMS.DataModel.Models.AIAgent
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
@@ -480,6 +481,9 @@
                     </div>
                     <div class="header blue-header mt-1" @onclick=OnPushToAIBtn>
                         AI
+                    </div>
+                    <div class="header blue-header mt-1" @onclick=OnConfirmAIBtn>
+                        AI處理確認
                     </div>
                 </div>
             </div>
@@ -1076,7 +1080,26 @@
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
         await GetData();
-        await AIIntegrateService.PushToAI(patient, patientAdapterModel, patientData);
+        var currentRootPath = Directory.GetCurrentDirectory();
+        var dicomImage = Path.Combine(currentRootPath, MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImageDicom);
+
+        PatientAIInfo patientAIInfo = await AIIntegrateService.PushToAI(patient, patientData, dicomImage);
+
+        patientData.臨床資訊.KeyName = patientAIInfo.KeyName;
+        patientAdapterModel.JsonData = patientData.ToJson();
+        patientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+        await PatientService.UpdateAsync(patientAdapterModel);
+    }
+
+    async Task OnConfirmAIBtn()
+    {
+        Patient patient = mapper.Map<Patient>(patientAdapterModel);
+
+        await GetData();
+        bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
+
+        patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
+        await PatientService.UpdateAsync(patientAdapterModel);
     }
 
     void OnShowMMRProteinSetting()

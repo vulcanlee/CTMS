@@ -127,6 +127,8 @@
         public const string OC = "OC";
         public const string EC = "EC";
         public const string NA = "NA";
+        public const string AI處理處理中 = "處理中";
+        public const string AI處理已完成 = "已完成";
 
         #region AIAgent 專用
         public const string Agentsetting = "Agentsetting";
