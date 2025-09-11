@@ -265,6 +265,8 @@ public class BasicClinicalPresentation_臨床資訊
     public string ImageDicom { get{ return $"{Image}.dicm"; } }
     public string ImagePng { get{ return $"{Image}.png"; } }
 
+    public RiskAssessmentResult RiskAssessmentResult { get; set; } = new();
+
     public string GetErPrStatus()
     {
         if(HormonStatusER == null || HormonStatusPR == null)

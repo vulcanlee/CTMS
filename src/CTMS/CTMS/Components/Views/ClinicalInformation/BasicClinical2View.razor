@@ -1098,8 +1098,26 @@
         await GetData();
         bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
 
-        patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
-        await PatientService.UpdateAsync(patientAdapterModel);
+        string msg = "";
+        if (isCompletion == false)
+        {
+            msg = "AI處理  尚未  完成，請稍後再確認";
+        }
+        else
+        {
+            msg = "AI處理  已經  完成";
+
+            string imageRootPath = MagicObjectHelper.UploadFinalPath;
+            var keyName = patientData.臨床資訊.KeyName;
+            // http://localhost:5272/UploadFiles/202509111436154559/Phase1Result/202509111436154559.png
+            var imageFilename = $"{keyName}/Phase1Result/{keyName}.png";
+            patientData.臨床資訊.RiskAssessmentResult.ImagePng = imageFilename;
+            patientAdapterModel.JsonData = patientData.ToJson();
+
+            patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
+            await PatientService.UpdateAsync(patientAdapterModel);
+        }
+        MessageBox.Show("400px", "200px", "資訊", msg, MessageBox.HiddenAsync);
     }
 
     void OnShowMMRProteinSetting()

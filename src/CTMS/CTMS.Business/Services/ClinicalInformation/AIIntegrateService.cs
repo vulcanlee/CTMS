@@ -72,7 +72,7 @@ public class AIIntegrateService
         if (files.Length == 0)
             return result;
 
-        var file = files.FirstOrDefault(x => x.StartsWith("output.csv"));
+        var file = files.FirstOrDefault(x => x.Contains("output.csv"));
         if (file == null)
             return result;
 

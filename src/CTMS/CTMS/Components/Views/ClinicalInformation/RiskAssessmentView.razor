@@ -97,14 +97,17 @@
 
     void InitData()
     {
-        if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
-        {
-            data.Demo實驗組();
-        }
-        else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        {
-            data.Demo對照組();
-        }
+        data = patientData.臨床資訊.RiskAssessmentResult;
+        data.Demo實驗組();
+
+        // if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
+        // {
+        //     data.Demo實驗組();
+        // }
+        // else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
+        // {
+        //     data.Demo對照組();
+        // }
     }
     void OnDemo()
     {

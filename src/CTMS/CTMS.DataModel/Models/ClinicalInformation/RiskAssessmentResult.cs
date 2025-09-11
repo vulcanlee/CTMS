@@ -64,5 +64,5 @@ public class RiskAssessmentResult
     public string Image { get; set; }
     public string ImageExtension { get; set; }
     public string ImageDicom { get { return $"{Image}.dicm"; } }
-    public string ImagePng { get { return $"{Image}.{ImageExtension}"; } }
+    public string ImagePng { get; set; }
 }
