@@ -50,8 +50,9 @@ public class AIIntegrateService
         var sourceDicomFilePath = Path.GetDirectoryName(dicomImage);
         var destinationDicomFileName = Path.Combine(dicmTempRootPath, $"{patientAIInfo.KeyName}.dcm");
         File.Copy(dicomImage, destinationDicomFileName, true);
-        patientAIInfo.DicomFilename = destinationDicomFileName;
+
         agentService.CreateInBound(patientAIInfo, agentsetting);
+
         return patientAIInfo;
     }
 

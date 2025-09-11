@@ -60,7 +60,7 @@ namespace AIAgent
 
                     await agentService.RunAsync();
 
-                    await Task.Delay(1000, stoppingToken);
+                    await Task.Delay(1000*5, stoppingToken);
                 }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)

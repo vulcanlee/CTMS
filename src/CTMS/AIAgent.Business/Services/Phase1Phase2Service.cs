@@ -28,7 +28,7 @@ public class Phase1Phase2Service
         //directoryHelperService.MoveDirectoryRecursive(sourcePath, destinationPath, overwrite: true);
     }
 
-    public async Task MoveToPhase2(PatientAIInfo patientAIInfo,
+    public async Task MoveToPhase2Async(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var phase2Path = agentsetting.GetPhase2QueuePath();
@@ -37,10 +37,11 @@ public class Phase1Phase2Service
         var sourcePath = Path.Combine(phase1WaitingPath, patientAIInfo.KeyName);
         var destinationPath = Path.Combine(phase2Path, patientAIInfo.KeyName);
 
+        await Task.Delay(1000);
         directoryHelperService.MoveDirectoryRecursive(sourcePath, destinationPath, overwrite: true);
     }
 
-    public async Task MoveToPhase3(PatientAIInfo patientAIInfo,
+    public async Task MoveToPhase3Async(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var phase3Path = agentsetting.GetPhase3QueuePath();
@@ -49,12 +50,13 @@ public class Phase1Phase2Service
         var sourcePath = Path.Combine(phase2WaitingPath, patientAIInfo.KeyName);
         var destinationPath = Path.Combine(phase3Path, patientAIInfo.KeyName);
 
+        await Task.Delay(1000);
         directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
 
         Directory.Delete(sourcePath, recursive: true);
     }
 
-    public async Task CopyToOutBound(PatientAIInfo patientAIInfo,
+    public async Task CopyToOutBoundAsync(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var outboundPath = agentsetting.GetOutBoundQueuePath();
@@ -68,7 +70,7 @@ public class Phase1Phase2Service
         //Directory.Delete(sourcePath, recursive: true);
     }
 
-    public async Task MoveToPhase1Waiting(PatientAIInfo patientAIInfo,
+    public async Task MoveToPhase1WaitingAsync(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var phase1Path = agentsetting.GetPhase1QueuePath();
@@ -80,7 +82,7 @@ public class Phase1Phase2Service
         directoryHelperService.MoveDirectoryRecursive(sourcePath, destinationPath, overwrite: true);
     }
 
-    public async Task MoveToPhase2Waiting(PatientAIInfo patientAIInfo,
+    public async Task MoveToPhase2WaitingAsync(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var phase1Path = agentsetting.GetPhase2QueuePath();
@@ -94,7 +96,7 @@ public class Phase1Phase2Service
         Directory.Delete(sourcePath, recursive: true);
     }
 
-    public async Task MoveToPhase3Waiting(PatientAIInfo patientAIInfo,
+    public async Task MoveToPhase3WaitingAsync(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var phase1Path = agentsetting.GetPhase3QueuePath();
@@ -108,7 +110,7 @@ public class Phase1Phase2Service
         Directory.Delete(sourcePath, recursive: true);
     }
 
-    public async Task MoveToCompletionWaiting(PatientAIInfo patientAIInfo,
+    public async Task MoveToCompletionWaitingAsync(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
         var phase1Path = agentsetting.GetOutBoundQueuePath();
@@ -201,7 +203,7 @@ public class Phase1Phase2Service
     public Phase2QuantitativeAnalysis BuildPhase2標註生成Json(PatientAIInfo patientAIInfo,
         Agentsetting agentsetting)
     {
-        var phase1ResultJsonPath = Path.Combine(agentsetting.GetPhase2QueuePath(), patientAIInfo.KeyName, MagicObjectHelper.Phase1ResultPath,
+        var phase1ResultJsonPath = Path.Combine(agentsetting.GetPhase2WaitingQueuePath(), patientAIInfo.KeyName, MagicObjectHelper.Phase1ResultPath,
             $"{patientAIInfo.KeyName}.json");
         var phase2LabelGeneration = new Phase2QuantitativeAnalysis()
         {

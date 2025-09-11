@@ -41,13 +41,21 @@ namespace AIAgent.Services
         public async Task RunAsync()
         {
             await ProceeInBoundAsync();
+            await Task.Delay(1000);
             await ProceePhase1Async();
+            await Task.Delay(1000);
             await ProceePhase1WaitingAsync();
+            await Task.Delay(1000);
             await ProceePhase2Async();
+            await Task.Delay(1000);
             await ProceePhase2WaitingAsync();
+            await Task.Delay(1000);
             await ProceePhase3Async();
+            await Task.Delay(1000);
             await ProceePhase3WaitingAsync();
+            await Task.Delay(1000);
             await ProceeCompleteAsync();
+            await Task.Delay(1000);
         }
 
         #region 不同階段的處理作法
@@ -90,7 +98,7 @@ namespace AIAgent.Services
                     phase1Phase2Service.BuildPhase1標註生成Json(patientAIInfo, agentsetting);
                 phase1Phase2Service.SavePhase1標註生成Json(phase1LabelGeneration, patientAIInfo, agentsetting);
 
-                await phase1Phase2Service.MoveToPhase1Waiting(patientAIInfo, agentsetting);
+                await phase1Phase2Service.MoveToPhase1WaitingAsync(patientAIInfo, agentsetting);
             }
             #endregion
         }
@@ -108,17 +116,21 @@ namespace AIAgent.Services
                     .FirstOrDefault(x => Path.GetFileName(x) == waitingFolderName);
                 if (tmpFolder != null)
                 {
-                    var sourcePath = Path.Combine(agentsetting.GetPhase1TmpFolderPath(), tmpFolder);
-                    var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase1ResultPath);
+                    var tmpFolderfiles = Directory.GetFiles(tmpFolder);
+                    if (tmpFolderfiles.Length >= 2)
+                    {
+                        await Task.Delay(1000); // 模擬處理時間
+                        var sourcePath = Path.Combine(agentsetting.GetPhase1TmpFolderPath(), tmpFolder);
+                        var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase1ResultPath);
 
-                    directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+                        directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
 
-                    var files = Directory.GetFiles(folder, "*.json");
-                    string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
-                    PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
-                    phase1Phase2Service.MoveToPhase2(patientAIInfo, agentsetting);
+                        var files = Directory.GetFiles(folder, "*.json");
+                        string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                        PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+                        await phase1Phase2Service.MoveToPhase2Async(patientAIInfo, agentsetting);
+                    }
                 }
-
             }
             #endregion
         }
@@ -142,11 +154,11 @@ namespace AIAgent.Services
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
 
+                await phase1Phase2Service.MoveToPhase2WaitingAsync(patientAIInfo, agentsetting);
+
                 Phase2QuantitativeAnalysis phase2LabelGeneration =
                     phase1Phase2Service.BuildPhase2標註生成Json(patientAIInfo, agentsetting);
                 phase1Phase2Service.SavePhase1定量分析Json(phase2LabelGeneration, patientAIInfo, agentsetting);
-
-                await phase1Phase2Service.MoveToPhase2Waiting(patientAIInfo, agentsetting);
             }
             #endregion
         }
@@ -164,15 +176,20 @@ namespace AIAgent.Services
                     .FirstOrDefault(x => Path.GetFileName(x) == waitingFolderName);
                 if (tmpFolder != null)
                 {
-                    var sourcePath = Path.Combine(agentsetting.GetPhase2TmpFolderPath(), tmpFolder);
-                    var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase2ResultPath);
+                    var tmpFolderfiles = Directory.GetFiles(tmpFolder);
+                    if (tmpFolderfiles.Length >= 23)
+                    {
+                        await Task.Delay(1000); // 模擬處理時間
+                        var sourcePath = Path.Combine(agentsetting.GetPhase2TmpFolderPath(), tmpFolder);
+                        var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase2ResultPath);
 
-                    directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
+                        directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
 
-                    var files = Directory.GetFiles(folder, "*.json");
-                    string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
-                    PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
-                    phase1Phase2Service.MoveToPhase3(patientAIInfo, agentsetting);
+                        var files = Directory.GetFiles(folder, "*.json");
+                        string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+                        PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+                        await phase1Phase2Service.MoveToPhase3Async(patientAIInfo, agentsetting);
+                    }
                 }
 
             }
@@ -198,7 +215,7 @@ namespace AIAgent.Services
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
 
-                await phase1Phase2Service.MoveToPhase3Waiting(patientAIInfo, agentsetting);
+                await phase1Phase2Service.MoveToPhase3WaitingAsync(patientAIInfo, agentsetting);
             }
             #endregion
         }
@@ -224,7 +241,7 @@ namespace AIAgent.Services
                     continue;
                 }
                 string destFolder = Path.Combine(agentsetting.GetCompleteQueuePath(), folderName);
-                await phase1Phase2Service.MoveToCompletionWaiting(patientAIInfo, agentsetting);
+                await phase1Phase2Service.MoveToCompletionWaitingAsync(patientAIInfo, agentsetting);
             }
             #endregion
         }
@@ -238,7 +255,7 @@ namespace AIAgent.Services
                 var files = Directory.GetFiles(folder, "*.json");
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
-                phase1Phase2Service.CopyToOutBound(patientAIInfo, agentsetting);
+                await phase1Phase2Service.CopyToOutBoundAsync(patientAIInfo, agentsetting);
 
                 var waitingFolderName = Path.GetFileName(folder);
                 string excelFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase2ResultPath, $"{waitingFolderName}.csv");
@@ -386,8 +403,18 @@ namespace AIAgent.Services
 
             #endregion
 
+            var destinationFile = Path.Combine(agentsetting.DicomFolderPath, $"{patientAIInfo.KeyName}.dcm");
+            var foo = Path.Combine(patientFolder, patientAIInfo.DestionatioDicomFilename);
             File.Copy(patientAIInfo.DicomFilename,
-                Path.Combine(patientFolder, patientAIInfo.DestionatioDicomFilename), true);
+                destinationFile, true);
+            string oldFilename = Path.GetFileName(patientAIInfo.DestionatioDicomFilename);
+            string newFilename = Path.GetFileName(destinationFile);
+
+            patientAIInfo.DicomFilename = destinationFile;
+            patientAIInfo.DestionatioDicomFilename = patientAIInfo.DestionatioDicomFilename.Replace(oldFilename, newFilename);
+
+            File.Copy(destinationFile, patientAIInfo.DestionatioDicomFilename, true);
+
             var json = patientAIInfo.ToJson();
             File.WriteAllText(patientAIInfo.DestionatioPatientJSONFilename, json, Encoding.UTF8);
         }
