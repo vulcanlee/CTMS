@@ -113,6 +113,7 @@ namespace CTMS
                 builder.Services.AddScoped<CancerStageService>();
                 builder.Services.AddScoped<BrowseSearchingService>();
                 builder.Services.AddScoped<DicomService>();
+                builder.Services.AddScoped<NeedChangePasswordSessionService>();
                 builder.Services.AddTransient<RandomListService>();
                 builder.Services.AddTransient<SubjectNoGeneratorService>();
                 builder.Services.AddTransient<SubjectNoHelper>();
