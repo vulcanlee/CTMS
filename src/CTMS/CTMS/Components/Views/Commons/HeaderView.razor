@@ -18,7 +18,13 @@
             <h1>AI 臨床試驗管理平臺</h1>
             @* <h2>National Cheng Kung University Hospital</h2> *@
         </div>
-        <div class="version">Version:@options.Value.SystemInformation.SystemVersion</div>
+        <div>
+            @if (!string.IsNullOrEmpty(forTesting))
+            {
+                <div class="alert-danger for-testing">@forTesting</div>
+            }
+            <div class="version">Version:@options.Value.SystemInformation.SystemVersion</div>
+        </div>
     </div>
 
     @if (string.IsNullOrEmpty(BackUri) == false)
@@ -34,9 +40,16 @@
 @code {
     [Parameter]
     public string BackUri { get; set; }
+    string forTesting = "";
 
     protected override async Task OnInitializedAsync()
     {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (!string.IsNullOrEmpty(uri.ToString()) &&
+        (uri.ToString().Contains(":8080/") || uri.ToString().Contains(":5272/")))
+        {
+            forTesting = "注意：測試用版本";
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
