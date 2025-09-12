@@ -266,6 +266,9 @@ public class BasicClinicalPresentation_臨床資訊
     public string ImagePng { get{ return $"{Image}.png"; } }
 
     public RiskAssessmentResult RiskAssessmentResult { get; set; } = new();
+    public int SignatureId { get; set; }
+    public string SignatureName { get; set; }
+    public string SignatureDate { get; set; }
 
     public string GetErPrStatus()
     {

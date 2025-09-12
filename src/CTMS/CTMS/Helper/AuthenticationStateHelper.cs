@@ -93,6 +93,24 @@ public class AuthenticationStateHelper
         }
     }
 
+    public async Task<MyUserAdapterModel> GetUserInformation(AuthenticationStateProvider authStateProvider)
+    {
+        MyUserAdapterModel result = new();
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            var id = user.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value.ToInt();
+            if (id is not null)
+            {
+                result = await myUserService.GetAsync(id.Value);
+            }
+        }
+        return result;
+    }
+
     public async Task<List<ProjectAdapterModel>> GetProjectListAsync(AuthenticationStateProvider authStateProvider)
     {
         List<ProjectAdapterModel> result = new();

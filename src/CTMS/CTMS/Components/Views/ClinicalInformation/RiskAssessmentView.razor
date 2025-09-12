@@ -1,4 +1,8 @@
 ﻿@inject PatientService PatientService
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
 
 <div>
     <div class="header">
@@ -76,6 +80,20 @@
                 </div>
             </div>
         </div>
+        <div>
+            @if (string.IsNullOrEmpty(SignatureName))
+            {
+                <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
+            }
+            else
+            {
+                <div>
+                    <p>簽名者: @SignatureName</p>
+                    <p>已經確認結果</p>
+                    <p>簽名日期: @SignatureDate</p>
+                </div>
+            }
+        </div>
     </div>
 </div>
 
@@ -84,11 +102,20 @@
     public string Code { get; set; }
 
     RiskAssessmentResult data = new RiskAssessmentResult();
+    public string SignatureId { get; set; } = string.Empty;
+    public string SignatureName { get; set; } = string.Empty;
+    public string SignatureDate { get; set; } = string.Empty;
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
+    MyUserAdapterModel myUserAdapterModel = new();
 
     protected override async Task OnInitializedAsync()
     {
+        myUserAdapterModel = await AuthenticationStateHelper.GetUserInformation(authStateProvider);
+        if (myUserAdapterModel != null)
+        {
+        }
+
         // Simulate fetching data from a service
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
@@ -97,6 +124,10 @@
 
     void InitData()
     {
+        SignatureName = patientData.臨床資訊.SignatureName;
+        SignatureDate = patientData.臨床資訊.SignatureDate;
+        SignatureId = patientData.臨床資訊.SignatureId.ToString();
+     
         data = patientData.臨床資訊.RiskAssessmentResult;
         data.Demo實驗組();
 
@@ -109,6 +140,24 @@
         //     data.Demo對照組();
         // }
     }
+
+    async Task OnSignAsync()
+    {
+        if (myUserAdapterModel != null && myUserAdapterModel.Id > 0)
+        {
+            patientData.臨床資訊.SignatureDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+            patientData.臨床資訊.SignatureId = myUserAdapterModel.Id;
+            patientData.臨床資訊.SignatureName = myUserAdapterModel.Name;
+            patientAdapterModel.JsonData = patientData.ToJson();
+            await PatientService.UpdateAsync(patientAdapterModel);
+
+            SignatureName = patientData.臨床資訊.SignatureName;
+            SignatureDate = patientData.臨床資訊.SignatureDate;
+            SignatureId = patientData.臨床資訊.SignatureId.ToString();
+            return;
+        }
+    }
+
     void OnDemo()
     {
         if (data.ExperimentalControl == MagicObjectHelper.實驗組)
