@@ -6,6 +6,7 @@ using CTMS.EntityModel.Models;
 using CTMS.Share.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SyncExcel.Services;
 
 namespace CTMS.Business.Services.ClinicalInformation;
 
@@ -14,16 +15,19 @@ public class AIIntegrateService
     private readonly ILogger<AIIntegrateService> logger;
     private readonly AgentService agentService;
     private readonly DirectoryHelperService directoryHelperService;
+    private readonly InputCsvService inputCsvService;
     private readonly Agentsetting agentsetting;
 
     public AIIntegrateService(ILogger<AIIntegrateService> logger,
         AgentService agentService,
         DirectoryHelperService directoryHelperService,
-        IOptions<Agentsetting> agentsettingOptions)
+        IOptions<Agentsetting> agentsettingOptions,
+        InputCsvService inputCsvService)
     {
         this.logger = logger;
         this.agentService = agentService;
         this.directoryHelperService = directoryHelperService;
+        this.inputCsvService = inputCsvService;
         this.agentsetting = agentsettingOptions.Value;
     }
 
@@ -85,5 +89,45 @@ public class AIIntegrateService
         result = true;
 
         return result;
+    }
+
+    public async Task<InputCsvModel> GetInputCsv(string KeyName)
+    {
+        InputCsvModel result = new();
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        var destinationKeyNamePath = Path.Combine(uploadFilesPath, KeyName, "Phase3Result", "input.csv");
+
+        if (!(File.Exists(destinationKeyNamePath)))
+            return result;
+
+        var foo = inputCsvService.Read(destinationKeyNamePath);
+
+        if(foo!= null)
+            result = foo;
+        return result;
+    }
+
+    public async Task<(string, string)> GetOnputCsv(string KeyName)
+    {
+        var risk = "";
+        var reducedRisk = "";
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        var destinationKeyNamePath = Path.Combine(uploadFilesPath, KeyName, "Phase3Result", "output.csv");
+
+        if (!(File.Exists(destinationKeyNamePath)))
+            return ("","");
+
+        string output = File.ReadAllText(destinationKeyNamePath).ToLower();
+        if (output.Contains("a grade III AE".ToLower()))
+        {
+            risk = "高風險";
+            reducedRisk = "需要";
+        }
+        else
+        {
+            risk = "低風險";
+            reducedRisk = "不需要";
+        }
+        return (risk, reducedRisk);
     }
 }
