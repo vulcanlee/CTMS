@@ -58,7 +58,7 @@ public class InputCsvService
                 case "lamaa":
                     InputCsvModel.Total_LamaA = value;
                     break;
-                case "total.namaA":
+                case "total.namaa":
                 case "namaa":
                     InputCsvModel.Total_NamaA = value;
                     break;

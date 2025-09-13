@@ -16,6 +16,8 @@
 	<ItemGroup>
 		<Content Remove="Data\RandomListRuntime.json" />
 		<Content Remove="Data\SubjectNoGenerator.json" />
+		<Content Remove="UploadFiles\202509131306485168\Phase1Result\202509131246158036.json" />
+		<Content Remove="UploadFiles\202509131306485168\Phase2Result\202509131246158036.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -101,6 +103,11 @@
 	<ItemGroup>
 	  <None Include="Data\RandomListRuntime.json" />
 	  <None Include="Data\SubjectNoGenerator.json" />
+	  <None Include="UploadFiles\202509131306485168\Phase1Result\202509131246158036.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Include="UploadFiles\202509131306485168\Phase2Result\202509131246158036.json" />
 	</ItemGroup>
 
 </Project>
