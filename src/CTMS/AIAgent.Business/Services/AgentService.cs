@@ -41,21 +41,21 @@ namespace AIAgent.Services
         public async Task RunAsync()
         {
             await ProceeInBoundAsync();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceePhase1Async();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceePhase1WaitingAsync();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceePhase2Async();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceePhase2WaitingAsync();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceePhase3Async();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceePhase3WaitingAsync();
-            await Task.Delay(1000);
+            await Task.Delay(500);
             await ProceeCompleteAsync();
-            await Task.Delay(1000);
+            await Task.Delay(500);
         }
 
         #region 不同階段的處理作法
@@ -301,8 +301,21 @@ namespace AIAgent.Services
                 #region 在此處理風險評估
                 Directory.Delete(folder, true);
 
-                string workingPath = agentsetting.風險評估模型;
-                string command = $" Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i {resultCsvFile} -o {outputPath}";
+                string workingPath = "";
+                string command = "";
+
+                if (patientAIInfo.癌別 == "EC")
+                {
+                    workingPath = agentsetting.風險評估模型;
+                    // Rscript Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i Testing_data.csv -o output.csv
+                    command = $" Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i {resultCsvFile} -o {outputPath}";
+                }
+                else
+                {
+                    workingPath = agentsetting.風險評估模型OC;
+                    // Rscript Run_Ovarian_Model.R -m Ovarian_Analysis_20250908_Model_data.RData -v Case_SMI.BH2_Imat_BMI -d 3 -c 0.5 -i Testing.data.csv -o  output.csv
+                    command = $" Run_Ovarian_Model.R -m Ovarian_Analysis_20250908_Model_data.RData -v Case_SMI.BH2_Imat_BMI -d 3 -c 0.5 -i {resultCsvFile} -o {outputPath}";
+                }
 
                 try
                 {

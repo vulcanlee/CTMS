@@ -17,6 +17,7 @@ public class Agentsetting
     public string CompleteQueueName { get; set; }
     public string InferencePath { get; set; }
     public string 風險評估模型 { get; set; }
+    public string 風險評估模型OC { get; set; }
 
     public string GetDicomFolderPath() => DicomFolderPath;
     public string GetInboundQueuePath() => Path.Combine(QueueFolderPath, InBoundQueueName);
