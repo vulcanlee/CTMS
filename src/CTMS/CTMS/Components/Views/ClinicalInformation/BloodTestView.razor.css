@@ -299,11 +299,11 @@
 }
 
 /* 當有數據時的樣式 */
-.result-cell:not(:empty) {
+/*.result-cell:not(:empty) {
     font-weight: bold;
     color: #0066cc;
 }
-
+*/
 /* 滑鼠懸停效果 */
 .sample-table tbody tr:hover {
     background-color: #f0f0f0;

@@ -252,8 +252,7 @@ namespace CTMS.Business.Services.ClinicalInformation
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             result.Add(new DropDownListDataModel() { Key = $"Wild-type", Name = $"Wild-type" });
             result.Add(new DropDownListDataModel() { Key = $"Abnormal - null", Name = $"Abnormal - null" });
-            result.Add(new DropDownListDataModel() { Key = $"expression", Name = $"expression" });
-            result.Add(new DropDownListDataModel() { Key = $"Overexpression", Name = $"Overexpression" });
+            result.Add(new DropDownListDataModel() { Key = $"Abnormal - Overexpression", Name = $"Abnormal - Overexpression" });
 
             return result;
         }

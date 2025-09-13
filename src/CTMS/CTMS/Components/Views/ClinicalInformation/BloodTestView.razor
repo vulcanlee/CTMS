@@ -88,8 +88,8 @@
                             rowClass = "row-highlighted";
                         }
                         <tr class="@rowClass">
-                            <td class="item-cell @item.TextClassName">@item.項目名稱</td>
-                            <td class="reference-cell @item.TextClassName">@item.參考區間</td>
+                            <td class="item-cell ">@item.項目名稱</td>
+                            <td class="reference-cell ">@item.參考區間</td>
                             <td class="result-cell @item.TextClassName">
                                 @if (editMode)
                                 {
@@ -100,7 +100,7 @@
                                         @item.檢驗數值
                                 }
                             </td>
-                            <td class="sampling-cell @item.TextClassName">
+                            <td class="sampling-cell ">
                                                                 @if (editMode)
                                 {
                                     <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
