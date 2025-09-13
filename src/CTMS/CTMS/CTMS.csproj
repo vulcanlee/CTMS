@@ -7,11 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="UploadFiles\202509131009394306\**" />
+	  <Content Remove="UploadFiles\202509131009394306\**" />
+	  <EmbeddedResource Remove="UploadFiles\202509131009394306\**" />
+	  <None Remove="UploadFiles\202509131009394306\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Remove="Data\RandomListRuntime.json" />
 		<Content Remove="Data\SubjectNoGenerator.json" />
-		<Content Remove="UploadFiles\202509131009394306\PatientData.json" />
-		<Content Remove="UploadFiles\202509131009394306\Phase1Result\202509111542189458.json" />
-		<Content Remove="UploadFiles\202509131009394306\Phase2Result\202509111542189458.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,11 +101,6 @@
 	<ItemGroup>
 	  <None Include="Data\RandomListRuntime.json" />
 	  <None Include="Data\SubjectNoGenerator.json" />
-	  <None Include="UploadFiles\202509131009394306\PatientData.json" />
-	  <None Include="UploadFiles\202509131009394306\Phase1Result\202509111542189458.json">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </None>
-	  <None Include="UploadFiles\202509131009394306\Phase2Result\202509111542189458.json" />
 	</ItemGroup>
 
 </Project>
