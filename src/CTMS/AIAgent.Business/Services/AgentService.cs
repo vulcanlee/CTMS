@@ -1,5 +1,6 @@
 ﻿using AIAgent.Models;
 using CTMS.DataModel.Models.AIAgent;
+using CTMS.Share.Extensions;
 using CTMS.Share.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -279,8 +280,11 @@ namespace AIAgent.Services
 
                 // 建立輸出 CSV 內容
                 var sb = new StringBuilder();
-                sb.AppendLine("ID,Age,Tumor.Grade,body.height.cm,body.weight.kg,Vertebral.Body.Area.cm2,Total.SMD,Total.ImatA,Total.LamaA,Total.NamaA,VatA,SatA");
-                sb.AppendLine(string.Join(",", new string[] {
+
+                if (patientAIInfo.癌別 == "EC")
+                {
+                    sb.AppendLine("ID,Age,Tumor.Grade,body.height.cm,body.weight.kg,Vertebral.Body.Area.cm2,Total.SMD,Total.ImatA,Total.LamaA,Total.NamaA,VatA,SatA");
+                    sb.AppendLine(string.Join(",", new string[] {
                     riskResult.ID,
                     riskResult.Age.ToLower().Replace("y",""),
                     tumorGrade,
@@ -293,9 +297,28 @@ namespace AIAgent.Services
                     riskResult.TotalNamaA,
                     riskResult.VatA,
                     riskResult.SatA
-                }.Select(v => v?.Trim() ?? "")));
+                    }.Select(v => v?.Trim() ?? "")));
+                }
+                else
+                {
+                    sb.AppendLine("ID,Body.Height.cm,Body.Weight.kg,SMA,SMD,ImatA,LamaA,NamaA,MyosteatosisA,VatA,SatA");
+                    sb.AppendLine(string.Join(",", new string[] {
+                        riskResult.ID,
+                        (riskResult.BodyHeight.ToFloat()*100).ToString(),
+                        riskResult.BodyWeight,
+                        riskResult.VertebralBodyAreaCm2,
+                        riskResult.TotalSMD,
+                        riskResult.TotalImatA,
+                        riskResult.TotalLamaA,
+                        riskResult.TotalNamaA,
+                        "", // MyosteatosisA 目前沒有
+                        riskResult.VatA,
+                        riskResult.SatA
+                    }.Select(v => v?.Trim() ?? "")));
+                }
 
-                File.WriteAllText(resultCsvFile, sb.ToString(), Encoding.UTF8);
+                var genContent = sb.ToString();
+                File.WriteAllText(resultCsvFile, genContent, Encoding.UTF8);
                 #endregion
 
                 #region 在此處理風險評估
@@ -332,8 +355,8 @@ namespace AIAgent.Services
 
                     var process = new Process { StartInfo = psi, EnableRaisingEvents = true };
                     process.Start();
-                    //string output = await process.StandardOutput.ReadToEndAsync();
-                    //string error = await process.StandardError.ReadToEndAsync();
+                    string output = await process.StandardOutput.ReadToEndAsync();
+                    string error = await process.StandardError.ReadToEndAsync();
 
                 }
                 catch (Exception ex)
