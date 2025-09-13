@@ -23,17 +23,17 @@ public class InputCsvService
         var values = lines[1].Split(',');
         for (int i = 0; i < headers.Length; i++)
         {
-            var header = headers[i].Trim();
+            var header = headers[i].Trim().ToLower();
             var value = values[i].Trim();
             switch (header)
             {
-                case "ID":
+                case "id":
                     InputCsvModel.ID = value;
                     break;
-                case "Age":
+                case "age":
                     InputCsvModel.Age = value;
                     break;
-                case "Tumor.Grade":
+                case "tumor.grade":
                     InputCsvModel.Tumor_Grade = value;
                     break;
                 case "body.height.cm":
@@ -42,25 +42,30 @@ public class InputCsvService
                 case "body.weight.kg":
                     InputCsvModel.body_weight_kg = value;
                     break;
-                case "Vertebral.Body.Area.cm2":
+                case "vertebral.body.area.cm2":
+                case "sma":
                     InputCsvModel.Vertebral_Body_Area_cm2 = value;
                     break;
-                case "Total.SMD":
+                case "total.smd":
+                case "smd":
                     InputCsvModel.Total_SMD = value;
                     break;
-                case "Total.ImatA":
+                case "total.imata":
+                case "imata":
                     InputCsvModel.Total_ImatA = value;
                     break;
-                case "Total.LamaA":
+                case "total.lamaa":
+                case "lamaa":
                     InputCsvModel.Total_LamaA = value;
                     break;
-                case "Total.NamaA":
+                case "total.namaA":
+                case "namaa":
                     InputCsvModel.Total_NamaA = value;
                     break;
-                case "VatA":
+                case "vata":
                     InputCsvModel.VatA = value;
                     break;
-                case "SatA":
+                case "sata":
                     InputCsvModel.SatA = value;
                     break;
                     //default:
