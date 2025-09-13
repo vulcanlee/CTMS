@@ -1,13 +1,14 @@
-﻿using CTMS.EntityModel.Models;
-using CTMS.EntityModel;
-using Microsoft.EntityFrameworkCore;
-using CTMS.DataModel.Models;
+﻿using AutoMapper;
 using CTMS.AdapterModels;
-using AutoMapper;
-using CTMS.Business.Helpers;
 using CTMS.Business.Factories;
-using CTMS.Share.Helpers;
+using CTMS.Business.Helpers;
 using CTMS.Business.Services;
+using CTMS.DataModel.Models;
+using CTMS.EntityModel;
+using CTMS.EntityModel.Models;
+using CTMS.Share.Helpers;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 using System.Text.Json;
 
 namespace CTMS.Services;
@@ -328,6 +329,56 @@ public class MyUserService
         userAdapterModel = Mapper.Map<MyUserAdapterModel>(user);
         CleanTrackingHelper.Clean<MyUser>(context);
         return userAdapterModel;
+    }
+
+    public async Task<string> ChangePasswordAsync(int id, string password)
+    {
+        string message = "";
+        CleanTrackingHelper.Clean<MyUser>(context);
+
+        var user = await context.MyUser
+             .AsNoTracking()
+             .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (user == null)
+        {
+            message= "使用者帳號不存在";
+            return message;
+        }
+
+        string hashPassword =
+            PasswordHelper.GetPasswordSHA(user.Salt, password);
+        user.Password = hashPassword;
+        user.RoleView = null;
+
+        context.Entry(user).State = EntityState.Modified;
+        await context.SaveChangesAsync();
+        CleanTrackingHelper.Clean<MyUser>(context);
+
+        return message;
+    }
+
+    public async Task<bool> NeedChangePasswordAsync(MyUserAdapterModel myUser)
+    {
+        bool result = false;
+        CleanTrackingHelper.Clean<MyUser>(context);
+
+        var user = await context.MyUser
+             .AsNoTracking()
+             .FirstOrDefaultAsync(x => x.Id == myUser.Id);
+
+        if (user == null)
+        {
+            return result;
+        }
+
+        string hashPassword =
+            PasswordHelper.GetPasswordSHA(user.Salt, MagicObjectHelper.NeedChangePassword);
+
+        if (user.Password == hashPassword)
+            result = true;
+
+        return result;
     }
 
     public async Task<(MyUserAdapterModel, string)> CheckUser(string account, string password)

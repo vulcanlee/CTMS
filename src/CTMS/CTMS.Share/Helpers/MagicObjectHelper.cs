@@ -129,6 +129,7 @@
         public const string NA = "NA";
         public const string AI處理處理中 = "處理中";
         public const string AI處理已完成 = "已完成";
+        public const string NeedChangePassword = "123456";
 
         #region AIAgent 專用
         public const string Agentsetting = "Agentsetting";

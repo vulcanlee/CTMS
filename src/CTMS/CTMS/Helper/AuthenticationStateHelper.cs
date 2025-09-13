@@ -55,6 +55,18 @@ public class AuthenticationStateHelper
             if (id is not null)
             {
                 var myuser = await myUserService.GetAsync(id.Value);
+
+                #region 檢查是否需要強制變更密碼
+                bool needChangePassword = await myUserService.NeedChangePasswordAsync(myuser);
+                if (needChangePassword)
+                {
+                    // 延遲導航，避免在初始化過程中立即導航
+                    await Task.Delay(200);
+                    NavigationManager.NavigateTo("/ChangePassword",true);
+                    return false;
+                }
+                #endregion
+
                 CurrentUser currentUser = mapper.Map<CurrentUser>(myuser);
 
                 RolePermission rolePermission = rolePermissionService.InitializePermissionSetting();
@@ -107,7 +119,11 @@ public class AuthenticationStateHelper
             {
                 result = await myUserService.GetAsync(id.Value);
             }
+            else
+                return null;
         }
+        else
+            return null;
         return result;
     }
 
