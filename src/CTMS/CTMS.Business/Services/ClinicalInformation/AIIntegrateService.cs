@@ -3,6 +3,7 @@ using AIAgent.Services;
 using CTMS.DataModel.Models.AIAgent;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.EntityModel.Models;
+using CTMS.Share.Extensions;
 using CTMS.Share.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -58,6 +59,45 @@ public class AIIntegrateService
         agentService.CreateInBound(patientAIInfo, agentsetting);
 
         return patientAIInfo;
+    }
+
+    public async Task<string> PushToAICheck(Patient patient,
+        PatientData patientData, string dicomImage)
+    {
+        string result = "";
+        if(string.IsNullOrEmpty(patientData.臨床資訊.Age) ||
+            patientData.臨床資訊.Age.ToInt()==0)
+        {
+            result = "年齡未填";
+            return result;
+        }
+
+        if (string.IsNullOrEmpty(patientData.臨床資訊.Height) ||
+            patientData.臨床資訊.Height.ToInt() == 0)
+        {
+            result = "身高未填";
+            return result;
+        }
+
+        if (string.IsNullOrEmpty(patientData.臨床資訊.Weight) ||
+            patientData.臨床資訊.Weight.ToInt() == 0)
+        {
+            result = "體重未填";
+            return result;
+        }
+
+        if (string.IsNullOrEmpty(patientData.臨床資訊.ECorOC))
+        {
+            result = "癌別未填";
+            return result;
+        }
+
+        if (!File.Exists(dicomImage))
+        {
+            result = "影像檔案不存在";
+            return result;
+        }
+        return result;
     }
 
     public async Task<bool> CheckAIProcess(string KeyName)

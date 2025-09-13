@@ -477,13 +477,13 @@
                     </div>
                 </div>
                 <div class="info-card report-card mt-3">
-                    <div class="header blue-header" @onclick=OnUploadBtn>
+                    <div class="header blue-header cursor-pointer" @onclick=OnUploadBtn>
                         上傳
                     </div>
-                    <div class="header blue-header mt-1" @onclick=OnPushToAIBtn>
+                    <div class="header blue-header cursor-pointer mt-1" @onclick=OnPushToAIBtn>
                         AI
                     </div>
-                    <div class="header blue-header mt-1" @onclick=OnConfirmAIBtn>
+                    <div class="header blue-header cursor-pointer mt-1" @onclick=OnConfirmAIBtn>
                         AI處理確認
                     </div>
                 </div>
@@ -1084,12 +1084,26 @@
         var currentRootPath = Directory.GetCurrentDirectory();
         var dicomImage = Path.Combine(currentRootPath, MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImageDicom);
 
+        string preCheckMessage = await AIIntegrateService.PushToAICheck(patient, patientData, dicomImage);
+        if (string.IsNullOrEmpty(preCheckMessage) == false)
+        {
+            MessageBox.Show("400px", "200px", "錯誤", preCheckMessage, MessageBox.HiddenAsync);
+            return;
+        }
+
         PatientAIInfo patientAIInfo = await AIIntegrateService.PushToAI(patient, patientData, dicomImage);
 
+        patientData.臨床資訊.SignatureDate = string.Empty;
+        patientData.臨床資訊.SignatureId = 0;
+        patientData.臨床資訊.SignatureName = string.Empty;
         patientData.臨床資訊.KeyName = patientAIInfo.KeyName;
         patientAdapterModel.JsonData = patientData.ToJson();
         patientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+        // patientAdapterModel.組別 = "Dr";
         await PatientService.UpdateAsync(patientAdapterModel);
+
+        MessageBox.Show("400px", "200px", "資訊", $"已經將此紀錄送至 AI 推論中 (ID: {patientAIInfo.KeyName})", MessageBox.HiddenAsync);
+
     }
 
     async Task OnConfirmAIBtn()
@@ -1106,7 +1120,7 @@
         }
         else
         {
-            msg = "AI處理  已經  完成";
+            msg = "AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果";
 
             InputCsvModel inputCsvModel = await AIIntegrateService.GetInputCsv(patientData.臨床資訊.KeyName);
 
