@@ -437,18 +437,18 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                 ReplaceVisitCodeItem(DataTabeEnums.抽血檢驗血液, source, target);
             foreach (var item in 抽血檢驗生化.Items)
                 ReplaceVisitCodeItem(DataTabeEnums.抽血檢驗生化, source, target);
-            foreach (var item in Survey化療副作用.Items)
-                ReplaceVisitCodeItem(DataTabeEnums.Survey化療副作用, source, target);
-            foreach (var item in Survey標靶副作用.Items)
-                ReplaceVisitCodeItem(DataTabeEnums.Survey標靶副作用, source, target);
-            foreach (var item in Survey放療副作用.Items)
-                ReplaceVisitCodeItem(DataTabeEnums.Survey放療副作用, source, target);
             foreach (var item in SurveyWhooqol問卷.Items)
                 ReplaceVisitCodeItem(DataTabeEnums.SurveyWhooqol問卷, source, target);
             foreach (var item in Survey個人史問卷.Items)
                 ReplaceVisitCodeItem(DataTabeEnums.Survey個人史問卷, source, target);
             foreach (var item in Survey家族史問卷.Items)
                 ReplaceVisitCodeItem(DataTabeEnums.Survey家族史問卷, source, target);
+            foreach (var item in Survey化療副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey化療副作用, source, target);
+            foreach (var item in Survey標靶副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey標靶副作用, source, target);
+            foreach (var item in Survey放療副作用.Items)
+                ReplaceVisitCodeItem(DataTabeEnums.Survey放療副作用, source, target);
             foreach (var item in HematologicSideEffects血液副作用.Items)
                 ReplaceVisitCodeItem(DataTabeEnums.HematologicSideEffects血液副作用, source, target);
             foreach (var item in SurveySideEffects副作用1.Items)
