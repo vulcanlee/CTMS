@@ -17,6 +17,20 @@
     @if (hasRiskAssessment)
     {
         <div class="risk-assessment-container">
+            <div>
+                @if (string.IsNullOrEmpty(SignatureName))
+                {
+                    <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
+                }
+                else
+                {
+                    <div class="mb-3 signature">
+                        <span>簽名者: @SignatureName</span>
+                        <span class="ms-2">已經確認結果</span>
+                        <span class="ms-2">簽名日期: @SignatureDate</span>
+                    </div>
+                }
+            </div>
 
             <div class="content-wrapper">
                 <div class="left-panel">
@@ -81,20 +95,6 @@
                         <img src="UploadFiles/@data.ImagePng?v=@imageVersion" alt="CT掃描影像2" class="scan-image" />
                     </div>
                 </div>
-            </div>
-            <div>
-                @if (string.IsNullOrEmpty(SignatureName))
-                {
-                    <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
-                }
-                else
-                {
-                    <div>
-                        <p>簽名者: @SignatureName</p>
-                        <p>已經確認結果</p>
-                        <p>簽名日期: @SignatureDate</p>
-                    </div>
-                }
             </div>
         </div>
     }

@@ -71,7 +71,11 @@
 }
 
 
-
+.signature {
+    font-size: 20px;
+    color: #555;
+    font-size: 24px;
+}
 
 
 .risk-assessment-container {
