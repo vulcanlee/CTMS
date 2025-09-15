@@ -473,7 +473,7 @@
                         CT Image
                     </div>
                     <div class="empty-image-area">
-                        <img src="@image" class="responsive-image" />
+                        <img src="@($"{image}?v={imageVersion}")" class="responsive-image" />
                     </div>
                 </div>
                 <div class="info-card report-card mt-3">
@@ -562,6 +562,7 @@
 
     string SubjectNo = "";
     string image = "";
+    string imageVersion = DateTime.Now.Ticks.ToString();
 
     protected override async Task OnInitializedAsync()
     {
@@ -1200,7 +1201,11 @@
             patientData.臨床資訊.Image = patientData.臨床資訊.SubjectNo;
             patientAdapterModel.JsonData = patientData.ToJson();
             await PatientService.UpdateAsync(patientAdapterModel);
+            imageVersion = DateTime.Now.Ticks.ToString();
+            StateHasChanged();
+            await Task.Delay(200);
         }
+        imageVersion = DateTime.Now.Ticks.ToString();
         ShowUploadDicomDialog = false;
         await GetData();
         StateHasChanged();

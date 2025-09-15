@@ -56,6 +56,10 @@ public class DicomService
     {
         try
         {
+            if(File.Exists(pngPath))
+            {
+                File.Delete(pngPath);
+            }
             logger.LogInformation($"開始轉換: {dicomPath}");
 
             // 開啟 DICOM 檔案

@@ -77,8 +77,8 @@
 
                 <div class="right-panel">
                     <div class="scan-images">
-                        <img src="UploadFiles/@patientData.臨床資訊.ImagePng" alt="CT掃描影像1" class="scan-image" />
-                        <img src="UploadFiles/@data.ImagePng" alt="CT掃描影像2" class="scan-image" />
+                        <img src="UploadFiles/@patientData.臨床資訊.ImagePng?v=@imageVersion" alt="CT掃描影像1" class="scan-image" />
+                        <img src="UploadFiles/@data.ImagePng?v=@imageVersion" alt="CT掃描影像2" class="scan-image" />
                     </div>
                 </div>
             </div>
@@ -112,6 +112,7 @@
     PatientAdapterModel patientAdapterModel = new();
     MyUserAdapterModel myUserAdapterModel = new();
     bool hasRiskAssessment = false;
+    string imageVersion = DateTime.Now.Ticks.ToString();
 
     protected override async Task OnInitializedAsync()
     {
