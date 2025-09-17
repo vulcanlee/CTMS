@@ -1100,6 +1100,7 @@
         patientData.臨床資訊.KeyName = patientAIInfo.KeyName;
         patientAdapterModel.JsonData = patientData.ToJson();
         patientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+        patientAdapterModel.AI評估 = MagicObjectHelper.NA;
         // patientAdapterModel.組別 = "Dr";
         await PatientService.UpdateAsync(patientAdapterModel);
 

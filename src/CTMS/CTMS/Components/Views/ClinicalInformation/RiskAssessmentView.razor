@@ -159,6 +159,8 @@
             patientData.臨床資訊.SignatureId = myUserAdapterModel.Id;
             patientData.臨床資訊.SignatureName = myUserAdapterModel.Name;
             patientAdapterModel.JsonData = patientData.ToJson();
+
+            patientAdapterModel.AI評估 = MagicObjectHelper.AI評估完成;
             await PatientService.UpdateAsync(patientAdapterModel);
 
             SignatureName = patientData.臨床資訊.SignatureName;
