@@ -24,8 +24,15 @@
                 <div class="alert-danger for-testing">@forTesting</div>
             }
             <div class="version">
-                <i class="oi oi-person"></i> 使用者：@userName
-                <div >Version:@options.Value.SystemInformation.SystemVersion</div>
+                @if (!string.IsNullOrEmpty(userName))
+                {
+                    <i class="oi oi-person"></i><span> 使用者：@userName</span>
+                }
+                else
+                {
+                    <i class="oi oi-person"></i><span> 使用者：未登入</span>
+                }
+                <div>Version:@options.Value.SystemInformation.SystemVersion</div>
             </div>
         </div>
     </div>
@@ -43,6 +50,8 @@
 @code {
     [Parameter]
     public string BackUri { get; set; }
+    [Parameter]
+    public CurrentUser CurrentUser { get; set; }
     string forTesting = "";
     string userName = "";
 
@@ -55,9 +64,16 @@
             forTesting = "注意：測試用版本";
         }
 
-        if (CurrentUserService.CurrentUser != null)
+    }
+
+    override protected void OnParametersSet()
+    {
+        if (CurrentUser != null)
         {
-            userName = CurrentUserService.CurrentUser.Name;
+            if (string.IsNullOrEmpty(CurrentUser.Name) == false)
+                userName = CurrentUser.Name;
+            else
+                userName = "";
         }
     }
 

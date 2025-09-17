@@ -27,7 +27,7 @@ else
         @{
             string backUri = $"/BasicClinical/{Code}";
         }
-        <HeaderView BackUri=@backUri />
+        <HeaderView BackUri=@backUri CurrentUser=@CurrentUserService.CurrentUser />
 
         <div class="page-body pa-6">
             <RiskAssessmentView Code="@Code" />
