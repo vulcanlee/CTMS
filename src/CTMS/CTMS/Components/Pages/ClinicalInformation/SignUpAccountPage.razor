@@ -1,0 +1,60 @@
+﻿@page "/SignUp"
+@using CTMS.DataModel.Models.Systems
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Popups
+@using Microsoft.Extensions.Options
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+@inject IOptions<CTMSSettings> options
+
+<PageTitle>帳號申請</PageTitle>
+
+    <div>
+        <HeaderView BackUri="" CurrentUser=null />
+
+        <div class="page-body pa-6">
+            <SignUpAccountView />
+        </div>
+    </div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+
+    protected override void OnInitialized()
+    {
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+}

@@ -1,0 +1,94 @@
+﻿.header {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    position: relative; /* 添加相對定位以便子元素可以絕對定位 */
+}
+
+    /* 以下是新添加的 Version 元素的樣式 */
+    .header .version {
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-size: 14px;
+        color: #666;
+    }
+
+.hospital-logo {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.hospital-title h1 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.hospital-title h2 {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.back-button {
+    padding: 15px 20px;
+}
+
+
+.page-top {
+    background-color: black;
+    color: white;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the title */
+    padding: 0 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.back-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: auto; /* Push the button to the left */
+    font-size: 14px;
+    position: absolute;
+    left: 15px;
+}
+
+.upload-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    right: 15px; /* Push button to the far right */
+}
+
+    .upload-btn:hover {
+        background-color: #555;
+    }
+
+.back-btn:hover {
+    background-color: #555;
+}
+
+.page-title {
+    font-size: 16px;
+    text-align: center; /* Center the text inside its container */
+}
+
+.page-body {
+    /*padding-top: 30px;*/
+}

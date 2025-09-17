@@ -93,10 +93,10 @@
 }
 
 .content-wrapper {
-    display: flex;
+/*    display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-}
+*/}
 
 .left-panel {
     flex: 0 0 30%;
@@ -192,3 +192,44 @@ td {
         margin-bottom: 15px;
     }
 }
+
+
+
+
+
+
+
+.info-card {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.back-button-container {
+    background-color: #e9ecef;
+    padding: 0px 6px;
+    width: 100vw; /* 視窗寬度 */
+    position: relative;
+    left: 0;
+}
+
+.header {
+    padding: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.pink-header {
+    background-color: #f8d7da;
+}
+
+.label-column {
+    width: 20%;
+    background-color: #f8f9fa;
+}
+
+.value-column {
+    width: 80%;
+}
+
