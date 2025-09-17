@@ -18,9 +18,9 @@
     {
         <div class="risk-assessment-container">
             <div>
+                <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
                 @if (string.IsNullOrEmpty(SignatureName))
                 {
-                    <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
                 }
                 else
                 {
