@@ -1074,11 +1074,18 @@
 
     void OnUploadBtn()
     {
-        ShowUploadDicomDialog = true;
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == true)
+        {
+            ShowUploadDicomDialog = true;
+        }
     }
 
     async Task OnPushToAIBtn()
     {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == false)
+        {
+            return;
+        }
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
         await GetData();
@@ -1110,6 +1117,10 @@
 
     async Task OnConfirmAIBtn()
     {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == false)
+        {
+            return;
+        }
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
         await GetData();
