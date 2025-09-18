@@ -60,7 +60,7 @@
                         <div class="form-group col">
                             <label class="control-label">名稱</label>
                             <SfTextBox @bind-Value="ViewModel.CurrentRecord.Name"
-                                       Placeholder="請輸名稱" />
+                                         Autocomplete="AutoComplete.Off" />
                             <ValidationMessage For="@(() => ViewModel.CurrentRecord.Name)" />
                         </div>
                     </div>

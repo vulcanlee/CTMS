@@ -10,6 +10,7 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
 @inject CurrentUserService CurrentUserService
+@inject TestingServerHelper TestingServerHelper
 <div>
     <div class="header">
         <img src="/images/ncku_logo.svg" alt="@MagicObjectHelper.國立成功大學醫學院附設醫院"
@@ -57,13 +58,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-        if (!string.IsNullOrEmpty(uri.ToString()) &&
-        (uri.ToString().Contains(":8080/") || uri.ToString().Contains(":5272/")))
+        var isTesting = TestingServerHelper.IsTestingServer(NavigationManager);
+        if (isTesting)
         {
             forTesting = "注意：測試用版本";
         }
-
     }
 
     override protected void OnParametersSet()
