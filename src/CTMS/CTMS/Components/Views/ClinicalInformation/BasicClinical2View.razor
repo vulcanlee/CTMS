@@ -1265,6 +1265,8 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        var needNotification = await ConfirmSendNotificationAsync();
     }
 
     async Task OnCancel()
@@ -1275,18 +1277,24 @@
 
     async Task OnNotifyRadiologistAsync()
     {
-        await ConfirmSendNotification();
+        var needNotification = await ConfirmSendNotificationAsync();
     }
 
-    async Task ConfirmSendNotification()
+    async Task<bool> ConfirmSendNotificationAsync()
     {
-        var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        bool result = false;
+        result = await ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要寄送通知給放射科醫師嗎？",
              ConfirmMessageBox.HiddenAsync);
-        if (confirmDelete == true)
-        {
-            
-        }
+        return result;
+    }
+
+    (string title, string body) BuildNotificationMessage()
+    {
+        string title = "請協助進行影像判讀與上傳最新影像";
+
+        string body = $"請放射科醫師協助 {patientData.臨床資訊.SubjectNo} 進行影像判讀，謝謝您！";
+        return (title, body);
     }
     #region 頁籤切換
     void On臨床資料()
