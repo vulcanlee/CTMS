@@ -1157,7 +1157,7 @@
             patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = "";
+            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
 
             (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
 
