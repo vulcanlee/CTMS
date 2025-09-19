@@ -52,14 +52,24 @@
             }
             else
             {
-                <span class="edit-icon d-flex align-items-center cursor-pointer"
-                      @onclick="OnChangeEditMode">
-                    <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
-                </span>
-                <span class="edit-icon d-flex align-items-center cursor-pointer"
-                      @onclick="OnShowVisitCode">
-                    <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>Visit Code
-                </span>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <span class="edit-icon d-flex align-items-center cursor-pointer"
+                              @onclick="OnChangeEditMode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                        </span>
+                        <span class="edit-icon d-flex align-items-center cursor-pointer"
+                              @onclick="OnShowVisitCode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>Visit Code
+                        </span>
+                    </div>
+                    <div class="mx-4">
+                        <button class="btn btn-outline-primary"
+                                @onclick=OnNotifyRadiologistAsync>
+                            通知放射科醫師
+                        </button>
+                    </div>
+                </div>
             }
         </div>
 
@@ -1263,6 +1273,22 @@
         editMode = false;
     }
 
+    async Task OnNotifyRadiologistAsync()
+    {
+        await ConfirmSendNotification();
+    }
+
+    async Task ConfirmSendNotification()
+    {
+        var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要寄送通知給放射科醫師嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        if (confirmDelete == true)
+        {
+            
+        }
+    }
+    #region 頁籤切換
     void On臨床資料()
     {
         if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE臨床資訊, ConfirmMessageBox) == false)
@@ -1316,4 +1342,7 @@
         var url = $"/RiskAssessment/{Code}";
         NavigationManager.NavigateTo(url);
     }
+    #endregion
+
+
 }
