@@ -42,6 +42,7 @@
         public const string ROLE問卷 = "問卷";
         public const string ROLE追蹤資料 = "追蹤資料";
         public const string ROLE風險評估 = "風險評估";
+        public const string ROLEAI操作 = "AI操作";
         public const string ROLE備份還原 = "備份還原";
         public static readonly int NeedDelayRefresh = 200;
         #endregion
@@ -129,6 +130,7 @@
         public const string NA = "NA";
         public const string AI處理處理中 = "處理中";
         public const string AI處理已完成 = "已完成";
+        public const string AI評估完成 = "已完成";
         public const string NeedChangePassword = "123456";
 
         #region AIAgent 專用

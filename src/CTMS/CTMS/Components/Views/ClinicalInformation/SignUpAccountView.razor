@@ -1,0 +1,97 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Popups
+
+@inject PatientService PatientService
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+<div>
+    <div class="header">
+        <div>
+            <div class="d-flex align-items-start">
+                <h1 style="margin: 0; flex-grow: 1;">AI 臨床試驗管理平臺 帳號申請</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="risk-assessment-container">
+
+        <div class="content-wrapper">
+
+            <div class="ai-result-panel">
+                <div class="panel-header">填寫申請資料</div>
+            </div>
+        </div>
+        <div class="info-card patient-info">
+            <table class="table table-bordered info-table">
+                <tbody>
+                    <tr>
+                        <td class="label-column">帳號</td>
+                        <td class="value-column">
+                            <div class="">
+                                <SfTextBox @bind-Value="data.Account" CssClass="w-100" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-column">姓名</td>
+                        <td class="value-column">
+                            <div class="">
+                                <SfTextBox @bind-Value="data.Name" CssClass="w-100" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-column">信箱</td>
+                        <td class="value-column">
+                            <div class="">
+                                <SfTextBox @bind-Value="data.Email" CssClass="w-100" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-column">備註說明</td>
+                        <td class="value-column">
+                            <div class="">
+                                <SfTextBox @bind-Value="data.Note" CssClass="w-100" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <button class="btn btn-primary" @onclick="OnSignAsync">送出</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    public class SignUpAccountViewModel
+    {
+        public string Account { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Note { get; set; } = string.Empty;
+    }
+    public SignUpAccountViewModel data = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    async Task OnSignAsync()
+    {
+    }
+}

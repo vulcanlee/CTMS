@@ -1,7 +1,17 @@
-﻿@page "/RiskAssessment/{code}"
+﻿@page "/SignUp"
 @using CTMS.DataModel.Models.Systems
 @using CTMS.Share.Helpers
 @using Newtonsoft.Json
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Popups
+@using Microsoft.Extensions.Options
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
 
@@ -10,30 +20,17 @@
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
 
-@using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
 
-<PageTitle>風險評估 儀錶板</PageTitle>
+<PageTitle>帳號申請</PageTitle>
 
-@if (string.IsNullOrEmpty(RoleMessage) == false)
-{
-    <div class="alert alert-danger" role="alert">
-        @RoleMessage
-    </div>
-}
-else
-{
     <div>
-        @{
-            string backUri = $"/BasicClinical/{Code}";
-        }
-        <HeaderView BackUri=@backUri CurrentUser=@CurrentUserService.CurrentUser />
+        <HeaderView BackUri="" CurrentUser=null />
 
         <div class="page-body pa-6">
-            <RiskAssessmentView Code="@Code" />
+            <SignUpAccountView />
         </div>
     </div>
-}
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -48,9 +45,6 @@ else
 <DialogBackground />
 
 @code {
-    [Parameter]
-    public string Code { get; set; }
-
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
@@ -62,21 +56,5 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var checkResult = await AuthenticationStateHelper
-        .Check(authStateProvider, NavigationManager);
-        if (checkResult == true)
-        {
-            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE風險評估) == false)
-            {
-                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
-            }
-            else
-            {
-            }
-        }
-    }
-    void OnBack()
-    {
-        NavigationManager.NavigateTo($"/BasicClinical/{Code}");
     }
 }

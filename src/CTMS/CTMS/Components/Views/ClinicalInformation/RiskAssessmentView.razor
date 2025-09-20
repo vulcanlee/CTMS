@@ -18,9 +18,9 @@
     {
         <div class="risk-assessment-container">
             <div>
+                <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
                 @if (string.IsNullOrEmpty(SignatureName))
                 {
-                    <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
                 }
                 else
                 {
@@ -159,6 +159,8 @@
             patientData.臨床資訊.SignatureId = myUserAdapterModel.Id;
             patientData.臨床資訊.SignatureName = myUserAdapterModel.Name;
             patientAdapterModel.JsonData = patientData.ToJson();
+
+            patientAdapterModel.AI評估 = MagicObjectHelper.AI評估完成;
             await PatientService.UpdateAsync(patientAdapterModel);
 
             SignatureName = patientData.臨床資訊.SignatureName;

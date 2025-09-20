@@ -76,7 +76,7 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> Get身高Height()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            for (int i = 140; i <= 180; i++)
+            for (int i = 140; i <= 200; i++)
             {
                 result.Add(new DropDownListDataModel() { Key = $"{i}", Name = $"{i}cm" });
             }

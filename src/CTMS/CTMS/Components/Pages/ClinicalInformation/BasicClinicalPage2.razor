@@ -23,7 +23,7 @@
 else
 {
     string backUri = $"/Browser";
-    <HeaderView BackUri=@backUri />
+    <HeaderView BackUri=@backUri CurrentUser=@CurrentUserService.CurrentUser />
 
     @* <div>
         <div class="back-button-container">

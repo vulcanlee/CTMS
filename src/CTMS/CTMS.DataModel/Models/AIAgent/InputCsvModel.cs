@@ -23,6 +23,7 @@ public class InputCsvModel
     public string Total_NamaA { get; set; }
     public string VatA { get; set; }
     public string SatA { get; set; }
+    public string Myosteatosis { get; set; }
 
 
     public string ToJson()

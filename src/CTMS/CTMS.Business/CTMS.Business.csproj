@@ -11,6 +11,7 @@
 		<PackageReference Include="Azure.AI.OpenAI" Version="2.0.0" />
 		<PackageReference Include="fo-dicom.Codecs" Version="5.16.3" />
 		<PackageReference Include="fo-dicom.Imaging.ImageSharp" Version="5.2.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="Syncfusion.HtmlToPdfConverter.Net.Windows" Version="28.1.39" />
 		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="26.2.13" />-->

@@ -52,14 +52,24 @@
             }
             else
             {
-                <span class="edit-icon d-flex align-items-center cursor-pointer"
-                      @onclick="OnChangeEditMode">
-                    <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
-                </span>
-                <span class="edit-icon d-flex align-items-center cursor-pointer"
-                      @onclick="OnShowVisitCode">
-                    <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>Visit Code
-                </span>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <span class="edit-icon d-flex align-items-center cursor-pointer"
+                              @onclick="OnChangeEditMode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                        </span>
+                        <span class="edit-icon d-flex align-items-center cursor-pointer"
+                              @onclick="OnShowVisitCode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>Visit Code
+                        </span>
+                    </div>
+                    <div class="mx-4">
+                        <button class="btn btn-outline-primary"
+                                @onclick=OnNotifyRadiologistAsync>
+                            通知放射科醫師
+                        </button>
+                    </div>
+                </div>
             }
         </div>
 
@@ -1074,11 +1084,18 @@
 
     void OnUploadBtn()
     {
-        ShowUploadDicomDialog = true;
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == true)
+        {
+            ShowUploadDicomDialog = true;
+        }
     }
 
     async Task OnPushToAIBtn()
     {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == false)
+        {
+            return;
+        }
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
         await GetData();
@@ -1100,6 +1117,7 @@
         patientData.臨床資訊.KeyName = patientAIInfo.KeyName;
         patientAdapterModel.JsonData = patientData.ToJson();
         patientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+        patientAdapterModel.AI評估 = MagicObjectHelper.NA;
         // patientAdapterModel.組別 = "Dr";
         await PatientService.UpdateAsync(patientAdapterModel);
 
@@ -1109,6 +1127,10 @@
 
     async Task OnConfirmAIBtn()
     {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == false)
+        {
+            return;
+        }
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
         await GetData();
@@ -1135,7 +1157,7 @@
             patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = "";
+            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
 
             (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
 
@@ -1243,6 +1265,8 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        var needNotification = await ConfirmSendNotificationAsync();
     }
 
     async Task OnCancel()
@@ -1251,6 +1275,28 @@
         editMode = false;
     }
 
+    async Task OnNotifyRadiologistAsync()
+    {
+        var needNotification = await ConfirmSendNotificationAsync();
+    }
+
+    async Task<bool> ConfirmSendNotificationAsync()
+    {
+        bool result = false;
+        result = await ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要寄送通知給放射科醫師嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        return result;
+    }
+
+    (string title, string body) BuildNotificationMessage()
+    {
+        string title = "請協助進行影像判讀與上傳最新影像";
+
+        string body = $"請放射科醫師協助 {patientData.臨床資訊.SubjectNo} 進行影像判讀，謝謝您！";
+        return (title, body);
+    }
+    #region 頁籤切換
     void On臨床資料()
     {
         if (AuthenticationStateHelper.CheckShowPage(MagicObjectHelper.ROLE臨床資訊, ConfirmMessageBox) == false)
@@ -1304,4 +1350,7 @@
         var url = $"/RiskAssessment/{Code}";
         NavigationManager.NavigateTo(url);
     }
+    #endregion
+
+
 }
