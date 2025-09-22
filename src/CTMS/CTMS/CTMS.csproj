@@ -47,10 +47,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AIAgent.Business\AIAgent.Business.csproj" />
 		<ProjectReference Include="..\CTMS.Business\CTMS.Business.csproj" />
-		<ProjectReference Include="..\CTMS.EntityModel\CTMS.EntityModel.csproj" />
-		<ProjectReference Include="..\CTMS.ExcelUtility\CTMS.ExcelUtility.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -17,4 +17,8 @@
 	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\CTMS.Share\CTMS.Share.csproj" />
+	</ItemGroup>
+
 </Project>

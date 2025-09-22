@@ -23,7 +23,6 @@
 		<ProjectReference Include="..\CTMS.DataModel\CTMS.DataModel.csproj" />
 		<ProjectReference Include="..\CTMS.EntityModel\CTMS.EntityModel.csproj" />
 		<ProjectReference Include="..\CTMS.ExcelUtility\CTMS.ExcelUtility.csproj" />
-		<ProjectReference Include="..\CTMS.Share\CTMS.Share.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
