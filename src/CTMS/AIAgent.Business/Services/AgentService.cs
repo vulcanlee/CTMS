@@ -60,21 +60,54 @@ namespace AIAgent.Services
         }
 
         #region 不同階段的處理作法
+        /// <summary>
+        /// 將 Inbound 佇列中的每個病患資料夾移轉到 Phase 1 佇列。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 Inbound 根目錄下的所有病患資料夾。
+        /// 2. 逐一以同名目錄搬移至 Phase 1 佇列。
+        /// 注意：
+        /// - 本方法未處理目的端同名資料夾衝突；若 Phase 1 已存在同名目錄，Directory.Move 會擲出例外。
+        /// - Task.Delay 僅用於模擬處理時間。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">來源/目的目錄存在衝突，或跨磁碟區搬移失敗。</exception>
+        /// <exception cref="UnauthorizedAccessException">目錄存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
         async Task ProceeInBoundAsync()
         {
+            // 取得 Inbound 佇列下的所有病患資料夾
             List<string> inBoundDirectories = Directory.GetDirectories(agentsetting.GetInboundQueuePath()).ToList();
 
             #region 將該資料夾搬到 Phase 1 資料夾內
             foreach (var folder in inBoundDirectories)
             {
-                await Task.Delay(1000); // 模擬處理時間\
+                await Task.Delay(1000); // 模擬處理時間
                 var folderName = Path.GetFileName(folder);
+
+                // 以同名目錄搬移至 Phase 1 佇列；若目的端已存在同名資料夾將擲出例外
                 Directory.Move(folder,
                     Path.Combine(agentsetting.GetPhase1QueuePath(), folderName));
             }
             #endregion
         }
 
+        /// <summary>
+        /// 處理 Phase 1 佇列中的病患資料。
+        /// 流程：
+        /// 1. 列出 Phase 1 佇列資料夾中的所有病患資料夾。
+        /// 2. 若 Phase 1 Waiting 佇列已存在同名資料夾，先刪除以確保重新處理狀態一致。
+        /// 3. 讀取病患基本資料 JSON（前綴為 MagicObjectHelper.PrefixPatientData）。
+        /// 4. 複製病患 DICOM 至標註/推論所需的位置。
+        /// 5. 產生並儲存 Phase 1「標註生成」設定 JSON。
+        /// 6. 將病患資料移動至 Phase 1 Waiting 佇列，等待外部標註結果。
+        /// </summary>
+        /// <remarks>
+        /// 此方法僅負責前置準備與資料夾流轉，不會等待外部標註完成。
+        /// 可能會拋出目錄/檔案存取相關例外（如 IO、權限、路徑不存在等）。
+        /// </remarks>
+        /// <returns>非同步作業工作。</returns>
         async Task ProceePhase1Async()
         {
             // Queue Phase 1 資料夾內的所有病患資料夾
@@ -83,52 +116,94 @@ namespace AIAgent.Services
             #region 將該資料夾搬到 Phase 1 資料夾內
             foreach (var folder in inBoundDirectories)
             {
+                // 目標等待佇列的病患資料夾路徑
                 string folderName = Path.GetFileName(folder);
                 string destFolder = Path.Combine(agentsetting.GetPhase1WaitingQueuePath(), folderName);
+
+                // 若等待 Phase1Waiting 佇列已存在同名資料夾，先刪除確保重跑時乾淨狀態
                 if (Directory.Exists(destFolder))
                 {
                     Directory.Delete(destFolder, true);
                 }
 
+                // 尋找病患基本資料 JSON（前綴為 MagicObjectHelper.PrefixPatientData）
                 var files = Directory.GetFiles(folder, "*.json");
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
+
+                // 載入病患資訊
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
 
+                // 複製 DICOM 至標註/推論所需位置
                 await phase1Phase2Service.CopyDicomAsync(patientAIInfo, agentsetting);
+
+                // 產生 Phase 1 標註生成設定並寫入 JSON
                 Phase1LabelGeneration phase1LabelGeneration =
                     phase1Phase2Service.BuildPhase1標註生成Json(patientAIInfo, agentsetting);
                 phase1Phase2Service.SavePhase1標註生成Json(phase1LabelGeneration, patientAIInfo, agentsetting);
 
+                // 將資料移至 Phase 1 Waiting 佇列等待外部標註結果
                 await phase1Phase2Service.MoveToPhase1WaitingAsync(patientAIInfo, agentsetting);
             }
             #endregion
         }
 
+        /// <summary>
+        /// 監聽 Phase 1 Waiting 佇列，當對應的暫存資料夾（Phase1Tmp）中之外部標註結果就緒時，
+        /// 將結果複製回病患資料夾並把個案推進到 Phase 2。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 Phase1Waiting 與 Phase1Tmp 兩個根目錄下的病患資料夾。
+        /// 2. 以資料夾名稱比對等待佇列與暫存資料夾的對應關係。
+        /// 3. 檢查暫存資料夾內檔案數量（>=2 視為結果已生成）。
+        /// 4. 將暫存資料夾內容拷貝回等待佇列中的病患資料夾（Phase1ResultPath）。
+        /// 5. 讀取病患基本資料 JSON，將個案移轉至 Phase 2 佇列。
+        /// 注意：此方法為輪詢式處理，不阻塞等待單一個案完成。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">在目錄或檔案複製/讀取過程中發生 I/O 錯誤。</exception>
+        /// <exception cref="UnauthorizedAccessException">目錄或檔案存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
         async Task ProceePhase1WaitingAsync()
         {
+            // 取得 Phase 1 Waiting 與 Phase 1 Tmp 根目錄下的所有病患資料夾
             List<string> phase1WaitingDirectories = Directory.GetDirectories(agentsetting.GetPhase1WaitingQueuePath()).ToList();
             List<string> phase1TmpDirectories = Directory.GetDirectories(agentsetting.GetPhase1TmpFolderPath()).ToList();
 
             #region 將該資料夾搬到 Phase 1 資料夾內
             foreach (var folder in phase1WaitingDirectories)
             {
+                // 病患資料夾名稱（用於對應暫存資料夾）
                 var waitingFolderName = Path.GetFileName(folder);
+
+                // 找到暫存根目錄中與 Waiting 同名的資料夾（外部標註結果所在）
                 var tmpFolder = phase1TmpDirectories
                     .FirstOrDefault(x => Path.GetFileName(x) == waitingFolderName);
+
                 if (tmpFolder != null)
                 {
+                    // 若暫存資料夾中的檔案數量達到門檻（視為結果已就緒）
                     var tmpFolderfiles = Directory.GetFiles(tmpFolder);
                     if (tmpFolderfiles.Length >= 2)
                     {
-                        await Task.Delay(1000); // 模擬處理時間
+                        await Task.Delay(1000); // 模擬處理時間（例如等待外部程序釋放檔案）
+
+                        // 來源：暫存結果位置
+                        // 注意：tmpFolder 已為完整路徑，若再與根路徑 Combine 可能造成重複路徑
                         var sourcePath = Path.Combine(agentsetting.GetPhase1TmpFolderPath(), tmpFolder);
+
+                        // 目的：病患資料夾下的 Phase 1 結果目錄
                         var destinationPath = Path.Combine(folder, MagicObjectHelper.Phase1ResultPath);
 
+                        // 複製暫存結果回 Waiting 佇列的病患資料夾
                         directoryHelperService.CopyDirectory(sourcePath, destinationPath, overwrite: true);
 
+                        // 讀取病患基本資料 JSON（以 MagicObjectHelper.PrefixPatientData 為前綴）
                         var files = Directory.GetFiles(folder, "*.json");
                         string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                         PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+
+                        // 將病患從 Phase 1 Waiting 移轉到 Phase 2 佇列
                         await phase1Phase2Service.MoveToPhase2Async(patientAIInfo, agentsetting);
                     }
                 }
@@ -136,6 +211,22 @@ namespace AIAgent.Services
             #endregion
         }
 
+        /// <summary>
+        /// 處理 Phase 2 佇列中的病患資料，為定量分析階段準備輸入。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 Phase 2 佇列（Phase2Queue）內所有病患資料夾。
+        /// 2. 若 Phase 2 Waiting 佇列已存在同名資料夾，先刪除以確保重跑時為乾淨狀態。
+        /// 3. 從病患資料夾讀取基本資料 JSON（檔名前綴為 MagicObjectHelper.PrefixPatientData）。
+        /// 4. 將個案移動到 Phase 2 Waiting 佇列。
+        /// 5. 產生 Phase 2「定量分析」設定 JSON 並寫入對應位置，供外部程序使用。
+        /// 注意：此方法僅進行前置準備與資料夾流轉，不等待外部定量分析完成。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">在檔案/目錄操作（讀取、刪除、移動、寫入）過程中發生 I/O 錯誤。</exception>
+        /// <exception cref="UnauthorizedAccessException">檔案或目錄存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
         async Task ProceePhase2Async()
         {
             // Queue Phase 2 資料夾內的所有病患資料夾
@@ -164,6 +255,40 @@ namespace AIAgent.Services
             #endregion
         }
 
+        /// <summary>
+        /// 監聽 Phase 2 Waiting 佇列；當對應的暫存資料夾（Phase2Tmp）中之外部定量分析結果就緒時，
+        /// 將結果複製回病患資料夾並把個案推進到 Phase 3。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 Phase2Waiting 與 Phase2Tmp 兩個根目錄下的病患資料夾。
+        /// 2. 以資料夾名稱比對等待佇列與暫存資料夾的對應關係。
+        /// 3. 檢查暫存資料夾內檔案數量（>= 23 視為結果已生成）。
+        /// 4. 將暫存資料夾內容拷貝回等待佇列中的病患資料夾（Phase2ResultPath）。
+        /// 5. 讀取病患基本資料 JSON，將個案移轉至 Phase 3 佇列。
+        /// 注意：此方法為輪詢式處理，不阻塞等待單一個案完成。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">在目錄或檔案複製/讀取過程中發生 I/O 錯誤。</exception>
+        /// <exception cref="UnauthorizedAccessException">目錄或檔案存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
+        /// <summary>
+        /// 監聽 Phase 2 Waiting 佇列；當對應的暫存資料夾（Phase2Tmp）中之外部定量分析結果就緒時，
+        /// 將結果複製回病患資料夾並把個案推進到 Phase 3。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 Phase2Waiting 與 Phase2Tmp 兩個根目錄下的病患資料夾。
+        /// 2. 以資料夾名稱比對等待佇列與暫存資料夾的對應關係。
+        /// 3. 檢查暫存資料夾內檔案數量（>= 23 視為結果已生成）。
+        /// 4. 將暫存資料夾內容拷貝回等待佇列中的病患資料夾（Phase2ResultPath）。
+        /// 5. 讀取病患基本資料 JSON，將個案移轉至 Phase 3 佇列。
+        /// 注意：此方法為輪詢式處理，不阻塞等待單一個案完成。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">在目錄或檔案複製/讀取過程中發生 I/O 錯誤。</exception>
+        /// <exception cref="UnauthorizedAccessException">目錄或檔案存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
         async Task ProceePhase2WaitingAsync()
         {
             List<string> phase2WaitingDirectories = Directory.GetDirectories(agentsetting.GetPhase2WaitingQueuePath()).ToList();
@@ -197,6 +322,21 @@ namespace AIAgent.Services
             #endregion
         }
 
+        /// <summary>
+        /// 處理 Phase 3 佇列中的病患資料，將個案移轉至 Phase 3 Waiting 以等待後續風險評估。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 Phase3Queue 內所有病患資料夾。
+        /// 2. 若 Phase3Waiting 已存在同名資料夾，先刪除以確保重跑為乾淨狀態。
+        /// 3. 讀取病患基本資料 JSON（檔名前綴為 MagicObjectHelper.PrefixPatientData）。
+        /// 4. 呼叫 MoveToPhase3WaitingAsync 將個案移轉至 Phase 3 Waiting。
+        /// 注意：本方法僅負責前置流轉，不等待後續風險評估處理完成。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">在檔案/目錄操作過程發生 I/O 錯誤。</exception>
+        /// <exception cref="UnauthorizedAccessException">檔案或目錄存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
         async Task ProceePhase3Async()
         {
             // Queue Phase 2 資料夾內的所有病患資料夾
@@ -221,6 +361,22 @@ namespace AIAgent.Services
             #endregion
         }
 
+        /// <summary>
+        /// 完成佇列處理：掃描 OutBound 佇列，凡已具備 Phase 3 風險評估輸出檔者，移轉至完成佇列（Complete）。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 列出 OutBound 根目錄下的病患資料夾。
+        /// 2. 讀取病患基本資料 JSON（檔名前綴為 MagicObjectHelper.PrefixPatientData）。
+        /// 3. 檢查 Phase3ResultPath 下的風險評估輸出檔是否存在（MagicObjectHelper.風險評估輸出csv）。
+        /// 4. 若存在，呼叫 MoveToCompletionWaitingAsync 將個案移轉至完成佇列。
+        /// 注意：此方法僅負責檢查與流轉，不執行任何模型或計算。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="IOException">在目錄或檔案操作過程中發生 I/O 錯誤。</exception>
+        /// <exception cref="UnauthorizedAccessException">檔案或目錄存取權限不足。</exception>
+        /// <exception cref="DirectoryNotFoundException">指定的路徑不存在。</exception>
+        /// <exception cref="FileNotFoundException">找不到必要的病患 JSON 或輸出檔案。</exception>
         async Task ProceeCompleteAsync()
         {
             List<string> inBoundDirectories = Directory.GetDirectories(agentsetting.GetOutBoundQueuePath()).ToList();
@@ -247,19 +403,45 @@ namespace AIAgent.Services
             #endregion
         }
 
+        /// <summary>
+        /// 處理 Phase 3 Waiting 佇列：將個案複製至 OutBound、產生風險評估輸入 CSV，並呼叫 R 腳本執行風險評估。
+        /// </summary>
+        /// <remarks>
+        /// 流程：
+        /// 1. 逐一讀取 Phase3Waiting 內的病患資料夾與基本資料 JSON。
+        /// 2. 複製病患資料至 OutBound 佇列（供外部流程與輸出彙整）。
+        /// 3. 從 Phase2 結果 CSV 讀值，生成 Phase3 的風險評估輸入 CSV（依癌別決定欄位格式）。
+        /// 4. 刪除 Phase3Waiting 中的個案資料夾（表示已交由外部流程處理）。
+        /// 5. 根據癌別選擇對應 R 模型與參數，透過 Rscript 執行風險評估並輸出 CSV。
+        /// 6. 擷取標準輸出與錯誤；例外時記錄至 logger。
+        /// 注意：本方法不等待外部後續流程（除 R 腳本執行期間），輸出檔案位於 OutBound 下的 Phase3ResultPath。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
+        /// <exception cref="System.IO.IOException">在檔案/目錄讀寫或刪除時發生 I/O 錯誤。</exception>
+        /// <exception cref="System.UnauthorizedAccessException">檔案或目錄存取權限不足。</exception>
+        /// <exception cref="System.ComponentModel.Win32Exception">啟動 Rscript 或外部程序時發生錯誤。</exception>
+        /// <exception cref="System.IO.DirectoryNotFoundException">指定的路徑不存在。</exception>
         async Task ProceePhase3WaitingAsync()
         {
+            // 取得 Phase 3 Waiting 佇列中的所有病患資料夾
             List<string> phase3WaitingDirectories = Directory.GetDirectories(agentsetting.GetPhase3WaitingQueuePath()).ToList();
 
             foreach (var folder in phase3WaitingDirectories)
             {
+                // 讀取病患基本資料（前綴為 PrefixPatientData 的 JSON）
                 var files = Directory.GetFiles(folder, "*.json");
                 string jsonFile = files.FirstOrDefault(x => Path.GetFileName(x).StartsWith(MagicObjectHelper.PrefixPatientData));
                 PatientAIInfo patientAIInfo = await patientAIInfoService.ReadAsync(jsonFile);
+
+                // 複製個案至 OutBound（彙整 Phase2 結果、準備 Phase3 輸入/輸出目錄）
                 await phase1Phase2Service.CopyToOutBoundAsync(patientAIInfo, agentsetting);
 
                 var waitingFolderName = Path.GetFileName(folder);
+
+                // Phase2 的定量分析結果（CSV）來源
                 string excelFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase2ResultPath, $"{waitingFolderName}.csv");
+
+                // Phase3 的輸入/輸出 CSV 路徑
                 string resultCsvFile = Path.Combine(agentsetting.GetOutBoundQueuePath(), waitingFolderName, MagicObjectHelper.Phase3ResultPath, MagicObjectHelper.風險評估輸入csv);
                 if (!Directory.Exists(Path.GetDirectoryName(resultCsvFile)))
                 {
@@ -278,7 +460,7 @@ namespace AIAgent.Services
                 // 若需要從病患資訊推 Tumor Grade，可在此調整
                 string tumorGrade = "1";
 
-                // 建立輸出 CSV 內容
+                // 建立輸出 CSV 內容（依癌別決定欄位）
                 var sb = new StringBuilder();
 
                 if (patientAIInfo.癌別 == "EC")
@@ -322,26 +504,29 @@ namespace AIAgent.Services
                 #endregion
 
                 #region 在此處理風險評估
+                // 清理 Phase3Waiting 佇列中的個案資料夾（視為已交由外部流程與 OutBound 管理）
                 Directory.Delete(folder, true);
 
+                // 根據癌別選擇 R 模型與命令列參數
                 string workingPath = "";
                 string command = "";
 
                 if (patientAIInfo.癌別 == "EC")
                 {
                     workingPath = agentsetting.風險評估模型;
-                    // Rscript Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i Testing_data.csv -o output.csv
+                    // 範例：Rscript Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i Testing_data.csv -o output.csv
                     command = $" Run_Endometrioid_Model.R -m Endometrioid_Analysis_20250610_Model_data.RData --varname CaseIn_SMA_Imat_BMI -c 0.5 -i {resultCsvFile} -o {outputPath}";
                 }
                 else
                 {
                     workingPath = agentsetting.風險評估模型OC;
-                    // Rscript Run_Ovarian_Model.R -m Ovarian_Analysis_20250908_Model_data.RData -v Case_SMI.BH2_Imat_BMI -d 3 -c 0.5 -i Testing.data.csv -o  output.csv
+                    // 範例：Rscript Run_Ovarian_Model.R -m Ovarian_Analysis_20250908_Model_data.RData -v Case_SMI.BH2_Imat_BMI -d 3 -c 0.5 -i Testing.data.csv -o output.csv
                     command = $" Run_Ovarian_Model.R -m Ovarian_Analysis_20250908_Model_data.RData -v Case_SMI.BH2_Imat_BMI -d 3 -c 0.5 -i {resultCsvFile} -o {outputPath}";
                 }
 
                 try
                 {
+                    // 啟動 Rscript 執行風險評估模型
                     var psi = new ProcessStartInfo
                     {
                         FileName = "Rscript",
@@ -357,16 +542,16 @@ namespace AIAgent.Services
                     process.Start();
                     string output = await process.StandardOutput.ReadToEndAsync();
                     string error = await process.StandardError.ReadToEndAsync();
-
+                    // 此處可視需要記錄 output/error
                 }
                 catch (Exception ex)
                 {
+                    // 記錄外部程序執行失敗等例外
                     logger.LogError(ex, "執行風險評估命令時發生例外");
                 }
                 #endregion
             }
         }
-
         #endregion
 
         #region 初始化作業
