@@ -39,6 +39,22 @@ namespace AIAgent.Services
             this.riskAssessmentExcelService = riskAssessmentExcelService;
         }
 
+        /// <summary>
+        /// 執行代理流程的單次輪詢，依序處理各佇列階段。
+        /// </summary>
+        /// <remarks>
+        /// 順序：
+        /// 1. ProceeInBoundAsync：Inbound 搬移至 Phase 1 佇列。
+        /// 2. ProceePhase1Async：準備 Phase 1 標註生成並移轉至 Phase1Waiting。
+        /// 3. ProceePhase1WaitingAsync：回填外部標註結果，移轉至 Phase 2。
+        /// 4. ProceePhase2Async：準備 Phase 2 定量分析並移轉至 Phase2Waiting。
+        /// 5. ProceePhase2WaitingAsync：回填外部定量分析結果，移轉至 Phase 3。
+        /// 6. ProceePhase3Async：移轉至 Phase3Waiting。
+        /// 7. ProceePhase3WaitingAsync：產生風險評估輸入、呼叫 Rscript 產生輸出。
+        /// 8. ProceeCompleteAsync：檢查輸出完成並移轉至 Complete 佇列。
+        /// 各階段間以 500ms 延遲節流以避免過度頻繁 I/O。
+        /// </remarks>
+        /// <returns>非同步作業。</returns>
         public async Task RunAsync()
         {
             await ProceeInBoundAsync();
