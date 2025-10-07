@@ -125,6 +125,8 @@ namespace CTMS
                 builder.Services.AddTransient<RiskAssessmentExcelService>();
                 builder.Services.AddTransient<InputCsvService>();
                 builder.Services.AddTransient<TestingServerHelper>();
+                builder.Services.AddTransient<SendEmailService>();
+
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();

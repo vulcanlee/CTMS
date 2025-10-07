@@ -21,6 +21,7 @@
 @inject IMapper mapper
 @inject CancerStageService CancerStageService
 @inject InputCsvService InputCsvService
+@inject SendEmailService SendEmailService
 
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
@@ -549,6 +550,13 @@
             Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
             Callback="ConfirmMessageBox.ConfirmDelegate" />
 
+<UploadDicom Height="@UploadDicomModel.Height" Width="@UploadDicomModel.Width"
+             IsVisible="@UploadDicomModel.IsVisible"
+             Title="@UploadDicomModel.Title" Message="@UploadDicomModel.Body"
+             Callback="UploadDicomModel.ConfirmDelegate" />
+
+<NotifyDicomDialog OpenPicker=showNotyfyDicomDialog OnConfirmCallback="OnNotifyDicomDialog" />
+
 <DialogBackground />
 
 @code {
@@ -566,6 +574,8 @@
     bool ShowUploadDicomDialog = false;
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    UploadDicomModel UploadDicomModel { get; set; } = new UploadDicomModel();
+
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
     VisitCodeSetModel VisitCodeSetModel = new();
@@ -573,6 +583,18 @@
     string SubjectNo = "";
     string image = "";
     string imageVersion = DateTime.Now.Ticks.ToString();
+    bool showNotyfyDicomDialog = false;
+
+    async Task OnNotifyDicomDialog(string 單號)
+    {
+        showNotyfyDicomDialog = false;
+        if (string.IsNullOrEmpty(單號))
+        {
+            return;
+        }
+
+        await SendEmailService.SendNotifyEmailAsync(單號, NavigationManager.Uri);
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -1157,7 +1179,7 @@
             patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
+            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = "";
 
             (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
 
@@ -1265,8 +1287,6 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
-
-        var needNotification = await ConfirmSendNotificationAsync();
     }
 
     async Task OnCancel()
@@ -1277,24 +1297,19 @@
 
     async Task OnNotifyRadiologistAsync()
     {
-        var needNotification = await ConfirmSendNotificationAsync();
+        // await ConfirmSendNotification();
+        showNotyfyDicomDialog = true;
     }
 
-    async Task<bool> ConfirmSendNotificationAsync()
+    async Task ConfirmSendNotification()
     {
-        bool result = false;
-        result = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        var confirmDelete = await UploadDicomModel.ShowAsync("400px", "300px",
              "再次確認", $"確定要寄送通知給放射科醫師嗎？",
-             ConfirmMessageBox.HiddenAsync);
-        return result;
-    }
+             UploadDicomModel.HiddenAsync);
+        if (confirmDelete == true)
+        {
 
-    (string title, string body) BuildNotificationMessage()
-    {
-        string title = "請協助進行影像判讀與上傳最新影像";
-
-        string body = $"請放射科醫師協助 {patientData.臨床資訊.SubjectNo} 進行影像判讀，謝謝您！";
-        return (title, body);
+        }
     }
     #region 頁籤切換
     void On臨床資料()
