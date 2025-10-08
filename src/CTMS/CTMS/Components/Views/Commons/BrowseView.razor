@@ -29,12 +29,6 @@
         <button class="btn btn-refresh" @onclick="@(async () => await OnRefreshAsync())">
             <span class="icon-refresh">↻</span> 重新整理
         </button>
-        <div class="search-container">
-            <div class="search-box">
-                <span class="search-icon" @onclick=OnSetKeyword>🔍</span>
-                <input type="text" placeholder="搜尋病患編號" @bind="Keyword" />
-            </div>
-        </div>
     </div>
 
     <!-- 篩選條件區域 -->
@@ -70,6 +64,16 @@
                     </SfDropDownList>
                 </div>
             </div>
+            <div class="search-container">
+                <label></label>
+                <div class="search-box">
+                    <span class="search-icon" @onclick=OnSetKeyword>🔍</span>
+                    <input type="text" placeholder="搜尋病患編號" @bind="Keyword" />
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-items">
             <div class="filter-tags">
                 @foreach (var item in browseFilterCondition.Items)
                 {
@@ -79,11 +83,11 @@
                     </div>
                 }
             </div>
+            <div class="filter-result">
+                <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的病患
+            </div>
         </div>
 
-        <div class="filter-result">
-            <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的病患
-        </div>
     </div>
 
     <!-- 結果表格區域 -->

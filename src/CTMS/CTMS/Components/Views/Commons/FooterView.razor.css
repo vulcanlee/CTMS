@@ -1,21 +1,46 @@
-﻿.header {
-    display: flex;
-    align-items: center;
-    background-color: #f0f0f0;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
-    position: relative; /* 添加相對定位以便子元素可以絕對定位 */
+﻿div {
+    width: 100%;
 }
 
-    /* 以下是新添加的 Version 元素的樣式 */
-    .header .version {
-        position: absolute;
-        bottom: 10px;
-        right: 20px;
-        font-size: 14px;
-        color: #666;
+/* Footer 固定在底部 */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 50px;
+}
+
+/* Version 樣式 */
+.version {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-align: right;
+}
+
+    .version div {
+        margin: 0;
+        padding: 0;
     }
 
+/* 測試環境提示 */
+.for-testing {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* 移除不必要的重複樣式 */
 .hospital-logo {
     width: 140px;
     height: auto;
@@ -33,13 +58,17 @@
     margin: 0;
 }
 
+.back-button {
+    padding: 15px 20px;
+}
+
 .page-top {
     background-color: black;
     color: white;
     height: 30px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the title */
+    justify-content: center;
     padding: 0 15px;
     position: fixed;
     top: 0;
@@ -48,12 +77,10 @@
     z-index: 1000;
 }
 
-/* 更新返回按鈕容器與按鈕樣式，使背景色與畫面同寬 */
 .back-button-container {
     background-color: #e9ecef;
     padding: 0px 6px;
-    width: 100vw; /* 視窗寬度 */
-    /*position: relative;*/
+    width: 100vw;
     left: 0;
 }
 
@@ -71,10 +98,7 @@ button {
     justify-content: space-between;
     gap: 20px;
     position: absolute;
-    right: 15px; /* Push button to the far right */
-}
-
-.content-div {
+    right: 15px;
 }
 
 .back-btn {
@@ -82,19 +106,18 @@ button {
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    margin-right: auto; /* Push the button to the left */
+    margin-right: auto;
     font-size: 14px;
-    /*position: absolute;*/
     left: 15px;
 }
 
     .back-btn:hover {
-        color: black; /* Change color on hover */
+        color: black;
     }
 
 .page-title {
     font-size: 16px;
-    text-align: center; /* Center the text inside its container */
+    text-align: center;
 }
 
 .upload-btn {
@@ -105,27 +128,15 @@ button {
     cursor: pointer;
     font-size: 14px;
     position: absolute;
-    right: 15px; /* Push button to the far right */
+    right: 15px;
 }
 
 .container-custom {
     background-color: #fff;
     overflow: hidden;
     font-size: 24px;
-    margin-bottom:50px;
+    padding-bottom: 4px;
 }
-
-.header {
-    background-color: #e0e0e0;
-    text-align: left;
-    padding: 10px;
-}
-
-    .header h1 {
-        margin: 0;
-        font-size: 24px;
-        padding-left: 10px;
-    }
 
 .main-content {
     display: flex;
@@ -164,7 +175,7 @@ button {
     padding: 20px;
     border-radius: 8px;
     font-size: 36px;
-    height: 140px; /* Updated height */
+    height: 140px;
 }
 
 .avatar {
@@ -193,46 +204,11 @@ button {
     width: 170px;
 }
 
-.footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f8f8f8;
-}
-
-    .footer .buttons {
-        display: flex;
-        justify-content: stretch;
-        flex-wrap: wrap;
-        margin-bottom: 0px;
-    }
-
-    .footer button {
-        background-color: #f8b4b4;
-        border: none;
-        padding: 15px 25px;
-        margin: 5px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 24px;
-        color: #333;
-    }
-
-    .footer .platform-title {
-        font-size: 32px;
-        color: #FFF;
-        background-color: #FE675E;
-        width: 100%;
-        text-align: center;
-    }
-
 .foot-container {
     width: 100%;
     max-width: 100%;
 }
 
-/* 上方列：使用 Flex 讓多個方塊平均分布 */
 .top-row {
     display: flex;
     flex-wrap: wrap;
@@ -240,7 +216,6 @@ button {
     padding: 0.5rem 1rem;
 }
 
-/* 每個 Tab 的基本樣式 */
 .tab {
     padding: 0.5rem 1rem;
     margin: 5px;
@@ -256,9 +231,8 @@ button {
     color: #333;
 }
 
-/* 下方列設為全寬並套用背景色與字體樣式 */
 .bottom-row {
-    background-color: #FF7F7F; /* 較深粉色 */
+    background-color: #FF7F7F;
     color: #ffffff;
     text-align: center;
     padding: 10px 0;

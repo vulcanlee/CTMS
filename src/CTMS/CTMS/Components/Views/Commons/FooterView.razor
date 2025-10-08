@@ -1,0 +1,48 @@
+﻿@using CTMS.DataModel.Models.Systems
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Microsoft.Extensions.Options
+@inject IOptions<CTMSSettings> options
+@inject CurrentUserService CurrentUserService
+@inject TestingServerHelper TestingServerHelper
+<div>
+    <div class="footer">
+        <div>
+            @if (!string.IsNullOrEmpty(forTesting))
+            {
+                <div class="alert-danger for-testing">@forTesting</div>
+            }
+            <div class="version">
+                <div>Version:@options.Value.SystemInformation.SystemVersion</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    string forTesting = "";
+    string userName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isTesting = TestingServerHelper.IsTestingServer(NavigationManager);
+        if (isTesting)
+        {
+            forTesting = "注意：測試用版本";
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+}

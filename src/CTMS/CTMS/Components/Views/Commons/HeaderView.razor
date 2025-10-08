@@ -27,13 +27,17 @@
             <div class="version">
                 @if (!string.IsNullOrEmpty(userName))
                 {
-                    <i class="oi oi-person"></i><span> 使用者：@userName</span>
+                    <i class="oi oi-person"></i>
+                
+                    <span> 使用者：@userName</span>
                 }
                 else
                 {
-                    <i class="oi oi-person"></i><span> 使用者：未登入</span>
+                    <i class="oi oi-person"></i>
+                
+                    <span> 使用者：未登入</span>
                 }
-                <div>Version:@options.Value.SystemInformation.SystemVersion</div>
+                @* <div>Version:@options.Value.SystemInformation.SystemVersion</div> *@
             </div>
         </div>
     </div>

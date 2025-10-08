@@ -1,9 +1,17 @@
 .page {
-/*    position: relative;*/
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
     height: 100vh;
+    overflow: hidden;
 }
+
+.main-content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 60px; /* 預留 footer 的空間 */
+    padding-bottom: 60px; /* 預留 footer 的空間 */
+    }
 
 main {
     flex: 1;
@@ -49,7 +57,7 @@ main {
 
 @media (min-width: 641px) {
     .page {
-/*        flex-direction: row;*/
+        flex-direction: row;
     }
 
     .sidebar {
