@@ -1174,12 +1174,15 @@
             // http://localhost:5272/UploadFiles/202509111436154559/Phase1Result/202509111436154559.png
             var imageFilename = $"{keyName}/Phase1Result/{keyName}.png";
             patientData.臨床資訊.RiskAssessmentResult.ImagePng = imageFilename;
-            patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = inputCsvModel.Vertebral_Body_Area_cm2.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.SMD骨骼肌密度 = inputCsvModel.Total_SMD.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
             patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = "";
+            //SMI= LAMA+NAMA/(身高的平方(公尺))
+            patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
+				/ (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
+
+            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
 
             (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
 
