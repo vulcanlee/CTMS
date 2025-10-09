@@ -18,6 +18,24 @@
     min-height: 50px;
 }
 
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.company-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.company-name {
+    font-size: 0.9rem;
+    color: #495057;
+    font-weight: 500;
+}
+
 /* Version 樣式 */
 .version {
     font-size: 0.9rem;

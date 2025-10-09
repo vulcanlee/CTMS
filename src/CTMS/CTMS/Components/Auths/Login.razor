@@ -7,54 +7,190 @@
 @using System.Security.Claims
 @inject MyUserServiceLogin MyUserServiceLogin
 
-@layout EmptyLayout
+@layout NoFooterLayout
 @inject ILogger<Login> Logger
 
 @inject NavigationManager NavigationManager
 
 <style>
-    .data-input-outter {
-        background-color: transparent;
-        border: none;
-        outline: none;
+    body {
+        background: linear-gradient(135deg, #f5deb3, #e6d7c3);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
     }
 
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        background: linear-gradient(180deg, #f6c4c6 0%, #f3dcd6 30%, #e6efd9 100%);
+    }
+
+    .login-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 40px 40px 10px 40px;
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .login-header {
+        background: #EDEDED;
+        text-align: center;
+        padding: 10px;
+        margin: -40px -40px 30px -40px;
+        border-radius: 8px 8px 0 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .form-label {
+        min-width: 80px;
+        font-size: 16px;
+        color: #333;
+        font-weight: 500;
+    }
+
+    .form-input {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+    .captcha-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .captcha-input {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .captcha-image {
+        width: 90px;
+        height: 40px;
+        background: #e9ecef;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-style: italic;
+        color: #666;
+        font-family: cursive;
+        letter-spacing: 3px;
+    }
+
+    .login-button {
+        width: 30%;
+        background: #ffc0cb;
+        color: #333;
+        border: none;
+        padding: 5px;
+        border-radius: 4px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .login-button:hover {
+            background: #ffb6c1;
+        }
+
+    .register-link {
+        text-align: center;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+        text-decoration: underline;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .alert-danger {
+        display: block;
+    }
 </style>
+
 <PageTitle>身分驗證</PageTitle>
 
-<div class="login-page">
-    <div class="container">
-        <div class="screen">
-            <div class="screen__content">
-                <EditForm Model="@Input" method="post" OnValidSubmit="LoginUser" FormName="login">
-                    <div class="form-space-top">
-                        <div class="login__field">
-                            <i class="login__icon fas fa-user"></i>
-                            <div class="login__input">
-                                <InputText class="data-input-iso data-input-outter bg-transparent" placeholder="請輸入帳號"
-                                           @bind-Value="@Input.Account" autocomplete="off" />
-                            </div>
-                        </div>
-                        <div class="login__field">
-                            <i class="login__icon fas fa-lock"></i>
-                            <div class="login__input">
-                                <InputText type="password" class="data-input-iso data-input-outter bg-transparent" placeholder="請輸入密碼"
-                                           @bind-Value="@Input.Password" autocomplete="off" />
-                            </div>
-                        </div>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            使用者登入
+        </div>
 
-                        <button class="button login__submit" type="submit">
-                            <span class="button__text">登入</span>
-                            <i class="button__icon fas fa-chevron-right"></i>
-                        </button>
+        <EditForm Model="@Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+            <div class="form-group">
+                <label class="form-label">帳號</label>
+                <InputText class="form-input" placeholder="請輸入帳號"
+                           @bind-Value="@Input.Account" autocomplete="off" />
+            </div>
 
-                        <div class="error-message-outter">
-                            <div class="@errorMessage m-2 error-message">
-                                @message
-                            </div>
-                        </div>
+            <div class="form-group">
+                <label class="form-label">密碼</label>
+                <InputText type="password" class="form-input" placeholder="請輸入密碼"
+                           @bind-Value="@Input.Password" autocomplete="off" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">驗證碼</label>
+                <div class="captcha-group">
+                    <input type="text" class="captcha-input" placeholder="請輸入驗證碼" />
+                    <div class="captcha-image">
+                        驗證圖片
                     </div>
-                </EditForm>
+                </div>
+            </div>
+
+            <div class="login">
+                <button class="login-button" type="submit">
+                    登入
+                </button>
+
+            </div>
+
+            <div style="text-align: center;">
+            @*     <a href=".../" class="register-link">帳號申請</a>
+            </div> *@
+             <NavLink class="register-link" href="/Auths/Register">帳號申請</NavLink>
+            </div>
+
+            <div class="@errorMessage error-message">
+                @message
+            </div>
+        </EditForm>
                 <div class="social-login">
                     <h3 class="app-title">AI 臨床試驗管理平臺</h3>
                     <div class="social-icons">
@@ -70,10 +206,7 @@
                 <span class="screen__background__shape screen__background__shape2"></span>
                 <span class="screen__background__shape screen__background__shape1"></span>
             </div>
-        </div>
-    </div>
 </div>
-
 @code {
     string errorMessage = string.Empty;
     string errorMessageClass = "";
@@ -106,7 +239,7 @@
         }
         catch (Exception ex)
         {
-            Logger.LogDebug(ex,"登入初始化發生例外異常");
+            Logger.LogDebug(ex, "登入初始化發生例外異常");
 
         }
     }
@@ -161,10 +294,10 @@
             #region 建立關於認證階段需要儲存的狀態
             string returnUrl = string.IsNullOrEmpty(ReturnUrl) ? "/" : ReturnUrl;
             var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    RedirectUri = returnUrl,
-                };
+            {
+                IsPersistent = true,
+                RedirectUri = returnUrl,
+            };
             #endregion
 
             #region 進行使用登入

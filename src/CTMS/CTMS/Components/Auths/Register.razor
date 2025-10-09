@@ -1,0 +1,115 @@
+﻿@page "/Auths/Register"
+
+@using System.ComponentModel.DataAnnotations
+@layout NoFooterLayout
+@inject NavigationManager NavigationManager
+@inject ILogger<Register> Logger
+
+    <style>
+    .form-input {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+    </style>
+
+<PageTitle>帳號申請</PageTitle>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            帳號申請
+        </div>
+
+        <EditForm Model="@Model" OnValidSubmit="RegisterUser" class="register-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label class="form-label">名稱</label>
+                <InputText class="form-input" @bind-Value="Model.Name" placeholder="請輸入名稱" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">帳號</label>
+                <InputText class="form-input" @bind-Value="Model.Account" placeholder="請輸入帳號" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">密碼</label>
+                <InputText type="password" class="form-input" @bind-Value="Model.Password" placeholder="請輸入密碼" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">信箱</label>
+                <InputText type="email" class="form-input" @bind-Value="Model.Email" placeholder="請輸入電子郵件" />
+            </div>
+
+            <div class="register">
+                <button class="register-button" type="submit">送出申請</button>
+            </div>
+
+            <div style="text-align:center;margin-top:10px;">
+                <a href="/Auths/Login" class="return-link">回到登入</a>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Message))
+            {
+                <div class="error-message">@Message</div>
+            }
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private RegisterModel Model { get; set; } = new();
+    string Message = string.Empty;
+
+    private async Task RegisterUser()
+    {
+        Message = string.Empty;
+
+        // 基本檢查（DataAnnotations 會先驗證）
+        if (string.IsNullOrWhiteSpace(Model.Name) ||
+            string.IsNullOrWhiteSpace(Model.Account) ||
+            string.IsNullOrWhiteSpace(Model.Password) ||
+            string.IsNullOrWhiteSpace(Model.Email))
+        {
+            Message = "請完整填寫所有欄位";
+            return;
+        }
+
+        try
+        {
+            // 目前僅做前端流程 (後端註冊服務可在此呼叫)
+            Message = "申請已送出，系統將通知您後續處理。";
+            // 若要導回登入頁：
+            await Task.Delay(800);
+            NavigationManager.NavigateTo("/Auths/Login");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "註冊發生例外");
+            Message = "註冊發生錯誤，請稍後再試。";
+        }
+    }
+
+    private sealed class RegisterModel
+    {
+        [Required(ErrorMessage = "請輸入名稱")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "請輸入帳號")]
+        public string Account { get; set; } = "";
+
+        [Required(ErrorMessage = "請輸入密碼")]
+        public string Password { get; set; } = "";
+
+        [Required(ErrorMessage = "請輸入電子郵件")]
+        [EmailAddress(ErrorMessage = "Email 格式不正確")]
+        public string Email { get; set; } = "";
+    }
+}

@@ -1,0 +1,77 @@
+﻿/* 與 Login 風格一致的申請頁樣式 */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(180deg, #f6c4c6 0%, #f3dcd6 30%, #e6efd9 100%);
+}
+
+.register-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px 40px 10px 40px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.register-header {
+    background: #EDEDED;
+    text-align: center;
+    padding: 10px;
+    margin: -40px -40px 30px -40px;
+    border-radius: 8px 8px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.form-label {
+    min-width: 80px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.register {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.register-button {
+    width: 30%;
+    background: #ffc0cb;
+    color: #333;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.return-link {
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #c53030;
+    font-size: 14px;
+    margin-top: 12px;
+    text-align: center;
+}
