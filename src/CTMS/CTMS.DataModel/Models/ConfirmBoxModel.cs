@@ -45,6 +45,12 @@ public class ConfirmBoxModel
         IsVisible = false;
     }
 
+    public bool HiddenShow(bool choise)
+    {
+        Hidden();
+        return choise;
+    }
+
     public Task HiddenAsync(bool choise)
     {
         if (TaskCompletionSource != null)

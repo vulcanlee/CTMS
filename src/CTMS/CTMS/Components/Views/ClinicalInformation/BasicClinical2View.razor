@@ -1269,7 +1269,9 @@
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
 
-        var needNotification = await ConfirmSendNotificationAsync();
+        // var needNotification = await ConfirmSendNotificationAsync();
+        // await Task.Delay(100);
+        // StateHasChanged();
     }
 
     async Task OnCancel()
@@ -1286,9 +1288,12 @@
     async Task<bool> ConfirmSendNotificationAsync()
     {
         bool result = false;
-        result = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要寄送通知給放射科醫師嗎？",
              ConfirmMessageBox.HiddenAsync);
+        await Task.Delay(100);
+        StateHasChanged();
+        result = await task;
         return result;
     }
 

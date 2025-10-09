@@ -12,11 +12,23 @@ namespace CTMS.DataModel.Models.ClinicalInformation
     public class RandomParameterMode
     {
         public string SubjectNo { get; set; } = string.Empty;
+        /// <summary>
+        /// 癌症分期(2023 FIGO)
+        /// </summary>
         public string FIGO { get; set; } = string.Empty;
         public string RandomId { get; set; } = string.Empty;
         public string Treatment { get; set; } = string.Empty;
+        /// <summary>
+        /// 早期(1,2期) / 晚期(3,4期)
+        /// </summary>
         public string EarlyOrAdvance { get; set; } = string.Empty;
+        /// <summary>
+        /// 醫院
+        /// </summary>
         public string Hospital { get; set; } = string.Empty;
+        /// <summary>
+        /// 癌別
+        /// </summary>
         public string ECorOC { get; set; } = string.Empty;
 
         public void Parse()

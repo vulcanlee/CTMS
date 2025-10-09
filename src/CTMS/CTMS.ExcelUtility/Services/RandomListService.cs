@@ -100,8 +100,8 @@ public class RandomListService
             randomParameterModeAfter.ECorOC == "")
             return result;
 
-        if (randomParameterModeBefore.EarlyOrAdvance != 
-            randomParameterModeAfter.EarlyOrAdvance)
+        if ((randomParameterModeBefore.EarlyOrAdvance != randomParameterModeAfter.EarlyOrAdvance) || 
+            (randomParameterModeBefore.ECorOC != randomParameterModeAfter.ECorOC))
         {
             var foundOldItem = RandomList.Items
                 .FirstOrDefault(x => 
