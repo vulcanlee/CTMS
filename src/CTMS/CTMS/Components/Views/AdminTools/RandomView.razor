@@ -1,0 +1,219 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject BloodExameService BloodExameService
+@inject RandomListService RandomListService
+
+<div>
+
+    @if (Items != null && Items.Count > 0)
+    {
+        var index = 0;
+        string rowClass = string.Empty;
+
+        <div class="sample-table-container">
+            @if (IsEditing)
+            {
+                <div class="btn-group m-3  " role="group" aria-label="按鈕組">
+                    <button type="button" class="btn btn-sm btn-primary save-button"
+                            @onclick="async () => await OnSaveAsync()">
+                        儲存
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger cancle-button"
+                            @onclick=OnCancel>
+                        取消
+                    </button>
+                </div>
+            }
+            <table class="sample-table">
+                <thead>
+                    <tr>
+                        @* <th class="header-item">Hospital</th>
+                        <th class="">ECorOC</th>
+                        <th class="">EarlyOrAdvance</th> *@
+                        <th class="">Id</th>
+                        <th class="">BlockId</th>
+                        <th class="">BlockSize</th>
+                        <th class="">Treatment</th>
+                        <th class="">SubjectNo</th>
+                        <th class="">命令</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Items)
+                    {
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            @* <td class="item-cell ">@item.Hospital</td>
+                            <td class="item-cell ">@item.ECorOC</td>
+                            <td class="item-cell ">@item.EarlyOrAdvance</td> *@
+                            <td class="item-cell ">@item.Id</td>
+                            <td class="item-cell ">@item.BlockId</td>
+                            <td class="item-cell ">@item.BlockSize</td>
+                            <td class="item-cell ">@item.Treatment</td>
+                            @if (IsEditing)
+                            {
+                                <td class="item-cell ">
+                                    <SfTextBox @bind-Value="item.SubjectNo" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="item-cell ">
+                                    @item.SubjectNo
+                                </td>
+                            }
+                            <td class="item-cell ">
+                                <div>
+                                    <span class="mx-3 mdi mdi-24px mdi-square-edit-outline"
+                                          @onclick="() => OnEditItem(item)"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public string ECorOC { get; set; }
+    [Parameter]
+    public string Hospital { get; set; }
+    [Parameter]
+    public string EarlyOrAdvance { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    List<RandomListItem> Items = new();
+    bool IsEditing = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RandomListService.InitialAsync();
+        Items = RandomListService.RandomList.Items
+        .Where(x => x.ECorOC == ECorOC &&
+            x.Hospital == Hospital &&
+            x.EarlyOrAdvance == EarlyOrAdvance)
+            .OrderBy(x => x.Id)
+            .ToList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            InitData(true);
+        }
+    }
+
+    void InitData(bool isFirst = true)
+    {
+    }
+
+    void OnEditItem(RandomListItem item)
+    {
+        IsEditing = true;
+    }
+
+    async Task OnSaveAsync()
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要儲存此次修改動作嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        result = await task;
+        if (result)
+        {
+            await RandomListService.SaveAsync(Items);
+        }
+        IsEditing = false;
+    }
+
+    void OnCancel()
+    {
+        IsEditing = false;
+    }
+
+    async Task OnCleanItem(RandomListItem item)
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要清除這個 Subject Code 嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        result = await task;
+        Console.WriteLine(result);
+        // await Task.Delay(100);
+        // StateHasChanged();
+
+
+
+        // ConfirmMessageBox.Title = "確認視窗";
+        // ConfirmMessageBox.Body = $"確定要刪除編號 {item.Id} 的資料嗎？";
+        // ConfirmMessageBox.IsVisible = true;
+        // ConfirmMessageBox.ConfirmDelegate = async (confirmed) =>
+        // {
+        //     if (confirmed)
+        //     {
+        //         var result = await RandomListService.DeleteItemAsync(item);
+        //         if (result)
+        //         {
+        //             Items.Remove(item);
+        //             StateHasChanged();
+        //         }
+        //         else
+        //         {
+        //             MessageBox.Title = "錯誤視窗";
+        //             MessageBox.Body = $"刪除編號 {item.Id} 的資料失敗，請稍後再試。";
+        //             MessageBox.IsVisible = true;
+        //             StateHasChanged();
+        //         }
+        //     }
+        //     ConfirmMessageBox.IsVisible = false;
+        //     StateHasChanged();
+        // };
+        // StateHasChanged();
+    }
+
+    async Task<bool> ConfirmClearItemAsync()
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要清除這個 Subject Code 嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        await Task.Delay(100);
+        StateHasChanged();
+        result = await task;
+        return result;
+    }
+}

@@ -35,7 +35,9 @@
         <div class="title-section d-flex align-items-start">
             <div>
                 <h1 class="mb-0">Basic clinical presentation 臨床資訊</h1>
-                <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+                <div @onclick="async () => await OnRecomputeRandomListAsync()">
+                    <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+                </div>
             </div>
             @if (editMode)
             {
@@ -1158,7 +1160,7 @@
             patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
             //SMI= LAMA+NAMA/(身高的平方(公尺))
             patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
-				/ (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
+                / (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
 
             patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
 
@@ -1272,6 +1274,34 @@
         // var needNotification = await ConfirmSendNotificationAsync();
         // await Task.Delay(100);
         // StateHasChanged();
+    }
+
+    async Task OnRecomputeRandomListAsync()
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要重新計算亂數表中的組別嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        result = await task;
+        if (result == false)
+        {
+            return;
+        }
+
+        RandomParameterMode randomParameterMode = new RandomParameterMode()
+        {
+            SubjectNo = patientData.臨床資訊.SubjectNo,
+            FIGO = patientData.臨床資訊.FIGOStaging,
+            ECorOC = patientData.臨床資訊.ECorOC,
+
+        };
+        randomParameterMode.Parse();
+
+        var Treatment = await RandomListService.ReComputeRandomListAsync(randomParameterMode);
+
+        patientAdapterModel.組別 = Treatment;
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
     }
 
     async Task OnCancel()
