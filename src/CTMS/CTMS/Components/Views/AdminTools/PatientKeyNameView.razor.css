@@ -1,0 +1,69 @@
+﻿/* 一般行樣式 */
+.row-normal {
+    background-color: white;
+}
+
+/* 強調行樣式 (淺黃色背景) */
+.row-highlighted {
+    background-color: #fff8dc;
+}
+
+/* 儲存格樣式 */
+.item-cell {
+    text-align: left;
+    font-size: 13px;
+    padding-left: 15px;
+}
+
+.sample-table-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.sample-table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 2px solid #333;
+    background-color: white;
+}
+
+/* 滑鼠懸停效果 */
+.sample-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.row-highlighted:hover {
+    background-color: #fff5b3;
+}
+
+.sample-table th,
+.sample-table td {
+    border: 1px solid #333;
+    padding: 8px 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 表頭樣式 */
+.sample-table thead th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .sample-table {
+        font-size: 12px;
+    }
+
+        .sample-table th,
+        .sample-table td {
+            padding: 6px 8px;
+        }
+
+    .item-cell {
+        padding-left: 8px;
+    }
+}
