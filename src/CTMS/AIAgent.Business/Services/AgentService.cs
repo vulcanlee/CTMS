@@ -506,17 +506,17 @@ namespace AIAgent.Services
                         (riskResult.BodyHeight.ToFloat()*100).ToString(),
                         // Body.Weight.kg
                         riskResult.BodyWeight,
-                        // SMA : SMA (Skeletal Muscle Area) TotalLamaA + TotalNamaA 肌肉總面積
+                        // SMA : SMA (Skeletal Muscle Area) TotalLamaA + TotalNamaA 骨骼肌面積
                         (riskResult.TotalLamaA.ToFloat()+riskResult.TotalNamaA.ToFloat()).ToString(),
-                        // SMD 取肌肉區域 CT 像素平均值 Skeletal Muscle Density
+                        // SMD 骨骼肌密度 Skeletal Muscle Density
                         riskResult.TotalSMD,
-                        // ImatA 分割肌肉區域間的脂肪像素面積總和 Intermuscular Adipose Tissue Area
+                        // ImatA 肌間/肌內脂肪組織面積 Intermuscular Adipose Tissue Area
                         riskResult.TotalImatA,
                         // LamaA 低密度肌肉面積  Low Attenuation Muscle Area 
                         riskResult.TotalLamaA,
                         // NamaA 正常密度肌肉面積 Normal Attenuation Muscle Area     
                         riskResult.TotalNamaA,
-                        // Myosteatosis = IMAT + LAMA 脂肪滲入肌肉量
+                        // Myosteatosis = IMAT + LAMA 肌肉脂肪變性面積
                         (riskResult.TotalImatA.ToFloat()+riskResult.TotalLamaA.ToFloat()).ToString(),
                         // VatA 內臟脂肪面積 Visceral Adipose Tissue Area                                                                                  
                         riskResult.VatA,
