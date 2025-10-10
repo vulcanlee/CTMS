@@ -128,6 +128,10 @@
         public const string OC = "OC";
         public const string EC = "EC";
         public const string NA = "NA";
+        public const string 組別對照組英文 = "Dr";
+        public const string 組別實驗組英文 = "AI";
+        public const string 組別對照組中文 = 對照組;
+        public const string 組別實驗組中文 = 實驗組;
         public const string AI處理處理中 = "處理中";
         public const string AI處理已完成 = "已完成";
         public const string AI評估完成 = "已完成";

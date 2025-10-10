@@ -1,5 +1,6 @@
 ﻿using CTMS.DataModel.Models;
 using CTMS.EntityModel.Models;
+using CTMS.Share.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace CTMS.AdapterModels;
@@ -23,5 +24,15 @@ public class PatientAdapterModel : ICloneable
     object ICloneable.Clone()
     {
         return this.MemberwiseClone();
+    }
+
+    public string Get組別DisplayName()
+    {
+        if (組別 == MagicObjectHelper.組別對照組英文)
+            return MagicObjectHelper.組別對照組中文;
+        else if (組別 == MagicObjectHelper.組別實驗組英文)
+            return MagicObjectHelper.組別實驗組中文;
+        else
+            return MagicObjectHelper.NA;
     }
 }
