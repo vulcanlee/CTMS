@@ -14,14 +14,52 @@
 @inject RandomListService RandomListService
 
 <div>
-
-    @if (Items != null && Items.Count > 0)
-    {
+    @{
         var index = 0;
         string rowClass = string.Empty;
+    }
 
-        <div class="sample-table-container">
+    <div class="sample-table-container">
+        @if (KeyNameList != null && KeyNameList.Count > 0)
+        {
+            <div class="mb-3">
+                <button class="btn btn-primary" @onclick=OnDeleteKeyNameDirectory>
+                    <i class="fa fa-arrow-left"></i> 刪除
+                </button>
+            </div>
+
             <table class="sample-table">
+                <thead>
+                    <tr>
+                        <th class="">Key Name 目錄</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        index = 0;
+                        rowClass = string.Empty;
+                    }
+                    @foreach (var item in KeyNameList)
+                    {
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            <td class="item-cell ">@item</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if (Items != null && Items.Count > 0)
+        {
+            <table class="sample-table mt-4">
                 <thead>
                     <tr>
                         <th class="">Subject Code</th>
@@ -29,6 +67,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        index = 0;
+                        rowClass = string.Empty;
+                    }
                     @foreach (var item in Items)
                     {
                         if (index++ % 2 == 0)
@@ -46,8 +88,8 @@
                     }
                 </tbody>
             </table>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
@@ -73,6 +115,7 @@
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     List<PatientAIKeyNameViewModel> Items = new();
     PatientData patientData = new();
+    List<string> KeyNameList = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -83,6 +126,44 @@
         if (firstRender)
         {
             await GetDataAsync(firstRender);
+            await GetKeyNameDirectory(firstRender);
+        }
+    }
+    async Task OnDeleteKeyNameDirectory()
+    {
+        foreach (var keyName in KeyNameList)
+        {
+            var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+            var dirPath = Path.Combine(uploadFilesPath, keyName);
+            if (Directory.Exists(dirPath))
+            {
+                Directory.Delete(dirPath, true);
+            }
+        }
+        MessageBox.Show("400px", "200px", "資訊", "已成功刪除所有沒有用到的目錄。", MessageBox.HiddenAsync);
+        await GetKeyNameDirectory(false);
+    }
+
+    async Task GetKeyNameDirectory(bool firstRender)
+    {
+        KeyNameList.Clear();
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        // get all directory
+        var directories = Directory.GetDirectories(uploadFilesPath);
+        foreach (var dir in directories)
+        {
+            var dirInfo = new DirectoryInfo(dir);
+            var dirName = dirInfo.Name;
+            var existingItem = Items.FirstOrDefault(x => x.KeyName == dirName);
+            if (existingItem == null)
+            {
+                KeyNameList.Add(dirName);
+            }
+        }
+
+        if (firstRender)
+        {
+            StateHasChanged();
         }
     }
 
@@ -101,7 +182,7 @@
             Items.Add(model);
         }
 
-        if(firstRender)
+        if (firstRender)
         {
             StateHasChanged();
         }
