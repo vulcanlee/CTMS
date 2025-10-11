@@ -50,6 +50,7 @@ public class RiskAssessmentResult
     }
     public string 風險程度 { get; set; } = ""; // "高風險";
     public string 是否需要降15Percent劑量 { get; set; } = ""; //  "需要";
+    public string SMA骨骼肌面積 { get; set; } = ""; 
     public string SMI骨骼肌指標 { get; set; } = ""; // "低於正常值";
     public string SMD骨骼肌密度 { get; set; } = ""; // "低於正常值";
     public string IMAT肌間肌肉脂肪組織 { get; set; } = ""; // "高於正常值";

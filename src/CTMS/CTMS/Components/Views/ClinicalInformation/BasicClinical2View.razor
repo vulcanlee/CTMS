@@ -1201,6 +1201,9 @@
         patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
         patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
         patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
+        // SMA : SMA (Skeletal Muscle Area) TotalLamaA + TotalNamaA 骨骼肌面積
+        patientData.臨床資訊.RiskAssessmentResult.SMA骨骼肌面積 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
+          / (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
         //SMI= LAMA+NAMA/(身高的平方(公尺))
         patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
             / (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
