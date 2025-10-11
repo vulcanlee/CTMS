@@ -58,21 +58,21 @@ namespace AIAgent.Services
         public async Task RunAsync()
         {
             await ProceeInBoundAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase1Async();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase1WaitingAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase2Async();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase2WaitingAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase3Async();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase3WaitingAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceeCompleteAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
         }
 
         #region 不同階段的處理作法

@@ -611,19 +611,18 @@
                                 if (isCompletion)
                                 {
                                     checkCompleted = true;
-                                    break;
+                                    await InvokeAsync(async () =>
+                                     {
+                                         var task = ShowAICompletionAsync();
+                                         StateHasChanged();
+                                         await Task.Delay(100);
+                                         await task;
+                                     });
                                 }
                             }
 
                             if (checkCompleted)
                             {
-                                await InvokeAsync(async () =>
-                                 {
-                                     var task = ShowAICompletionAsync();
-                                     StateHasChanged();
-                                     await Task.Delay(100);
-                                     await task;
-                                 });
                             }
                         }, token);
                 }
