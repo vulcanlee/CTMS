@@ -21,6 +21,7 @@
 @inject IMapper mapper
 @inject CancerStageService CancerStageService
 @inject InputCsvService InputCsvService
+@implements IDisposable
 
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
@@ -576,24 +577,50 @@
     string image = "";
     string imageVersion = DateTime.Now.Ticks.ToString();
 
+    CancellationToken token = new CancellationToken();
+    CancellationTokenSource cts = new CancellationTokenSource();
+    Task checkTask;
     protected override async Task OnInitializedAsync()
     {
-        #region Demo 使用
-        // if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
-        // {
-        //     patientData.臨床資訊.Image = "ExperimentalGroup";
-        // }
-        // else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        // {
-        //     patientData.臨床資訊.Image = "ControlGroup";
-        // }
-        #endregion
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await GetData();
+            cts = new CancellationTokenSource();
+            token = cts.Token;
+
+            if (patientAdapterModel.AI處理 == MagicObjectHelper.AI處理處理中)
+            // if (patientAdapterModel.AI處理 == MagicObjectHelper.NA)
+            {
+                try
+                {
+                    var checkCompleted = false;
+                    checkTask = Task.Run(async () =>
+                        {
+                            while (!token.IsCancellationRequested)
+                            {
+                                await Task.Delay(1000, token);
+                                Console.WriteLine("AI處理處理中");
+                                bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
+                                if(isCompletion)
+                                {
+                                    checkCompleted = true;
+                                }
+                            }
+
+                            if (checkCompleted)
+                            {
+                                await ShowAICompletionAsync();
+                            }
+                        }, token);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
             StateHasChanged();
         }
     }
@@ -1142,49 +1169,58 @@
         if (isCompletion == false)
         {
             msg = "AI處理  尚未  完成，請稍後再確認";
+            MessageBox.Show("400px", "200px", "資訊", msg, MessageBox.HiddenAsync);
+            return;
         }
         else
         {
-            msg = "AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果";
-
-            InputCsvModel inputCsvModel = await AIIntegrateService.GetInputCsv(patientData.臨床資訊.KeyName);
-
-            string imageRootPath = MagicObjectHelper.UploadFinalPath;
-            var keyName = patientData.臨床資訊.KeyName;
-            // http://localhost:5272/UploadFiles/202509111436154559/Phase1Result/202509111436154559.png
-            var imageFilename = $"{keyName}/Phase1Result/{keyName}.png";
-            patientData.臨床資訊.RiskAssessmentResult.ImagePng = imageFilename;
-            patientData.臨床資訊.RiskAssessmentResult.SMD骨骼肌密度 = inputCsvModel.Total_SMD.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
-            //SMI= LAMA+NAMA/(身高的平方(公尺))
-            patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
-                / (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
-
-            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
-
-            (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
-
-            patientData.臨床資訊.RiskAssessmentResult.風險程度 = risk;
-            patientData.臨床資訊.RiskAssessmentResult.是否需要降15Percent劑量 = reducedRisk;
-
-            if (patientAdapterModel.組別 == "AI")
-            {
-                patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.實驗組;
-            }
-            else
-            {
-                patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.對照組;
-            }
-
-            patientAdapterModel.JsonData = patientData.ToJson();
-
-            patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
-            // patientAdapterModel.組別 = "AI";
-            await PatientService.UpdateAsync(patientAdapterModel);
+            await ShowAICompletionAsync();
         }
+    }
+
+    async Task ShowAICompletionAsync()
+    {
+        var msg = "AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果";
+
+        InputCsvModel inputCsvModel = await AIIntegrateService.GetInputCsv(patientData.臨床資訊.KeyName);
+
+        string imageRootPath = MagicObjectHelper.UploadFinalPath;
+        var keyName = patientData.臨床資訊.KeyName;
+        // http://localhost:5272/UploadFiles/202509111436154559/Phase1Result/202509111436154559.png
+        var imageFilename = $"{keyName}/Phase1Result/{keyName}.png";
+        patientData.臨床資訊.RiskAssessmentResult.ImagePng = imageFilename;
+        patientData.臨床資訊.RiskAssessmentResult.SMD骨骼肌密度 = inputCsvModel.Total_SMD.ToFloat().ToString("F2");
+        patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
+        patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
+        patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
+        //SMI= LAMA+NAMA/(身高的平方(公尺))
+        patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
+            / (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
+
+        patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
+
+        (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
+
+        patientData.臨床資訊.RiskAssessmentResult.風險程度 = risk;
+        patientData.臨床資訊.RiskAssessmentResult.是否需要降15Percent劑量 = reducedRisk;
+
+        if (patientAdapterModel.組別 == "AI")
+        {
+            patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.實驗組;
+        }
+        else
+        {
+            patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.對照組;
+        }
+
+        patientAdapterModel.JsonData = patientData.ToJson();
+
+        patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
+        // patientAdapterModel.組別 = "AI";
+        await PatientService.UpdateAsync(patientAdapterModel);
+
         MessageBox.Show("400px", "200px", "資訊", msg, MessageBox.HiddenAsync);
+        return;
     }
 
     void OnShowMMRProteinSetting()
@@ -1334,6 +1370,13 @@
         string body = $"請放射科醫師協助 {patientData.臨床資訊.SubjectNo} 進行影像判讀，謝謝您！";
         return (title, body);
     }
+
+    public void Dispose()
+    {
+        Console.WriteLine("Disposing resources");
+        cts.Cancel();
+    }
+
     #region 頁籤切換
     void On臨床資料()
     {
@@ -1389,6 +1432,5 @@
         NavigationManager.NavigateTo(url);
     }
     #endregion
-
 
 }
