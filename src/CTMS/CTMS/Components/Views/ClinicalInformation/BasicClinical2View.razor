@@ -603,6 +603,7 @@
                             {
                                 await Task.Delay(1000, token);
                                 Console.WriteLine("AI處理處理中");
+                                await GetData();
                                 bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
                                 if(isCompletion)
                                 {
@@ -612,7 +613,10 @@
 
                             if (checkCompleted)
                             {
-                                await ShowAICompletionAsync();
+                               await InvokeAsync(async() =>
+                                {
+                                    await ShowAICompletionAsync();
+                                });
                             }
                         }, token);
                 }
