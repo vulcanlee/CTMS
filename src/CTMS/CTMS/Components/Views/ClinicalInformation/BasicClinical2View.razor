@@ -619,7 +619,10 @@
                             {
                                 await InvokeAsync(async () =>
                                  {
-                                     await ShowAICompletionAsync();
+                                     var task = ShowAICompletionAsync();
+                                     StateHasChanged();
+                                     await Task.Delay(100);
+                                     await task;
                                  });
                             }
                         }, token);
