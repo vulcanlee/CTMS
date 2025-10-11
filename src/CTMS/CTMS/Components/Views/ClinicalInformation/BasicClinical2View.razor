@@ -591,7 +591,7 @@
             cts = new CancellationTokenSource();
             token = cts.Token;
 
-            if (patientAdapterModel.AI處理 == MagicObjectHelper.AI處理處理中)
+            // if (patientAdapterModel.AI處理 == MagicObjectHelper.AI處理處理中)
             // if (patientAdapterModel.AI處理 == MagicObjectHelper.NA)
             {
                 try
@@ -602,21 +602,25 @@
                             while (!token.IsCancellationRequested)
                             {
                                 await Task.Delay(1000, token);
-                                Console.WriteLine("AI處理處理中");
                                 await GetData();
+
+                                if (patientAdapterModel.AI處理 != MagicObjectHelper.AI處理處理中)
+                                    continue;
+
                                 bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
-                                if(isCompletion)
+                                if (isCompletion)
                                 {
                                     checkCompleted = true;
+                                    break;
                                 }
                             }
 
                             if (checkCompleted)
                             {
-                               await InvokeAsync(async() =>
-                                {
-                                    await ShowAICompletionAsync();
-                                });
+                                await InvokeAsync(async () =>
+                                 {
+                                     await ShowAICompletionAsync();
+                                 });
                             }
                         }, token);
                 }
