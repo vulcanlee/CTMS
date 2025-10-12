@@ -25,15 +25,36 @@
             <div>
                 @if (editMode)
                 {
-                    <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
-                        <button type="button" class="btn btn-sm btn-primary save-button"
-                                @onclick=OnSave>
-                            儲存
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger cancle-button"
-                                @onclick=OnCancel>
-                            取消
-                        </button>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+
+                        <div class="ms-4 ">
+                            <div class="d-flex align-items-center flex-wrap gap-2">
+                                <div>
+                                    重新設定所有日期
+                                </div>
+
+                                <div>
+                                    <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
+                                                  @bind-Value="@resetDate"></SfDatePicker>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline-primary"
+                                            @onclick=OnResetDate>
+                                        重新設定
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
+                            <button type="button" class="btn btn-sm btn-primary save-button"
+                                    @onclick=OnSave>
+                                儲存
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger cancle-button"
+                                    @onclick=OnCancel>
+                                取消
+                            </button>
+                        </div>
                     </div>
                 }
                 else
@@ -79,7 +100,7 @@
                 <tbody>
                     @foreach (var item in data.抽血檢驗血液)
                     {
-                        if(index++ % 2 == 0)
+                        if (index++ % 2 == 0)
                         {
                             rowClass = "row-normal";
                         }
@@ -97,21 +118,21 @@
                                 }
                                 else
                                 {
-                                        @item.檢驗數值
+                                    @item.檢驗數值
                                 }
                             </td>
                             <td class="sampling-cell ">
-                                                                @if (editMode)
+                                @if (editMode)
                                 {
-                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
+                                    <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
                                                   @bind-Value="@item.SamplingDate"></SfDatePicker>
                                 }
                                 else
                                 {
-                                        @if (item.SamplingDate.HasValue)
-                                        {
-                                            @item.SamplingDate.Value.ToString("yyyy-MM-dd")
-                                        }
+                                    @if (item.SamplingDate.HasValue)
+                                    {
+                                        @item.SamplingDate.Value.ToString("yyyy-MM-dd")
+                                    }
                                 }
                             </td>
                         </tr>
@@ -155,6 +176,8 @@
     SfDropDownList<DropDownListDataModel, DropDownListDataModel> VisitCodeDropDown;
     DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
+
+    DateTime? resetDate = null;
     #endregion
 
     protected override async Task OnInitializedAsync()
@@ -184,6 +207,14 @@
             {
                 data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
             }
+        }
+    }
+
+    void OnResetDate()
+    {
+        foreach (var item in data.抽血檢驗血液)
+        {
+            item.SamplingDate = resetDate;
         }
     }
 
