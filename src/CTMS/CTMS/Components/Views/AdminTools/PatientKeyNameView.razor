@@ -12,6 +12,8 @@
 @inject DropDownListDataService DropDownListDataService
 @inject BloodExameService BloodExameService
 @inject RandomListService RandomListService
+@inject ZipToolService ZipToolService
+@inject IJSRuntime JS
 
 <div>
     @{
@@ -83,7 +85,10 @@
                         }
                         <tr class="@rowClass">
                             <td class="item-cell ">@item.SubjectNo</td>
-                            <td class="item-cell ">@item.KeyName</td>
+                            <td class="item-cell cursor-pointer"
+                                @onclick="@(async () => OnKeyNameClick(item.KeyName))">
+                                @item.KeyName
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -187,4 +192,26 @@
             StateHasChanged();
         }
     }
+
+    async Task OnKeyNameClick(string keyName)
+    {
+        if(string.IsNullOrEmpty(keyName))
+        {
+            return;
+        }
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        var sourceDirectoryPath = Path.Combine(uploadFilesPath, keyName);
+        var zipFileName = await ZipToolService.CompressDirectoryToZipAsync(sourceDirectoryPath, MagicObjectHelper.DownloadPath);
+
+        MemoryStream fileStream = new MemoryStream(File.ReadAllBytes(zipFileName));
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", Path.GetFileName(zipFileName), streamRef);
+    }
+
+    // Stream GetFileStream()
+    // {
+    //     MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(fileNamePdf));
+    //     return memoryStream;
+    // }
 }

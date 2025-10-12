@@ -126,6 +126,7 @@ namespace CTMS
                 builder.Services.AddTransient<InputCsvService>();
                 builder.Services.AddTransient<TestingServerHelper>();
                 builder.Services.AddTransient<RandomGroupingService>();
+                builder.Services.AddTransient<ZipToolService>();
 
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();
