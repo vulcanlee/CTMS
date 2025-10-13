@@ -86,7 +86,7 @@
                         <tr class="@rowClass">
                             <td class="item-cell ">@item.SubjectNo</td>
                             <td class="item-cell cursor-pointer"
-                                @onclick="@(async () => OnKeyNameClick(item.KeyName))">
+                                @onclick="@(async () => OnKeyNameClick(item))">
                                 @item.KeyName
                             </td>
                         </tr>
@@ -193,15 +193,17 @@
         }
     }
 
-    async Task OnKeyNameClick(string keyName)
+    async Task OnKeyNameClick(PatientAIKeyNameViewModel patientAIKeyNameViewModel)
     {
+        string keyName = patientAIKeyNameViewModel.KeyName;
+        string subjectNo = patientAIKeyNameViewModel.SubjectNo;
         if(string.IsNullOrEmpty(keyName))
         {
             return;
         }
         var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
         var sourceDirectoryPath = Path.Combine(uploadFilesPath, keyName);
-        var zipFileName = await ZipToolService.CompressDirectoryToZipAsync(sourceDirectoryPath, MagicObjectHelper.DownloadPath);
+        var zipFileName = await ZipToolService.CompressDirectoryToZipAsync(sourceDirectoryPath, MagicObjectHelper.DownloadPath, subjectNo);
 
         MemoryStream fileStream = new MemoryStream(File.ReadAllBytes(zipFileName));
         using var streamRef = new DotNetStreamReference(stream: fileStream);

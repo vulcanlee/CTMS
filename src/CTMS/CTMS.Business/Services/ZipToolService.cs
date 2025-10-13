@@ -16,12 +16,12 @@ public class ZipToolService
     }
 
     public async Task<string> CompressDirectoryToZipAsync(
-        string sourceDirectory, string zipFilePath)
+        string sourceDirectory, string zipFilePath, string subjectNo)
     {
         string zipFileName = string.Empty;
 
         string directoryName = Path.GetFileName(sourceDirectory);
-        zipFileName = Path.Combine(zipFilePath, $"{directoryName}.zip");
+        zipFileName = Path.Combine(zipFilePath, $"{subjectNo}.zip");
         try
         {
             // 對於指定的目錄，將其底下的所有檔案與目錄，使用 zip 進行壓縮成為一個 zip 檔案the directory

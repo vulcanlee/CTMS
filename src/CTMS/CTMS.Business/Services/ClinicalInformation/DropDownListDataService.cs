@@ -1,5 +1,6 @@
 ﻿using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
+using CTMS.Share.Helpers;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace CTMS.Business.Services.ClinicalInformation
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
             result.Add(new DropDownListDataModel() { Key = $"成大醫院", Name = $"成大醫院" });
             result.Add(new DropDownListDataModel() { Key = $"奇美醫院", Name = $"奇美醫院" });
-            result.Add(new DropDownListDataModel() { Key = $"郭綜合醫院", Name = $"郭綜合醫院" }); 
+            result.Add(new DropDownListDataModel() { Key = $"郭綜合醫院", Name = $"郭綜合醫院" });
             return result;
         }
 
@@ -286,22 +287,28 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> Get組織型態()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            result.Add(new DropDownListDataModel() { Key = $"Type I", Name = $"Type I" });
-            result.Add(new DropDownListDataModel() { Key = $"Type II", Name = $"Type II" });
+            result.Add(new DropDownListDataModel() { Key = MagicObjectHelper.TypeI, Name = MagicObjectHelper.TypeI });
+            result.Add(new DropDownListDataModel() { Key = MagicObjectHelper.TypeII, Name = MagicObjectHelper.TypeII });
             return result;
         }
 
-        public List<DropDownListDataModel> Get組織型態Detail(string typeDescription)
+        public List<DropDownListDataModel> Get組織型態Detail(string typeDescription,
+            string ECorOC)
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            if (typeDescription == "Type I")
+            if (typeDescription == MagicObjectHelper.TypeI)
             {
                 result.Add(new DropDownListDataModel() { Key = $"Endometrioid adenocarcinoma Grade 1", Name = $"Endometrioid adenocarcinoma Grade 1" });
                 result.Add(new DropDownListDataModel() { Key = $"Endometrioid adenocarcinoma Grade 2", Name = $"Endometrioid adenocarcinoma Grade 2" });
                 result.Add(new DropDownListDataModel() { Key = $"Endometrioid adenocarcinoma Grade 3", Name = $"Endometrioid adenocarcinoma Grade 3" });
             }
-            else if (typeDescription == "Type II")
+            else if (typeDescription == MagicObjectHelper.TypeII)
             {
+                if (ECorOC == MagicObjectHelper.OC)
+                {
+                    result.Add(new DropDownListDataModel() { Key = $"Endometrioid ", Name = $"Endometrioid" });
+                }
+
                 result.Add(new DropDownListDataModel() { Key = $"Serous", Name = $"Serous" });
                 result.Add(new DropDownListDataModel() { Key = $"Clear cell", Name = $"Clear cell" });
                 result.Add(new DropDownListDataModel() { Key = $"Carcinosarcoma", Name = $"Carcinosarcoma" });

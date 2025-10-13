@@ -359,13 +359,17 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@List組織型態"
-                                                        @bind-Value="@Select組織型態" class="flex-grow-1">
-                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@On組織型態Changed"></DropDownListEvents>
-                                        </SfDropDownList>
+                                        @if (patientData.臨床資訊.ECorOC == MagicObjectHelper.EC)
+                                        {
+                                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                            Placeholder="選擇一個值" DataSource="@List組織型態"
+                                                            @bind-Value="@Select組織型態" class="flex-grow-1">
+                                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                    ValueChange="@On組織型態Changed"></DropDownListEvents>
+                                            </SfDropDownList>
+                                        }
+
                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
                                                         Placeholder="選擇一個值" DataSource="@List組織型態Detail"
                                                         PopupWidth="auto"
@@ -377,9 +381,12 @@
                                     }
                                     else
                                     {
-                                        @patientData.臨床資訊.HistologicalType
+                                        @if (patientData.臨床資訊.ECorOC == MagicObjectHelper.EC)
+                                        {
+                                            @patientData.臨床資訊.HistologicalType
 
-                                        <br />
+                                            <br />
+                                        }
                                         @patientData.臨床資訊.HistologicalTypeDetail
                                     }
                                 </td>
@@ -599,15 +606,27 @@
                     var checkCompleted = false;
                     checkTask = Task.Run(async () =>
                         {
+                            PatientAdapterModel taskPatientAdapterModel = new();
+                            PatientData taskPatientData = new();
+
                             while (!token.IsCancellationRequested)
                             {
                                 await Task.Delay(1000, token);
-                                await GetData();
 
-                                if (patientAdapterModel.AI處理 != MagicObjectHelper.AI處理處理中)
+                                if (editMode)
                                     continue;
 
-                                bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
+                                #region GetData
+                                CancerStageService.ReadAll();
+                                taskPatientAdapterModel = await PatientService.GetAsync(Code);
+                                taskPatientData.FromJson(taskPatientAdapterModel.JsonData);
+                                #endregion
+                                //await GetData();
+
+                                if (taskPatientAdapterModel.AI處理 != MagicObjectHelper.AI處理處理中)
+                                    continue;
+
+                                bool isCompletion = await AIIntegrateService.CheckAIProcess(taskPatientData.臨床資訊.KeyName);
                                 if (isCompletion)
                                 {
                                     checkCompleted = true;
@@ -875,12 +894,20 @@
             if (itemPR != null)
                 SelectHormonStatusPR = itemPR;
         }
-        #endregion
 
-        #region 組織型態
+        InitList組織型態();
+        #endregion
+    }
+
+    void InitList組織型態()
+
+    #region 組織型態
+    {
+        List組織型態Detail?.Clear();
+        List組織型態 = DropDownListDataService.Get組織型態();
+
+        if (patientData.臨床資訊.ECorOC == MagicObjectHelper.EC)
         {
-            List組織型態Detail?.Clear();
-            List組織型態 = DropDownListDataService.Get組織型態();
             var item = List組織型態.FirstOrDefault(x =>
                 x.Key == patientData.臨床資訊.HistologicalType);
             if (item != null)
@@ -890,8 +917,21 @@
                 Refresh組織型態Detail();
             }
         }
-        #endregion
+        else
+        {
+            var item = List組織型態.FirstOrDefault(x =>
+                x.Key == MagicObjectHelper.TypeII);
+
+            if (item != null)
+            {
+                patientData.臨床資訊.HistologicalType = item.Key;
+                Select組織型態 = item;
+
+                Refresh組織型態Detail();
+            }
+        }
     }
+    #endregion
 
     #region 下拉選單的事件
 
@@ -918,7 +958,7 @@
     void Refresh組織型態Detail()
     {
         if (Select組織型態 == null) return;
-        List組織型態Detail = DropDownListDataService.Get組織型態Detail(Select組織型態.Key);
+        List組織型態Detail = DropDownListDataService.Get組織型態Detail(Select組織型態.Key, patientData.臨床資訊.ECorOC);
         var itemDetail = List組織型態Detail.FirstOrDefault(x =>
             x.Key == patientData.臨床資訊.HistologicalTypeDetail);
         if (itemDetail != null)
@@ -1117,6 +1157,24 @@
         patientData.臨床資訊.ECorOC = args.Value.Key;
         patientData.臨床資訊.CalculateCancerType();
         RefreshFIGO癌症分期();
+        if (patientData.臨床資訊.ECorOC == MagicObjectHelper.OC)
+        {
+            var type1 = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeI);
+            var type2 = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeII);
+            Select組織型態 = type1;
+            StateHasChanged();
+            Select組織型態 = type2;
+            Refresh組織型態Detail();
+            StateHasChanged();
+        }
+        else
+        {
+            var type = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeI);
+            Select組織型態 = type;
+            StateHasChanged();
+            Refresh組織型態Detail();
+            StateHasChanged();
+        }
     }
 
     #endregion

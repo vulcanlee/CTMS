@@ -2,7 +2,8 @@
 using CTMS.Share.Helpers;
 
 namespace CTMS.DataModel.Models.ClinicalInformation;
-public class MMRProteinSetting :ICloneable
+
+public class MMRProteinSetting : ICloneable
 {
     public ProteinInfo MSH2 { get; set; } = new();
     public ProteinInfo MSH6 { get; set; } = new();
@@ -11,7 +12,7 @@ public class MMRProteinSetting :ICloneable
 
     public MMRProteinSetting Clone()
     {
-        var result =  ((ICloneable)this).Clone() as MMRProteinSetting;
+        var result = ((ICloneable)this).Clone() as MMRProteinSetting;
         result.MSH2 = MSH2.Clone();
         result.MSH6 = MSH6.Clone();
         result.PMS2 = PMS2.Clone();
@@ -164,7 +165,22 @@ public class BasicClinicalPresentation_臨床資訊
     /// <summary>
     /// 臨床資訊 癌別 EC or OCC(自填)
     /// </summary>
-    public string ECorOC { get; set; }
+    public string ECorOC
+    {
+        get
+        {
+            return _ECorOC;
+        }
+        set
+        {
+            if (value == "OC")
+            {
+                int foo = 0;
+            }
+            _ECorOC = value;
+        }
+    }
+    string _ECorOC = "";
     /// <summary>
     /// 年齡 (Age) 20歲-80歲
     /// </summary>
@@ -262,8 +278,8 @@ public class BasicClinicalPresentation_臨床資訊
     /// </summary>
     public string Image { get; set; }
     public string KeyName { get; set; }
-    public string ImageDicom { get{ return $"{Image}.dicm"; } }
-    public string ImagePng { get{ return $"{Image}.png"; } }
+    public string ImageDicom { get { return $"{Image}.dicm"; } }
+    public string ImagePng { get { return $"{Image}.png"; } }
 
     public RiskAssessmentResult RiskAssessmentResult { get; set; } = new();
     public int SignatureId { get; set; }
@@ -272,7 +288,7 @@ public class BasicClinicalPresentation_臨床資訊
 
     public string GetErPrStatus()
     {
-        if(HormonStatusER == null || HormonStatusPR == null)
+        if (HormonStatusER == null || HormonStatusPR == null)
         {
             return "ER/PR Status Not Set";
         }

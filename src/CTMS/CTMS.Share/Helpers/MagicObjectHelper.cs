@@ -137,6 +137,8 @@
         public const string AI評估完成 = "已完成";
         public const string NeedChangePassword = "123456";
 
+        public const string TypeI = "Type I";
+        public const string TypeII = "Type II";
         #region AIAgent 專用
         public const string Agentsetting = "Agentsetting";
         public const string PrefixPatientData = "PatientData";
