@@ -186,7 +186,19 @@
         patientData.FromJson(patientAdapterModel.JsonData);
         InitData(true);
         if (data != null)
+        {
+            var item1 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "LDH U/L");
+            var item2 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "乳酸脫氫酶 (LDH)");
+            if (item1 != null)
+            {
+                item1.項目名稱 = "乳酸脫氫酶 (LDH) U/L";
+            }
+            if (item2 != null)
+            {
+                data.抽血檢驗生化.Remove(item2);
+            }
             BloodExameService.CheckBloodExame(data.抽血檢驗生化);
+        }
     }
 
     void InitData(bool isFirst = true)
