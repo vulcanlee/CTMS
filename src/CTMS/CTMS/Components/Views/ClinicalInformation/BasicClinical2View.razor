@@ -378,6 +378,10 @@
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                                 ValueChange="@On組織型態DetailChanged"></DropDownListEvents>
                                         </SfDropDownList>
+                                        @if (Select組織型態Detail!=null && Select組織型態Detail.Key == "Others")
+                                        {
+                                            <SfTextBox @bind-Value="patientData.臨床資訊.HistologicalTypeDetailOther" CssClass="w-100" />
+                                        }
                                     }
                                     else
                                     {
@@ -388,6 +392,11 @@
                                             <br />
                                         }
                                         @patientData.臨床資訊.HistologicalTypeDetail
+                                        @if (Select組織型態Detail != null && Select組織型態Detail!.Key == "Others")
+                                        {
+                                            <br/>
+                                            @patientData.臨床資訊.HistologicalTypeDetailOther
+                                        }
                                     }
                                 </td>
                             </tr>
@@ -403,21 +412,7 @@
                                         <div>
                                             @patientData.臨床資訊.MMRProteinSetting.GetProteinResult()
                                         </div>
-                                        @*                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListMMRProtein"
-                                                        @bind-Value="@SelectMMRProtein" class="flex-grow-1">
-                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnMMRProteinChanged"></DropDownListEvents>
-                                        </SfDropDownList>
-                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListMMRProteinDetail"
-                                                        @bind-Value="@SelectMMRProteinDetail" class="flex-grow-1">
-                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnMMRProteinDetailChanged"></DropDownListEvents>
-                                        </SfDropDownList> *@   
-                                        }
+                                    }
                                     else
                                     {
                                         <div>
@@ -504,7 +499,7 @@
                         AI
                     </div>
                     <div class="header blue-header cursor-pointer mt-1" @onclick=OnConfirmAIBtn>
-                        AI處理確認
+                        AI 模型驗證
                     </div>
                 </div>
             </div>

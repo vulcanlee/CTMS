@@ -245,6 +245,7 @@ public class BasicClinicalPresentation_臨床資訊
     /// 組織型態 Type I  (2A )or Type II (2B)
     /// </summary>
     public string HistologicalTypeDetail { get; set; }
+    public string HistologicalTypeDetailOther { get; set; }
     /// <summary>
     /// MMR protein
     /// </summary>
