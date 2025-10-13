@@ -304,19 +304,32 @@ namespace CTMS.Business.Services.ClinicalInformation
             }
             else if (typeDescription == MagicObjectHelper.TypeII)
             {
-                if (ECorOC == MagicObjectHelper.OC)
+                if (ECorOC == MagicObjectHelper.EC)
                 {
-                    result.Add(new DropDownListDataModel() { Key = $"Endometrioid ", Name = $"Endometrioid" });
+                    result.Add(new DropDownListDataModel() { Key = $"Serous", Name = $"Serous" });
+                    result.Add(new DropDownListDataModel() { Key = $"Clear cell", Name = $"Clear cell" });
+                    result.Add(new DropDownListDataModel() { Key = $"Carcinosarcoma", Name = $"Carcinosarcoma" });
+                    result.Add(new DropDownListDataModel() { Key = $"Mixed cell adenocarcinoma", Name = $"Mixed cell adenocarcinoma" });
+                    result.Add(new DropDownListDataModel() { Key = $"Neuroendocrine tumors", Name = $"Neuroendocrine tumors" });
+                    result.Add(new DropDownListDataModel() { Key = $"Dedifferentiated carcinoma", Name = $"Dedifferentiated carcinoma" });
+                    result.Add(new DropDownListDataModel() { Key = $"Undifferentiated carcinoma", Name = $"Undifferentiated carcinoma" });
+                    result.Add(new DropDownListDataModel() { Key = $"Others", Name = $"Others" });
                 }
+                else
+                {
+                    result.Add(new DropDownListDataModel() { Key = $"serous", Name = $"serous" });
+                    if (ECorOC == MagicObjectHelper.OC)
+                    {
+                        result.Add(new DropDownListDataModel() { Key = $"endometrioid ", Name = $"endometrioid" });
+                    }
 
-                result.Add(new DropDownListDataModel() { Key = $"Serous", Name = $"Serous" });
-                result.Add(new DropDownListDataModel() { Key = $"Clear cell", Name = $"Clear cell" });
-                result.Add(new DropDownListDataModel() { Key = $"Carcinosarcoma", Name = $"Carcinosarcoma" });
-                result.Add(new DropDownListDataModel() { Key = $"Mixed cell adenocarcinoma", Name = $"Mixed cell adenocarcinoma" });
-                result.Add(new DropDownListDataModel() { Key = $"Neuroendocrine tumors", Name = $"Neuroendocrine tumors" });
-                result.Add(new DropDownListDataModel() { Key = $"Dedifferentiated carcinoma", Name = $"Dedifferentiated carcinoma" });
-                result.Add(new DropDownListDataModel() { Key = $"Undifferentiated carcinoma", Name = $"Undifferentiated carcinoma" });
-                result.Add(new DropDownListDataModel() { Key = $"Others", Name = $"Others" });
+                    result.Add(new DropDownListDataModel() { Key = $"clear cell", Name = $"clear cell" });
+                    result.Add(new DropDownListDataModel() { Key = $"mucinous", Name = $"mucinous" });
+                    result.Add(new DropDownListDataModel() { Key = $"carcinosarcoma", Name = $"carcinosarcoma" });
+                    result.Add(new DropDownListDataModel() { Key = $"mixed cell adenocarcinoma", Name = $"mixed cell adenocarcinoma" });
+                    result.Add(new DropDownListDataModel() { Key = $"neuroendocrine tumors", Name = $"neuroendocrine tumors" });
+                    result.Add(new DropDownListDataModel() { Key = $"Others", Name = $"Others" });
+                }
             }
             return result;
         }
