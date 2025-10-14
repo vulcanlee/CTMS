@@ -13,7 +13,9 @@
 
 .visit-code-dialog {
     font-family: Arial, "Microsoft JhengHei", sans-serif;
-    padding: 10px;
+    /*    padding: 10px;*/
+    padding: 18px 28px 30px 28px;
+    background: #fff;
 }
 
 .add-button {
@@ -90,4 +92,17 @@ input[type="checkbox"] {
     background-color: #e6f0ff;
     border-radius: 4px;
     margin-right: 4px;
+}
+
+.e-dialog .e-dlg-header {
+    background: #cfe7ff; /* 淺藍底 */
+    color: #000;
+    text-align: center;
+    padding: 18px 20px;
+    font-size: 34px;
+    font-weight: 800;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-sizing: border-box;
+    line-height: 1;
 }

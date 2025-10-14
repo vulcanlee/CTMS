@@ -504,7 +504,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
 
         <!-- 底部導航按鈕 -->
         <div class="navigation-buttons">
@@ -1448,14 +1448,6 @@
         await Task.Delay(100);
         StateHasChanged();
         result = await task;
-        return result;
-    }
-
-    (string title, string body) BuildNotificationMessage()
-    {
-        string title = "請協助進行影像判讀與上傳最新影像";
-
-        }
     }
 
     public void Dispose()

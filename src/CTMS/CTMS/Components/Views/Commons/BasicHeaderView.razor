@@ -1,0 +1,94 @@
+﻿@using CTMS.DataModel.Models.Systems
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Microsoft.Extensions.Options
+@inject IOptions<CTMSSettings> options
+@inject CurrentUserService CurrentUserService
+@inject TestingServerHelper TestingServerHelper
+<div>
+    <div class="header">
+        <img src="/images/ncku_logo.svg" alt="@MagicObjectHelper.國立成功大學醫學院附設醫院"
+             class="hospital-logo" />
+        <div class="hospital-title">
+            <h1>AI 臨床試驗管理平臺</h1>
+            @* <h2>National Cheng Kung University Hospital</h2> *@
+        </div>
+        <div>
+            @if (!string.IsNullOrEmpty(forTesting))
+            {
+                <div class="alert-danger for-testing">@forTesting</div>
+            }
+            <div class="version">
+                @if (!string.IsNullOrEmpty(userName))
+                {
+                    <i class="oi oi-person"></i>
+                
+                    <span> 使用者：@userName</span>
+                }
+                else
+                {
+                    <i class="oi oi-person"></i>
+                
+                    <span> 使用者：未登入</span>
+                }
+                @* <div>Version:@options.Value.SystemInformation.SystemVersion</div> *@
+            </div>
+        </div>
+    </div>
+
+    @if (string.IsNullOrEmpty(BackUri) == false)
+    {
+        <div class="back-button-container">
+            <button class="home-btn" @onclick=OnHome>
+                <i class="oi oi-arrow-left"></i> 
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string BackUri { get; set; }
+    [Parameter]
+    public CurrentUser CurrentUser { get; set; }
+    string forTesting = "";
+    string userName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isTesting = TestingServerHelper.IsTestingServer(NavigationManager);
+        if (isTesting)
+        {
+            forTesting = "注意：測試用版本";
+        }
+    }
+
+    override protected void OnParametersSet()
+    {
+        if (CurrentUser != null)
+        {
+            if (string.IsNullOrEmpty(CurrentUser.Name) == false)
+                userName = CurrentUser.Name;
+            else
+                userName = "";
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+    void OnHome()
+    {
+        NavigationManager.NavigateTo("/Browser");
+    }
+}
