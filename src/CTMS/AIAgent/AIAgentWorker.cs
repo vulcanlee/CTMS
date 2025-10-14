@@ -50,7 +50,9 @@ namespace AIAgent
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
                     {
-                        _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                        //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                        Console.WriteLine($"Worker running at: {DateTimeOffset.Now}" );
+
                     }
 
                     #region 建立測試資料
@@ -60,7 +62,7 @@ namespace AIAgent
 
                     await agentService.RunAsync();
 
-                    await Task.Delay(1000*5, stoppingToken);
+                    await Task.Delay(500, stoppingToken);
                 }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)

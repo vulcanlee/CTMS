@@ -21,6 +21,7 @@
 @inject IMapper mapper
 @inject CancerStageService CancerStageService
 @inject InputCsvService InputCsvService
+@implements IDisposable
 @inject SendEmailService SendEmailService
 
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
@@ -36,7 +37,9 @@
         <div class="title-section d-flex align-items-start">
             <div>
                 <h1 class="mb-0">Basic clinical presentation 臨床資訊</h1>
-                <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+                <div @onclick="async () => await OnRecomputeRandomListAsync()">
+                    <SubjectNoView PatientAdapterModel="@patientAdapterModel" />
+                </div>
             </div>
             @if (editMode)
             {
@@ -357,13 +360,17 @@
                                 <td class="value-column">
                                     @if (editMode)
                                     {
-                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@List組織型態"
-                                                        @bind-Value="@Select組織型態" class="flex-grow-1">
-                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@On組織型態Changed"></DropDownListEvents>
-                                        </SfDropDownList>
+                                        @if (patientData.臨床資訊.ECorOC == MagicObjectHelper.EC)
+                                        {
+                                            <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                                            Placeholder="選擇一個值" DataSource="@List組織型態"
+                                                            @bind-Value="@Select組織型態" class="flex-grow-1">
+                                                <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                                                <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                                    ValueChange="@On組織型態Changed"></DropDownListEvents>
+                                            </SfDropDownList>
+                                        }
+
                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
                                                         Placeholder="選擇一個值" DataSource="@List組織型態Detail"
                                                         PopupWidth="auto"
@@ -372,13 +379,25 @@
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                                 ValueChange="@On組織型態DetailChanged"></DropDownListEvents>
                                         </SfDropDownList>
+                                        @if (Select組織型態Detail!=null && Select組織型態Detail.Key == "Others")
+                                        {
+                                            <SfTextBox @bind-Value="patientData.臨床資訊.HistologicalTypeDetailOther" CssClass="w-100" />
+                                        }
                                     }
                                     else
                                     {
-                                        @patientData.臨床資訊.HistologicalType
+                                        @if (patientData.臨床資訊.ECorOC == MagicObjectHelper.EC)
+                                        {
+                                            @patientData.臨床資訊.HistologicalType
 
-                                        <br />
+                                            <br />
+                                        }
                                         @patientData.臨床資訊.HistologicalTypeDetail
+                                        @if (Select組織型態Detail != null && Select組織型態Detail!.Key == "Others")
+                                        {
+                                            <br/>
+                                            @patientData.臨床資訊.HistologicalTypeDetailOther
+                                        }
                                     }
                                 </td>
                             </tr>
@@ -394,21 +413,7 @@
                                         <div>
                                             @patientData.臨床資訊.MMRProteinSetting.GetProteinResult()
                                         </div>
-                                        @*                                         <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListMMRProtein"
-                                                        @bind-Value="@SelectMMRProtein" class="flex-grow-1">
-                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnMMRProteinChanged"></DropDownListEvents>
-                                        </SfDropDownList>
-                                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                                        Placeholder="選擇一個值" DataSource="@ListMMRProteinDetail"
-                                                        @bind-Value="@SelectMMRProteinDetail" class="flex-grow-1">
-                                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                                                ValueChange="@OnMMRProteinDetailChanged"></DropDownListEvents>
-                                        </SfDropDownList> *@   
-                                        }
+                                    }
                                     else
                                     {
                                         <div>
@@ -495,7 +500,7 @@
                         AI
                     </div>
                     <div class="header blue-header cursor-pointer mt-1" @onclick=OnConfirmAIBtn>
-                        AI處理確認
+                        AI 模型驗證
                     </div>
                 </div>
             </div>
@@ -596,24 +601,72 @@
         await SendEmailService.SendNotifyEmailAsync(單號, NavigationManager.Uri);
     }
 
+    CancellationToken token = new CancellationToken();
+    CancellationTokenSource cts = new CancellationTokenSource();
+    Task checkTask;
     protected override async Task OnInitializedAsync()
     {
-        #region Demo 使用
-        // if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
-        // {
-        //     patientData.臨床資訊.Image = "ExperimentalGroup";
-        // }
-        // else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        // {
-        //     patientData.臨床資訊.Image = "ControlGroup";
-        // }
-        #endregion
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await GetData();
+            cts = new CancellationTokenSource();
+            token = cts.Token;
+
+            // if (patientAdapterModel.AI處理 == MagicObjectHelper.AI處理處理中)
+            // if (patientAdapterModel.AI處理 == MagicObjectHelper.NA)
+            {
+                try
+                {
+                    var checkCompleted = false;
+                    checkTask = Task.Run(async () =>
+                        {
+                            PatientAdapterModel taskPatientAdapterModel = new();
+                            PatientData taskPatientData = new();
+
+                            while (!token.IsCancellationRequested)
+                            {
+                                await Task.Delay(1000, token);
+
+                                if (editMode)
+                                    continue;
+
+                                #region GetData
+                                CancerStageService.ReadAll();
+                                taskPatientAdapterModel = await PatientService.GetAsync(Code);
+                                taskPatientData.FromJson(taskPatientAdapterModel.JsonData);
+                                #endregion
+                                //await GetData();
+
+                                if (taskPatientAdapterModel.AI處理 != MagicObjectHelper.AI處理處理中)
+                                    continue;
+
+                                bool isCompletion = await AIIntegrateService.CheckAIProcess(taskPatientData.臨床資訊.KeyName);
+                                if (isCompletion)
+                                {
+                                    checkCompleted = true;
+                                    await InvokeAsync(async () =>
+                                     {
+                                         var task = ShowAICompletionAsync();
+                                         StateHasChanged();
+                                         await Task.Delay(100);
+                                         await task;
+                                     });
+                                }
+                            }
+
+                            if (checkCompleted)
+                            {
+                            }
+                        }, token);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
             StateHasChanged();
         }
     }
@@ -858,12 +911,20 @@
             if (itemPR != null)
                 SelectHormonStatusPR = itemPR;
         }
-        #endregion
 
-        #region 組織型態
+        InitList組織型態();
+        #endregion
+    }
+
+    void InitList組織型態()
+
+    #region 組織型態
+    {
+        List組織型態Detail?.Clear();
+        List組織型態 = DropDownListDataService.Get組織型態();
+
+        if (patientData.臨床資訊.ECorOC == MagicObjectHelper.EC)
         {
-            List組織型態Detail?.Clear();
-            List組織型態 = DropDownListDataService.Get組織型態();
             var item = List組織型態.FirstOrDefault(x =>
                 x.Key == patientData.臨床資訊.HistologicalType);
             if (item != null)
@@ -873,8 +934,21 @@
                 Refresh組織型態Detail();
             }
         }
-        #endregion
+        else
+        {
+            var item = List組織型態.FirstOrDefault(x =>
+                x.Key == MagicObjectHelper.TypeII);
+
+            if (item != null)
+            {
+                patientData.臨床資訊.HistologicalType = item.Key;
+                Select組織型態 = item;
+
+                Refresh組織型態Detail();
+            }
+        }
     }
+    #endregion
 
     #region 下拉選單的事件
 
@@ -901,7 +975,7 @@
     void Refresh組織型態Detail()
     {
         if (Select組織型態 == null) return;
-        List組織型態Detail = DropDownListDataService.Get組織型態Detail(Select組織型態.Key);
+        List組織型態Detail = DropDownListDataService.Get組織型態Detail(Select組織型態.Key, patientData.臨床資訊.ECorOC);
         var itemDetail = List組織型態Detail.FirstOrDefault(x =>
             x.Key == patientData.臨床資訊.HistologicalTypeDetail);
         if (itemDetail != null)
@@ -1100,6 +1174,24 @@
         patientData.臨床資訊.ECorOC = args.Value.Key;
         patientData.臨床資訊.CalculateCancerType();
         RefreshFIGO癌症分期();
+        if (patientData.臨床資訊.ECorOC == MagicObjectHelper.OC)
+        {
+            var type1 = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeI);
+            var type2 = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeII);
+            Select組織型態 = type1;
+            StateHasChanged();
+            Select組織型態 = type2;
+            Refresh組織型態Detail();
+            StateHasChanged();
+        }
+        else
+        {
+            var type = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeI);
+            Select組織型態 = type;
+            StateHasChanged();
+            Refresh組織型態Detail();
+            StateHasChanged();
+        }
     }
 
     #endregion
@@ -1162,49 +1254,60 @@
         if (isCompletion == false)
         {
             msg = "AI處理  尚未  完成，請稍後再確認";
+            MessageBox.Show("400px", "200px", "資訊", msg, MessageBox.HiddenAsync);
+            return;
         }
         else
         {
-            msg = "AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果";
-
-            InputCsvModel inputCsvModel = await AIIntegrateService.GetInputCsv(patientData.臨床資訊.KeyName);
-
-            string imageRootPath = MagicObjectHelper.UploadFinalPath;
-            var keyName = patientData.臨床資訊.KeyName;
-            // http://localhost:5272/UploadFiles/202509111436154559/Phase1Result/202509111436154559.png
-            var imageFilename = $"{keyName}/Phase1Result/{keyName}.png";
-            patientData.臨床資訊.RiskAssessmentResult.ImagePng = imageFilename;
-            patientData.臨床資訊.RiskAssessmentResult.SMD骨骼肌密度 = inputCsvModel.Total_SMD.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
-            patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
-            //SMI= LAMA+NAMA/(身高的平方(公尺))
-            patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
-				/ (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
-
-            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
-
-            (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
-
-            patientData.臨床資訊.RiskAssessmentResult.風險程度 = risk;
-            patientData.臨床資訊.RiskAssessmentResult.是否需要降15Percent劑量 = reducedRisk;
-
-            if (patientAdapterModel.組別 == "AI")
-            {
-                patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.實驗組;
-            }
-            else
-            {
-                patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.對照組;
-            }
-
-            patientAdapterModel.JsonData = patientData.ToJson();
-
-            patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
-            // patientAdapterModel.組別 = "AI";
-            await PatientService.UpdateAsync(patientAdapterModel);
+            await ShowAICompletionAsync();
         }
+    }
+
+    async Task ShowAICompletionAsync()
+    {
+        var msg = "AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果";
+
+        InputCsvModel inputCsvModel = await AIIntegrateService.GetInputCsv(patientData.臨床資訊.KeyName);
+
+        string imageRootPath = MagicObjectHelper.UploadFinalPath;
+        var keyName = patientData.臨床資訊.KeyName;
+        // http://localhost:5272/UploadFiles/202509111436154559/Phase1Result/202509111436154559.png
+        var imageFilename = $"{keyName}/Phase1Result/{keyName}.png";
+        patientData.臨床資訊.RiskAssessmentResult.ImagePng = imageFilename;
+        patientData.臨床資訊.RiskAssessmentResult.SMD骨骼肌密度 = inputCsvModel.Total_SMD.ToFloat().ToString("F2");
+        patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = inputCsvModel.Total_ImatA.ToFloat().ToString("F2");
+        patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = inputCsvModel.Total_LamaA.ToFloat().ToString("F2");
+        patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = inputCsvModel.Total_NamaA.ToFloat().ToString("F2");
+        // SMA : SMA (Skeletal Muscle Area) TotalLamaA + TotalNamaA 骨骼肌面積
+        patientData.臨床資訊.RiskAssessmentResult.SMA骨骼肌面積 = (inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat()).ToString("F2");
+        //SMI= LAMA+NAMA/(身高的平方(公尺))
+        patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = ((inputCsvModel.Total_LamaA.ToFloat() + inputCsvModel.Total_NamaA.ToFloat())
+            / (patientData.臨床資訊.Height.ToFloat() / 100.0 * patientData.臨床資訊.Height.ToFloat() / 100.0)).ToString("F2");
+
+        patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = (inputCsvModel.Total_ImatA.ToFloat() + inputCsvModel.Total_LamaA.ToFloat()).ToString("F2");
+
+        (string risk, string reducedRisk) = await AIIntegrateService.GetOnputCsv(patientData.臨床資訊.KeyName);
+
+        patientData.臨床資訊.RiskAssessmentResult.風險程度 = risk;
+        patientData.臨床資訊.RiskAssessmentResult.是否需要降15Percent劑量 = reducedRisk;
+
+        if (patientAdapterModel.組別 == "AI")
+        {
+            patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.實驗組;
+        }
+        else
+        {
+            patientData.臨床資訊.RiskAssessmentResult.ExperimentalControl = MagicObjectHelper.對照組;
+        }
+
+        patientAdapterModel.JsonData = patientData.ToJson();
+
+        patientAdapterModel.AI處理 = MagicObjectHelper.AI處理已完成;
+        // patientAdapterModel.組別 = "AI";
+        await PatientService.UpdateAsync(patientAdapterModel);
+
         MessageBox.Show("400px", "200px", "資訊", msg, MessageBox.HiddenAsync);
+        return;
     }
 
     void OnShowMMRProteinSetting()
@@ -1290,6 +1393,38 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        // var needNotification = await ConfirmSendNotificationAsync();
+        // await Task.Delay(100);
+        // StateHasChanged();
+    }
+
+    async Task OnRecomputeRandomListAsync()
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要重新計算亂數表中的組別嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        result = await task;
+        if (result == false)
+        {
+            return;
+        }
+
+        RandomParameterMode randomParameterMode = new RandomParameterMode()
+        {
+            SubjectNo = patientData.臨床資訊.SubjectNo,
+            FIGO = patientData.臨床資訊.FIGOStaging,
+            ECorOC = patientData.臨床資訊.ECorOC,
+
+        };
+        randomParameterMode.Parse();
+
+        var Treatment = await RandomListService.ReComputeRandomListAsync(randomParameterMode);
+
+        patientAdapterModel.組別 = Treatment;
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
     }
 
     async Task OnCancel()
@@ -1306,14 +1441,29 @@
 
     async Task ConfirmSendNotification()
     {
-        var confirmDelete = await UploadDicomModel.ShowAsync("400px", "300px",
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要寄送通知給放射科醫師嗎？",
-             UploadDicomModel.HiddenAsync);
-        if (confirmDelete == true)
-        {
+             ConfirmMessageBox.HiddenAsync);
+        await Task.Delay(100);
+        StateHasChanged();
+        result = await task;
+        return result;
+    }
+
+    (string title, string body) BuildNotificationMessage()
+    {
+        string title = "請協助進行影像判讀與上傳最新影像";
 
         }
     }
+
+    public void Dispose()
+    {
+        Console.WriteLine("Disposing resources");
+        cts.Cancel();
+    }
+
     #region 頁籤切換
     void On臨床資料()
     {
@@ -1369,6 +1519,5 @@
         NavigationManager.NavigateTo(url);
     }
     #endregion
-
 
 }

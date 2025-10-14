@@ -96,15 +96,15 @@ public class RandomListService
         await RandomList.ReadAsync();
         string result = MagicObjectHelper.NA;
 
-        if(randomParameterModeAfter.EarlyOrAdvance == "" ||
+        if (randomParameterModeAfter.EarlyOrAdvance == "" ||
             randomParameterModeAfter.ECorOC == "")
             return result;
 
-        if (randomParameterModeBefore.EarlyOrAdvance != 
-            randomParameterModeAfter.EarlyOrAdvance)
+        if ((randomParameterModeBefore.EarlyOrAdvance != randomParameterModeAfter.EarlyOrAdvance) ||
+            (randomParameterModeBefore.ECorOC != randomParameterModeAfter.ECorOC))
         {
             var foundOldItem = RandomList.Items
-                .FirstOrDefault(x => 
+                .FirstOrDefault(x =>
                 x.SubjectNo == randomParameterModeBefore.SubjectNo);
             if (foundOldItem != null)
             {
@@ -113,7 +113,7 @@ public class RandomListService
             }
 
             var foundNewItem = RandomList.Items
-                .Where(x => 
+                .Where(x =>
                 x.Hospital == randomParameterModeAfter.Hospital &&
                 x.ECorOC == randomParameterModeAfter.ECorOC &&
                 x.EarlyOrAdvance == randomParameterModeAfter.EarlyOrAdvance &&
@@ -139,9 +139,47 @@ public class RandomListService
         return result;
     }
 
+    public async Task<string> ReComputeRandomListAsync(RandomParameterMode parameterMode)
+    {
+        await RandomList.ReadAsync();
+        string result = MagicObjectHelper.NA;
+
+        if (parameterMode.EarlyOrAdvance == "" ||
+            parameterMode.ECorOC == "")
+            return result;
+
+        {
+            var foundOldItem = RandomList.Items
+                .FirstOrDefault(x =>
+                x.SubjectNo == parameterMode.SubjectNo);
+            if (foundOldItem != null)
+            {
+                result = foundOldItem.Treatment;
+                return result;
+            }
+
+            var foundNewItem = RandomList.Items
+                .Where(x =>
+                x.Hospital == parameterMode.Hospital &&
+                x.ECorOC == parameterMode.ECorOC &&
+                x.EarlyOrAdvance == parameterMode.EarlyOrAdvance &&
+                x.SubjectNo == "")
+                .OrderBy(x => x.Id)
+                .FirstOrDefault();
+            if (foundNewItem != null)
+            {
+                foundNewItem.SubjectNo = parameterMode.SubjectNo;
+                result = foundNewItem.Treatment;
+            }
+            await RandomList.SaveAsync();
+        }
+        return result;
+    }
+
     public async Task RemoveAsync(RandomParameterMode randomParameterModeAfter)
     {
         await RandomList.ReadAsync();
+
         string result = string.Empty;
         if (randomParameterModeAfter.EarlyOrAdvance != "")
         {
@@ -153,7 +191,26 @@ public class RandomListService
                 await RandomList.SaveAsync();
             }
         }
-        return ;
+        return;
+    }
+
+    public async Task SaveAsync(List<RandomListItem> items)
+    {
+        await RandomList.ReadAsync();
+
+        foreach (var item in items) {
+            var foundItem = RandomList.Items
+                .FirstOrDefault(x => x.Id == item.Id &&
+                x.Hospital == item.Hospital &&
+                x.ECorOC == item.ECorOC &&
+                x.EarlyOrAdvance == item.EarlyOrAdvance);
+            if (foundItem != null)
+            {
+                foundItem.SubjectNo = item.SubjectNo;
+            }
+        }
+        await RandomList.SaveAsync();
+        return;
     }
 
     #endregion

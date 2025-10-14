@@ -1,0 +1,219 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject BloodExameService BloodExameService
+@inject RandomListService RandomListService
+@inject ZipToolService ZipToolService
+@inject IJSRuntime JS
+
+<div>
+    @{
+        var index = 0;
+        string rowClass = string.Empty;
+    }
+
+    <div class="sample-table-container">
+        @if (KeyNameList != null && KeyNameList.Count > 0)
+        {
+            <div class="mb-3">
+                <button class="btn btn-primary" @onclick=OnDeleteKeyNameDirectory>
+                    <i class="fa fa-arrow-left"></i> 刪除
+                </button>
+            </div>
+
+            <table class="sample-table">
+                <thead>
+                    <tr>
+                        <th class="">Key Name 目錄</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        index = 0;
+                        rowClass = string.Empty;
+                    }
+                    @foreach (var item in KeyNameList)
+                    {
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            <td class="item-cell ">@item</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if (Items != null && Items.Count > 0)
+        {
+            <table class="sample-table mt-4">
+                <thead>
+                    <tr>
+                        <th class="">Subject Code</th>
+                        <th class="">Key Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        index = 0;
+                        rowClass = string.Empty;
+                    }
+                    @foreach (var item in Items)
+                    {
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            <td class="item-cell ">@item.SubjectNo</td>
+                            <td class="item-cell cursor-pointer"
+                                @onclick="@(async () => OnKeyNameClick(item))">
+                                @item.KeyName
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    public class PatientAIKeyNameViewModel
+    {
+        public string SubjectNo { get; set; } = string.Empty;
+        public string KeyName { get; set; } = string.Empty;
+    }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    List<PatientAIKeyNameViewModel> Items = new();
+    PatientData patientData = new();
+    List<string> KeyNameList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetDataAsync(firstRender);
+            await GetKeyNameDirectory(firstRender);
+        }
+    }
+    async Task OnDeleteKeyNameDirectory()
+    {
+        foreach (var keyName in KeyNameList)
+        {
+            var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+            var dirPath = Path.Combine(uploadFilesPath, keyName);
+            if (Directory.Exists(dirPath))
+            {
+                Directory.Delete(dirPath, true);
+            }
+        }
+        MessageBox.Show("400px", "200px", "資訊", "已成功刪除所有沒有用到的目錄。", MessageBox.HiddenAsync);
+        await GetKeyNameDirectory(false);
+    }
+
+    async Task GetKeyNameDirectory(bool firstRender)
+    {
+        KeyNameList.Clear();
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        // get all directory
+        var directories = Directory.GetDirectories(uploadFilesPath);
+        foreach (var dir in directories)
+        {
+            var dirInfo = new DirectoryInfo(dir);
+            var dirName = dirInfo.Name;
+            var existingItem = Items.FirstOrDefault(x => x.KeyName == dirName);
+            if (existingItem == null)
+            {
+                KeyNameList.Add(dirName);
+            }
+        }
+
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+
+    async Task GetDataAsync(bool firstRender)
+    {
+        Items.Clear();
+        var patientItems = await PatientService.GetAsync();
+        foreach (var patient in patientItems)
+        {
+            patientData.FromJson(patient.JsonData);
+            var model = new PatientAIKeyNameViewModel()
+            {
+                SubjectNo = patientData.臨床資訊.SubjectNo,
+                KeyName = patientData.臨床資訊.KeyName
+            };
+            Items.Add(model);
+        }
+
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+
+    async Task OnKeyNameClick(PatientAIKeyNameViewModel patientAIKeyNameViewModel)
+    {
+        string keyName = patientAIKeyNameViewModel.KeyName;
+        string subjectNo = patientAIKeyNameViewModel.SubjectNo;
+        if(string.IsNullOrEmpty(keyName))
+        {
+            return;
+        }
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        var sourceDirectoryPath = Path.Combine(uploadFilesPath, keyName);
+        var zipFileName = await ZipToolService.CompressDirectoryToZipAsync(sourceDirectoryPath, MagicObjectHelper.DownloadPath, subjectNo);
+
+        MemoryStream fileStream = new MemoryStream(File.ReadAllBytes(zipFileName));
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", Path.GetFileName(zipFileName), streamRef);
+    }
+
+    // Stream GetFileStream()
+    // {
+    //     MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(fileNamePdf));
+    //     return memoryStream;
+    // }
+}

@@ -42,6 +42,9 @@
         public const string ROLE問卷 = "問卷";
         public const string ROLE追蹤資料 = "追蹤資料";
         public const string ROLE風險評估 = "風險評估";
+        public const string ROLE通知放射科醫師 = "通知放射科醫師";
+        public const string ROLE風險評估影像確認 = "風險評估影像確認";
+        public const string ROLE風險評估結果確認 = "風險評估結果確認";
         public const string ROLEAI操作 = "AI操作";
         public const string ROLE備份還原 = "備份還原";
         public static readonly int NeedDelayRefresh = 200;
@@ -129,11 +132,17 @@
         public const string OC = "OC";
         public const string EC = "EC";
         public const string NA = "NA";
+        public const string 組別對照組英文 = "Dr";
+        public const string 組別實驗組英文 = "AI";
+        public const string 組別對照組中文 = 對照組;
+        public const string 組別實驗組中文 = 實驗組;
         public const string AI處理處理中 = "處理中";
         public const string AI處理已完成 = "已完成";
         public const string AI評估完成 = "已完成";
         public const string NeedChangePassword = "123456";
 
+        public const string TypeI = "Type I";
+        public const string TypeII = "Type II";
         #region AIAgent 專用
         public const string Agentsetting = "Agentsetting";
         public const string PrefixPatientData = "PatientData";

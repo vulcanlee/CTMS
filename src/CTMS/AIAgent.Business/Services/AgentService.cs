@@ -58,21 +58,21 @@ namespace AIAgent.Services
         public async Task RunAsync()
         {
             await ProceeInBoundAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase1Async();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase1WaitingAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase2Async();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase2WaitingAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase3Async();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceePhase3WaitingAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
             await ProceeCompleteAsync();
-            await Task.Delay(500);
+            await Task.Delay(150);
         }
 
         #region 不同階段的處理作法
@@ -502,15 +502,25 @@ namespace AIAgent.Services
                     sb.AppendLine("ID,Body.Height.cm,Body.Weight.kg,SMA,SMD,ImatA,LamaA,NamaA,MyosteatosisA,VatA,SatA");
                     sb.AppendLine(string.Join(",", new string[] {
                         riskResult.ID,
+                        // Body.Height.cm
                         (riskResult.BodyHeight.ToFloat()*100).ToString(),
+                        // Body.Weight.kg
                         riskResult.BodyWeight,
-                        riskResult.VertebralBodyAreaCm2,
+                        // SMA : SMA (Skeletal Muscle Area) TotalLamaA + TotalNamaA 骨骼肌面積
+                        (riskResult.TotalLamaA.ToFloat()+riskResult.TotalNamaA.ToFloat()).ToString(),
+                        // SMD 骨骼肌密度 Skeletal Muscle Density
                         riskResult.TotalSMD,
+                        // ImatA 肌間/肌內脂肪組織面積 Intermuscular Adipose Tissue Area
                         riskResult.TotalImatA,
+                        // LamaA 低密度肌肉面積  Low Attenuation Muscle Area 
                         riskResult.TotalLamaA,
+                        // NamaA 正常密度肌肉面積 Normal Attenuation Muscle Area     
                         riskResult.TotalNamaA,
-                        "", // MyosteatosisA 目前沒有
+                        // Myosteatosis = IMAT + LAMA 肌肉脂肪變性面積
+                        (riskResult.TotalImatA.ToFloat()+riskResult.TotalLamaA.ToFloat()).ToString(),
+                        // VatA 內臟脂肪面積 Visceral Adipose Tissue Area                                                                                  
                         riskResult.VatA,
+                        // SatA 皮下脂肪面積 Subcutaneous Adipose Tissue Area      
                         riskResult.SatA
                     }.Select(v => v?.Trim() ?? "")));
                 }
