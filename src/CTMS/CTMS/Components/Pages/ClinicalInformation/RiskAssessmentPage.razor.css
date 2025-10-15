@@ -1,4 +1,7 @@
-﻿.header {
+﻿.page-body {
+    background-color: #E6F0FF;
+}
+.header {
     display: flex;
     align-items: center;
     background-color: #f0f0f0;

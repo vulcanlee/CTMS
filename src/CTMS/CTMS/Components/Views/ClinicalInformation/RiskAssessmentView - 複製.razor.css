@@ -1,12 +1,8 @@
-﻿.page-background {
-    background-color: #E6F0FF;
-}
-
-.header {
+﻿.header {
     background-color: #a8c8ec;
     padding: 15px;
     border-radius: 8px;
-    /*    margin-bottom: 20px;*/
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -100,69 +96,42 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1px;
-    padding: 10px;
-    background-color: #E6F0FF;
 }
 
-.top-panel {
-    display: flex ;
-    justify-content: space-between;
-    width: 100%;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
+.left-panel {
+    flex: 0 0 30%;
 }
 
-.bottom-panel {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    align-items: center;
+.center-panel {
+    flex: 0 0 40%;
+    padding: 0 10px;
+}
+
+.right-panel {
+    flex: 0 0 30%;
 }
 
 .research-group-panel, .ai-result-panel, .details-panel {
-/*    margin-bottom: 20px;*/
+    margin-bottom: 20px;
     border-radius: 4px;
     overflow: hidden;
 }
 
 .research-group-panel {
     background-color: #fefae0;
-    height: 80%;
 }
 
 .ai-result-panel {
     background-color: #ffedee;
-    height: 80%;
 }
 .ai-result-table {
     font-size: 24px;
 }
 .details-table {
-    font-size: 22px;
+    font-size: 24px;
 }
 .details-panel {
     background-color: #e0f3e0;
-}
-.sign-confirm-panel {
-    background-color: #bfd9ff;
-    width: 35%;
-    border: 3px solid #a0c2f5;
-    border-radius: 5px;
-}
-.doctor-name {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-.confirm-btn {
-    background-color: #bfd9ff;
-    border-radius: 5px;
-    width: 60%;
 }
 
 .panel-header {
@@ -177,27 +146,6 @@
     font-size: 26px;
     padding: 20px;
     text-align: center;
-}
-
-.sign-panel-content {
-    display: flex;
-    justify-content: space-between;
-    font-size: 26px;
-    padding: 20px;
-    text-align: center;
-    background-color: white;
-}
-
-.r-doctor {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.o-doctor {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .highlight {
@@ -230,7 +178,7 @@ td {
 }
 
 .scan-image {
-    width: 80%;
+    width: 100%;
     border-radius: 5px;
 }
 

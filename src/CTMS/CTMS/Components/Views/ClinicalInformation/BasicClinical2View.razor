@@ -488,19 +488,24 @@
                     <div class="header green-header">
                         CT Image
                     </div>
-                    <div class="empty-image-area">
+                    <div class="empty-image-area" style="display:flex; justify-content:center">
                         <img src="@($"{image}?v={imageVersion}")" class="responsive-image" />
                     </div>
                 </div>
                 <div class="info-card report-card mt-3">
-                    <div class="header blue-header cursor-pointer" @onclick=OnUploadBtn>
-                        上傳
-                    </div>
-                    <div class="header blue-header cursor-pointer mt-1" @onclick=OnPushToAIBtn>
-                        AI
-                    </div>
-                    <div class="header blue-header cursor-pointer mt-1" @onclick=OnConfirmAIBtn>
-                        AI 模型驗證
+                    <div class="d-flex gap-3 w-100">
+                        <button class="btn flex-fill" style="background-color:#cfe2ff"
+                                @onclick=OnUploadBtn>
+                            上傳
+                        </button>
+                        <button class="btn flex-fill" style="background-color:#cfe2ff"
+                                @onclick=OnPushToAIBtn>
+                            AI
+                        </button>
+                        <button class="btn flex-fill" style="background-color:#cfe2ff"
+                                @onclick=OnConfirmAIBtn>
+                            AI 模型驗證
+                        </button>
                     </div>
                 </div>
             </div>

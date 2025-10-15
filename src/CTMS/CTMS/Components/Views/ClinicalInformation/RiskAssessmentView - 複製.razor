@@ -4,7 +4,7 @@
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
 
-<div class="page-background">
+<div>
     <div class="header">
         <div>
             <div class="d-flex align-items-start">
@@ -17,61 +17,23 @@
     @if (hasRiskAssessment)
     {
         <div class="risk-assessment-container">
+            <div>
+                <button class="btn btn-primary" @onclick=OnSignAsync>簽名確認</button>
+                @if (string.IsNullOrEmpty(SignatureName))
+                {
+                }
+                else
+                {
+                    <div class="mb-3 signature">
+                        <span>簽名者: @SignatureName</span>
+                        <span class="ms-2">已經確認結果</span>
+                        <span class="ms-2">簽名日期: @SignatureDate</span>
+                    </div>
+                }
+            </div>
+
             <div class="content-wrapper">
-                <div class="top-panel">
-                    <div class="t-left-panel">
-                        <div class="scan-images">
-                            <img src="UploadFiles/@patientData.臨床資訊.ImagePng?v=@imageVersion" alt="CT掃描影像1" class="scan-image" />
-                        </div>
-                    </div>
-
-                    <div class="t-center-panel">
-                        <div class="details-panel">
-                            <div class="panel-header">詳細內容</div>
-                            <table class="details-table">
-                                <tr>
-                                    <td>骨骼肌面積(SMA)</td>
-                                    <td>@data.SMA骨骼肌面積</td>
-                                </tr>
-                                <tr>
-                                    <td>骨骼肌指標(SMI)</td>
-                                    <td>@data.SMI骨骼肌指標</td>
-                                </tr>
-                                <tr>
-                                    <td>骨骼肌密度(SMD)</td>
-                                    <td>@data.SMD骨骼肌密度 (HU)</td>
-                                </tr>
-                                <tr>
-                                    <td>肌間/肌肉脂肪組織(IMAT)</td>
-                                    <td>@data.IMAT肌間肌肉脂肪組織 (平方公分)</td>
-                                </tr>
-                                <tr>
-                                    <td>低密度肌肉區域(LAMA)</td>
-                                    <td>@data.LAMA低密度肌肉區域 (平方公分)</td>
-                                </tr>
-                                <tr>
-                                    <td>正常密度肌肉區域(NAMA)</td>
-                                    <td>@data.NAMA正常密度肌肉區域 (平方公分)</td>
-                                </tr>
-                                <tr>
-                                    <td>肌肉脂肪變性(Myosteatosis)</td>
-                                    <td>@data.Myosteatosis肌肉脂肪變性 (平方公分)</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="t-right-panel">
-                        <div class="scan-images">
-                            <img src="UploadFiles/@data.ImagePng?v=@imageVersion" alt="CT掃描影像2" class="scan-image" />
-                        </div>
-                    </div>
-                </div>
-                
-                <hr />
-
-                <div class="bottom-panel">
-
+                <div class="left-panel">
                     <div class="research-group-panel">
                         <div class="panel-header" @onclick=OnDemo>@data.ExperimentalControl</div>
                         <div class="panel-content">
@@ -93,28 +55,50 @@
                             </tr>
                         </table>
                     </div>
+                </div>
 
-                    <div class="sign-confirm-panel">
-                        <div class="panel-header">簽名確認紀錄</div>
-                        <div class="sign-panel-content">
-                            <div class="r-doctor">
-                                <div class="doctor-name">
-                                    <p>放射科醫師：test01</p>
-                                    <p style="font-size:20px; color:#9d9d9d">2025/10/14 11:10:20</p>
-                                </div>
-                                <button class="confirm-btn">簽名確認</button>
-                            </div>
-
-                            <div class="o-doctor">
-                                <div class="doctor-name">
-                                    <p>婦產科醫師：test01</p>
-                                    <p style="font-size:20px; color:#9d9d9d">2025/10/14 11:10:20</p>
-                                </div>
-                                <button class="confirm-btn">簽名確認</button>
-                            </div>
-                        </div>
+                <div class="center-panel">
+                    <div class="details-panel">
+                        <div class="panel-header">詳細內容</div>
+                        <table class="details-table">
+                            <tr>
+                                <td>骨骼肌面積(SMA)</td>
+                                <td>@data.SMA骨骼肌面積</td>
+                            </tr>
+                            <tr>
+                                <td>骨骼肌指標(SMI)</td>
+                                <td>@data.SMI骨骼肌指標</td>
+                            </tr>
+                            <tr>
+                                <td>骨骼肌密度(SMD)</td>
+                                <td>@data.SMD骨骼肌密度 (HU)</td>
+                            </tr>
+                            <tr>
+                                <td>肌間/肌肉脂肪組織(IMAT)</td>
+                                <td>@data.IMAT肌間肌肉脂肪組織 (平方公分)</td>
+                            </tr>
+                            <tr>
+                                <td>低密度肌肉區域(LAMA)</td>
+                                <td>@data.LAMA低密度肌肉區域 (平方公分)</td>
+                            </tr>
+                            <tr>
+                                <td>正常密度肌肉區域(NAMA)</td>
+                                <td>@data.NAMA正常密度肌肉區域 (平方公分)</td>
+                            </tr>
+                            <tr>
+                                <td>肌肉脂肪變性(Myosteatosis)</td>
+                                <td>@data.Myosteatosis肌肉脂肪變性 (平方公分)</td>
+                            </tr>
+                        </table>
                     </div>
-            </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="scan-images">
+                        <img src="UploadFiles/@patientData.臨床資訊.ImagePng?v=@imageVersion" alt="CT掃描影像1" class="scan-image" />
+                        <img src="UploadFiles/@data.ImagePng?v=@imageVersion" alt="CT掃描影像2" class="scan-image" />
+                    </div>
+                </div>
             </div>
         </div>
     }

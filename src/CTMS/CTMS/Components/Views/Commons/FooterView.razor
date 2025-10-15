@@ -19,10 +19,10 @@
             <span class="company-name">耀瑄科技股份有限公司</span>
         </div>
         <div>
-            @if (!string.IsNullOrEmpty(forTesting))
+            @* @if (!string.IsNullOrEmpty(forTesting))
             {
                 <div class="alert-danger for-testing">@forTesting</div>
-            }
+            } *@
             <div class="version">
                 <div>Version:@options.Value.SystemInformation.SystemVersion</div>
             </div>
@@ -34,14 +34,14 @@
     string forTesting = "";
     string userName = "";
 
-    protected override async Task OnInitializedAsync()
-    {
-        var isTesting = TestingServerHelper.IsTestingServer(NavigationManager);
-        if (isTesting)
-        {
-            forTesting = "注意：測試用版本";
-        }
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var isTesting = TestingServerHelper.IsTestingServer(NavigationManager);
+    //     if (isTesting)
+    //     {
+    //         forTesting = "注意：測試用版本";
+    //     }
+    // }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
