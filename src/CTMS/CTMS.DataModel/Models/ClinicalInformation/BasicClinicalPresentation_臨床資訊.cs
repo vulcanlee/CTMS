@@ -283,9 +283,22 @@ public class BasicClinicalPresentation_臨床資訊
     public string ImagePng { get { return $"{Image}.png"; } }
 
     public RiskAssessmentResult RiskAssessmentResult { get; set; } = new();
-    public int SignatureId { get; set; }
-    public string SignatureName { get; set; }
-    public string SignatureDate { get; set; }
+    /// <summary>
+    /// 放射科醫師確認
+    /// </summary>
+    public SignatureNode RadiologistConfirmation { get; set; } = new();
+    /// <summary>
+    /// 放射科醫師確認歷程清單
+    /// </summary>
+    public List<SignatureNode> RadiologistConfirmationList { get; set; } = new();
+    /// <summary>
+    /// 婦產科醫師確認
+    /// </summary>
+    public SignatureNode ObstetricianGynecologistConfirmation { get; set; } = new();
+    /// <summary>
+    /// 婦產科醫師確認歷程清單
+    /// </summary>
+    public List<SignatureNode> ObstetricianGynecologistConfirmationList { get; set; } = new();
 
     public string GetErPrStatus()
     {
@@ -314,6 +327,7 @@ public class BasicClinicalPresentation_臨床資訊
             return "Unknown ER/PR Status";
         }
     }
+    
     public void BuildStage()
     {
         //AJCCClinicalStage = $"c{AJCCClinicalStageT}{AJCCClinicalStageN}{AJCCClinicalStageM}";
@@ -337,6 +351,7 @@ public class BasicClinicalPresentation_臨床資訊
         //ECorOC = CancerType;
     }
     // 計算BMI和BSA的方法
+ 
     public void CalculateBMI()
     {
         if (Height.ToDouble() > 0 && Weight.ToDouble() > 0)

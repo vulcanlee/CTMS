@@ -1230,9 +1230,9 @@
 
         PatientAIInfo patientAIInfo = await AIIntegrateService.PushToAI(patient, patientData, dicomImage);
 
-        patientData.臨床資訊.SignatureDate = string.Empty;
-        patientData.臨床資訊.SignatureId = 0;
-        patientData.臨床資訊.SignatureName = string.Empty;
+        patientData.臨床資訊.ObstetricianGynecologistConfirmation = new();
+        patientData.臨床資訊.RadiologistConfirmation = new();
+
         patientData.臨床資訊.KeyName = patientAIInfo.KeyName;
         patientAdapterModel.JsonData = patientData.ToJson();
         patientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
