@@ -26,87 +26,104 @@
                     <div class="sample-table-container">
                         @if (signature放射科 != null && signature放射科.Count > 0)
                         {
-                            <h2 class="mt-4">放射科簽名歷程</h2>
-                            <table class="sample-table mt-4">
-                                <thead>
-                                    <tr>
-                                        <th class="">使用者</th>
-                                        <th class="">日期</th>
-                                        @if (isAdminHistory)
-                                        {
-                                            <th class="">命令</th>
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        index = 0;
-                                        rowClass = string.Empty;
-                                    }
-                                    @foreach (var item in signature放射科)
-                                    {
-                                        if (index++ % 2 == 0)
-                                        {
-                                            rowClass = "row-normal";
-                                        }
-                                        else
-                                        {
-                                            rowClass = "row-highlighted";
-                                        }
-                                        <tr class="@rowClass">
-                                            <td class="item-cell ">@item.SignatureName</td>
-                                            <td class="item-cell cursor-pointer">
-                                                @item.SignatureDate
-                                            </td>
+                            <div>
+                                <h2 class="mt-4">放射科簽名歷程</h2>
+                                <table class="sample-table mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th class="">使用者</th>
+                                            <th class="">日期</th>
                                             @if (isAdminHistory)
                                             {
-                                                <td class="item-cell cursor-pointer">
-                                                    <button class="btn btn-outline-danger"
-                                                            @onclick="async () => await On放射科RemoveAsync(item)">
-                                                        移除
-                                                    </button>
-                                                </td>
+                                                <th class="">命令</th>
                                             }
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            index = 0;
+                                            rowClass = string.Empty;
+                                        }
+                                        @foreach (var item in signature放射科)
+                                        {
+                                            if (index++ % 2 == 0)
+                                            {
+                                                rowClass = "row-normal";
+                                            }
+                                            else
+                                            {
+                                                rowClass = "row-highlighted";
+                                            }
+                                            <tr class="@rowClass">
+                                                <td class="item-cell ">@item.SignatureName</td>
+                                                <td class="item-cell cursor-pointer">
+                                                    @item.SignatureDate
+                                                </td>
+                                                @if (isAdminHistory)
+                                                {
+                                                    <td class="item-cell cursor-pointer">
+                                                        <button class="btn btn-outline-danger"
+                                                                @onclick="async () => await On放射科RemoveAsync(item)">
+                                                            移除
+                                                        </button>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         }
 
                         @if (signature婦產科 != null && signature婦產科.Count > 0)
                         {
-                            <h2 class="mt-4">婦產科簽名歷程</h2>
-                            <table class="sample-table mt-4">
-                                <thead>
-                                    <tr>
-                                        <th class="">使用者</th>
-                                        <th class="">日期</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        index = 0;
-                                        rowClass = string.Empty;
-                                    }
-                                    @foreach (var item in signature婦產科)
-                                    {
-                                        if (index++ % 2 == 0)
-                                        {
-                                            rowClass = "row-normal";
-                                        }
-                                        else
-                                        {
-                                            rowClass = "row-highlighted";
-                                        }
-                                        <tr class="@rowClass">
-                                            <td class="item-cell ">@item.SignatureName</td>
-                                            <td class="item-cell cursor-pointer">
-                                                @item.SignatureDate
-                                            </td>
+                            <div>
+                                <h2 class="mt-4">婦產科簽名歷程</h2>
+                                <table class="sample-table mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th class="">使用者</th>
+                                            <th class="">日期</th>
+                                            @if (isAdminHistory)
+                                            {
+                                                <th class="">命令</th>
+                                            }
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            index = 0;
+                                            rowClass = string.Empty;
+                                        }
+                                        @foreach (var item in signature婦產科)
+                                        {
+                                            if (index++ % 2 == 0)
+                                            {
+                                                rowClass = "row-normal";
+                                            }
+                                            else
+                                            {
+                                                rowClass = "row-highlighted";
+                                            }
+                                            <tr class="@rowClass">
+                                                <td class="item-cell ">@item.SignatureName</td>
+                                                <td class="item-cell cursor-pointer">
+                                                    @item.SignatureDate
+                                                </td>
+                                                @if (isAdminHistory)
+                                                {
+                                                    <td class="item-cell cursor-pointer">
+                                                        <button class="btn btn-outline-danger"
+                                                                @onclick="async () => await On婦產科RemoveAsync(item)">
+                                                            移除
+                                                        </button>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         }
                     </div>
                 </div>
@@ -164,8 +181,8 @@
 
     void Initialize(bool firstRender = false)
     {
-        signature婦產科 = patientData.臨床資訊.RadiologistConfirmationList;
-        signature放射科 = patientData.臨床資訊.ObstetricianGynecologistConfirmationList;
+        signature婦產科 = patientData.臨床資訊.ObstetricianGynecologistConfirmationList;
+        signature放射科 = patientData.臨床資訊.RadiologistConfirmationList;
 
         if (firstRender)
         {
@@ -186,6 +203,11 @@
         signature放射科.Remove(item);
     }
 
+    async Task On婦產科RemoveAsync(SignatureNode item)
+    {
+        signature婦產科.Remove(item);
+    }
+
     public void ShowDialog()
     {
         OpenPicker = true;
@@ -195,9 +217,27 @@
     {
         patientData.臨床資訊.RadiologistConfirmationList = signature放射科;
         patientData.臨床資訊.ObstetricianGynecologistConfirmationList = signature婦產科;
+        var lastItem = signature放射科.OrderByDescending(x => x.SignatureDate).FirstOrDefault();
+        if (lastItem != null)
+        {
+            patientData.臨床資訊.RadiologistConfirmation = lastItem;
+        }
+        else
+        {
+            patientData.臨床資訊.RadiologistConfirmation = new SignatureNode();
+        }
+        lastItem = signature婦產科.OrderByDescending(x => x.SignatureDate).FirstOrDefault();
+        if (lastItem != null)
+        {
+            patientData.臨床資訊.ObstetricianGynecologistConfirmation = lastItem;
+        }
+        else
+        {
+            patientData.臨床資訊.ObstetricianGynecologistConfirmation = new SignatureNode();
+        }
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
-       
+
         await OnConfirmCallback.InvokeAsync("OK");
     }
     async Task OnPickerCancel()
