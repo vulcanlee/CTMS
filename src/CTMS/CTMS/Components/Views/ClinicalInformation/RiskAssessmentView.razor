@@ -73,7 +73,7 @@
                 <div class="bottom-panel">
 
                     <div class="research-group-panel">
-                        <div class="panel-header" @onclick=OnDemo>@data.ExperimentalControl</div>
+                        <div class="panel-header">@data.ExperimentalControl</div>
                         <div class="panel-content">
                             <p>本個案為<span class="highlight">@data.ExperimentalControl</span></p>
                             <p class="no-need"><strong>@data.ExperimentalControlMessage</strong>使用AI輔助決策系統</p>
@@ -95,7 +95,10 @@
                     </div>
 
                     <div class="sign-confirm-panel">
-                        <div class="panel-header">簽名確認紀錄</div>
+                        <div class="panel-header"
+                             @onclick="OnShowHistory">
+                            簽名確認紀錄
+                        </div>
                         <div class="sign-panel-content">
                             <div class="r-doctor">
                                 <div class="doctor-name">
@@ -137,6 +140,11 @@
             Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
             Callback="ConfirmMessageBox.ConfirmDelegate" />
 
+@if (isShowHistory)
+{
+    <SignHistoryDialog OpenPicker=isShowHistory OnConfirmCallback=OnShowHistoryClosed
+                       patientData=patientData patientAdapterModel=patientAdapterModel />
+}
 
 @code {
     [Parameter]
@@ -154,6 +162,8 @@
 
     SignatureNode signatureNode婦產科醫師確認 = new SignatureNode();
     SignatureNode signatureNode放射科醫師確認 = new SignatureNode();
+
+    bool isShowHistory = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -179,6 +189,23 @@
         {
             hasRiskAssessment = true;
         }
+    }
+
+    void OnShowHistory()
+    {
+        isShowHistory = true;
+    }
+
+    private async Task OnShowHistoryClosed(string args)
+    {
+        if (string.IsNullOrEmpty(args))
+        {
+        }
+        isShowHistory = false;
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        InitData();
+        StateHasChanged();
     }
 
     /// <summary>
@@ -261,18 +288,6 @@
 
             signatureNode放射科醫師確認 = patientData.臨床資訊.RadiologistConfirmation;
             return;
-        }
-    }
-
-    void OnDemo()
-    {
-        if (data.ExperimentalControl == MagicObjectHelper.實驗組)
-        {
-            data.Demo對照組();
-        }
-        else if (data.ExperimentalControl == MagicObjectHelper.對照組)
-        {
-            data.Demo實驗組();
         }
     }
 }

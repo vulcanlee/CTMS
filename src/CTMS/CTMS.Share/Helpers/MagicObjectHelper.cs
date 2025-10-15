@@ -46,6 +46,7 @@
         public const string ROLE通知放射科醫師 = "通知放射科醫師";
         public const string ROLE風險評估影像確認 = "風險評估影像確認";
         public const string ROLE風險評估結果確認 = "風險評估結果確認";
+        public const string ROLE風險評估確認歷程 = "風險評估確認歷程";
         public const string ROLEAI操作 = "AI操作";
         public const string ROLE備份還原 = "備份還原";
         public static readonly int NeedDelayRefresh = 200;

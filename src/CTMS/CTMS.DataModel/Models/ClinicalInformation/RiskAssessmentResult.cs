@@ -4,34 +4,6 @@ namespace CTMS.DataModel.Models.ClinicalInformation;
 
 public class RiskAssessmentResult
 {
-    public void Demo實驗組()
-    {
-        ExperimentalControl = MagicObjectHelper.實驗組;
-        風險程度 = "高風險";
-        是否需要降15Percent劑量 = "需要";
-        SMI骨骼肌指標 = "32.09";
-        SMD骨骼肌密度 = "27.3";
-        IMAT肌間肌肉脂肪組織 = "17.22";
-        LAMA低密度肌肉區域 = "35.82";
-        NAMA正常密度肌肉區域 = "41.27";
-        Myosteatosis肌肉脂肪變性 = "53.04";
-        Image = "ExperimentalGroupAI";
-        ImageExtension = "jpg";
-    }
-    public void Demo對照組()
-    {
-        ExperimentalControl = MagicObjectHelper.對照組;
-        風險程度 = "高風險";
-        是否需要降15Percent劑量 = "需要";
-        SMI骨骼肌指標 = "34";
-        SMD骨骼肌密度 = "16.21";
-        IMAT肌間肌肉脂肪組織 = "30.88";
-        LAMA低密度肌肉區域 = "60.59";
-        NAMA正常密度肌肉區域 = "27.8";
-        Myosteatosis肌肉脂肪變性 = "91.47";
-        Image = "ControlGroupAI";
-        ImageExtension = "png";
-    }
     /// <summary>
     /// 實驗組或對照組
     /// </summary>
