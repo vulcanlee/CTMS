@@ -4,6 +4,7 @@ using CTMS.AdapterModels;
 using CTMS.Business.Events;
 using CTMS.Business.Helpers;
 using CTMS.Business.Services;
+using CTMS.Business.Services.Ants;
 using CTMS.Business.Services.ClinicalInformation;
 using CTMS.Business.Services.Dicoms;
 using CTMS.Components;
@@ -93,6 +94,7 @@ namespace CTMS
                 #endregion
 
                 #region 註冊專案客制用的服務
+                builder.Services.AddTransient<MyNoteService>();
                 builder.Services.AddTransient<Main臨床資料HelperService>();
                 builder.Services.AddTransient<BrowsePatientService>();
                 builder.Services.AddTransient<GptService>();
