@@ -93,28 +93,28 @@
     height: 150px;
 }
 
-.navigation-buttons {
-    margin-top: 20px;
-}
-
 .btn-pink {
     background-color: #f8d7da;
     border-color: #f5c2c7;
+    font-size: 24px;
 }
 
 .btn-yellow {
     background-color: #fff3cd;
     border-color: #ffecb5;
+    font-size: 24px;
 }
 
 .btn-green {
     background-color: #d1e7dd;
     border-color: #badbcc;
+    font-size: 24px;
 }
 
 .btn-blue {
     background-color: #cfe2ff;
     border-color: #b6d4fe;
+    font-size: 24px;
 }
 
 .small-info {

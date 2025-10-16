@@ -1,5 +1,5 @@
 ﻿.page-background {
-    background-color: #E6F0FF;
+    background-color: white;
 }
 
 .header {
@@ -14,7 +14,7 @@
 
     .header h1 {
         margin: 0;
-        font-size: 32px;
+        font-size: 35px;
         color: #333;
     }
 
@@ -98,18 +98,18 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1px;
     padding: 10px;
-    background-color: #E6F0FF;
+    background-color: white;
 }
 
 .top-panel {
-    display: flex ;
+    display: flex;
     justify-content: space-between;
     width: 100%;
-    background-color: white;
+    background-color: #E6F0FF;
     padding: 10px;
     border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .t-left-panel {
@@ -128,8 +128,8 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    background-color: white;
-    padding: 10px;
+    background-color: #E6F0FF;
+    padding: 20px;
     border-radius: 10px;
     align-items: center;
 }

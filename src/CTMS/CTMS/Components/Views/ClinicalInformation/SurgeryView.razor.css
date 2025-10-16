@@ -214,9 +214,9 @@
     .medical-table th,
     .medical-table td {
         border: 2px solid #333;
-        padding: 12px 15px;
+        padding: 6px 15px;
         text-align: center;
-        font-size: 14px;
+        font-size: 18px;
     }
 
     .medical-table th {
