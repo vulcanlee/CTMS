@@ -6,6 +6,8 @@
 /* 更新返回按鈕容器與按鈕樣式，使背景色與畫面同寬 */
 .back-button-container {
     background-color: #e9ecef;
+    padding: 0px 6px;
+    width: 100vw; /* 視窗寬度 */
     position: relative;
     left: 0;
 }
@@ -35,7 +37,7 @@
 }
 
 .info-card {
-/*    border: 1px solid #dee2e6;*/
+    border: 1px solid #dee2e6;
     border-radius: 5px;
     overflow: hidden;
     margin-bottom: 15px;
@@ -128,4 +130,3 @@
     display: block;
     margin: 0 auto;
 }
-

@@ -57,8 +57,7 @@
 /* 更新返回按鈕容器與按鈕樣式，使背景色與畫面同寬 */
 .back-button-container {
     background-color: #e9ecef;
-    padding: 0px 6px;
-    width: 100vw; /* 視窗寬度 */
+    
     /*position: relative;*/
     left: 0;
 }
