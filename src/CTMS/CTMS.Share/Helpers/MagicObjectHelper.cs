@@ -33,6 +33,7 @@
         public const string 預設專案 = "Default Project";
         public const string 預設角色 = "Default Role";
         public const string 你沒有權限存取此頁面 = "你沒有權限存取此頁面";
+        public const string 你沒有權限操作此功能 = "你沒有權限操作此功能";
         public const string ROLE瀏覽 = "瀏覽";
         public const string ROLE新增病患 = "新增病患";
         public const string ROLE臨床資訊 = "臨床資訊";
@@ -45,6 +46,7 @@
         public const string ROLE通知放射科醫師 = "通知放射科醫師";
         public const string ROLE風險評估影像確認 = "風險評估影像確認";
         public const string ROLE風險評估結果確認 = "風險評估結果確認";
+        public const string ROLE風險評估確認歷程 = "風險評估確認歷程";
         public const string ROLEAI操作 = "AI操作";
         public const string ROLE備份還原 = "備份還原";
         public static readonly int NeedDelayRefresh = 200;

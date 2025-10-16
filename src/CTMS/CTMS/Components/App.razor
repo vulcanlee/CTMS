@@ -32,6 +32,9 @@
     <link href="css/bs4Forms.css" rel="stylesheet" />
     <link rel="stylesheet" href="fonts/MaterialDesign/css/materialdesignicons.min.css">
 
+    <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet"> <!-- introduced here automatically -->
+    <link antblazor-css />
+
     <HeadOutlet @rendermode="@RenderModeForPage()" />
 </head>
 
@@ -57,6 +60,8 @@
           URL.revokeObjectURL(url);
         }
     </script>
+    <script src="_content/AntDesign/js/ant-design-blazor.js"></script> <!-- introduced here automatically -->
+    <script antblazor-js></script>
 </body>
 
 </html>

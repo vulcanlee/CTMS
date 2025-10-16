@@ -172,7 +172,7 @@
 .confirm-btn {
     background-color: #bfd9ff;
     border-radius: 5px;
-    width: 60%;
+    width: 180px;
 }
 
 .panel-header {
@@ -181,6 +181,7 @@
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
 .panel-content {

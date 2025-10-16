@@ -1,0 +1,249 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject PatientService PatientService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+
+<SfDialog @bind-Visible="@OpenPicker" IsModal="true"
+          Width="95%" Height="100%" CssClass="dialogSize">
+    <DialogTemplates>
+        <Header>簽名確認歷程</Header>
+        <Content>
+
+            <div>
+                <div>
+                    @{
+                        var index = 0;
+                        string rowClass = string.Empty;
+                    }
+
+                    <div class="sample-table-container">
+                        @if (signature放射科 != null && signature放射科.Count > 0)
+                        {
+                            <div>
+                                <h2 class="mt-4">放射科簽名歷程</h2>
+                                <table class="sample-table mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th class="">使用者</th>
+                                            <th class="">日期</th>
+                                            @if (isAdminHistory)
+                                            {
+                                                <th class="">命令</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            index = 0;
+                                            rowClass = string.Empty;
+                                        }
+                                        @foreach (var item in signature放射科)
+                                        {
+                                            if (index++ % 2 == 0)
+                                            {
+                                                rowClass = "row-normal";
+                                            }
+                                            else
+                                            {
+                                                rowClass = "row-highlighted";
+                                            }
+                                            <tr class="@rowClass">
+                                                <td class="item-cell ">@item.SignatureName</td>
+                                                <td class="item-cell cursor-pointer">
+                                                    @item.SignatureDate
+                                                </td>
+                                                @if (isAdminHistory)
+                                                {
+                                                    <td class="item-cell cursor-pointer">
+                                                        <button class="btn btn-outline-danger"
+                                                                @onclick="async () => await On放射科RemoveAsync(item)">
+                                                            移除
+                                                        </button>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                        @if (signature婦產科 != null && signature婦產科.Count > 0)
+                        {
+                            <div>
+                                <h2 class="mt-4">婦產科簽名歷程</h2>
+                                <table class="sample-table mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th class="">使用者</th>
+                                            <th class="">日期</th>
+                                            @if (isAdminHistory)
+                                            {
+                                                <th class="">命令</th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            index = 0;
+                                            rowClass = string.Empty;
+                                        }
+                                        @foreach (var item in signature婦產科)
+                                        {
+                                            if (index++ % 2 == 0)
+                                            {
+                                                rowClass = "row-normal";
+                                            }
+                                            else
+                                            {
+                                                rowClass = "row-highlighted";
+                                            }
+                                            <tr class="@rowClass">
+                                                <td class="item-cell ">@item.SignatureName</td>
+                                                <td class="item-cell cursor-pointer">
+                                                    @item.SignatureDate
+                                                </td>
+                                                @if (isAdminHistory)
+                                                {
+                                                    <td class="item-cell cursor-pointer">
+                                                        <button class="btn btn-outline-danger"
+                                                                @onclick="async () => await On婦產科RemoveAsync(item)">
+                                                            移除
+                                                        </button>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </Content>
+        <FooterTemplate>
+            <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
+            <SfButton @onclick="@OnPickerCancel" CssClass='e-secondary'>取消</SfButton>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    [Parameter]
+    public EventCallback<string> OnConfirmCallback { get; set; }
+    [Parameter]
+    public PatientData patientData { get; set; }
+    [Parameter]
+    public PatientAdapterModel patientAdapterModel { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    bool editMode = false;
+
+    List<SignatureNode> signature放射科 = new();
+    List<SignatureNode> signature婦產科 = new();
+
+    bool isAdminHistory = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Initialize(firstRender);
+    }
+
+    void Initialize(bool firstRender = false)
+    {
+        signature婦產科 = patientData.臨床資訊.ObstetricianGynecologistConfirmationList;
+        signature放射科 = patientData.臨床資訊.RadiologistConfirmationList;
+
+        if (firstRender)
+        {
+            if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE風險評估確認歷程) == true)
+            {
+                isAdminHistory = true;
+            }
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+    }
+
+    async Task On放射科RemoveAsync(SignatureNode item)
+    {
+        signature放射科.Remove(item);
+    }
+
+    async Task On婦產科RemoveAsync(SignatureNode item)
+    {
+        signature婦產科.Remove(item);
+    }
+
+    public void ShowDialog()
+    {
+        OpenPicker = true;
+    }
+
+    async Task OnPickerOK()
+    {
+        patientData.臨床資訊.RadiologistConfirmationList = signature放射科;
+        patientData.臨床資訊.ObstetricianGynecologistConfirmationList = signature婦產科;
+        var lastItem = signature放射科.OrderByDescending(x => x.SignatureDate).FirstOrDefault();
+        if (lastItem != null)
+        {
+            patientData.臨床資訊.RadiologistConfirmation = lastItem;
+        }
+        else
+        {
+            patientData.臨床資訊.RadiologistConfirmation = new SignatureNode();
+        }
+        lastItem = signature婦產科.OrderByDescending(x => x.SignatureDate).FirstOrDefault();
+        if (lastItem != null)
+        {
+            patientData.臨床資訊.ObstetricianGynecologistConfirmation = lastItem;
+        }
+        else
+        {
+            patientData.臨床資訊.ObstetricianGynecologistConfirmation = new SignatureNode();
+        }
+        patientAdapterModel.JsonData = patientData.ToJson();
+        await PatientService.UpdateAsync(patientAdapterModel);
+
+        await OnConfirmCallback.InvokeAsync("OK");
+    }
+    async Task OnPickerCancel()
+    {
+        await OnConfirmCallback.InvokeAsync("");
+        OpenPicker = false;
+    }
+
+}

@@ -4,6 +4,7 @@ using CTMS.AdapterModels;
 using CTMS.Business.Events;
 using CTMS.Business.Helpers;
 using CTMS.Business.Services;
+using CTMS.Business.Services.Ants;
 using CTMS.Business.Services.ClinicalInformation;
 using CTMS.Business.Services.Dicoms;
 using CTMS.Components;
@@ -44,6 +45,8 @@ namespace CTMS
                 builder.Host.UseNLog();
 
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzY3OTY0NkAzMjM4MmUzMDJlMzBNOEJGNGtlYWtnWFdNanVRTXpTa3JEVWJGVTBlVmZYdW5QbGNSQ21FbzZVPQ==");
+                builder.Services.AddAntDesign();
+
                 builder.WebHost.ConfigureKestrel(options =>
                 {
                     // 這邊設定單次請求可允許的最長大小（下例為 200 MB）
@@ -91,6 +94,7 @@ namespace CTMS
                 #endregion
 
                 #region 註冊專案客制用的服務
+                builder.Services.AddTransient<MyNoteService>();
                 builder.Services.AddTransient<Main臨床資料HelperService>();
                 builder.Services.AddTransient<BrowsePatientService>();
                 builder.Services.AddTransient<GptService>();

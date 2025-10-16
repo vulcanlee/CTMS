@@ -27,6 +27,7 @@ namespace CTMS.Business.Services
                 MagicObjectHelper.ROLE通知放射科醫師,
                 MagicObjectHelper.ROLE風險評估影像確認,
                 MagicObjectHelper.ROLE風險評估結果確認,
+                MagicObjectHelper.ROLE風險評估確認歷程,
                 MagicObjectHelper.ROLEAI操作,
                 MagicObjectHelper.ROLE備份還原
             };

@@ -67,13 +67,13 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <hr />
 
                 <div class="bottom-panel">
 
                     <div class="research-group-panel">
-                        <div class="panel-header" @onclick=OnDemo>@data.ExperimentalControl</div>
+                        <div class="panel-header">@data.ExperimentalControl</div>
                         <div class="panel-content">
                             <p>本個案為<span class="highlight">@data.ExperimentalControl</span></p>
                             <p class="no-need"><strong>@data.ExperimentalControlMessage</strong>使用AI輔助決策系統</p>
@@ -95,44 +95,75 @@
                     </div>
 
                     <div class="sign-confirm-panel">
-                        <div class="panel-header">簽名確認紀錄</div>
+                        <div class="panel-header"
+                             @onclick="OnShowHistory">
+                            簽名確認紀錄
+                        </div>
                         <div class="sign-panel-content">
                             <div class="r-doctor">
                                 <div class="doctor-name">
-                                    <p>放射科醫師：test01</p>
-                                    <p style="font-size:20px; color:#9d9d9d">2025/10/14 11:10:20</p>
+                                    <p>放射科醫師：@signatureNode放射科醫師確認.SignatureName</p>
+                                    <p style="font-size:20px; color:#9d9d9d">@signatureNode放射科醫師確認.SignatureDate</p>
                                 </div>
-                                <button class="confirm-btn">簽名確認</button>
+                                <button class="confirm-btn"
+                                        @onclick="On放射科醫師確認SignAsync">
+                                    簽名確認
+                                </button>
                             </div>
 
                             <div class="o-doctor">
                                 <div class="doctor-name">
-                                    <p>婦產科醫師：test01</p>
-                                    <p style="font-size:20px; color:#9d9d9d">2025/10/14 11:10:20</p>
+                                    <p>婦產科醫師：@signatureNode婦產科醫師確認.SignatureName</p>
+                                    <p style="font-size:20px; color:#9d9d9d">@signatureNode婦產科醫師確認.SignatureDate</p>
                                 </div>
-                                <button class="confirm-btn">簽名確認</button>
+                                <button class="confirm-btn"
+                                        @onclick="On婦產科醫師確認SignAsync">
+                                    簽名確認
+                                </button>
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
             </div>
         </div>
     }
 </div>
 
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+@if (isShowHistory)
+{
+    <SignHistoryDialog OpenPicker=isShowHistory OnConfirmCallback=OnShowHistoryClosed
+                       patientData=patientData patientAdapterModel=patientAdapterModel />
+}
+
 @code {
     [Parameter]
     public string Code { get; set; }
 
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
     RiskAssessmentResult data = new RiskAssessmentResult();
-    public string SignatureId { get; set; } = string.Empty;
-    public string SignatureName { get; set; } = string.Empty;
-    public string SignatureDate { get; set; } = string.Empty;
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
     MyUserAdapterModel myUserAdapterModel = new();
     bool hasRiskAssessment = false;
     string imageVersion = DateTime.Now.Ticks.ToString();
+
+    SignatureNode signatureNode婦產科醫師確認 = new SignatureNode();
+    SignatureNode signatureNode放射科醫師確認 = new SignatureNode();
+
+    bool isShowHistory = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -149,9 +180,8 @@
 
     void InitData()
     {
-        SignatureName = patientData.臨床資訊.SignatureName;
-        SignatureDate = patientData.臨床資訊.SignatureDate;
-        SignatureId = patientData.臨床資訊.SignatureId.ToString();
+        signatureNode婦產科醫師確認 = patientData.臨床資訊.ObstetricianGynecologistConfirmation;
+        signatureNode放射科醫師確認 = patientData.臨床資訊.RadiologistConfirmation;
 
         data = patientData.臨床資訊.RiskAssessmentResult;
 
@@ -159,46 +189,105 @@
         {
             hasRiskAssessment = true;
         }
-        //data.Demo實驗組();
-
-        // if (patientData.臨床資訊.SubjectNo == "NCKUH-E001")
-        // {
-        //     data.Demo實驗組();
-        // }
-        // else if (patientData.臨床資訊.SubjectNo == "NCKUH-C001")
-        // {
-        //     data.Demo對照組();
-        // }
     }
 
-    async Task OnSignAsync()
+    void OnShowHistory()
     {
+        isShowHistory = true;
+    }
+
+    private async Task OnShowHistoryClosed(string args)
+    {
+        if (string.IsNullOrEmpty(args))
+        {
+        }
+        isShowHistory = false;
+        patientAdapterModel = await PatientService.GetAsync(Code);
+        patientData.FromJson(patientAdapterModel.JsonData);
+        InitData();
+        StateHasChanged();
+    }
+
+    /// <summary>
+    ///  婦產科醫師確認
+    /// </summary>
+    /// <returns></returns>
+    async Task On婦產科醫師確認SignAsync()
+    {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE風險評估結果確認) == false)
+        {
+            MessageBox.Show("400px", "200px", "資訊", MagicObjectHelper.你沒有權限操作此功能, MessageBox.HiddenAsync);
+            return;
+        }
+
+
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+    "再次確認", $"確定要以放射科醫師身分確認這些影像與數據正確無誤嗎？",
+    ConfirmMessageBox.HiddenAsync);
+        bool result = await task;
+        if (result == false)
+        {
+            return;
+        }
+
         if (myUserAdapterModel != null && myUserAdapterModel.Id > 0)
         {
-            patientData.臨床資訊.SignatureDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-            patientData.臨床資訊.SignatureId = myUserAdapterModel.Id;
-            patientData.臨床資訊.SignatureName = myUserAdapterModel.Name;
+            SignatureNode signatureNode = new SignatureNode
+            {
+                SignatureId = myUserAdapterModel.Id,
+                SignatureName = myUserAdapterModel.Name,
+                SignatureDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+            };
+            patientData.臨床資訊.ObstetricianGynecologistConfirmation = signatureNode;
+            patientData.臨床資訊.ObstetricianGynecologistConfirmationList.Add(signatureNode);
             patientAdapterModel.JsonData = patientData.ToJson();
 
             patientAdapterModel.AI評估 = MagicObjectHelper.AI評估完成;
             await PatientService.UpdateAsync(patientAdapterModel);
 
-            SignatureName = patientData.臨床資訊.SignatureName;
-            SignatureDate = patientData.臨床資訊.SignatureDate;
-            SignatureId = patientData.臨床資訊.SignatureId.ToString();
+            signatureNode婦產科醫師確認 = signatureNode;
             return;
         }
     }
 
-    void OnDemo()
+    /// <summary>
+    ///  放射科醫師確認
+    /// </summary>
+    /// <returns></returns>
+    async Task On放射科醫師確認SignAsync()
     {
-        if (data.ExperimentalControl == MagicObjectHelper.實驗組)
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE風險評估影像確認) == false)
         {
-            data.Demo對照組();
+            MessageBox.Show("400px", "200px", "資訊", MagicObjectHelper.你沒有權限操作此功能, MessageBox.HiddenAsync);
+            return;
         }
-        else if (data.ExperimentalControl == MagicObjectHelper.對照組)
+
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+        "再次確認", $"確定要以放射科醫師身分確認這些影像與數據正確無誤嗎？",
+        ConfirmMessageBox.HiddenAsync);
+        bool result = await task;
+        if (result == false)
         {
-            data.Demo實驗組();
+            return;
+        }
+
+        if (myUserAdapterModel != null && myUserAdapterModel.Id > 0)
+        {
+            SignatureNode signatureNode = new SignatureNode
+            {
+                SignatureId = myUserAdapterModel.Id,
+                SignatureName = myUserAdapterModel.Name,
+                SignatureDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+            };
+            patientData.臨床資訊.RadiologistConfirmation = signatureNode;
+            patientData.臨床資訊.RadiologistConfirmationList.Add(signatureNode);
+            patientAdapterModel.JsonData = patientData.ToJson();
+
+            patientAdapterModel.AI評估 = MagicObjectHelper.AI評估完成;
+            await PatientService.UpdateAsync(patientAdapterModel);
+
+            signatureNode放射科醫師確認 = patientData.臨床資訊.RadiologistConfirmation;
+            return;
         }
     }
 }
