@@ -44,6 +44,8 @@ namespace CTMS
                 builder.Host.UseNLog();
 
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzY3OTY0NkAzMjM4MmUzMDJlMzBNOEJGNGtlYWtnWFdNanVRTXpTa3JEVWJGVTBlVmZYdW5QbGNSQ21FbzZVPQ==");
+                builder.Services.AddAntDesign();
+
                 builder.WebHost.ConfigureKestrel(options =>
                 {
                     // 這邊設定單次請求可允許的最長大小（下例為 200 MB）
