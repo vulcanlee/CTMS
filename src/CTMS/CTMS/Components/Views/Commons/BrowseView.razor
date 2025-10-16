@@ -91,57 +91,38 @@
     </div>
 
     <!-- 結果表格區域 -->
-    <div class="results-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>病人編號</th>
-                    <th>醫院名稱</th>
-                    <th>癌症類型</th>
-                    <th>組別</th>
-                    <th>AI處理</th>
-                    <th>AI評估</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var iPatient in patientsAdapterModel)
-                {
-                    patientData.FromJson(iPatient.JsonData);
+    <div>
+        <Table @ref="table" Style="font-size:30px;"
+               TItem="PatientAdapterModel"
+               DataSource="@patientsAdapterModel"
+               Total="_total"
+               @bind-PageIndex="_pageIndex"
+               @bind-PageSize="_pageSize">
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.SubjectNo)" Title="病人編號" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.醫院)" Title="醫院名稱" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.組別中文)" Title="癌症類型" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI處理)" Title="組別" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI評估)" Title="AI處理" />
+            <ActionColumn Fixed="ColumnFixPlacement.Right" Title="操作">
+                <Space>
+                    <SpaceItem>
+                        <button class="btn-edit" title="修改"
+                                @onclick="@(async () => await OnEditAsync(@context))">
+                            <span class="icon-edit">✏️</span> 修改
+                        </button>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <button class="btn-delete" title="刪除"
+                                @onclick="@(async () => await OnDeleteAsync(@context))">
+                            <span class="icon-delete">🗑️</span> 刪除
+                        </button>
+                    </SpaceItem>
 
-                    string id = patientData.臨床資訊.SubjectNo; // Accessing PatientId property
-
-                    @*                     string hospital = id.StartsWith("NCKUH") ? "成大醫院" :
-                    id.StartsWith("CMU") ? "奇美醫院" : "郭綜合醫院";
-
-                    string cancerType = patientData.臨床資訊.ECorOC == "EC" ? "子宮頸癌" : "卵巢癌";
- *@
-                    string hospital = iPatient.醫院;
-
-                    string cancerType = iPatient.癌別;
-
-                    <tr>
-                        <td>@id</td>
-                        <td>@hospital</td>
-                        <td>@cancerType</td>
-                        <td>@iPatient.Get組別DisplayName()</td>
-                        <td>@iPatient.AI處理</td>
-                        <td>@iPatient.AI評估</td>
-                        <td class="action-buttons">
-                            <button class="btn-edit" title="修改"
-                                    @onclick="@(async () => await OnEditAsync(iPatient))">
-                                <span class="icon-edit">✏️</span> 修改
-                            </button>
-                            <button class="btn-delete" title="刪除"
-                                    @onclick="@(async () => await OnDeleteAsync(iPatient))">
-                                <span class="icon-delete">🗑️</span> 刪除
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </Space>
+            </ActionColumn>
+        </Table>
     </div>
+
 </div>
 
 <AddPatientDialog OpenPicker=@ShowAddPatientDialog OnConfirmCallback=OnAddPatientAsync />
@@ -184,6 +165,24 @@
     DropDownListDataModel Select院別 = new DropDownListDataModel();
     #endregion
 
+    ITable table;
+    int _pageIndex = 1;
+    int _pageSize = 5;
+    int _total = 0;
+
+
+    private async Task PageIndexChanged(PaginationEventArgs args)
+    {
+        _pageIndex = args.Page;
+        await ReloadAsync();
+    }
+
+    private async Task PageSizeChange(PaginationEventArgs args)
+    {
+        _pageSize = args.PageSize;
+        await ReloadAsync();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         Keyword = BrowseSearchingService.BrowseSearchingModel.SearchKeyword;
@@ -216,6 +215,12 @@
     async Task ReloadAsync()
     {
         patientsAdapterModel = await PatientService.GetAsync(BrowseSearchingService.BrowseSearchingModel);
+        foreach (var item in patientsAdapterModel)
+        {
+            patientData.FromJson(item.JsonData);
+            item.SubjectNo = patientData.臨床資訊.SubjectNo; // Accessing PatientId property
+            item.Get組別DisplayName();
+        }
         FoundCount = patientsAdapterModel.Count;
         StateHasChanged(); // 更新 UI
     }

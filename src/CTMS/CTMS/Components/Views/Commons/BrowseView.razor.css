@@ -5,6 +5,21 @@
     padding: 10px;
 }
 
+    /* 將舊的 .patient-list 規則移除或忽略 */
+
+    /* 只影響本頁容器內的 AntD Table */
+    .browse-container ::deep .ant-table,
+    .browse-container ::deep .ant-table-thead > tr > th,
+    .browse-container ::deep .ant-table-tbody > tr > td {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    /* 如有使用 AntD 內建分頁，也一併放大 */
+    .browse-container ::deep .ant-pagination {
+        font-size: 24px;
+    }
+
 /* 功能按鈕區域 */
 .function-buttons {
     display: flex;
@@ -210,6 +225,7 @@ td {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width:auto;
 }
 
 .btn-edit {

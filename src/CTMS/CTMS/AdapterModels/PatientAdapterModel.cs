@@ -13,9 +13,11 @@ public class PatientAdapterModel : ICloneable
     public string 醫院 { get; set; }
     public string 癌別 { get; set; }
     public string 組別 { get; set; }
+    public string 組別中文 { get; set; }
     public string AI評估 { get; set; }
     public string AI處理 { get; set; }
     public string JsonData { get; set; }
+    public string SubjectNo { get; set; }
 
     public PatientAdapterModel Clone()
     {
@@ -28,11 +30,16 @@ public class PatientAdapterModel : ICloneable
 
     public string Get組別DisplayName()
     {
+        string result = string.Empty;
         if (組別 == MagicObjectHelper.組別對照組英文)
-            return MagicObjectHelper.組別對照組中文;
+            result = MagicObjectHelper.組別對照組中文;
         else if (組別 == MagicObjectHelper.組別實驗組英文)
-            return MagicObjectHelper.組別實驗組中文;
+            result = MagicObjectHelper.組別實驗組中文;
         else
-            return MagicObjectHelper.NA;
+            result = MagicObjectHelper.NA;
+
+        組別中文 = result;
+        return result;
+
     }
 }
