@@ -9,8 +9,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-bottom: 60px; /* 預留 footer 的空間 */
-    padding-bottom: 60px; /* 預留 footer 的空間 */
+/*    padding-bottom: 60px;*/
     }
 
 main {

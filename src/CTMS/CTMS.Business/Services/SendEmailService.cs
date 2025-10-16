@@ -8,7 +8,7 @@ namespace CTMS.Business.Services
 {
     public class SendEmailService
     {
-        public async Task SendNotifyEmailAsync(string 單號, string url)
+        public async Task SendNotifyEmailAsync(string 單號, string 病歷號, string url)
         {
             string apiKey = "49dfa69fd825f184e0d79ba1c241280c-e1076420-d53a7605";  //MAILGUN_API_KEY
             string domain = "sandboxb5e1b9ed3198413b9161bc169acae141.mailgun.org";
@@ -25,7 +25,7 @@ namespace CTMS.Business.Services
             form.Add(new StringContent("AI 臨床試驗管理平臺 - Dicom 影像上傳通知"), "subject");
             form.Add(new StringContent($@"蔡主任您好：
 
-                                                                                這封信件是由 AI 臨床試驗管理平臺所發送，對應單號為：{單號}。
+                                                                                這封信件是由 AI 臨床試驗管理平臺所發送，對應單號為：{單號}，對應病歷號為：{病歷號}。
                                                                                 請您點擊以下連結以上傳 Dicom 影像檔案：
 
                                                                                 上傳連結: {url}
@@ -33,7 +33,7 @@ namespace CTMS.Business.Services
                                                                                 若有任何問題，請隨時與我們聯繫。
                                                                                 謝謝您的協助！"), "text");
             form.Add(new StringContent($@"<p>蔡主任您好：</p>
-                                                                                <p>這封信件是由 <strong>AI 臨床試驗管理平臺</strong> 所發送，對應單號為：{單號}。</p>
+                                                                                <p>這封信件是由 <strong>AI 臨床試驗管理平臺</strong> 所發送，對應單號為：{單號}，對應病歷號為：{病歷號}。</p>
                                                                                 <p>請您點擊以下按鈕以轉跳至上傳 Dicom 影像檔案介面：</p>
                                                                                 <p>
                                                                                   <a href="" {url}""

@@ -595,15 +595,15 @@
     string imageVersion = DateTime.Now.Ticks.ToString();
     bool showNotyfyDicomDialog = false;
 
-    async Task OnNotifyDicomDialog(string 單號)
+    async Task OnNotifyDicomDialog(NotifyDicomResponse notifyDicomResponse)
     {
         showNotyfyDicomDialog = false;
-        if (string.IsNullOrEmpty(單號))
+        if (string.IsNullOrEmpty(notifyDicomResponse.單號))
         {
             return;
         }
 
-        await SendEmailService.SendNotifyEmailAsync(單號, NavigationManager.Uri);
+        await SendEmailService.SendNotifyEmailAsync(notifyDicomResponse.單號, notifyDicomResponse.病歷號, NavigationManager.Uri);
     }
 
     CancellationToken token = new CancellationToken();

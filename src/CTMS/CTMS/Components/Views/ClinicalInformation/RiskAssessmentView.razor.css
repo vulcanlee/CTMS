@@ -85,8 +85,6 @@
 .risk-assessment-container {
     font-family: "微軟正黑體", "Microsoft JhengHei", sans-serif;
     width: 100%;
-    background-color: #f5f5f5;
-    padding-bottom: 20px;
 }
 
 .back-button a {
@@ -112,6 +110,18 @@
     background-color: white;
     padding: 10px;
     border-radius: 10px;
+}
+
+.t-left-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.t-right-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .bottom-panel {
@@ -227,10 +237,10 @@ td {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 90%;
 }
 
 .scan-image {
-    width: 80%;
     border-radius: 5px;
 }
 

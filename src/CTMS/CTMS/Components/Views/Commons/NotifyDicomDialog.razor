@@ -15,10 +15,17 @@
     <DialogTemplates>
         <Header>@DialogTitle</Header>
         <Content>
-            <div>
-                <div>請輸入單號</div>
-                <SfTextBox @bind-Value="@InputValue" />
+            <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <div style="display: flex; align-items: center">
+                    <div style="width: 150px">請輸入單號</div>
+                    <SfTextBox @bind-Value="@InputValue" />
+                </div>
+                <div style="display: flex; align-items: center">
+                    <div style="width: 150px">請輸入病例號</div>
+                    <SfTextBox @bind-Value="@InputValue2" />
+                </div>
             </div>
+            
         </Content>
         <FooterTemplate>
             <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
@@ -44,7 +51,7 @@
     [Parameter]
     public bool OpenPicker { get; set; } = false;
     [Parameter]
-    public EventCallback<string> OnConfirmCallback { get; set; }
+    public EventCallback<NotifyDicomResponse> OnConfirmCallback { get; set; }
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
@@ -54,6 +61,7 @@
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";
     public string InputValue { get; set; } = "";
+    public string InputValue2 { get; set; } = "";
 
     bool ShowAddPatientDialog = false;
 
@@ -80,7 +88,12 @@
     async Task OnPickerOK()
     {
         OpenPicker = false;
-        await OnConfirmCallback.InvokeAsync(InputValue);
+        NotifyDicomResponse notifyDicomResponse = new NotifyDicomResponse
+        {
+             單號 = InputValue,
+             病歷號 = InputValue2
+        };
+        await OnConfirmCallback.InvokeAsync(notifyDicomResponse);
     }
 
     async Task OnPickerCancel()

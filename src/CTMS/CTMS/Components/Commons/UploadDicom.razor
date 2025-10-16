@@ -10,8 +10,12 @@
             <div>
                 <div>請輸入單號</div>
                 <SfTextBox @bind-Value="@InputValue" />
-            </div>            
-            </Content>
+            </div>
+            <div>
+                <div>請輸入病例號</div>
+                <SfTextBox @bind-Value="@InputValue" />
+            </div>
+        </Content>
         <FooterTemplate>
             <div>
                 <SfButton @onclick="@OnOKBtnclick" CssClass='e-danger'>確定</SfButton>
