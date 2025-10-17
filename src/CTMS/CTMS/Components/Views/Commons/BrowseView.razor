@@ -97,7 +97,7 @@
 
     <!-- 結果表格區域 -->
     <div>
-        <Table @ref="table" Style="font-size:30px;"
+        <Table @ref="table"
                TItem="PatientAdapterModel"
                DataSource="@patientsAdapterModel"
                OnChange=OnTableChange
@@ -106,9 +106,10 @@
                @bind-Total=BrowseSearchingService.BrowseSearchingModel.Total>
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.SubjectNo)" Title="病人編號" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.醫院)" Title="醫院名稱" />
-            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.組別中文)" Title="癌症類型" />
-            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI處理)" Title="組別" />
-            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI評估)" Title="AI處理" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.癌別)" Title="癌症類型" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.組別中文)" Title="組別" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI處理)" Title="處理" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI評估)" Title="AI評估" />
             <ActionColumn Fixed="ColumnFixPlacement.Right" Title="操作">
                 <Space>
                     <SpaceItem>
