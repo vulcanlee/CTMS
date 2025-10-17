@@ -52,6 +52,11 @@
     color: #333;
 }
 
+.btn-filter {
+    background-color: #c4c4c4;
+    color: #333;
+}
+
 .icon-plus, .icon-refresh {
     margin-right: 5px;
 }
@@ -234,7 +239,7 @@ td {
 }
 
 .btn-delete {
-    background-color: #ffebee;
+    background-color: #f9f9f9;
     color: #333;
 }
 

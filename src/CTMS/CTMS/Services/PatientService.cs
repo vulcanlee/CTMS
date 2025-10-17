@@ -145,10 +145,10 @@ public class PatientService
         }
     }
 
-    public async Task<List<PatientAdapterModel>> GetAsync(BrowseSearchingModel browseSearching)
+    public async Task<DataRequestResult<PatientAdapterModel>> GetAsync(BrowseSearchingModel browseSearching)
 
     {
-        List<PatientAdapterModel> result = new List<PatientAdapterModel>();
+        DataRequestResult<PatientAdapterModel> result = new DataRequestResult<PatientAdapterModel>();
         List<Patient> items = new();
         List<Patient> tempItems = await context.Patient
             .AsNoTracking()
@@ -181,6 +181,7 @@ public class PatientService
 
             items.Add(item);
         }
+
         if (items.Count > 0)
         {
             List<PatientAdapterModel> results = Mapper.Map<List<PatientAdapterModel>>(items);
@@ -188,10 +189,18 @@ public class PatientService
             {
                 await OhterDependencyData(item);
             }
-            return results;
+            result.Count = results.Count;
+            result.Result = results
+                .Skip((browseSearching.PageIndex - 1) * browseSearching.PageSize)
+                .Take(browseSearching.PageSize)
+                .ToList();
+            browseSearching.Total = result.Count;
+            return result;
         }
         else
         {
+            result.Reset();
+            browseSearching.Total = result.Count;
             return result;
         }
     }

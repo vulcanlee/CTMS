@@ -29,75 +29,81 @@
         <button class="btn btn-refresh" @onclick="@(async () => await OnRefreshAsync())">
             <span class="icon-refresh">↻</span> 重新整理
         </button>
+        <button class="btn btn-filter" @onclick=On篩選條件>
+            <span class="icon-refresh">🔍</span> 篩選條件
+        </button>
     </div>
 
     <!-- 篩選條件區域 -->
-    <div class="filter-section">
-        <div class="filter-header">
-            <h2>篩選條件</h2>
-            <a class="clear-filter"
-               @onclick="@(async () => await RemovellFilterAsync())">清除所有篩選條件</a>
-        </div>
+    @if (isShowFilter)
+    {
+        <div class="filter-section">
+            <div class="filter-header">
+                <h2 @onclick="On篩選條件">篩選條件</h2>
+                <a class="clear-filter"
+                   @onclick="@(async () => await RemovellFilterAsync())">清除所有篩選條件</a>
+            </div>
 
-        <div class="filter-items">
-            <div class="filter-group">
-                <label>醫院名稱</label>
-                <div class="select-container">
-                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                    Placeholder="請選擇醫院名稱" DataSource="@List院別"
-                                    @bind-Value="@Select院別" class="flex-grow-1">
-                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                            ValueChange="@On院別Changed"></DropDownListEvents>
-                    </SfDropDownList>
-                </div>
-            </div>
-            <div class="filter-group">
-                <label>癌症類型</label>
-                <div class="select-container">
-                    <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
-                                    Placeholder="請選擇癌症類型" DataSource="@List癌別"
-                                    @bind-Value="@Select癌別" class="flex-grow-1">
-                        <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
-                        <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
-                                            ValueChange="@On癌別Changed"></DropDownListEvents>
-                    </SfDropDownList>
-                </div>
-            </div>
-            <div class="search-container">
-                <label></label>
-                <div class="search-box">
-                    <span class="search-icon" @onclick=OnSetKeyword>🔍</span>
-                    <input type="text" placeholder="搜尋病患編號" @bind="Keyword" />
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-items">
-            <div class="filter-tags">
-                @foreach (var item in browseFilterCondition.Items)
-                {
-                    <div class="filter-tag">
-                        @item.Name
-                        <span class="tag-remove" @onclick="@(async () => await RemoveFilterAsync(item))">×</span>
+            <div class="filter-items">
+                <div class="filter-group">
+                    <label>醫院名稱</label>
+                    <div class="select-container">
+                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                        Placeholder="請選擇醫院名稱" DataSource="@List院別"
+                                        @bind-Value="@Select院別" class="flex-grow-1">
+                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                ValueChange="@On院別Changed"></DropDownListEvents>
+                        </SfDropDownList>
                     </div>
-                }
+                </div>
+                <div class="filter-group">
+                    <label>癌症類型</label>
+                    <div class="select-container">
+                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                        Placeholder="請選擇癌症類型" DataSource="@List癌別"
+                                        @bind-Value="@Select癌別" class="flex-grow-1">
+                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                ValueChange="@On癌別Changed"></DropDownListEvents>
+                        </SfDropDownList>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <label></label>
+                    <div class="search-box">
+                        <span class="search-icon" @onclick=OnSetKeyword>🔍</span>
+                        <input type="text" placeholder="搜尋病患編號" @bind="Keyword" />
+                    </div>
+                </div>
             </div>
-            <div class="filter-result">
-                <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的病患
+
+            <div class="filter-items">
+                <div class="filter-tags">
+                    @foreach (var item in browseFilterCondition.Items)
+                    {
+                        <div class="filter-tag">
+                            @item.Name
+                            <span class="tag-remove" @onclick="@(async () => await RemoveFilterAsync(item))">×</span>
+                        </div>
+                    }
+                </div>
+                <div class="filter-result">
+                    <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的病患
+                </div>
             </div>
         </div>
-
-    </div>
+    }
 
     <!-- 結果表格區域 -->
     <div>
         <Table @ref="table" Style="font-size:30px;"
                TItem="PatientAdapterModel"
                DataSource="@patientsAdapterModel"
-               Total="_total"
-               @bind-PageIndex="_pageIndex"
-               @bind-PageSize="_pageSize">
+               OnChange=OnTableChange
+               @bind-PageIndex="BrowseSearchingService.BrowseSearchingModel.PageIndex"
+               @bind-PageSize="BrowseSearchingService.BrowseSearchingModel.PageSize"
+               @bind-Total=BrowseSearchingService.BrowseSearchingModel.Total>
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.SubjectNo)" Title="病人編號" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.醫院)" Title="醫院名稱" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.組別中文)" Title="癌症類型" />
@@ -170,10 +176,16 @@
     int _pageSize = 5;
     int _total = 0;
 
+    bool isShowFilter = false;
 
-    private async Task PageIndexChanged(PaginationEventArgs args)
+    void On篩選條件()
     {
-        _pageIndex = args.Page;
+        isShowFilter = !isShowFilter;
+    }
+
+    async Task OnTableChange(AntDesign.TableModels.QueryModel<PatientAdapterModel> args)
+    {
+        BrowseSearchingService.BrowseSearchingModel.PageIndex = args.PageIndex;
         await ReloadAsync();
     }
 
@@ -203,7 +215,6 @@
             });
         }
         DropDownListDataInit();
-        await ReloadAsync();
     }
 
     async Task OnSetKeyword()
@@ -214,14 +225,18 @@
 
     async Task ReloadAsync()
     {
-        patientsAdapterModel = await PatientService.GetAsync(BrowseSearchingService.BrowseSearchingModel);
+        DataRequestResult<PatientAdapterModel> dataRequestResult = await PatientService.GetAsync(BrowseSearchingService.BrowseSearchingModel);
+
+        patientsAdapterModel = dataRequestResult.Result.ToList();
+        _total = dataRequestResult.Count;
+
         foreach (var item in patientsAdapterModel)
         {
             patientData.FromJson(item.JsonData);
             item.SubjectNo = patientData.臨床資訊.SubjectNo; // Accessing PatientId property
             item.Get組別DisplayName();
         }
-        FoundCount = patientsAdapterModel.Count;
+        FoundCount = dataRequestResult.Count;
         StateHasChanged(); // 更新 UI
     }
 
@@ -385,6 +400,7 @@
         }
 
         await ReloadAsync();
+        StateHasChanged();
     }
 
     async Task On癌別Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)

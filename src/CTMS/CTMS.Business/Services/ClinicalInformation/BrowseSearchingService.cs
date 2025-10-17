@@ -13,7 +13,6 @@ namespace CTMS.Business.Services.ClinicalInformation
 {
     public class BrowseSearchingService
     {
-        public string MyProperty { get; set; } = Guid.NewGuid().ToString();
         public BrowseSearchingModel BrowseSearchingModel { get; set; } = new();
 
         public void Reset()
@@ -21,6 +20,10 @@ namespace CTMS.Business.Services.ClinicalInformation
             BrowseSearchingModel.院別.Clear();
             BrowseSearchingModel.癌別.Clear();
             BrowseSearchingModel.SearchKeyword = string.Empty;
+            BrowseSearchingModel.PageIndex = 1;
+            BrowseSearchingModel.PageSize = 10;
+            BrowseSearchingModel.Total = 0;
+            BrowseSearchingModel.Current = 10;
         }
 
         public void AddHospital(string hospital)
