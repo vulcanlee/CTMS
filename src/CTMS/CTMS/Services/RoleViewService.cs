@@ -260,5 +260,16 @@ public class RoleViewService
         
         return Task.FromResult(0);
     }
+
+    public async Task<RoleViewAdapterModel> Get預設新建帳號角色Async()
+    {
+        RoleView item = await context.RoleView
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Name == MagicObjectHelper.預設新建帳號角色);
+        RoleViewAdapterModel result = Mapper.Map<RoleViewAdapterModel>(item);
+        await OhterDependencyData(result);
+        return result;
+    }
+
     #endregion
 }

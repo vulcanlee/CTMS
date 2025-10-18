@@ -1,0 +1,209 @@
+﻿@using CTMS.DataModel.Models.Systems
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject BloodExameService BloodExameService
+@inject RandomListService RandomListService
+@inject ZipToolService ZipToolService
+@inject IJSRuntime JS
+@inject RegisterModelService RegisterModelService
+@inject PatientService PatientService
+@inject MyUserService MyUserService
+@inject RoleViewService RoleViewService
+
+<div>
+    @{
+        var index = 0;
+        string rowClass = string.Empty;
+    }
+
+    <div class="sample-table-container">
+        @if (Items != null && Items.Count > 0)
+        {
+            <table class="sample-table">
+                <thead>
+                    <tr>
+                        <th class="">名稱</th>
+                        <th class="">帳號</th>
+                        <th class="">電子郵件</th>
+                        <th class="">建立時間</th>
+                        <th class="">狀態</th>
+                        <th class="">命令</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        index = 0;
+                        rowClass = string.Empty;
+                    }
+                    @foreach (var item in Items)
+                    {
+                        if (index++ % 2 == 0)
+                        {
+                            rowClass = "row-normal";
+                        }
+                        else
+                        {
+                            rowClass = "row-highlighted";
+                        }
+                        <tr class="@rowClass">
+                            <td class="item-cell ">@item.Name</td>
+                            <td class="item-cell ">@item.Account</td>
+                            <td class="item-cell ">@item.Email</td>
+                            <td class="item-cell ">@item.CreateAt</td>
+                            <td class="item-cell ">@item.Status</td>
+                            <td class="item-cell ">
+                                <button class="btn btn-primary" @onclick="async () => await OnCreateItem(item)">建立帳號</button>
+                                <button class="btn btn-danger" @onclick="async () => await OnDeleteItem(item)">刪除</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert-info">
+                <b>沒有申請帳號的資訊。</b>
+            </div>
+        }
+    </div>
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    public class PatientAIKeyNameViewModel
+    {
+        public string SubjectNo { get; set; } = string.Empty;
+        public string KeyName { get; set; } = string.Empty;
+    }
+
+    async Task OnCreateItem(RegisterModel item)
+    {
+        bool result = false;
+        var checkUser = await MyUserService.CheckExist(item);
+        if (checkUser == true)
+        {
+            var task2 = MessageBox.ShowAsync("400px", "200px",
+            "錯誤", $"帳號 「{item.Account}」 已存在，無法建立帳號！",
+            MessageBox.HiddenAsync);
+            await task2;
+            return;
+        }
+
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定建立 「{item.Name}」 帳號確認嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        result = await task;
+        if (result == false)
+        {
+            return;
+        }
+
+        var role = await RoleViewService.Get預設新建帳號角色Async();
+        var MyUserAdapterModel = new MyUserAdapterModel
+        {
+            Account = item.Account,
+            Name = item.Name,
+            Email = item.Email,
+            RoleViewId = role.Id,
+            IsAdmin = false,
+            Salt = Guid.NewGuid().ToString(),
+            Status = true,
+            RoleJson = "[]",
+        };
+
+        MyUserAdapterModel.Password =
+                PasswordHelper.GetPasswordSHA(MyUserAdapterModel.Salt, item.Password);
+
+        await MyUserService.AddAsync(MyUserAdapterModel, role.Id);
+
+        await GetDataAsync();
+        var foundItem = RegisterModelService.RegisterModels
+        .FirstOrDefault(x => x.Account == item.Account &&
+            x.Email == item.Email && x.Name == item.Name && x.Status == item.Status &&
+            x.CreateAt == item.CreateAt);
+        foundItem.Status = "已建立帳號";
+        await RegisterModelService.Save();
+        await GetDataAsync();
+    }
+
+    async Task OnDeleteItem(RegisterModel item)
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定刪除 「{item.Name}」 帳號確認嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        result = await task;
+        if (result == false)
+        {
+            return;
+        }
+
+        await GetDataAsync();
+
+        var foundItem = RegisterModelService.RegisterModels
+        .FirstOrDefault(x => x.Account == item.Account &&
+        x.Email == item.Email && x.Name == item.Name && x.Status == item.Status &&
+        x.CreateAt == item.CreateAt);
+        if (foundItem != null)
+        {
+            RegisterModelService.RegisterModels.Remove(foundItem);
+            await RegisterModelService.Save();
+            await GetDataAsync();
+        }
+    }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    public List<RegisterModel> Items { get; set; } = new();
+    RegisterModel RegisterModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetDataAsync(firstRender);
+        }
+    }
+
+    async Task GetDataAsync(bool firstRender = false)
+    {
+        Items.Clear();
+        await RegisterModelService.Get();
+
+        foreach (var patient in RegisterModelService.RegisterModels)
+        {
+            Items.Add(patient);
+        }
+
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+}

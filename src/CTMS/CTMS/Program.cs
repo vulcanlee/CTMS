@@ -100,6 +100,7 @@ namespace CTMS
                 builder.Services.AddTransient<GptService>();
                 builder.Services.AddTransient<TranscationResultHelper>();
                 builder.Services.AddTransient<AuthenticationStateHelper>();
+                builder.Services.AddScoped<RegisterModelService>();
                 builder.Services.AddScoped<RequestInfoService>();
                 builder.Services.AddScoped<CurrentUserService>();
                 builder.Services.AddScoped<CurrentProject>();
@@ -236,6 +237,27 @@ namespace CTMS
                         roleViewItem.TabViewJson = allPermissionJson;
                         dbContext.SaveChanges();
                     }
+
+                    roleViewItem = dbContext.RoleView
+                        .FirstOrDefault(x => x.Name == MagicObjectHelper.預設新建帳號角色);
+                    allPermissionJson = RolePermissionService
+                        .Get預設新建帳號角色ToJson();
+                    if (roleViewItem == null)
+                    {
+                        roleViewItemNew = new RoleView()
+                        {
+                            Name = MagicObjectHelper.預設新建帳號角色,
+                            TabViewJson = allPermissionJson
+                        };
+                        dbContext.RoleView.Add(roleViewItemNew);
+                        dbContext.SaveChanges();
+                    }
+                    else
+                    {
+                        roleViewItem.TabViewJson = allPermissionJson;
+                        dbContext.SaveChanges();
+                    }
+
                     #endregion
 
                     #region 建立預設的 RoleViewProject

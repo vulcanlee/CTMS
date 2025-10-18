@@ -4,6 +4,7 @@ using CTMS.Business.Factories;
 using CTMS.Business.Helpers;
 using CTMS.Business.Services;
 using CTMS.DataModel.Models;
+using CTMS.DataModel.Models.Systems;
 using CTMS.EntityModel;
 using CTMS.EntityModel.Models;
 using CTMS.Share.Helpers;
@@ -141,6 +142,28 @@ public class MyUserService
             var permissions = paraObject.RolePermission;
             itemParameter.RoleJson = rolePermissionService.GetPermissionInputToJson(permissions);
             #endregion
+
+            CleanTrackingHelper.Clean<MyUser>(context);
+            await context.MyUser
+                .AddAsync(itemParameter);
+            await context.SaveChangesAsync();
+            CleanTrackingHelper.Clean<MyUser>(context);
+            return VerifyRecordResultFactory.Build(true);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "新增記錄發生例外異常");
+            return VerifyRecordResultFactory.Build(false, "新增記錄發生例外異常", ex);
+        }
+    }
+
+    public async Task<VerifyRecordResult> AddAsync(MyUserAdapterModel paraObject, int roleId)
+    {
+        try
+        {
+            MyUser itemParameter = Mapper.Map<MyUser>(paraObject);
+            itemParameter.RoleView = null;
+            itemParameter.RoleViewId = roleId;
 
             CleanTrackingHelper.Clean<MyUser>(context);
             await context.MyUser
@@ -318,6 +341,19 @@ public class MyUserService
     #endregion
 
     #region 其他服務方法
+    public async Task<bool> CheckExist(RegisterModel registerModel)
+    {
+        CleanTrackingHelper.Clean<MyUser>(context);
+        var searchItem = await context.MyUser
+         .AsNoTracking()
+         .FirstOrDefaultAsync(x => x.Email == registerModel.Email || x.Account == registerModel.Account);
+        if (searchItem != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public async Task<MyUserAdapterModel> UserByAccount(string account)
     {
         CleanTrackingHelper.Clean<MyUser>(context);
@@ -342,7 +378,7 @@ public class MyUserService
 
         if (user == null)
         {
-            message= "使用者帳號不存在";
+            message = "使用者帳號不存在";
             return message;
         }
 

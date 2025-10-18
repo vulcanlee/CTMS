@@ -1,0 +1,58 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="header pt-4">
+    <h1>
+        <span class="mx-3 btn btn-outline-primary"
+              @onclick='() => OnChange("")'>首頁</span>
+        <span class="mx-3 btn @classUserManagement"
+              @onclick='() => OnChange("UserManagement")'>使用者管理</span>
+        <span class="mx-3 btn @classRoleView"
+              @onclick='() => OnChange("RoleView")'>角色管理</span>
+        <span class="mx-3 btn @classRandom"
+              @onclick='() => OnChange("Random")'>隨機表</span>
+        <span class="mx-3 btn @classPatientKeyName"
+              @onclick='() => OnChange("PatientKeyName")'>Key Name</span>
+        <span class="mx-3 btn @classApprovalRegistration"
+              @onclick='() => OnChange("ApprovalRegistration")'>申請帳號審查</span>
+
+    </h1>
+</div>
+
+@code {
+    string classUserManagement { get; set; } = "btn-outline-primary";
+    string classRoleView { get; set; } = "btn-outline-primary";
+    string classRandom { get; set; } = "btn-outline-primary";
+    string classPatientKeyName { get; set; } = "btn-outline-primary";
+    string classApprovalRegistration { get; set; } = "btn-outline-primary";
+
+    override protected void OnInitialized()
+    {
+        var uri = NavigationManager.Uri.ToString().ToLower();
+        if (uri.Contains("UserManagement".ToLower()))
+        {
+            classUserManagement = "btn-primary fw-bolder";
+        }
+        else if (uri.Contains("RoleView".ToLower()))
+        {
+            classRoleView = "btn-primary fw-bolder";
+        }
+        else if (uri.Contains("Random".ToLower()))
+        {
+            classRandom = "btn-primary fw-bolder";
+        }
+        else if (uri.Contains("PatientKeyName".ToLower()))
+        {
+            classPatientKeyName = "btn-primary fw-bolder";
+        }
+        else if (uri.Contains("ApprovalRegistration".ToLower()))
+        {
+            classApprovalRegistration = "btn-primary fw-bolder";
+        }
+    }
+
+    public async Task OnChange(string page)
+    {
+        NavigationManager.NavigateTo($"/{page}", true);
+    }
+
+}

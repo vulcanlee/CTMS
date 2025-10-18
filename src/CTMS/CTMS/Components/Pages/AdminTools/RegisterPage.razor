@@ -1,11 +1,13 @@
-﻿@page "/Auths/Register"
+﻿@page "/Register"
 
 @using System.ComponentModel.DataAnnotations
+@using CTMS.DataModel.Models.Systems
 @layout NoFooterLayout
 @inject NavigationManager NavigationManager
-@inject ILogger<Register> Logger
+@inject ILogger<RegisterPage> Logger
+@inject RegisterModelService RegisterModelService
 
-    <style>
+<style>
     .form-input {
         flex: 1;
         padding: 10px;
@@ -14,7 +16,7 @@
         font-size: 14px;
         transition: border-color 0.3s ease;
     }
-    </style>
+</style>
 
 <PageTitle>帳號申請</PageTitle>
 
@@ -24,28 +26,28 @@
             帳號申請
         </div>
 
-        <EditForm Model="@Model" OnValidSubmit="RegisterUser" class="register-form">
+        <EditForm Model="@Model" OnValidSubmit="RegisterUser" class="register-form" autocomplete="off">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
             <div class="form-group">
                 <label class="form-label">名稱</label>
-                <InputText class="form-input" @bind-Value="Model.Name" placeholder="請輸入名稱" />
+                <InputText class="form-input" @bind-Value="Model.Name" placeholder="請輸入名稱" autocomplete="off" name="register-name" />
             </div>
 
             <div class="form-group">
                 <label class="form-label">帳號</label>
-                <InputText class="form-input" @bind-Value="Model.Account" placeholder="請輸入帳號" />
+                <InputText class="form-input" @bind-Value="Model.Account" placeholder="請輸入帳號" autocomplete="off" name="register-account" />
             </div>
 
             <div class="form-group">
                 <label class="form-label">密碼</label>
-                <InputText type="password" class="form-input" @bind-Value="Model.Password" placeholder="請輸入密碼" />
+                <InputText type="password" class="form-input" @bind-Value="Model.Password" placeholder="請輸入密碼" autocomplete="new-password" name="new-password" />
             </div>
 
             <div class="form-group">
                 <label class="form-label">信箱</label>
-                <InputText type="email" class="form-input" @bind-Value="Model.Email" placeholder="請輸入電子郵件" />
+                <InputText type="email" class="form-input" @bind-Value="Model.Email" placeholder="請輸入電子郵件" autocomplete="off" name="register-email" />
             </div>
 
             <div class="register">
@@ -64,9 +66,17 @@
     </div>
 </div>
 
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
 @code {
     private RegisterModel Model { get; set; } = new();
     string Message = string.Empty;
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
     private async Task RegisterUser()
     {
@@ -84,32 +94,32 @@
 
         try
         {
+            await RegisterModelService.Get();
+            Model.Status = "待審核";
+            Model.CreateAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            RegisterModelService.RegisterModels.Add(Model);
+            await RegisterModelService.Save();
+
             // 目前僅做前端流程 (後端註冊服務可在此呼叫)
             Message = "申請已送出，系統將通知您後續處理。";
             // 若要導回登入頁：
-            await Task.Delay(800);
-            NavigationManager.NavigateTo("/Auths/Login");
+            bool result = false;
+            var task2 = MessageBox.ShowAsync("400px", "200px",
+            "錯誤", $"帳號 「{Model.Account}」 申請已送出，系統將通知您後續處理！",
+            MessageBox.HiddenAsync);
+            await task2;
+            StateHasChanged();
+            NavigationManager.NavigateTo("/");
+            return;
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "註冊發生例外");
             Message = "註冊發生錯誤，請稍後再試。";
         }
+        StateHasChanged();
+        await Task.Delay(5000);
+        NavigationManager.NavigateTo("/");
     }
 
-    private sealed class RegisterModel
-    {
-        [Required(ErrorMessage = "請輸入名稱")]
-        public string Name { get; set; } = "";
-
-        [Required(ErrorMessage = "請輸入帳號")]
-        public string Account { get; set; } = "";
-
-        [Required(ErrorMessage = "請輸入密碼")]
-        public string Password { get; set; } = "";
-
-        [Required(ErrorMessage = "請輸入電子郵件")]
-        [EmailAddress(ErrorMessage = "Email 格式不正確")]
-        public string Email { get; set; } = "";
-    }
 }

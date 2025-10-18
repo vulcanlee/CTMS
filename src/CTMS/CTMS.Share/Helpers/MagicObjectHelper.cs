@@ -13,6 +13,7 @@
         public const string FilenameProject = "Project.json";
         public const string FilenameRoleView = "RoleView.json";
         public const string FilenameMyUser = "MyUser.json";
+        public const string FilenameRegisterModel = "RegisterModels.json";
         public const string FilenameAthletesExamine = "AthletesExamine.json";
         public const string NoUpdateSymbol = "NA";
 
@@ -32,6 +33,7 @@
         public const string 開發者帳號 = "support";
         public const string 預設專案 = "Default Project";
         public const string 預設角色 = "Default Role";
+        public const string 預設新建帳號角色 = "預設新建帳號角色";
         public const string 你沒有權限存取此頁面 = "你沒有權限存取此頁面";
         public const string 你沒有權限操作此功能 = "你沒有權限操作此功能";
         public const string ROLE瀏覽 = "瀏覽";

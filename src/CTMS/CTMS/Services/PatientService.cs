@@ -418,6 +418,7 @@ public class PatientService
     {
         await Task.Yield();
     }
+
     #endregion
 
     #region 紀錄啟用或停用

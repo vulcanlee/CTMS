@@ -33,9 +33,30 @@ namespace CTMS.Business.Services
             };
         }
 
+        public List<string> GetGet預設新建帳號角色ToJsonPermissionAllName()
+        {
+            return new List<string>
+            {
+                MagicObjectHelper.ROLE瀏覽,
+                MagicObjectHelper.ROLE新增病患,
+                MagicObjectHelper.ROLE臨床資訊,
+                MagicObjectHelper.ROLE臨床資料,
+                MagicObjectHelper.ROLE抽血資料,
+                MagicObjectHelper.ROLE副作用,
+                MagicObjectHelper.ROLE問卷,
+                MagicObjectHelper.ROLE追蹤資料,
+                MagicObjectHelper.ROLE風險評估,
+            };
+        }
         public string GetRolePermissionAllNameToJson()
         {
             var items = GetRolePermissionAllName();
+            return Newtonsoft.Json.JsonConvert.SerializeObject(items);
+        }
+
+        public string Get預設新建帳號角色ToJson()
+        {
+            var items = GetGet預設新建帳號角色ToJsonPermissionAllName();
             return Newtonsoft.Json.JsonConvert.SerializeObject(items);
         }
 

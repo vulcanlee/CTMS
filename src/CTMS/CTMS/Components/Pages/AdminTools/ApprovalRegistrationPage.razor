@@ -1,4 +1,4 @@
-﻿@page "/PatientKeyName"
+﻿@page "/ApprovalRegistration"
 @using CTMS.DataModel.Models.Systems
 @using CTMS.Share.Helpers
 @using Newtonsoft.Json
@@ -13,8 +13,9 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<CTMSSettings> options
 @inject RandomListService RandomListService
+@inject RegisterModelService RegisterModelService
 
-<PageTitle>Subject Code / AI Key Name</PageTitle>
+<PageTitle>申請帳號審查</PageTitle>
 
 @if (string.IsNullOrEmpty(RoleMessage) == false)
 {
@@ -28,7 +29,7 @@ else
         <AdminHeaderView />
 
         <div class="page-body">
-            <PatientKeyNameView />
+            <ApprovalRegistrationView />
         </div>
     </div>
 }
