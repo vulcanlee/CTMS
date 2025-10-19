@@ -30,18 +30,19 @@
                     <div>
                         <Popover Title="系統功能">
                             <ContentTemplate>
-                                <div class="menu-item" @onclick='() => OnMenuItemClick("首頁")'> 首頁 </div>
+                                <div class="menu-item" @onclick='() => OnMenuItemClick("首頁")'> <span class="me-1 mdi mdi-24px mdi-home-outline"></span>首頁 </div>
                                 @if (isAdmin)
                                 {
-                                    <div class="menu-item" @onclick='() => OnMenuItemClick("使用者管理")'> 使用者管理 </div>
-                                    <div class="menu-item" @onclick='() => OnMenuItemClick("角色管理")'> 角色管理 </div>
-                                    <div class="menu-item" @onclick='() => OnMenuItemClick("隨機表")'> 隨機表 </div>
-                                    <div class="menu-item" @onclick='() => OnMenuItemClick("下載AI結果")'> 下載AI結果 </div>
-                                    <div class="menu-item" @onclick='() => OnMenuItemClick("申請帳號審查")'> 申請帳號審查 </div>
+                                    
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("使用者管理")'> <span class="me-1 mdi mdi-24px mdi-account-group-outline"></span>使用者管理 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("角色管理")'> <span class="me-1 mdi mdi-24px mdi-shield-account-outline"></span>角色管理 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("隨機表")'> <span class="me-1 mdi mdi-24px mdi-shuffle-variant"></span>隨機表 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("下載AI結果")'> <span class="me-1 mdi mdi-24px mdi-robot-outline"></span>下載AI結果 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("申請帳號審查")'> <span class="me-1 mdi mdi-24px mdi-account-clock-outline"></span>申請帳號審查 </div>
                                     <hr />
                                 }
-                                <div class="menu-item" @onclick='() => OnMenuItemClick("變更密碼")'> 變更密碼 </div>
-                                <div class="menu-item" @onclick='() => OnMenuItemClick("登出系統")'> 登出系統 </div>
+                                <div class="menu-item" @onclick='() => OnMenuItemClick("變更密碼")'> <span class="me-1 mdi mdi-24px mdi-lock-reset"></span>變更密碼 </div>
+                                <div class="menu-item" @onclick='() => OnMenuItemClick("登出系統")'> <span class="me-1 mdi mdi-24px mdi-logout-variant"></span>登出系統 </div>
                             </ContentTemplate>
                             <ChildContent>
                                 <i class="oi oi-person"></i>
