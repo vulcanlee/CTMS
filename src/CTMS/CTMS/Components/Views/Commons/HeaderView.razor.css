@@ -16,11 +16,16 @@
         color: #666;
     }
 
+.menu-item {
+    margin-bottom: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
 .hospital-logo {
     width: 140px;
     height: auto;
     margin-right: 15px;
-}
 
 .hospital-title h1 {
     font-size: 30px;

@@ -27,14 +27,33 @@
             <div class="version">
                 @if (!string.IsNullOrEmpty(userName))
                 {
-                    <i class="oi oi-person"></i>
-                
-                    <span> 使用者：@userName</span>
+                    <div>
+                        <Popover Title="系統功能">
+                            <ContentTemplate>
+                                <div class="menu-item" @onclick='() => OnMenuItemClick("首頁")'> 首頁 </div>
+                                @if (isAdmin)
+                                {
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("使用者管理")'> 使用者管理 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("角色管理")'> 角色管理 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("隨機表")'> 隨機表 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("下載AI結果")'> 下載AI結果 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("申請帳號審查")'> 申請帳號審查 </div>
+                                    <hr />
+                                }
+                                <div class="menu-item" @onclick='() => OnMenuItemClick("變更密碼")'> 變更密碼 </div>
+                                <div class="menu-item" @onclick='() => OnMenuItemClick("登出系統")'> 登出系統 </div>
+                            </ContentTemplate>
+                            <ChildContent>
+                                <i class="oi oi-person"></i>
+                                <span class="ms-2"> 使用者：@userName</span>
+                            </ChildContent>
+                        </Popover>
+                    </div>
                 }
                 else
                 {
                     <i class="oi oi-person"></i>
-                
+
                     <span> 使用者：未登入</span>
                 }
                 @* <div>Version:@options.Value.SystemInformation.SystemVersion</div> *@
@@ -59,6 +78,7 @@
     public CurrentUser CurrentUser { get; set; }
     string forTesting = "";
     string userName = "";
+    bool isAdmin = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -67,6 +87,14 @@
         {
             forTesting = "注意：測試用版本";
         }
+
+        var checkResult = await AuthenticationStateHelper
+        .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            isAdmin = AuthenticationStateHelper.CheckIsAdmin();
+        }
+
     }
 
     override protected void OnParametersSet()
@@ -91,4 +119,30 @@
     {
         NavigationManager.NavigateTo(BackUri);
     }
+
+    void OnMenuItemClick(string page)
+    {
+        // <div class="menu-item"> 首頁 </div>
+        // <div class="menu-item"> 申請帳號審查 </div>
+        // <div class="menu-item"> 使用者管理 </div>
+        // <div class="menu-item"> 角色管理 </div>
+        // <div class="menu-item"> 隨機表 </div>
+        // <div class="menu-item"> 下載AI結果 </div>
+        // <hr />
+        // <div class="menu-item"> 變更密碼 </div>
+        // <div class="menu-item"> 登出系統 </div>
+        var uri = page switch
+        {
+            "首頁" => "/",
+            "使用者管理" => "/UserManagement",
+            "角色管理" => "/RoleView",
+            "隨機表" => "/Random",
+            "下載AI結果" => "/PatientKeyName",
+            "申請帳號審查" => "/ApprovalRegistration",
+            "變更密碼" => "/ChangePassword",
+            "登出系統" => "/Auths/Logout",
+            _ => "/"
+        };
+        NavigationManager.NavigateTo(uri, true);
+   }
 }
