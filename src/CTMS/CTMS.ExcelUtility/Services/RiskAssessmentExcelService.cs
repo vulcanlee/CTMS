@@ -1,5 +1,6 @@
 ﻿using CTMS.DataModel.Models.AIAgent;
 using CTMS.DataModel.Models.ClinicalInformation;
+using CTMS.Share.Extensions;
 using CTMS.Share.Helpers;
 using OfficeOpenXml;
 using Syncfusion.XlsIO;
@@ -84,6 +85,9 @@ public class RiskAssessmentExcelService
             result.TotalNamaA = worksheet.Cells["S13"].Text;
             result.VatA = worksheet.Cells["B31"].Text;
             result.SatA = worksheet.Cells["G31"].Text;
+            result.腰圍ACcm = worksheet.Cells["B36"].Text;
+
+            result.腰圍ACcm = result.腰圍ACcm.ToFloat().ToString("F2");
         }
 
 

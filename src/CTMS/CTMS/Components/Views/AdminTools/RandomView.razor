@@ -152,6 +152,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要儲存此次修改動作嗎？",
              ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         result = await task;
         if (result)
         {
@@ -171,6 +172,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要清除這個 Subject Code 嗎？",
              ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         result = await task;
         Console.WriteLine(result);
         // await Task.Delay(100);

@@ -23,6 +23,7 @@
 @inject InputCsvService InputCsvService
 @implements IDisposable
 @inject SendEmailService SendEmailService
+@inject RiskAssessmentExcelService RiskAssessmentExcelService
 
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
@@ -1272,6 +1273,14 @@
     {
         var msg = "AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果";
 
+        #region 取得腰圍
+        RiskAssessmentAIResult riskAssessmentAIResult = await AIIntegrateService.Get腰圍ACAsync(patientData.臨床資訊.KeyName);
+        if(riskAssessmentAIResult != null)
+        {
+            patientData.臨床資訊.AbdominalCircumference = riskAssessmentAIResult.腰圍ACcm;
+        }
+        #endregion
+
         InputCsvModel inputCsvModel = await AIIntegrateService.GetInputCsv(patientData.臨床資訊.KeyName);
 
         string imageRootPath = MagicObjectHelper.UploadFinalPath;
@@ -1450,6 +1459,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要寄送通知給放射科醫師嗎？",
              ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         await Task.Delay(100);
         StateHasChanged();
         result = await task;

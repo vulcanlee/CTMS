@@ -17,18 +17,21 @@ public class AIIntegrateService
     private readonly AgentService agentService;
     private readonly DirectoryHelperService directoryHelperService;
     private readonly InputCsvService inputCsvService;
+    private readonly RiskAssessmentExcelService riskAssessmentExcelService;
     private readonly Agentsetting agentsetting;
 
     public AIIntegrateService(ILogger<AIIntegrateService> logger,
         AgentService agentService,
         DirectoryHelperService directoryHelperService,
         IOptions<Agentsetting> agentsettingOptions,
-        InputCsvService inputCsvService)
+        InputCsvService inputCsvService,
+        RiskAssessmentExcelService riskAssessmentExcelService)
     {
         this.logger = logger;
         this.agentService = agentService;
         this.directoryHelperService = directoryHelperService;
         this.inputCsvService = inputCsvService;
+        this.riskAssessmentExcelService = riskAssessmentExcelService;
         this.agentsetting = agentsettingOptions.Value;
     }
 
@@ -65,8 +68,8 @@ public class AIIntegrateService
         PatientData patientData, string dicomImage)
     {
         string result = "";
-        if(string.IsNullOrEmpty(patientData.臨床資訊.Age) ||
-            patientData.臨床資訊.Age.ToInt()==0)
+        if (string.IsNullOrEmpty(patientData.臨床資訊.Age) ||
+            patientData.臨床資訊.Age.ToInt() == 0)
         {
             result = "年齡未填";
             return result;
@@ -142,9 +145,22 @@ public class AIIntegrateService
 
         var foo = inputCsvService.Read(destinationKeyNamePath);
 
-        if(foo!= null)
+        if (foo != null)
             result = foo;
         return result;
+    }
+
+    public async Task<RiskAssessmentAIResult> Get腰圍ACAsync(string KeyName)
+    {
+        RiskAssessmentAIResult riskAssessmentAIResult = null;
+        string result = "";
+        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        var destinationKeyNamePath = Path.Combine(uploadFilesPath, KeyName, "Phase2Result", $"{KeyName}.csv");
+
+        if ((File.Exists(destinationKeyNamePath)))
+            riskAssessmentAIResult = riskAssessmentExcelService.ReadExcel(destinationKeyNamePath);
+        return riskAssessmentAIResult;
+
     }
 
     public async Task<(string, string)> GetOnputCsv(string KeyName)
@@ -155,7 +171,7 @@ public class AIIntegrateService
         var destinationKeyNamePath = Path.Combine(uploadFilesPath, KeyName, "Phase3Result", "output.csv");
 
         if (!(File.Exists(destinationKeyNamePath)))
-            return ("","");
+            return ("", "");
 
         string output = File.ReadAllText(destinationKeyNamePath).ToLower();
         if (output.Contains("a grade III AE".ToLower()))

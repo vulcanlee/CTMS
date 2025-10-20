@@ -53,4 +53,5 @@ public class RiskAssessmentAIResult
     ///  Excel (G13)    Subcutaneous Adipose Tissue Area    cm²   皮下脂肪面積
     /// </summary>
     public string SatA { get; set; }
+    public string 腰圍ACcm { get; set; }
 }

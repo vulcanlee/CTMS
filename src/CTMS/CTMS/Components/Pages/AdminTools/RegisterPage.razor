@@ -113,8 +113,8 @@
             var task2 = MessageBox.ShowAsync("400px", "200px",
             "錯誤", $"帳號 「{Model.Account}」 申請已送出，系統將通知您後續處理！",
             MessageBox.HiddenAsync);
-            await task2;
             StateHasChanged();
+            await task2;
             NavigationManager.NavigateTo("/");
             return;
         }

@@ -107,6 +107,7 @@
             var task2 = MessageBox.ShowAsync("400px", "200px",
             "錯誤", $"帳號 「{item.Account}」 已存在，無法建立帳號！",
             MessageBox.HiddenAsync);
+            StateHasChanged();
             await task2;
             return;
         }
@@ -114,6 +115,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定建立 「{item.Name}」 帳號確認嗎？",
              ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         result = await task;
         if (result == false)
         {
@@ -154,6 +156,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定刪除 「{item.Name}」 帳號確認嗎？",
              ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         result = await task;
         if (result == false)
         {
