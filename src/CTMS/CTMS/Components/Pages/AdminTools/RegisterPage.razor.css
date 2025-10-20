@@ -1,4 +1,10 @@
-﻿/* 與 Login 風格一致的申請頁樣式 */
+﻿
+.app-title {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+/* 與 Login 風格一致的申請頁樣式 */
 .register-container {
     display: flex;
     justify-content: center;
@@ -6,6 +12,7 @@
     min-height: 100vh;
     padding: 20px;
     background: linear-gradient(180deg, #f6c4c6 0%, #f3dcd6 30%, #e6efd9 100%);
+    flex-direction: column;
 }
 
 .register-card {

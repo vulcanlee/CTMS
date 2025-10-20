@@ -194,3 +194,134 @@
     .social-login__icon:hover {
         transform: scale(1.5);
     }
+
+
+
+
+
+body {
+    background: linear-gradient(135deg, #f5deb3, #e6d7c3);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.app-title {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(180deg, #f6c4c6 0%, #f3dcd6 30%, #e6efd9 100%);
+    flex-direction: column;
+}
+
+.login-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px 40px 10px 40px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.login-header {
+    background: #EDEDED;
+    text-align: center;
+    padding: 10px;
+    margin: -40px -40px 30px -40px;
+    border-radius: 8px 8px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-label {
+    min-width: 80px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.captcha-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.captcha-input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.captcha-image {
+    width: 90px;
+    height: 40px;
+    background: #e9ecef;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    color: #666;
+    font-family: cursive;
+    letter-spacing: 3px;
+}
+
+.login-button {
+    width: 30%;
+    background: #ffc0cb;
+    color: #333;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .login-button:hover {
+        background: #ffb6c1;
+    }
+
+.register-link {
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.alert-danger {
+    display: block;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
