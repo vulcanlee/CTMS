@@ -20,6 +20,7 @@ public class PatientAIInfo
     public string DicomFilename { get; set; }
     public string DestionatioDicomFilename { get; set; }
     public string DestionatioPatientJSONFilename { get; set; }
+    public string ManualAnnotation { get; set; }
 
     public void InitKeyName()
     {
