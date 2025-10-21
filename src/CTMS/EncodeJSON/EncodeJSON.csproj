@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="202510201648386456.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
