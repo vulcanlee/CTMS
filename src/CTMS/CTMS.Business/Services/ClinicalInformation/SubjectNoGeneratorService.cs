@@ -7,7 +7,7 @@ namespace CTMS.Business.Services.ClinicalInformation;
 
 public class SubjectNoGeneratorService
 {
-    SubjectNoGeneratorModel SubjectNoGeneratorModel = new();
+    public SubjectNoGeneratorModel SubjectNoGeneratorModel { get; set; } = new();
 
     private readonly ILogger<SubjectNoGeneratorService> logger;
 

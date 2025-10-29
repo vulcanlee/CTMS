@@ -1,0 +1,92 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Popups
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+@inject DropDownListDataService DropDownListDataService
+@inject BloodExameService BloodExameService
+@inject RandomListService RandomListService
+@inject SubjectNoGeneratorService SubjectNoGeneratorService
+
+<div>
+    <div class="m-2">
+        <p>NCKUH成大</p>
+        <div>
+            <SfNumericTextBox TValue="int" @bind-Value="@NCKUH成大"></SfNumericTextBox>
+        </div>
+    </div>
+    <div class="m-2">
+        <p>CHIMEIH奇美</p>
+        <div>
+            <SfNumericTextBox TValue="int" @bind-Value="@CHIMEIH奇美"></SfNumericTextBox>
+        </div>
+    </div>
+    <div class="m-2">
+        <p>KGH郭綜合</p>
+        <div>
+            <SfNumericTextBox TValue="int" @bind-Value="@KGH郭綜合"></SfNumericTextBox>
+        </div>
+    </div>
+    <div class="m-2">
+        <button class="btn btn-primary" @onclick="OnSaveAsync">儲存修改</button>
+    </div>
+</div>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    public int NCKUH成大 { get; set; } = 0;
+    public int CHIMEIH奇美 { get; set; } = 0;
+    public int KGH郭綜合 { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SubjectNoGeneratorService.InitialAsync();
+        NCKUH成大 = SubjectNoGeneratorService.SubjectNoGeneratorModel.NCKUH成大;
+        CHIMEIH奇美 = SubjectNoGeneratorService.SubjectNoGeneratorModel.CHIMEIH奇美;
+        KGH郭綜合 = SubjectNoGeneratorService.SubjectNoGeneratorModel.KGH郭綜合;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+    async Task OnSaveAsync()
+    {
+        bool result = false;
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+             "再次確認", $"確定要儲存此次修改動作嗎？",
+             ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
+        result = await task;
+        if (result)
+        {
+            SubjectNoGeneratorService.SubjectNoGeneratorModel.NCKUH成大 = NCKUH成大;
+            SubjectNoGeneratorService.SubjectNoGeneratorModel.CHIMEIH奇美 = CHIMEIH奇美;
+            SubjectNoGeneratorService.SubjectNoGeneratorModel.KGH郭綜合 = KGH郭綜合;
+            await SubjectNoGeneratorService.SubjectNoGeneratorModel.SaveAsync();
+        }
+    }
+}

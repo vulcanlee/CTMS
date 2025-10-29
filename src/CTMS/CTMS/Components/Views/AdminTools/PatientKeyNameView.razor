@@ -1,4 +1,5 @@
-﻿@using Syncfusion.Blazor
+﻿@using CTMS.DataModel.Models.AIAgent
+@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Popups
@@ -7,6 +8,7 @@
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
+@using System.Threading.Tasks
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
@@ -66,6 +68,7 @@
                     <tr>
                         <th class="">Subject Code</th>
                         <th class="">Key Name</th>
+                        <th class="">動作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,6 +92,12 @@
                                 @onclick="@(async () => OnKeyNameClick(item))">
                                 @item.KeyName
                             </td>
+                            <td class="item-cell ">
+                                <Button Type="AntDesign.ButtonType.Primary"
+                                        OnClick="()=>OnShowPicker(item)">
+                                    變更病歷號
+                                </Button>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -107,6 +116,8 @@
             Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
             Callback="ConfirmMessageBox.ConfirmDelegate" />
 
+<NewSubjectNoDialog OpenPicker="OpenChangeSubjectNoPicker" OnConfirmCallback="OnChangeSubjectNo" newSubjectNo=@sourceSubjectNo />
+
 <DialogBackground />
 
 @code {
@@ -121,6 +132,9 @@
     List<PatientAIKeyNameViewModel> Items = new();
     PatientData patientData = new();
     List<string> KeyNameList = new();
+
+    public bool OpenChangeSubjectNoPicker { get; set; } = false;
+    public string sourceSubjectNo { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -172,7 +186,7 @@
         }
     }
 
-    async Task GetDataAsync(bool firstRender)
+    async Task GetDataAsync(bool firstRender = false)
     {
         Items.Clear();
         var patientItems = await PatientService.GetAsync();
@@ -197,7 +211,7 @@
     {
         string keyName = patientAIKeyNameViewModel.KeyName;
         string subjectNo = patientAIKeyNameViewModel.SubjectNo;
-        if(string.IsNullOrEmpty(keyName))
+        if (string.IsNullOrEmpty(keyName))
         {
             return;
         }
@@ -211,9 +225,167 @@
         await JS.InvokeVoidAsync("downloadFileFromStream", Path.GetFileName(zipFileName), streamRef);
     }
 
+    async Task OnShowPicker(PatientAIKeyNameViewModel patientAIKeyNameViewModel)
+    {
+        string keyName = patientAIKeyNameViewModel.KeyName;
+        string subjectNo = patientAIKeyNameViewModel.SubjectNo;
+        sourceSubjectNo = subjectNo;
+        OpenChangeSubjectNoPicker = true;
+    }
+
     // Stream GetFileStream()
     // {
     //     MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(fileNamePdf));
     //     return memoryStream;
     // }
+    private async Task OnChangeSubjectNo(string args)
+    {
+        string willReplaceSubjectNo = args;
+        OpenChangeSubjectNoPicker = false;
+        StateHasChanged();
+        var patientItems = await PatientService.GetAsync();
+
+        var found = Items.FirstOrDefault(x => x.SubjectNo == willReplaceSubjectNo);
+        if (found != null)
+        {
+            MessageBox.Show("400px", "200px", "錯誤", "此 Subject Code 已存在，請重新輸入。", MessageBox.HiddenAsync);
+            return;
+        }
+
+        bool isFound = false;
+        PatientAdapterModel patient = new PatientAdapterModel();
+        foreach (var item in patientItems)
+        {
+            patientData.FromJson(item.JsonData);
+            if (patientData.臨床資訊.SubjectNo == sourceSubjectNo)
+            {
+                patient = item;
+                isFound = true;
+                break;
+            }
+        }
+
+        #region 更新隨機碼
+        await RandomListService.InitialAsync();
+        var RandomListItems = RandomListService.RandomList.Items.ToList();
+        var randomListItem = RandomListItems.FirstOrDefault(x => x.SubjectNo == sourceSubjectNo);
+        if (randomListItem != null)
+        {
+            randomListItem.SubjectNo = willReplaceSubjectNo;
+        }
+        await RandomListService.SaveAsync(RandomListItems);
+
+        #endregion
+
+        #region 更新 DICOM 檔案內的 Subject Code
+        string sourceImagePngFilename = Path.Combine(MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImagePng);
+        string sourceDicomPngFilename = Path.Combine(MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImageDicom);
+
+        patientData.臨床資訊.Image = patientData.臨床資訊.Image.Replace(sourceSubjectNo, willReplaceSubjectNo);
+
+        string targetImagePngFilename = Path.Combine(MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImagePng);
+        string targetDicomPngFilename = Path.Combine(MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImageDicom);
+
+        // rename image png file
+        if (File.Exists(sourceImagePngFilename))
+        {
+            File.Move(sourceImagePngFilename, targetImagePngFilename, overwrite: true);
+        }
+        // rename dicom png file
+        if (File.Exists(sourceDicomPngFilename))
+        {
+            File.Move(sourceDicomPngFilename, targetDicomPngFilename, overwrite: true);
+        }
+        #endregion
+
+        #region 更新 KeyName 的 PatientData.json 內的 Subject Code
+        if (string.IsNullOrEmpty(patientData.臨床資訊.KeyName) == false)
+        {
+            var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+            var destinationKeyNamePath = Path.Combine(uploadFilesPath, patientData.臨床資訊.KeyName);
+            string PatientDataFilename = "";
+            string Content = "";
+            PatientAIInfo patientAIInfo = new PatientAIInfo();
+            PatientDataFilename = Path.Combine(destinationKeyNamePath, $"PatientData.json");
+            if (File.Exists(PatientDataFilename))
+            {
+                Content = await File.ReadAllTextAsync(PatientDataFilename);
+                patientAIInfo = patientAIInfo.FromJson(Content);
+                patientAIInfo.SubjectCode = willReplaceSubjectNo;
+                Content = patientAIInfo.ToJson();
+                await File.WriteAllTextAsync(PatientDataFilename, Content);
+            }
+        }
+        #endregion
+
+        #region 更新 臨床資訊
+        patientData.臨床資訊.SubjectNo = willReplaceSubjectNo;
+        #endregion
+
+        #region 更新 臨床資料
+        #region 臨床資料手術
+        foreach (var item in patientData.臨床資料.臨床資料手術.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region 臨床資料病理報告
+        foreach (var item in patientData.臨床資料.臨床資料病理報告.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region 臨床資料化學治療
+        foreach (var item in patientData.臨床資料.臨床資料化學治療.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region 臨床資料合併用藥
+        foreach (var item in patientData.臨床資料.臨床資料合併用藥.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region BaselineMedicalHistoryForm
+        foreach (var item in patientData.臨床資料.BaselineMedicalHistoryForm.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region 其他治療
+        foreach (var item in patientData.臨床資料.其他治療.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region 其他治療藥物
+        foreach (var item in patientData.臨床資料.其他治療藥物.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+        #region 其他治療影像
+        foreach (var item in patientData.臨床資料.其他治療影像.Items)
+        {
+            item.SubjectNo = willReplaceSubjectNo;
+        }
+        #endregion
+
+
+
+        #endregion
+
+        patient.JsonData = patientData.ToJson();
+        patient.SubjectNo = willReplaceSubjectNo;
+        await PatientService.UpdateAsync(patient);
+
+    }
 }

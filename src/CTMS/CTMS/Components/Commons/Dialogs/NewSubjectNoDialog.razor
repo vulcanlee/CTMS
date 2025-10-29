@@ -1,0 +1,86 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@inject DropDownListDataService DropDownListDataService
+
+<SfDialog @bind-Visible="@OpenPicker" IsModal="true"
+          Width="50%" Height="50%" >
+    <DialogTemplates>
+        <Header>@DialogTitle</Header>
+        <Content>
+
+            <div>
+                <p>請輸入新的 Subject Code：</p>
+                <SfTextBox @bind-Value="newSubjectNo" CssClass="w-100" />
+            </div>
+
+        </Content>
+        <FooterTemplate>
+            <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
+            <SfButton @onclick="@OnPickerCancel" CssClass='e-secondary'>取消</SfButton>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    [Parameter]
+    public bool OpenPicker { get; set; } = false;
+    [Parameter]
+    public EventCallback<string> OnConfirmCallback { get; set; }
+    [Parameter]
+    public string newSubjectNo { get; set; }
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+
+    string DialogTitle = "變更新的 Subject Code";
+    public bool ShowMessageBox { get; set; } = false;
+    public string MessageBoxBody { get; set; } = "";
+    public string MessageBoxTitle { get; set; } = "";
+
+    bool editMode = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override void OnParametersSet()
+    {
+    }
+
+    public void ShowDialog()
+    {
+        OpenPicker = true;
+    }
+
+    async Task OnPickerOK()
+    {
+        OpenPicker = false;
+        await OnConfirmCallback.InvokeAsync(newSubjectNo);
+    }
+    async Task OnPickerCancel()
+    {
+        await OnConfirmCallback.InvokeAsync(null);
+        OpenPicker = false;
+    }
+
+}
