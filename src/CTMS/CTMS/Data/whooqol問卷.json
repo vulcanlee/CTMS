@@ -1,8 +1,5 @@
 {
   "title": "台灣簡明版世界衛生組織生活品質問卷(WHOQOL-BREF)",
-  "formLabel": "表單",
-  "code": "WHOOQOL-BREF",
-  "questionLabel": "題號",
   "questions": [
     {
       "id": "1",
@@ -352,6 +349,411 @@
         {
           "value": 5,
           "label": "完全方便"
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "type": "single-choice",
+      "text": "您有機會從事休閒活動嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有機會"
+        },
+        {
+          "value": 2,
+          "label": "少許機會"
+        },
+        {
+          "value": 3,
+          "label": "中等程度機會"
+        },
+        {
+          "value": 4,
+          "label": "很有機會"
+        },
+        {
+          "value": 5,
+          "label": "完全有機會"
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "type": "single-choice",
+      "text": "您四處行動的能力好嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全不好"
+        },
+        {
+          "value": 2,
+          "label": "有一點好"
+        },
+        {
+          "value": 3,
+          "label": "中等程度好"
+        },
+        {
+          "value": 4,
+          "label": "很好"
+        },
+        {
+          "value": 5,
+          "label": "極好"
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "type": "single-choice",
+      "text": "您滿意自己的睡眠狀況嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "type": "single-choice",
+      "text": "您對自己從事日常活動的能力滿意嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "type": "single-choice",
+      "text": "您滿意自己的工作能力嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "type": "single-choice",
+      "text": "您對自己滿意嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "type": "single-choice",
+      "text": "您滿意自己的人際關係嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "type": "single-choice",
+      "text": "您滿意自己的性生活嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "22",
+      "type": "single-choice",
+      "text": "您滿意朋友給您的支持嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "23",
+      "type": "single-choice",
+      "text": "您滿意自己住所的狀況嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "type": "single-choice",
+      "text": "您對醫療保健服務的方便程度滿意嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "25",
+      "type": "single-choice",
+      "text": "您滿意所使用的交通運輸方式嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "極不滿意"
+        },
+        {
+          "value": 2,
+          "label": "不滿意"
+        },
+        {
+          "value": 3,
+          "label": "中等程度滿意"
+        },
+        {
+          "value": 4,
+          "label": "滿意"
+        },
+        {
+          "value": 5,
+          "label": "極滿意"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "type": "single-choice",
+      "text": "您常有負面的感受嗎？（如擔心、傷心、緊張、焦慮、憂鬱等）",
+      "options": [
+        {
+          "value": 1,
+          "label": "從來沒有"
+        },
+        {
+          "value": 2,
+          "label": "不常有"
+        },
+        {
+          "value": 3,
+          "label": "一半有一半沒有"
+        },
+        {
+          "value": 4,
+          "label": "很常有"
+        },
+        {
+          "value": 5,
+          "label": "一直都有"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "type": "single-choice",
+      "text": "您覺得自己有面子或被尊重嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點有"
+        },
+        {
+          "value": 3,
+          "label": "中等程度有"
+        },
+        {
+          "value": 4,
+          "label": "很有"
+        },
+        {
+          "value": 5,
+          "label": "極有"
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "type": "single-choice",
+      "text": "您想吃的食物通常都能吃到嗎?",
+      "options": [
+        {
+          "value": 1,
+          "label": "從來沒有"
+        },
+        {
+          "value": 2,
+          "label": "不常有"
+        },
+        {
+          "value": 3,
+          "label": "一半有一半沒有"
+        },
+        {
+          "value": 4,
+          "label": "很常有"
+        },
+        {
+          "value": 5,
+          "label": "一直都有"
         }
       ]
     }
