@@ -65,6 +65,7 @@
         public static readonly int GridPageSize = 12;
         #endregion
 
+        #region AI 臨床試驗管理平臺
         public static readonly string 角色明細之專案清單管理功能名稱 = "角色明細之專案清單";
         public const string CheckBoxIcon = "mdi-checkbox-marked-outline";
         public const string CheckBoxBlankIcon = "mdi-checkbox-blank-outline";
@@ -147,6 +148,8 @@
 
         public const string TypeI = "Type I";
         public const string TypeII = "Type II";
+        #endregion
+
         #region AIAgent 專用
         public const string Agentsetting = "Agentsetting";
         public const string PrefixPatientData = "PatientData";
@@ -155,6 +158,13 @@
         public const string Phase3ResultPath = "Phase3Result";
         public const string 風險評估輸入csv = "input.csv";
         public const string 風險評估輸出csv = "output.csv";
+
+        #endregion
+
+        #region 操作歷程
+        public const string OperationMessage使用者登入操作 = "使用者登入操作";
+
+        public const string OperationCategory登入 = "登入";
 
         #endregion
     }

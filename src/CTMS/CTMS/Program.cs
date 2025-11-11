@@ -94,6 +94,7 @@ namespace CTMS
                 #endregion
 
                 #region 註冊專案客制用的服務
+                builder.Services.AddTransient<OperationHistoryTraceService>();
                 builder.Services.AddTransient<MyNoteService>();
                 builder.Services.AddTransient<Main臨床資料HelperService>();
                 builder.Services.AddTransient<BrowsePatientService>();
@@ -134,13 +135,20 @@ namespace CTMS
                 builder.Services.AddTransient<ZipToolService>();
                 builder.Services.AddTransient<SendEmailService>();
 
-
                 #region MyUser
                 builder.Services.AddTransient<MyUserService>();
                 builder.Services.AddTransient<MyUserViewModel>();
                 builder.Services.AddTransient<MyUserAdapterModel>();
                 builder.Services.AddTransient<MyUser>();
                 builder.Services.AddTransient<MyUserDto>();
+                #endregion
+
+                #region OperationHistoryTrace
+                builder.Services.AddTransient<OperationHistoryTraceService>();
+                builder.Services.AddTransient<OperationHistoryTraceViewModel>();
+                builder.Services.AddTransient<OperationHistoryTraceAdapterModel>();
+                builder.Services.AddTransient<OperationHistoryTrace>();
+                builder.Services.AddTransient<OperationHistoryTraceDto>();
                 #endregion
 
                 #region Project

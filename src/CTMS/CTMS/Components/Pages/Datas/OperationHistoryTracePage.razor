@@ -1,0 +1,89 @@
+﻿@page "/HistoryTrace"
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@inject IJSRuntime JSRuntime
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject RequestInfoService RequestInfoService
+@inject ILogger<MyUserPage> logger
+@inject RequestInformation RequestInformation
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+<PageTitle>操作歷程</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+    <div>
+        <div class="page-top">
+            <span class="page-title">操作歷程</span>
+        </div>
+
+        <AdminHeaderView/>
+
+        <div class="container mw-100">
+            <OperationHistoryTraceView />
+        </div>
+    </div>
+}
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+    bool Maintaining = false;
+    string FullUrl = "";
+    int index = 0;
+    bool showMask = false;
+    bool completion = false;
+    string Message = "";
+    string fileNamePdf = "";
+
+    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
+    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
+    string RoleMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var checkResult = await AuthenticationStateHelper
+            .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            if (AuthenticationStateHelper.CheckIsAdmin() == false)
+            {
+                RoleMessage = MagicObjectHelper.你沒有權限存取此頁面;
+            }
+            else
+            {
+                FullUrl = RequestInformation.Url;
+            }
+        }
+    }
+
+    public async Task OnChange(string page)
+    {
+        NavigationManager.NavigateTo($"/{page}", true);
+    }
+}

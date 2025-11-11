@@ -8,6 +8,7 @@
 @inject MyUserServiceLogin MyUserServiceLogin
 @layout NoFooterLayout
 @inject ILogger<Login> Logger
+@inject OperationHistoryTraceService OperationHistoryTraceService
 
 @inject NavigationManager NavigationManager
 
@@ -202,7 +203,8 @@
                     "CookieAuthenticationScheme",
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-                // NavigationManager.NavigateTo("/weather", forceLoad:true);
+
+                await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUser.Name, MagicObjectHelper.OperationCategory登入, MagicObjectHelper.OperationMessage使用者登入操作, $"{myUser.Name} {MagicObjectHelper.OperationCategory登入}"));
             }
             catch (Exception ex)
             {

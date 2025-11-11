@@ -14,6 +14,8 @@
               @onclick='() => OnChange("PatientKeyName")'>下載AI結果</span>
         <span class="mx-3 btn @classApprovalRegistration"
               @onclick='() => OnChange("ApprovalRegistration")'>申請帳號審查</span>
+        <span class="mx-3 btn @classHistoryTrace"
+              @onclick='() => OnChange("HistoryTrace")'>操作歷程</span>
 
     </h1>
 </div>
@@ -24,6 +26,7 @@
     string classRandom { get; set; } = "btn-outline-primary";
     string classPatientKeyName { get; set; } = "btn-outline-primary";
     string classApprovalRegistration { get; set; } = "btn-outline-primary";
+    string classHistoryTrace { get; set; } = "btn-outline-primary";
 
     override protected void OnInitialized()
     {
@@ -47,6 +50,10 @@
         else if (uri.Contains("ApprovalRegistration".ToLower()))
         {
             classApprovalRegistration = "btn-primary fw-bolder";
+        }
+        else if (uri.Contains("HistoryTrace".ToLower()))
+        {
+            classHistoryTrace = "btn-primary fw-bolder";
         }
     }
 

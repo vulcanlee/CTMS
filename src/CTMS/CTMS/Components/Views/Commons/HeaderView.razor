@@ -39,6 +39,7 @@
                                     <div class="menu-item" @onclick='() => OnMenuItemClick("隨機表")'> <span class="me-1 mdi mdi-24px mdi-shuffle-variant"></span>隨機表 </div>
                                     <div class="menu-item" @onclick='() => OnMenuItemClick("下載AI結果")'> <span class="me-1 mdi mdi-24px mdi-robot-outline"></span>下載AI結果 </div>
                                     <div class="menu-item" @onclick='() => OnMenuItemClick("申請帳號審查")'> <span class="me-1 mdi mdi-24px mdi-account-clock-outline"></span>申請帳號審查 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("操作歷程")'> <span class="me-1 mdi mdi-24px mdi-history "></span>操作歷程 </div>
                                     <hr />
                                 }
                                 <div class="menu-item" @onclick='() => OnMenuItemClick("變更密碼")'> <span class="me-1 mdi mdi-24px mdi-lock-reset"></span>變更密碼 </div>
@@ -129,6 +130,7 @@
         // <div class="menu-item"> 角色管理 </div>
         // <div class="menu-item"> 隨機表 </div>
         // <div class="menu-item"> 下載AI結果 </div>
+        // <div class="menu-item"> 操作歷程 </div>
         // <hr />
         // <div class="menu-item"> 變更密碼 </div>
         // <div class="menu-item"> 登出系統 </div>
@@ -140,6 +142,7 @@
             "隨機表" => "/Random",
             "下載AI結果" => "/PatientKeyName",
             "申請帳號審查" => "/ApprovalRegistration",
+            "操作歷程" => "/HistoryTrace",
             "變更密碼" => "/ChangePassword",
             "登出系統" => "/Auths/Logout",
             _ => "/"

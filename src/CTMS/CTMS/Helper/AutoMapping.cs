@@ -22,6 +22,15 @@ public class AutoMapping : Profile
         CreateMap<ProjectDto, ProjectAdapterModel>();
         #endregion
 
+        #region OperationHistoryTrace
+        CreateMap<OperationHistoryTrace, OperationHistoryTraceAdapterModel>();
+        CreateMap<OperationHistoryTraceAdapterModel, OperationHistoryTrace>();
+        CreateMap<OperationHistoryTrace, OperationHistoryTraceDto>();
+        CreateMap<OperationHistoryTraceDto, OperationHistoryTrace>();
+        CreateMap<OperationHistoryTraceAdapterModel, OperationHistoryTraceDto>();
+        CreateMap<OperationHistoryTraceDto, ProjectAdapterModel>();
+        #endregion
+
         #region RoleView
         CreateMap<RoleView, RoleViewAdapterModel>();
         CreateMap<RoleViewAdapterModel, RoleView>();

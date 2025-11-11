@@ -16,6 +16,7 @@ namespace CTMS.EntityModel
         {
         }
 
+        public virtual DbSet<OperationHistoryTrace> OperationHistoryTrace { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<MyUser> MyUser { get; set; }
         public virtual DbSet<Project> Project { get; set; }

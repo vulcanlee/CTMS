@@ -8,18 +8,21 @@ using System.Threading.Tasks;
 
 namespace CTMS.DataModel.Dtos;
 
-public class ProjectDto : ICloneable, INotifyPropertyChanged
+public class OperationHistoryTraceDto : ICloneable, INotifyPropertyChanged
 {
     public int Id { get; set; }
-    [Required(ErrorMessage = "名稱 不可為空白")]
+    public string User { get; set; }
+    public string Category { get; set; }
     public string Name { get; set; }
+    public string Description { get; set; }
+    public DateTime CreateAt { get; set; }
 
     #region 介面實作
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public ProjectDto Clone()
+    public OperationHistoryTraceDto Clone()
     {
-        return ((ICloneable)this).Clone() as ProjectDto;
+        return ((ICloneable)this).Clone() as OperationHistoryTraceDto;
     }
     object ICloneable.Clone()
     {
