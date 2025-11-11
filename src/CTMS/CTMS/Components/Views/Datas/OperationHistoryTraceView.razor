@@ -34,11 +34,14 @@
         <GridPageSettings PageSize="@PageSize" />
         <GridColumns>
             <GridColumn Field=@nameof(OperationHistoryTraceAdapterModel.User)
-                        HeaderText="使用者" Width="100" />
+                        HeaderText="使用者" />
             <GridColumn Field=@nameof(OperationHistoryTraceAdapterModel.Category)
                         HeaderText="類型"
                         HideAtMedia="(min-width: 640px)" />
             <GridColumn Field=@nameof(OperationHistoryTraceAdapterModel.Name)
+                        HeaderText="主題"
+                        HideAtMedia="(min-width: 640px)" />
+            <GridColumn Field=@nameof(OperationHistoryTraceAdapterModel.Description)
                         HeaderText="主題"
                         HideAtMedia="(min-width: 640px)" />
             <GridColumn Field=@nameof(OperationHistoryTraceAdapterModel.CreateAt)

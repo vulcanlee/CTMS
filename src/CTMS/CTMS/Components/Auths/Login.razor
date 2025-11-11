@@ -168,6 +168,7 @@
         (string result, MyUser myUser) = await MyUserServiceLogin.LoginAsync(Input.Account, Input.Password);
         if (result != string.Empty)
         {
+            Logger.LogInformation($"""使用者 {Input.Account} 登入失敗，原因：{result} """);
             message = result;
         }
         else
@@ -205,10 +206,14 @@
                 authProperties);
 
                 await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUser.Name, MagicObjectHelper.OperationCategory登入, MagicObjectHelper.OperationMessage使用者登入操作, $"{myUser.Name} {MagicObjectHelper.OperationCategory登入}"));
+
+                Logger.LogInformation($"""使用者 {Input.Account} 登入成功，原因：{result} """);
+
             }
             catch (Exception ex)
             {
                 message = ex.Message;
+                Logger.LogError(ex, $"""使用者 {Input.Account} 登入發生例外異常，原因：{ex.Message} """);
             }
             #endregion
         }

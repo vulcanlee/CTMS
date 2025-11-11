@@ -205,7 +205,7 @@ public class PatientService
         }
     }
 
-    public async Task<VerifyRecordResult> AddEmptyAsync(string hospital)
+    public async Task<(VerifyRecordResult,PatientAdapterModel,string)> AddEmptyAsync(string hospital)
     {
         try
         {
@@ -230,33 +230,11 @@ public class PatientService
             }
 
             string newSubjectNo = await subjectNoGeneratorService.GenerateAsync(subjectNoPrefix);
-            //var lastPatient = await context.Patient
-            //    .AsNoTracking()
-            //    .Where(x => x.醫院.StartsWith(hospital))
-            //    .OrderByDescending(x => x.Id)
-            //    .FirstOrDefaultAsync();
-
-            //int lastSubjectNo = 0;
-            //if (lastPatient != null)
-            //{
-            //    var lastSerial = lastPatient.Name.Split('-')[1];
-            //    lastSubjectNo = Convert.ToInt32(lastSerial);
-            //}
-            //else
-            //{
-            //    lastPatient = new Patient();
-            //}
             #endregion
-
-            //PatientAdapterModel patientAdapterModel = Mapper.Map<PatientAdapterModel>(lastPatient);
-            //await OhterDependencyData(patientAdapterModel);
-            //patientData.FromJson(patientAdapterModel.JsonData);
 
             string subjectNo = newSubjectNo;
             patientData.臨床資訊.SubjectNo = subjectNo;
 
-            //survey.Read(patientData.臨床資料.問卷);
-            //bloodExameService.Read(patientData.臨床資料.抽血檢驗);
             Patient itemParameter = new()
             {
                 Id = 0,
@@ -267,18 +245,20 @@ public class PatientService
                 癌別 = MagicObjectHelper.NA,
                 AI評估 = MagicObjectHelper.NA,
                 AI處理 = MagicObjectHelper.NA,
-                組別 = MagicObjectHelper.NA
+                組別 = MagicObjectHelper.NA,
             };
             await context.Patient
                 .AddAsync(itemParameter);
             await context.SaveChangesAsync();
+
+            PatientAdapterModel result = Mapper.Map<PatientAdapterModel>(itemParameter);
             CleanTrackingHelper.Clean<Patient>(context);
-            return VerifyRecordResultFactory.Build(true);
+            return (VerifyRecordResultFactory.Build(true), result, newSubjectNo);
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "新增記錄發生例外異常");
-            return VerifyRecordResultFactory.Build(false, "新增記錄發生例外異常", ex);
+            return (VerifyRecordResultFactory.Build(false, "新增記錄發生例外異常", ex), null,null);
         }
     }
 

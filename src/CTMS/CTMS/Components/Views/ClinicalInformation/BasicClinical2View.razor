@@ -1,6 +1,7 @@
 ﻿@using AutoMapper
 @using CTMS.Business.Services.Dicoms
 @using CTMS.DataModel.Models.AIAgent
+@using Newtonsoft.Json
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
@@ -595,6 +596,9 @@
     string image = "";
     string imageVersion = DateTime.Now.Ticks.ToString();
     bool showNotyfyDicomDialog = false;
+
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
 
     async Task OnNotifyDicomDialog(NotifyDicomResponse notifyDicomResponse)
     {
@@ -1333,6 +1337,8 @@
     {
         patientData.臨床資料.CollectVisitCode(VisitCodeSetModel);
 
+        sourceObjectJson = JsonConvert.SerializeObject(VisitCodeSetModel);
+
         ShowVisitCodeDialog = true;
     }
 
@@ -1350,6 +1356,9 @@
         await GetData();
         if (visitCodeSetModel != null)
         {
+            targetObjectJson = JsonConvert.SerializeObject(VisitCodeSetModel);
+
+
             Main臨床資料HelperService.SyncData(patientData.臨床資訊.SubjectNo, patientData.臨床資料, visitCodeSetModel);
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();
