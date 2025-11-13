@@ -11,6 +11,11 @@
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <PageTitle>追蹤資料 其他治療-藥物</PageTitle>
 
 <div>
@@ -191,6 +196,9 @@
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     #endregion
 
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
+
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
@@ -222,6 +230,8 @@
     void OnChangeEditMode()
     {
         editMode = !editMode;
+
+        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療藥物);
     }
 
     async Task OnSave()
@@ -229,6 +239,15 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療藥物);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory追蹤資料其他治療藥物, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory追蹤資料其他治療藥物);
+        #endregion
     }
 
     async Task OnCancel()

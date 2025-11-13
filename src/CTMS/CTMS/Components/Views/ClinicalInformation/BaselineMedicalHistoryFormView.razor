@@ -11,6 +11,11 @@
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <PageTitle>臨床資料 病史記錄</PageTitle>
 
 <div>
@@ -419,6 +424,9 @@
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     #endregion
 
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
+
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
@@ -566,6 +574,8 @@
     void OnChangeEditMode()
     {
         editMode = !editMode;
+
+        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.BaselineMedicalHistoryForm);
     }
 
     async Task OnSave()
@@ -573,6 +583,15 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.BaselineMedicalHistoryForm);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory臨床資料病史記錄, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory臨床資料病史記錄);
+        #endregion
     }
 
     async Task OnCancel()

@@ -175,12 +175,22 @@
         public const string OperationCategory建立紀錄 = "新增";
         public const string OperationCategoryVisitCode = "VisitCode";
         public const string OperationCategory臨床資訊 = "臨床資訊";
+        public const string OperationCategory臨床資料手術 = "臨床資料 手術";
+        public const string OperationCategory臨床資料病理報告 = "臨床資料 病理報告";
+        public const string OperationCategory臨床資料化學治療 = "臨床資料 化學治療";
+        public const string OperationCategory臨床資料合併用藥 = "臨床資料 合併用藥";
+        public const string OperationCategory臨床資料病史記錄 = "臨床資料 病史記錄";
+        public const string OperationCategory抽血檢驗血液 = "抽血檢驗 血液";
+        public const string OperationCategory抽血檢驗生化 = "抽血檢驗 生化";
+        public const string OperationCategory追蹤資料其他治療 = "追蹤資料 其他治療";
+        public const string OperationCategory追蹤資料其他治療藥物 = "追蹤資料 其他治療-藥物";
+        public const string OperationCategory追蹤資料其他治療影像 = "追蹤資料 其他治療-影像";
 
         public const string Prompt最初說明Instruction = "這是一個 @@ 的紀錄編修內容";
         public const string Prompt原始資料Instruction = "原始資料";
         public const string Prompt編輯後Instruction = "編輯後";
         public const string PromptOperationHistoryInstruction =
-            @"這裡需要紀錄 操作軌跡並要寫入到資料庫，整理出一句話的摘要與詳細說明資料異動狀況 ，可儲存為操作紀錄訊息
+            @"這裡需要紀錄 操作軌跡並要寫入到資料庫，整理出一句話的摘要與詳細說明資料異動狀況，若有發現 Visit Code，要加入操作哪個 Visit Code ，可儲存為操作紀錄訊息
 使用底下 json 結構回應，不需要其他額外文字內容 
 { 
 ""Summary"": ""一句話的摘要"", 

@@ -46,7 +46,7 @@ public class OperationHistoryTraceContentService
                 var operationHistoryTraceService = scope.ServiceProvider.GetRequiredService<OperationHistoryTraceService>();
                 var gptService = scope.ServiceProvider.GetRequiredService<GptService>();
                 var logger = scope.ServiceProvider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<OperationHistoryTraceContentService>>();
-                logger.LogInformation($"開始呼叫 GPT 產生操作差異摘要 (ID={operationHistoryTrace.Id}) ...");
+                logger.LogInformation($"開始呼叫 GPT 產生操作差異摘要 (ID={operationHistoryTrace.Id}) ...{Environment.NewLine}{builder.ToString()}");
                 chatCompletions = await gptService.Get操作差異摘要Async(builder.ToString());
 
                 if (!string.IsNullOrWhiteSpace(chatCompletions))

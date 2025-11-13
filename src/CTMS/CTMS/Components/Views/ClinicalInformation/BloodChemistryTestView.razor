@@ -12,6 +12,11 @@
 @inject DropDownListDataService DropDownListDataService
 @inject BloodExameService BloodExameService
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <PageTitle>臨床資料 抽血檢驗(生化)</PageTitle>
 
 <div>
@@ -180,6 +185,9 @@
     DateTime? resetDate = null;
     #endregion
 
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
+
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
@@ -233,6 +241,8 @@
     void OnChangeEditMode()
     {
         editMode = !editMode;
+
+        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗生化);
     }
 
     async Task OnSave()
@@ -242,6 +252,15 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗生化);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory抽血檢驗生化, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory抽血檢驗生化);
+        #endregion
     }
 
     async Task OnCancel()

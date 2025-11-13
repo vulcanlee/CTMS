@@ -602,6 +602,8 @@
 
     string sourceObjectJson = "{}";
     string targetObjectJson = "{}";
+    string source臨床資訊ObjectJson = "{}";
+    string target臨床資訊ObjectJson = "{}";
 
     async Task OnNotifyDicomDialog(NotifyDicomResponse notifyDicomResponse)
     {
@@ -1400,6 +1402,8 @@
 
     void OnChangeEditMode()
     {
+        source臨床資訊ObjectJson = JsonConvert.SerializeObject(patientData.臨床資訊); ;
+       
         editMode = !editMode;
         var beforeJson = patientData.ToJson();
         PatientData temp = new PatientData();
@@ -1431,9 +1435,14 @@
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
 
-        // var needNotification = await ConfirmSendNotificationAsync();
-        // await Task.Delay(100);
-        // StateHasChanged();
+        target臨床資訊ObjectJson = JsonConvert.SerializeObject(patientData.臨床資訊); ;
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory臨床資訊, "-", "-"), source臨床資訊ObjectJson, target臨床資訊ObjectJson, MagicObjectHelper.OperationCategory臨床資訊);
+        #endregion
     }
 
     async Task OnRecomputeRandomListAsync()
