@@ -120,7 +120,7 @@
                             <span class="icon-edit">✏️</span> 修改
                         </button>
                     </SpaceItem>
-@*                     <SpaceItem>
+                    @*                     <SpaceItem>
                         <button class="btn-delete" title="刪除"
                                 @onclick="@(async () => await OnDeleteAsync(@context))">
                             <span class="icon-delete">🗑️</span> 刪除
@@ -336,11 +336,12 @@
             StateHasChanged(); // 更新 UI
             await Task.Delay(100); // 等待對話框關閉動畫完成
                                    // 新增成功，顯示提示訊息
-
+            #region 更新操作日誌
             MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
             .GetUserInformation(authStateProvider);
 
             await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, MagicObjectHelper.OperationCategory建立紀錄, MagicObjectHelper.OperationMessage建立一筆受測者資料, $"新增受測者 {patientAdapterModel.醫院} 的 Subject Code : {newSubjectNo} "));
+            #endregion
 
             MessageBox.Show("400px", "200px", "成功", "病患資料已成功新增。", MessageBox.HiddenAsync);
             await ReloadAsync();

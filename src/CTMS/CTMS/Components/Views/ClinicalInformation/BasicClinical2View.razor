@@ -25,6 +25,9 @@
 @implements IDisposable
 @inject SendEmailService SendEmailService
 @inject RiskAssessmentExcelService RiskAssessmentExcelService
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
 
 <PageTitle>Basic clinical presentation 臨床資訊</PageTitle>
 
@@ -381,7 +384,7 @@
                                             <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
                                                                 ValueChange="@On組織型態DetailChanged"></DropDownListEvents>
                                         </SfDropDownList>
-                                        @if (Select組織型態Detail!=null && Select組織型態Detail.Key == "Others")
+                                        @if (Select組織型態Detail != null && Select組織型態Detail.Key == "Others")
                                         {
                                             <SfTextBox @bind-Value="patientData.臨床資訊.HistologicalTypeDetailOther" CssClass="w-100" />
                                         }
@@ -397,7 +400,7 @@
                                         @patientData.臨床資訊.HistologicalTypeDetail
                                         @if (Select組織型態Detail != null && Select組織型態Detail!.Key == "Others")
                                         {
-                                            <br/>
+                                            <br />
                                             @patientData.臨床資訊.HistologicalTypeDetailOther
                                         }
                                     }
@@ -511,7 +514,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
 
         <!-- 底部導航按鈕 -->
         @* <div class="navigation-buttons">
@@ -621,7 +624,7 @@
     {
         if (firstRender)
         {
-            await GetData();
+            await GetDataAsync();
             cts = new CancellationTokenSource();
             token = cts.Token;
 
@@ -681,7 +684,7 @@
         }
     }
 
-    async Task GetData()
+    async Task GetDataAsync()
     {
         CancerStageService.ReadAll();
         patientAdapterModel = await PatientService.GetAsync(Code);
@@ -1222,7 +1225,7 @@
         }
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
-        await GetData();
+        await GetDataAsync();
         var currentRootPath = Directory.GetCurrentDirectory();
         var dicomImage = Path.Combine(currentRootPath, MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.ImageDicom);
 
@@ -1257,7 +1260,7 @@
         }
         Patient patient = mapper.Map<Patient>(patientAdapterModel);
 
-        await GetData();
+        await GetDataAsync();
         bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
 
         string msg = "";
@@ -1279,7 +1282,7 @@
 
         #region 取得腰圍
         RiskAssessmentAIResult riskAssessmentAIResult = await AIIntegrateService.Get腰圍ACAsync(patientData.臨床資訊.KeyName);
-        if(riskAssessmentAIResult != null)
+        if (riskAssessmentAIResult != null)
         {
             patientData.臨床資訊.AbdominalCircumference = riskAssessmentAIResult.腰圍ACcm;
         }
@@ -1353,7 +1356,10 @@
 
     async Task OnVisitCodeAsync(VisitCodeSetModel visitCodeSetModel)
     {
-        await GetData();
+        var task =  GetDataAsync();
+        await Task.Delay(100);
+        StateHasChanged(); 
+        await task;
         if (visitCodeSetModel != null)
         {
             targetObjectJson = JsonConvert.SerializeObject(VisitCodeSetModel);
@@ -1363,6 +1369,14 @@
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();
             await PatientService.UpdateAsync(patientAdapterModel);
+
+            #region 更新操作日誌
+            MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+            .GetUserInformation(authStateProvider);
+
+            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, MagicObjectHelper.OperationCategoryVisitCode, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategoryVisitCode);
+            #endregion
+
         }
         ShowVisitCodeDialog = false;
     }
@@ -1380,7 +1394,7 @@
         }
         imageVersion = DateTime.Now.Ticks.ToString();
         ShowUploadDicomDialog = false;
-        await GetData();
+        await GetDataAsync();
         StateHasChanged();
     }
 

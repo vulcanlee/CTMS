@@ -1,4 +1,5 @@
-﻿@using Syncfusion.Blazor
+﻿@using Newtonsoft.Json
+@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Popups
@@ -9,6 +10,10 @@
 @using Syncfusion.Blazor.Calendars
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
+
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
 
 <SfDialog @bind-Visible="@OpenPicker" IsModal="true"
           Width="95%" Height="100%" CssClass="dialogSize">
@@ -230,6 +235,8 @@
     PatientAdapterModel patientAdapterModel = new();
 
     bool editMode = false;
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
 
     protected override async Task OnInitializedAsync()
     {
@@ -251,7 +258,6 @@
     {
         if (firstRender)
         {
-            //Init();
         }
     }
 
@@ -327,6 +333,7 @@
 
         if (confirmDelete == true)
         {
+            sourceObjectJson = JsonConvert.SerializeObject(data);
             await GetData();
             patientData.臨床資料.RemoveVisitCode(itemVisitCode);
 
@@ -335,6 +342,17 @@
             patientAdapterModel.JsonData = patientData.ToJson();
 
             await PatientService.UpdateAsync(patientAdapterModel);
+
+            VisitCodeSetModel VisitCodeSetModel = new();
+            patientData.臨床資料.CollectVisitCode(VisitCodeSetModel);
+            targetObjectJson = JsonConvert.SerializeObject(VisitCodeSetModel);
+
+            #region 更新操作日誌
+            MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+            .GetUserInformation(authStateProvider);
+
+            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, MagicObjectHelper.OperationCategoryVisitCode, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategoryVisitCode);
+            #endregion
 
             OpenPicker = false;
             await OnConfirmCallback.InvokeAsync(null);

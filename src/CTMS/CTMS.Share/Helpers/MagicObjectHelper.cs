@@ -162,17 +162,31 @@
         #endregion
 
         #region 操作歷程
+        public const string AOAILabKey = "dbaf7e23896741359559a996b45e686f";
+        public const string AOAILabModelName = "gpt-5";
+        public const string AOAILabEndPoint = "https://gpt4tw.openai.azure.com/";
+
+        public const string Folder操作歷程 = "OperationContent";
+
         public const string OperationMessage使用者登入操作 = "使用者登入操作";
         public const string OperationMessage建立一筆受測者資料 = "建立一筆受測者資料";
 
         public const string OperationCategory登入 = "登入";
         public const string OperationCategory建立紀錄 = "新增";
+        public const string OperationCategoryVisitCode = "VisitCode";
+        public const string OperationCategory臨床資訊 = "臨床資訊";
 
+        public const string Prompt最初說明Instruction = "這是一個 @@ 的紀錄編修內容";
         public const string Prompt原始資料Instruction = "原始資料";
         public const string Prompt編輯後Instruction = "編輯後";
         public const string PromptOperationHistoryInstruction =
             @"這裡需要紀錄 操作軌跡並要寫入到資料庫，整理出一句話的摘要與詳細說明資料異動狀況 ，可儲存為操作紀錄訊息
-使用底下 json 結構回應，不需要其他額外文字內容 { ""summary"": ""一句話的摘要"", ""details"": ""一句話詳細說明資料異動狀況 ，可儲存為操作紀錄訊息"" isChanged: true}";
+使用底下 json 結構回應，不需要其他額外文字內容 
+{ 
+""Summary"": ""一句話的摘要"", 
+""Detail"": ""一句話詳細說明資料異動狀況 ，可儲存為操作紀錄訊息"" ,
+IsChanged: true
+}";
 
         #endregion
     }

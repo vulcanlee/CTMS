@@ -21,8 +21,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="OperationContent\readme.md" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="Data\RandomList.xlsx">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="OperationContent\readme.md">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="PdfFiles\readme.md">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

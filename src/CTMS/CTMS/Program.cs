@@ -76,7 +76,7 @@ namespace CTMS
 
                 builder.Services.AddDbContext<BackendDBContext>(options =>
                     options.UseSqlite(SQLiteDefaultConnection),
-                    ServiceLifetime.Transient);
+                    ServiceLifetime.Scoped);
                 #endregion
 
                 #region 加入使用 Cookie & JWT 認證需要的宣告
@@ -94,6 +94,7 @@ namespace CTMS
                 #endregion
 
                 #region 註冊專案客制用的服務
+                builder.Services.AddTransient<OperationHistoryTraceContentService>();
                 builder.Services.AddTransient<OperationHistoryTraceService>();
                 builder.Services.AddTransient<MyNoteService>();
                 builder.Services.AddTransient<Main臨床資料HelperService>();
@@ -176,7 +177,7 @@ namespace CTMS
                 #endregion
 
                 #region Patient
-                builder.Services.AddTransient<PatientService>();
+                builder.Services.AddScoped<PatientService>();
                 builder.Services.AddTransient<PatientViewModel>();
                 builder.Services.AddTransient<PatientAdapterModel>();
                 builder.Services.AddTransient<Patient>();

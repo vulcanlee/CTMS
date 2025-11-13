@@ -2,6 +2,7 @@
 using CTMS.AdapterModels;
 using CTMS.Business.Factories;
 using CTMS.Business.Helpers;
+using CTMS.Business.Services;
 using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
@@ -17,6 +18,7 @@ public class OperationHistoryTraceService
 {
     #region 欄位與屬性
     private readonly BackendDBContext context;
+    private readonly OperationHistoryTraceContentService operationHistoryTraceContentService;
 
     public IMapper Mapper { get; }
     public IConfiguration Configuration { get; }
@@ -25,12 +27,14 @@ public class OperationHistoryTraceService
 
     #region 建構式
     public OperationHistoryTraceService(BackendDBContext context, IMapper mapper,
-        IConfiguration configuration, ILogger<OperationHistoryTraceService> logger)
+        IConfiguration configuration, ILogger<OperationHistoryTraceService> logger,
+        OperationHistoryTraceContentService operationHistoryTraceContentService)
     {
         this.context = context;
         Mapper = mapper;
         Configuration = configuration;
         Logger = logger;
+        this.operationHistoryTraceContentService = operationHistoryTraceContentService;
     }
     #endregion
 
@@ -121,7 +125,7 @@ public class OperationHistoryTraceService
         }
     }
 
-    public async Task<VerifyRecordResult> AddAsync(OperationHistoryTraceAdapterModel paraObject)
+    public async Task<VerifyRecordResult> AddAsync(OperationHistoryTraceAdapterModel paraObject, string sourceObjectJson = "", string targetObjectJson = "", string 操作對象="")
     {
         try
         {
@@ -133,6 +137,10 @@ public class OperationHistoryTraceService
                 .AddAsync(itemParameter);
             await context.SaveChangesAsync();
             CleanTrackingHelper.Clean<OperationHistoryTrace>(context);
+
+            if (string.IsNullOrEmpty(操作對象) == false)
+                await operationHistoryTraceContentService.SaveAsync(itemParameter, sourceObjectJson, targetObjectJson, 操作對象);
+
             return VerifyRecordResultFactory.Build(true);
         }
         catch (Exception ex)
@@ -147,6 +155,20 @@ public class OperationHistoryTraceService
         try
         {
             OperationHistoryTrace itemData = Mapper.Map<OperationHistoryTrace>(paraObject);
+            return await UpdateAsync(itemData);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "修改記錄發生例外異常");
+            return VerifyRecordResultFactory.Build(false, "修改記錄發生例外異常", ex);
+        }
+    }
+
+    public async Task<VerifyRecordResult> UpdateAsync(OperationHistoryTrace paraObject)
+    {
+        try
+        {
+            OperationHistoryTrace itemData = paraObject;
 
             CleanTrackingHelper.Clean<OperationHistoryTrace>(context);
             OperationHistoryTrace item = await context.OperationHistoryTrace
