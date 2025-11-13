@@ -205,7 +205,7 @@
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-                await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUser.Name, MagicObjectHelper.OperationCategory登入, MagicObjectHelper.OperationMessage使用者登入操作, $"{myUser.Name} {MagicObjectHelper.OperationCategory登入}"));
+                await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUser.Name, "", MagicObjectHelper.OperationCategory登入, MagicObjectHelper.OperationMessage使用者登入操作, $"{myUser.Name} {MagicObjectHelper.OperationCategory登入}"));
 
                 Logger.LogInformation($"""使用者 {Input.Account} 登入成功，原因：{result} """);
 

@@ -340,7 +340,7 @@
             MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
             .GetUserInformation(authStateProvider);
 
-            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, MagicObjectHelper.OperationCategory建立紀錄, MagicObjectHelper.OperationMessage建立一筆受測者資料, $"新增受測者 {patientAdapterModel.醫院} 的 Subject Code : {newSubjectNo} "));
+            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory建立紀錄, MagicObjectHelper.OperationMessage建立一筆受測者資料, $"新增受測者 {patientAdapterModel.醫院} 的 Subject Code : {newSubjectNo} "));
             #endregion
 
             MessageBox.Show("400px", "200px", "成功", "病患資料已成功新增。", MessageBox.HiddenAsync);
