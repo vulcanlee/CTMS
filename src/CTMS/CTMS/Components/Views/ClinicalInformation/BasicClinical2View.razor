@@ -1414,7 +1414,7 @@
             MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
             .GetUserInformation(authStateProvider);
 
-            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory上傳影像, MagicObjectHelper.OperationMessage完成影像上傳, $"使用者 {myUserAdapterModel.} 已經完成新影像上傳"));
+            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory上傳影像, MagicObjectHelper.OperationMessage完成影像上傳, $"使用者 {myUserAdapterModel.Name} 已經完成新影像上傳"));
 
             #endregion
         }
