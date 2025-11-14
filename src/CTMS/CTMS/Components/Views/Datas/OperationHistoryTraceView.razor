@@ -18,11 +18,38 @@
         min-height: 120px !important;
         height: 120px;
     }
+
+    /* 包一層外框，針對該 Grid 內所有文字放大為 20px */
+    .operation-history-grid .e-grid,
+    .operation-history-grid .e-grid .e-headercell,
+    .operation-history-grid .e-grid .e-rowcell,
+    .operation-history-grid .e-grid .e-toolbar-item,
+    .operation-history-grid .e-grid .e-pager,
+    .operation-history-grid .e-grid .e-pager .e-numericitem,
+    .operation-history-grid .e-grid .e-command-column .e-btn,
+    .operation-history-grid .e-grid .e-icons {
+        font-size: 20px !important;
+        line-height: 1.35;
+    }
+
+
+    /* Dialog 內表單文字 20px */
+    .operation-history-edit-dialog,
+    .operation-history-edit-dialog label,
+    .operation-history-edit-dialog .e-input,
+    .operation-history-edit-dialog .e-input-group,
+    .operation-history-edit-dialog .e-control,
+    .operation-history-edit-dialog .e-btn,
+    .operation-history-edit-dialog .validation-message,
+    .operation-history-edit-dialog .multiline-textbox textarea {
+        font-size: 20px !important;
+        line-height: 1.4;
+    }
 </style>
 
-<div>
+<div class="operation-history-grid">
     <SfGrid @ref="Grid" TValue="OperationHistoryTraceAdapterModel"
-            AllowPaging="true"
+            AllowPaging="true" 
             Toolbar="ViewModel.Toolbaritems">
         <SfDataManager Adaptor="Adaptors.CustomAdaptor">
             <OperationHistoryTraceAdapter></OperationHistoryTraceAdapter>
@@ -63,7 +90,7 @@
 </div>
 
 <SfDialog @bind-Visible="@ViewModel.IsShowEditRecord" IsModal="true"
-          Width="95%" Height="100%" CssClass="dialogSize">
+          Width="95%" Height="100%" CssClass="dialogSize operation-history-edit-dialog">
     <DialogTemplates>
         <Header>@ViewModel.EditRecordDialogTitle</Header>
         <Content>

@@ -199,7 +199,7 @@
         public const string Prompt原始資料Instruction = "原始資料";
         public const string Prompt編輯後Instruction = "編輯後";
         public const string PromptOperationHistoryInstruction =
-            @"這裡需要紀錄 操作軌跡並要寫入到資料庫，整理出一句話的摘要與詳細說明資料異動狀況，若有發現 Visit Code，要加入操作哪個 Visit Code ，可儲存為操作紀錄訊息
+            @"這裡需要紀錄 操作軌跡並要寫入到資料庫，整理出一句話的摘要與詳細說明資料異動狀況，若有發現 Visit Code，要加入操作哪個 Visit Code ，可儲存為操作紀錄訊息，在 detail 內容中，儘可能將原有 json 屬性名稱轉換成為有意義的名字，讓人更容易理解操作歷程
 使用底下 json 結構回應，不需要其他額外文字內容 
 { 
 ""Summary"": ""一句話的摘要"", 
