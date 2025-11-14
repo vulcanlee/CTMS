@@ -499,6 +499,8 @@
                 </div>
                 <div class="info-card report-card mt-3">
                     <div class="d-flex gap-3 w-100">
+                        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == true)
+                        {
                         <button class="btn flex-fill" style="background-color:#cfe2ff"
                                 @onclick=OnUploadBtn>
                             上傳影像
@@ -511,6 +513,7 @@
                                 @onclick=OnConfirmAIBtn>
                             推論狀態呈現
                         </button>
+                        }
                     </div>
                 </div>
             </div>
@@ -1374,9 +1377,9 @@
 
     async Task OnVisitCodeAsync(VisitCodeSetModel visitCodeSetModel)
     {
-        var task =  GetDataAsync();
+        var task = GetDataAsync();
         await Task.Delay(100);
-        StateHasChanged(); 
+        StateHasChanged();
         await task;
         if (visitCodeSetModel != null)
         {
@@ -1427,7 +1430,7 @@
     void OnChangeEditMode()
     {
         source臨床資訊ObjectJson = JsonConvert.SerializeObject(patientData.臨床資訊); ;
-       
+
         editMode = !editMode;
         var beforeJson = patientData.ToJson();
         PatientData temp = new PatientData();
