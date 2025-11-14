@@ -7,7 +7,7 @@ namespace CTMS.Business.Services.ClinicalInformation;
 public class SideEffectsService
 {
     string WhiteBloodCell白血球 = "白血球計數 WBC(10^3/μL)";
-    string NeutrophilCount絕對嗜中性白血球數 = "";
+    string NeutrophilCount絕對嗜中性白血球數 = "嗜中性白血球 Seg(%)";
     string HemoglobinHb血色素 = "血色素 Hb(g/dL)";
     string PlateletCount血小板 = "血小板 Plt (10^3/μL)";
 
@@ -152,6 +152,7 @@ public class SideEffectsService
         else
         {
             Update副作用WhiteBloodCell白血球(main臨床資料, hematologicSideEffects);
+            Update副作用NeutrophilCount絕對嗜中性白血球數(main臨床資料, hematologicSideEffects);
             Update副作用HemoglobinHb血色素(main臨床資料, hematologicSideEffects);
             Update副作用PlateletCount血小板(main臨床資料, hematologicSideEffects);
         }
@@ -161,6 +162,7 @@ public class SideEffectsService
         HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
         Update副作用WhiteBloodCell白血球(main臨床資料, hematologicSideEffects);
+        Update副作用NeutrophilCount絕對嗜中性白血球數(main臨床資料, hematologicSideEffects);
         Update副作用HemoglobinHb血色素(main臨床資料, hematologicSideEffects);
         Update副作用PlateletCount血小板(main臨床資料, hematologicSideEffects);
     }
@@ -186,6 +188,48 @@ public class SideEffectsService
         sideEffectsItem.RetriveValue = (testItem.檢驗數值.ToDouble() * 1000.0).ToString();
 
         ComputeGrade(main臨床資料, sideEffectsItem, bloodTest, testItem);
+    }
+
+    public void Update副作用NeutrophilCount絕對嗜中性白血球數(Main臨床資料 main臨床資料,
+       HematologicSideEffects血液副作用Node hematologicSideEffects)
+    {
+        // 絕對嗜中性白血球計算公式中的seg、band也是在血液檢驗項目中，有時不一定會有band，就直接使用seg去計算。
+
+        //WBC = 4.6(10 ^ 3 / μL)
+        //→ = 4.6 × 1000 = 4600 / μL
+        //Neutrophils % = 70.3 %
+        //Bands % = 報告未提供 → 視為 0 %
+        //➜ 公式
+        //ANC = WBC × (Neutrophils % +Bands %)
+
+        //➜ 套入
+        //ANC = 4600 × (0.703 + 0)
+        //ANC ≈ 3234 / μL
+
+        var visitCodeTitle = hematologicSideEffects.VisitCode.VisitCodeTitle;
+        BloodTest抽血檢驗血液Node bloodTest = main臨床資料.抽血檢驗血液
+            .Items.FirstOrDefault(x => x.VisitCode.VisitCodeTitle == visitCodeTitle);
+        if (bloodTest == null)
+            return;
+
+        TestItem檢驗項目 testItemWhiteBloodCell白血球 = bloodTest.抽血檢驗血液
+            .FirstOrDefault(x => x.項目名稱 == WhiteBloodCell白血球);
+        TestItem檢驗項目 testItemNeutrophilCount絕對嗜中性白血球數 = bloodTest.抽血檢驗血液
+            .FirstOrDefault(x => x.項目名稱 == NeutrophilCount絕對嗜中性白血球數);
+
+        double valueWhiteBloodCell白血球 = testItemWhiteBloodCell白血球.檢驗數值.ToDouble();
+        double valuePercentSeg = testItemNeutrophilCount絕對嗜中性白血球數.檢驗數值.ToDouble();
+        double valuePercentBand = 0;
+        double ANC = valueWhiteBloodCell白血球 * 1000 * (valuePercentSeg / 100.0 + valuePercentBand);
+
+        TestItem檢驗項目 testItem = new TestItem檢驗項目()
+        {
+            檢驗數值 = ANC.ToString()
+        };
+        GradeItemSideEffectsItem sideEffectsItem =
+                hematologicSideEffects.NeutrophilCount絕對嗜中性白血球數;
+
+        ComputeGrade(main臨床資料, sideEffectsItem, bloodTest, ANC);
     }
 
     public void Update副作用HemoglobinHb血色素(Main臨床資料 main臨床資料,
@@ -232,6 +276,57 @@ public class SideEffectsService
         sideEffectsItem.RetriveValue = (testItem.檢驗數值.ToDouble() * 1000.0).ToString();
 
         ComputeGrade(main臨床資料, sideEffectsItem, bloodTest, testItem);
+    }
+
+    public void ComputeGrade(Main臨床資料 main臨床資料,
+        GradeItemSideEffectsItem sideEffectsItem,
+        BloodTest抽血檢驗血液Node bloodTest,
+        double testItem)
+    {
+        GradeItem grade;
+
+        #region 進行副作用檢查
+        //if (testItem != null)
+        {
+            //sideEffectsItem.RetriveValue = (testItem.檢驗數值.ToDouble()*1000.0).ToString();
+
+            #region 設定 LLN
+            //grade = sideEffectsItem.Grade1;
+            //grade.GradeValue2 = (testItem.參考區間開始*1000.0).ToString();
+            #endregion
+
+            #region Reset CssClass
+            sideEffectsItem.Grade1.ResetCssClassNotFound();
+            sideEffectsItem.Grade2.ResetCssClassNotFound();
+            sideEffectsItem.Grade3.ResetCssClassNotFound();
+            sideEffectsItem.Grade4.ResetCssClassNotFound();
+            sideEffectsItem.Grade5.ResetCssClassNotFound();
+            #endregion
+
+            #region 判斷副作用等級
+            if (sideEffectsItem.Grade1.GradeValue1.ToDouble() <=
+                testItem && testItem < sideEffectsItem.Grade1.GradeValue2.ToDouble())
+                sideEffectsItem.Grade1.ResetCssClassFound();
+
+            if (sideEffectsItem.Grade2.GradeValue1.ToDouble() <=
+                testItem && testItem < sideEffectsItem.Grade2.GradeValue2.ToDouble())
+                sideEffectsItem.Grade2.ResetCssClassFound();
+
+            if (sideEffectsItem.Grade3.GradeValue1.ToDouble() <=
+                testItem && testItem < sideEffectsItem.Grade3.GradeValue2.ToDouble())
+                sideEffectsItem.Grade3.ResetCssClassFound();
+
+            if (sideEffectsItem.Grade4.GradeValue1.ToDouble() <=
+                testItem && testItem < sideEffectsItem.Grade4.GradeValue2.ToDouble())
+                sideEffectsItem.Grade4.ResetCssClassFound();
+
+            if (sideEffectsItem.Grade5.GradeValue1.ToDouble() <=
+                testItem && testItem < sideEffectsItem.Grade5.GradeValue2.ToDouble())
+                sideEffectsItem.Grade5.ResetCssClassFound();
+
+            #endregion
+        }
+        #endregion
     }
 
     public void ComputeGrade(Main臨床資料 main臨床資料,
@@ -295,13 +390,13 @@ public class SideEffectsService
         #endregion
     }
 
-    public void ComputeGradeByDemo(string studycode, 
+    public void ComputeGradeByDemo(string studycode,
         HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
         GradeItem grade;
 
         GradeItemSideEffectsItem sideEffectsItem;
-       
+
         #region Reset CssClass
         sideEffectsItem = hematologicSideEffects.WhiteBloodCell白血球;
         sideEffectsItem.Grade1.ResetCssClassNotFound();
