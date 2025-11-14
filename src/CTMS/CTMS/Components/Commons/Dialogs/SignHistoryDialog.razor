@@ -10,6 +10,11 @@
 @inject PatientService PatientService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <SfDialog @bind-Visible="@OpenPicker" IsModal="true"
           Width="95%" Height="100%" CssClass="dialogSize">
     <DialogTemplates>
@@ -170,16 +175,22 @@
 
     bool isAdminHistory = false;
 
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
+
+    signature婦產科放射科Model signature婦產科放射科Model = new signature婦產科放射科Model();
+
     protected override async Task OnInitializedAsync()
     {
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Initialize(firstRender);
+        await InitializeAsync(firstRender);
     }
 
-    void Initialize(bool firstRender = false)
+
+    async Task InitializeAsync(bool firstRender = false)
     {
         signature婦產科 = patientData.臨床資訊.ObstetricianGynecologistConfirmationList;
         signature放射科 = patientData.臨床資訊.RadiologistConfirmationList;
@@ -191,6 +202,13 @@
                 isAdminHistory = true;
             }
             StateHasChanged();
+        }
+
+        if (firstRender)
+        {
+            signature婦產科放射科Model.signature婦產科 = patientData.臨床資訊.ObstetricianGynecologistConfirmationList;
+            signature婦產科放射科Model.signature放射科 = patientData.臨床資訊.RadiologistConfirmationList;
+            sourceObjectJson = JsonConvert.SerializeObject(signature婦產科放射科Model);
         }
     }
 
@@ -237,6 +255,17 @@
         }
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
+
+        signature婦產科放射科Model.signature婦產科 = patientData.臨床資訊.ObstetricianGynecologistConfirmationList;
+        signature婦產科放射科Model.signature放射科 = patientData.臨床資訊.RadiologistConfirmationList;
+        targetObjectJson = JsonConvert.SerializeObject(signature婦產科放射科Model);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory風險評估確認, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory風險評估確認);
+        #endregion
 
         await OnConfirmCallback.InvokeAsync("OK");
     }

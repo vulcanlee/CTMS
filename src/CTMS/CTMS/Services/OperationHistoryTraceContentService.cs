@@ -47,7 +47,14 @@ public class OperationHistoryTraceContentService
                 var gptService = scope.ServiceProvider.GetRequiredService<GptService>();
                 var logger = scope.ServiceProvider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<OperationHistoryTraceContentService>>();
                 logger.LogInformation($"開始呼叫 GPT 產生操作差異摘要 (ID={operationHistoryTrace.Id}) ...{Environment.NewLine}{builder.ToString()}");
-                chatCompletions = await gptService.Get操作差異摘要Async(builder.ToString());
+                try
+                {
+                    chatCompletions = await gptService.Get操作差異摘要Async(builder.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"操作差異摘要生成發生異常 ID={operationHistoryTrace.Id}: {ex.Message}");
+                }
 
                 if (!string.IsNullOrWhiteSpace(chatCompletions))
                 {
@@ -59,6 +66,10 @@ public class OperationHistoryTraceContentService
 
                         await operationHistoryTraceService.UpdateAsync(operationHistoryTrace);
                         logger.LogInformation($"GPT 已回傳有效的操作差異摘要內容 (ID={operationHistoryTrace.Id}) Name={operationHistoryTrace.Name} ___ {operationHistoryTrace.Description}");
+                    }
+                    else
+                    {
+                        logger.LogWarning($"GPT 回傳的操作差異摘要內容未標示未有變更 (ID={operationHistoryTrace.Id})");
                     }
                 }
                 else
