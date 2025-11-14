@@ -38,7 +38,7 @@
                                         <tr>
                                             <th class="">使用者</th>
                                             <th class="">日期</th>
-                                            @if (isAdminHistory)
+                                            @if (isAdmin)
                                             {
                                                 <th class="">命令</th>
                                             }
@@ -62,9 +62,16 @@
                                             <tr class="@rowClass">
                                                 <td class="item-cell ">@item.SignatureName</td>
                                                 <td class="item-cell cursor-pointer">
-                                                    @item.SignatureDate
+                                                    @if(isAdmin)
+                                                    {
+                                                        <SfTextBox @bind-Value="item.SignatureDate" />
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.SignatureDate
+                                                    }
                                                 </td>
-                                                @if (isAdminHistory)
+                                                @if (isAdmin)
                                                 {
                                                     <td class="item-cell cursor-pointer">
                                                         <button class="btn btn-outline-danger"
@@ -89,7 +96,7 @@
                                         <tr>
                                             <th class="">使用者</th>
                                             <th class="">日期</th>
-                                            @if (isAdminHistory)
+                                            @if (isAdmin)
                                             {
                                                 <th class="">命令</th>
                                             }
@@ -113,9 +120,16 @@
                                             <tr class="@rowClass">
                                                 <td class="item-cell ">@item.SignatureName</td>
                                                 <td class="item-cell cursor-pointer">
-                                                    @item.SignatureDate
+                                                    @if (isAdmin)
+                                                    {
+                                                        <SfTextBox @bind-Value="item.SignatureDate" />
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.SignatureDate
+                                                    }
                                                 </td>
-                                                @if (isAdminHistory)
+                                                @if (isAdmin)
                                                 {
                                                     <td class="item-cell cursor-pointer">
                                                         <button class="btn btn-outline-danger"
@@ -173,15 +187,22 @@
     List<SignatureNode> signature放射科 = new();
     List<SignatureNode> signature婦產科 = new();
 
-    bool isAdminHistory = false;
+    //bool isAdminHistory = false;
 
     string sourceObjectJson = "{}";
     string targetObjectJson = "{}";
+
+    bool isAdmin = false;
 
     signature婦產科放射科Model signature婦產科放射科Model = new signature婦產科放射科Model();
 
     protected override async Task OnInitializedAsync()
     {
+        var myUserAdapterModel = await AuthenticationStateHelper.GetUserInformation(authStateProvider);
+        if(myUserAdapterModel != null )
+        {
+                isAdmin = myUserAdapterModel.IsAdmin;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -199,7 +220,7 @@
         {
             if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLE風險評估確認歷程) == true)
             {
-                isAdminHistory = true;
+                //isAdminHistory = true;
             }
             StateHasChanged();
         }
@@ -264,7 +285,7 @@
         MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
         .GetUserInformation(authStateProvider);
 
-        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory風險評估確認, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory風險評估確認);
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory風險評估維護, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory風險評估維護);
         #endregion
 
         await OnConfirmCallback.InvokeAsync("OK");

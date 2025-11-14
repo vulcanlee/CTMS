@@ -1250,6 +1250,14 @@
         // patientAdapterModel.組別 = "Dr";
         await PatientService.UpdateAsync(patientAdapterModel);
 
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategoryAI推論, MagicObjectHelper.OperationMessageAI推論, $"使用者 {myUserAdapterModel.Name} 觸發 AI推論 需求"));
+
+        #endregion
+
         MessageBox.Show("400px", "200px", "資訊", $"已經將此紀錄送至 AI 推論中 (ID: {patientAIInfo.KeyName})", MessageBox.HiddenAsync);
 
     }
@@ -1264,6 +1272,14 @@
 
         await GetDataAsync();
         bool isCompletion = await AIIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory推論狀態呈現, MagicObjectHelper.OperationMessage推論狀態呈現, $"使用者 {myUserAdapterModel.Name} 要求進行推論狀態呈現結果檢查"));
+
+        #endregion
 
         string msg = "";
         if (isCompletion == false)
@@ -1393,6 +1409,14 @@
             imageVersion = DateTime.Now.Ticks.ToString();
             StateHasChanged();
             await Task.Delay(200);
+
+            #region 更新操作日誌
+            MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+            .GetUserInformation(authStateProvider);
+
+            await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory上傳影像, MagicObjectHelper.OperationMessage完成影像上傳, $"使用者 {myUserAdapterModel.} 已經完成新影像上傳"));
+
+            #endregion
         }
         imageVersion = DateTime.Now.Ticks.ToString();
         ShowUploadDicomDialog = false;

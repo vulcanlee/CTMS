@@ -170,6 +170,9 @@
 
         public const string OperationMessage使用者登入操作 = "使用者登入操作";
         public const string OperationMessage建立一筆受測者資料 = "建立一筆受測者資料";
+        public const string OperationMessage完成影像上傳 = "完成影像上傳";
+        public const string OperationMessageAI推論 = "進行AI推論";
+        public const string OperationMessage推論狀態呈現 = "進行推論狀態呈現檢查";
 
         public const string OperationCategory登入 = "登入";
         public const string OperationCategory建立紀錄 = "新增";
@@ -185,9 +188,12 @@
         public const string OperationCategory追蹤資料其他治療 = "追蹤資料 其他治療";
         public const string OperationCategory追蹤資料其他治療藥物 = "追蹤資料 其他治療-藥物";
         public const string OperationCategory追蹤資料其他治療影像 = "追蹤資料 其他治療-影像";
-        public const string OperationCategory風險評估確認 = "風險評估確認";
+        public const string OperationCategory風險評估維護 = "風險評估維護";
         public const string OperationCategory放射科風險評估確認 = "放射科風險評估確認";
         public const string OperationCategory婦產科風險評估確認 = "婦產科風險評估確認";
+        public const string OperationCategory上傳影像 = "上傳影像";
+        public const string OperationCategoryAI推論 = "AI推論";
+        public const string OperationCategory推論狀態呈現 = "推論狀態呈現";
 
         public const string Prompt最初說明Instruction = "這是一個 @@ 的紀錄編修內容";
         public const string Prompt原始資料Instruction = "原始資料";
