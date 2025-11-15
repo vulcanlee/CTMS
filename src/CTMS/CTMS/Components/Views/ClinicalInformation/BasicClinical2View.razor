@@ -611,6 +611,10 @@
     async Task OnNotifyDicomDialog(NotifyDicomResponse notifyDicomResponse)
     {
         showNotyfyDicomDialog = false;
+        if(notifyDicomResponse == null)
+        {
+            return;
+        }
         if (string.IsNullOrEmpty(notifyDicomResponse.單號))
         {
             return;
