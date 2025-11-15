@@ -785,61 +785,73 @@
     #region 下拉選單的事件
     private async Task OnResidualTumorChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.ResidualTumor = args.Value.Key;
     }
 
     private async Task OnRightAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.RightAdnexa = args.Value.Key;
     }
 
     private async Task OnPelvicPeritonealCavityChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.PelvicPeritonealCavity = args.Value.Key;
     }
 
     private async Task OnRightAdnexaTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.RightAdnexaTumorNumber = args.Value.Key;
     }
 
     private async Task OnLeftAdnexaChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.LeftAdnexa = args.Value.Key;
     }
 
     private async Task OnLeftAdnexaTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.LeftAdnexaTumorNumber = args.Value.Key;
     }
 
     private async Task OnOvarianSurfaceRuptureOrNotLeftOvaryChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.OvarianSurfaceRuptureOrNotLeftOvary = args.Value.Key;
     }
 
     private async Task OnOvarianSurfaceRuptureOrNotRightOvaryChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.OvarianSurfaceRuptureOrNotRightOvary = args.Value.Key;
     }
 
     private async Task OnEndometriumChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.Endometrium = args.Value.Key;
     }
 
     private async Task OnCervixSiteChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.CervixSite = args.Value.Key;
     }
 
     private async Task OnCervixTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.CervixTumorNumber = args.Value.Key;
     }
 
     private async Task OnCervixChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.Cervix = args.Value.Key;
         if (data.Cervix == "normal")
         {
@@ -850,16 +862,19 @@
 
     private async Task OnUterusSiteChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.UterusSite = args.Value.Key;
     }
 
     private async Task OnUterusTumorNumberChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.UterusTumorNumber = args.Value.Key;
     }
 
     private async Task OnUterusChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.Uterus = args.Value.Key;
         if (data.Uterus == "normal")
         {
@@ -871,6 +886,7 @@
 
     private async Task OnAscitesChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         data.Ascites = args.Value.Key;
     }
 

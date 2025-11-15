@@ -121,31 +121,37 @@
     #region 下拉選單的事件
     private async Task On日常體能狀態PSChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.PerformanceStatus = args.Value.Key;
     }
 
     private async Task On體重BWChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.Weight = args.Value.Key;
     }
 
     private async Task On身高HeightChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.Height = args.Value.Key;
     }
 
     private async Task On月經狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.MenstrualStatus = args.Value.Key;
     }
 
     private async Task On年齡AgeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.Age = args.Value.Key;
     }
 
     private async Task OnECOrOCCChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
     {
+        if (args.Value == null) return;
         patientData.臨床資訊.ECorOC = args.Value.Key;
         patientData.臨床資訊.CalculateCancerType();
     }
