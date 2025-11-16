@@ -26,17 +26,11 @@
     width: 140px;
     height: auto;
     margin-right: 15px;
+}
 
 .hospital-title h1 {
     font-size: 30px;
     margin: 0;
-}
-
-.for-testing {
-    font-size: 32px;
-    margin-left: 10px;
-}
-
 }
 
 .hospital-title h2 {
@@ -49,6 +43,16 @@
     padding: 15px 20px;
 }
 
+
+/* 測試環境提示 */
+.for-testing {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 10px;
+}
 
 
 .page-top {

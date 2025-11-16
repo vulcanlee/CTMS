@@ -48,16 +48,6 @@
         padding: 0;
     }
 
-/* 測試環境提示 */
-.for-testing {
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 4px 12px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-right: 10px;
-}
-
 /* 移除不必要的重複樣式 */
 .hospital-logo {
     width: 140px;

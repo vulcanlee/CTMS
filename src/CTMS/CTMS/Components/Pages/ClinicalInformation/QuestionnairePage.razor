@@ -25,7 +25,7 @@ else
 {
     <div>
         @{
-            string backUri = $"/Browser";
+            string backUri = $"/BasicClinical/{Code}";
         }
         <HeaderView BackUri=@backUri CurrentUser=@CurrentUserService.CurrentUser />
 
