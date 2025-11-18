@@ -1,15 +1,17 @@
 ﻿using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Share.Extensions;
+using CTMS.Share.Helpers;
 using System.Diagnostics;
 
 namespace CTMS.Business.Services.ClinicalInformation;
 
 public class SideEffectsService
 {
-    string WhiteBloodCell白血球 = "白血球計數 WBC(10^3/μL)";
-    string NeutrophilCount絕對嗜中性白血球數 = "嗜中性白血球 Seg(%)";
-    string HemoglobinHb血色素 = "血色素 Hb(g/dL)";
-    string PlateletCount血小板 = "血小板 Plt (10^3/μL)";
+    string WhiteBloodCell白血球 = MagicObjectHelper.WhiteBloodCell白血球WBC;
+    string NeutrophilCount絕對嗜中性白血球數 = MagicObjectHelper.NeutrophilCount絕對嗜中性白血球數Seg;
+    string NeutrophilCount帶狀性中性球 = MagicObjectHelper.NeutrophilCount帶狀性中性球Band;
+    string HemoglobinHb血色素 = MagicObjectHelper.HemoglobinHb血色素Hb;
+    string PlateletCount血小板 = MagicObjectHelper.PlateletCount血小板Plt;
 
     private readonly SurveyService surveyService;
 
@@ -138,26 +140,6 @@ public class SideEffectsService
 
     }
 
-    public void Update副作用AllByDemo(string studycode, Main臨床資料 main臨床資料,
-        HematologicSideEffects血液副作用Node hematologicSideEffects)
-    {
-        if (studycode.Contains("-E"))
-        {
-            ComputeGradeByDemo(studycode, hematologicSideEffects);
-        }
-        else if (studycode.Contains("-C"))
-        {
-            ComputeGradeByDemo(studycode, hematologicSideEffects);
-        }
-        else
-        {
-            Update副作用WhiteBloodCell白血球(main臨床資料, hematologicSideEffects);
-            Update副作用NeutrophilCount絕對嗜中性白血球數(main臨床資料, hematologicSideEffects);
-            Update副作用HemoglobinHb血色素(main臨床資料, hematologicSideEffects);
-            Update副作用PlateletCount血小板(main臨床資料, hematologicSideEffects);
-        }
-    }
-
     public void Update副作用All(Main臨床資料 main臨床資料,
         HematologicSideEffects血液副作用Node hematologicSideEffects)
     {
@@ -216,10 +198,21 @@ public class SideEffectsService
             .FirstOrDefault(x => x.項目名稱 == WhiteBloodCell白血球);
         TestItem檢驗項目 testItemNeutrophilCount絕對嗜中性白血球數 = bloodTest.抽血檢驗血液
             .FirstOrDefault(x => x.項目名稱 == NeutrophilCount絕對嗜中性白血球數);
+        TestItem檢驗項目 testItemNeutrophilCount帶狀性中性球 = bloodTest.抽血檢驗血液
+            .FirstOrDefault(x => x.項目名稱 == NeutrophilCount帶狀性中性球);
 
         double valueWhiteBloodCell白血球 = testItemWhiteBloodCell白血球.檢驗數值.ToDouble();
         double valuePercentSeg = testItemNeutrophilCount絕對嗜中性白血球數.檢驗數值.ToDouble();
         double valuePercentBand = 0;
+        if (testItemNeutrophilCount帶狀性中性球 != null)
+            valuePercentBand = testItemNeutrophilCount帶狀性中性球.檢驗數值.ToDouble() / 100.0;
+        // 這個公式是 ANC = WBC × (Neutrophils % +Bands %)
+        // 但 WBC 要乘以 1000 才是正確的單位
+        // 所以最後的公式是 ANC = WBC * 1000 * (Neutrophils % +Bands %)
+        // 例如 WBC = 4.6 (10^3/μL) 就是 4600 / μL
+        // Neutrophils % = 70.3% 就是 0.703
+        // Bands % = 0% 就是 0
+        // ANC = 4600 * (0.703 + 0) = 3233.8 / μL
         double ANC = valueWhiteBloodCell白血球 * 1000 * (valuePercentSeg / 100.0 + valuePercentBand);
 
         TestItem檢驗項目 testItem = new TestItem檢驗項目()

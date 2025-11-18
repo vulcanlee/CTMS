@@ -148,6 +148,13 @@
 
         public const string TypeI = "Type I";
         public const string TypeII = "Type II";
+
+        public const string WhiteBloodCell白血球WBC = "白血球計數 WBC(10^3/μL)";
+        public const string NeutrophilCount絕對嗜中性白血球數Seg = "嗜中性白血球 Seg(%)";
+        public const string NeutrophilCount帶狀性中性球Band = "帶狀性中性球 Band(%)";
+        public const string HemoglobinHb血色素Hb = "血色素 Hb(g/dL)";
+        public const string PlateletCount血小板Plt = "血小板 Plt (10^3/μL)";
+
         #endregion
 
         #region AIAgent 專用

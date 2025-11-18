@@ -2,6 +2,7 @@
 using CTMS.DataModel.Dtos;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
+using CTMS.Share.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -212,6 +213,32 @@ public class Main臨床資料HelperService
                     {
                         if (node.Checked抽血檢驗血液 == true)
                         {
+                            #region 將欠缺的 帶狀性中性球 Band(%) 加入進來
+                            var itemNeutrophilCount帶狀性中性球Target = item.抽血檢驗血液
+                                .FirstOrDefault(x => x.項目名稱 == MagicObjectHelper.NeutrophilCount帶狀性中性球Band);
+                            if (itemNeutrophilCount帶狀性中性球Target == null)
+                            {
+                                // 更新 帶狀性中性球 Band(%)
+                                BloodTest抽血檢驗血液Node itemSource = new BloodTest抽血檢驗血液Node
+                                {
+                                    VisitCode = visitCodeModel
+                                };
+                                bloodExameService.Read血液Node(itemSource, subjectNo);
+
+                                var itemNeutrophilCount帶狀性中性球Source = itemSource.抽血檢驗血液
+                                    .FirstOrDefault(x => x.項目名稱 == MagicObjectHelper.NeutrophilCount帶狀性中性球Band);
+                                if (itemNeutrophilCount帶狀性中性球Source != null)
+                                {
+                                    var itemNeutrophilCount絕對嗜中性白血球數Target = item.抽血檢驗血液.FirstOrDefault(x => x.項目名稱 == MagicObjectHelper.NeutrophilCount絕對嗜中性白血球數Seg);
+                                    if(itemNeutrophilCount絕對嗜中性白血球數Target!=null)
+                                    {
+                                        var index = item.抽血檢驗血液.IndexOf(itemNeutrophilCount絕對嗜中性白血球數Target);
+                                        item.抽血檢驗血液.Insert(index + 1, itemNeutrophilCount帶狀性中性球Source);
+                                    }
+                                }
+                                //Main臨床資料.抽血檢驗血液.Items.Add(item);
+                            }
+                            #endregion
                             return;
                         }
                         Main臨床資料.抽血檢驗血液.Items.Remove(item);
@@ -525,7 +552,7 @@ public class Main臨床資料HelperService
 
                         surveySideEffectsService.Init2All(item);
                         surveySideEffectsService.Update副作用2All(Main臨床資料, item);
-                        
+
                         Main臨床資料.SurveySideEffects副作用2.Items.Add(item);
                     }
                     else
