@@ -8,5 +8,7 @@
         public Survey whooqol問卷 { get; set; } = new();
         public Survey 個人史問卷 { get; set; } = new();
         public Survey 家族史問卷 { get; set; } = new();
+        public Survey 生活品質問卷 { get; set; } = new();
+        public Survey 健康問卷 { get; set; } = new();
     }
 }

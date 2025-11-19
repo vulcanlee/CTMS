@@ -23,6 +23,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         SurveyWhooqol問卷,
         Survey個人史問卷,
         Survey家族史問卷,
+        Survey生活品質問卷,
+        Survey健康問卷,
         HematologicSideEffects血液副作用,
         SurveySideEffects副作用1,
         SurveySideEffects副作用2,

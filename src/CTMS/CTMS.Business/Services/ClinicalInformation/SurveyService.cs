@@ -19,6 +19,8 @@ public class SurveyService
         survey.whooqol問卷 = ReadFile("whooqol問卷.json");
         survey.個人史問卷 = ReadFile("個人史問卷.json");
         survey.家族史問卷 = ReadFile("家族史問卷.json");
+        survey.生活品質問卷 = ReadFile("QOL-CIPN20生活品質問卷.json");
+        survey.健康問卷 = ReadFile("EQ-5D-3L健康問卷.json");
     }
 
     public Survey ReadFile(string filename)

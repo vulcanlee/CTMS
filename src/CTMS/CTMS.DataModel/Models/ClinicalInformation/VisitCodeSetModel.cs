@@ -87,6 +87,8 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public bool CheckedSurveyWhooqol問卷 { get; set; } = false;
         public bool CheckedSurvey個人史問卷 { get; set; } = false;
         public bool CheckedSurvey家族史問卷 { get; set; } = false;
+        public bool CheckedSurvey生活品質問卷 { get; set; } = false;
+        public bool CheckedSurvey健康問卷 { get; set; } = false;
         public bool CheckedHematologicSideEffects血液副作用 { get; set; } = false;
         public bool CheckedSurveySideEffects副作用1 { get; set; } = false;
         public bool CheckedSurveySideEffects副作用2 { get; set; } = false;

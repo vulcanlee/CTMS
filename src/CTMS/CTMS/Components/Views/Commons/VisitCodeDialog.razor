@@ -129,6 +129,14 @@
                                         <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey家族史問卷" />
                                         <span class="sub-item-title">@DataTabeEnums.Survey家族史問卷.ToString()</span>
                                     </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey生活品質問卷" Label="@DataTabeEnums.Survey生活品質問卷.ToString()" />
+                                    </div>
+                                    <div class="sub-item-header">
+                                        <span class="toggle-icon">►</span>
+                                        <SfCheckBox @bind-Checked="@visitCodeSetNodeModel.CheckedSurvey健康問卷" Label="@DataTabeEnums.Survey健康問卷.ToString()" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="visit-content">

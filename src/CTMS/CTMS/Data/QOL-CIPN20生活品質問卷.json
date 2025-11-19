@@ -1,0 +1,465 @@
+{
+  "title": "EORTC QLQ-CIPN20 台灣中文版",
+  "questions": [
+    {
+      "id": "31.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的手指或手有針刺感嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "32.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的腳趾或腳有針刺感嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "33.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的手指或手感覺麻木嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "34.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的腳趾或腳感覺麻木嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "35.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的手指或手有劇烈或灼熱的疼痛嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "36.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的腳趾或腳有劇烈或灼熱的疼痛嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "37.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的手會抽筋嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "38.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您的腳會抽筋嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "39.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您因為感覺腳下的地面有困難，而導致站立或行走有問題嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "40.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您分辨熱水及冷水有困難嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "41.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您握筆有問題而寫字有困難嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "42.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您用手指操作細小物件（如扣上小鈕扣）有困難嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "43.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您因為手部無力而難以打開罐子（廣口瓶）或瓶子嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "44.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您因為腳部下垂而難以走路嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "45.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您因為腿部無力而難以上樓梯或從椅子上站起來嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "46.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：從坐著或躺著的姿勢站起來時，您會頭昏嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "47.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您視力模糊嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "48.0",
+      "type": "single-choice",
+      "text": "在過去一星期內：您聽力有困難嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "49.0",
+      "type": "single-choice",
+      "text": "（僅限有開車者）在過去一星期內：您踩踏板會有困難嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    },
+    {
+      "id": "50.0",
+      "type": "single-choice",
+      "text": "（僅限男性）在過去一星期內：您在達到或維持陰莖勃起上會有困難嗎？",
+      "options": [
+        {
+          "value": 1,
+          "label": "完全沒有"
+        },
+        {
+          "value": 2,
+          "label": "有一點"
+        },
+        {
+          "value": 3,
+          "label": "相當多"
+        },
+        {
+          "value": 4,
+          "label": "非常多"
+        }
+      ]
+    }
+  ]
+}

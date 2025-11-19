@@ -57,6 +57,8 @@ public class Main臨床資料HelperService
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.SurveyWhooqol問卷);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey個人史問卷);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey家族史問卷);
+            SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey生活品質問卷);
+            SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.Survey健康問卷);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.HematologicSideEffects血液副作用);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.SurveySideEffects副作用1);
             SyncItem(Main臨床資料, visitCodeModel, node, DataTabeEnums.SurveySideEffects副作用2);
@@ -477,6 +479,76 @@ public class Main臨床資料HelperService
                             return;
                         }
                         Main臨床資料.Survey家族史問卷.Items.Remove(item);
+                    }
+                }
+                break;
+            case DataTabeEnums.Survey生活品質問卷:
+                {
+                    var item = Main臨床資料.Survey生活品質問卷.Items
+                        .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                    if (item == null)
+                    {
+                        if (node.CheckedSurvey生活品質問卷 == false)
+                            return;
+                        item = new Survey生活品質問卷Node
+                        {
+                            VisitCode = visitCodeModel
+                        };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.生活品質問卷.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
+                        Main臨床資料.Survey生活品質問卷.Items.Add(item);
+                    }
+                    else
+                    {
+                        if (node.CheckedSurvey生活品質問卷 == true)
+                        {
+                            return;
+                        }
+                        Main臨床資料.Survey生活品質問卷.Items.Remove(item);
+                    }
+                }
+                break;
+            case DataTabeEnums.Survey健康問卷:
+                {
+                    var item = Main臨床資料.Survey健康問卷.Items
+                        .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                    if (item == null)
+                    {
+                        if (node.CheckedSurvey健康問卷 == false)
+                            return;
+                        item = new Survey健康問卷Node
+                        {
+                            VisitCode = visitCodeModel
+                        };
+
+                        Survey問卷 survey = new();
+                        surveyService.Read(survey);
+                        item.Questions = survey.健康問卷.Questions;
+
+                        surveyService.Reset(item.Questions);
+                        foreach (var itemQuestion in item.Questions)
+                        {
+                            surveyService.RefreshByQuestionChanged(item.Questions, itemQuestion);
+                        }
+
+                        Main臨床資料.Survey健康問卷.Items.Add(item);
+                    }
+                    else
+                    {
+                        if (node.CheckedSurvey健康問卷 == true)
+                        {
+                            return;
+                        }
+                        Main臨床資料.Survey健康問卷.Items.Remove(item);
                     }
                 }
                 break;
