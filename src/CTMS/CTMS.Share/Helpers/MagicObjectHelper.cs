@@ -193,7 +193,15 @@
         public const string OperationCategory抽血檢驗血液 = "抽血檢驗 血液";
         public const string OperationCategory抽血檢驗生化 = "抽血檢驗 生化";
         public const string OperationCategory追蹤資料其他治療 = "追蹤資料 其他治療";
-        public const string OperationCategory追蹤資料其他治療藥物 = "追蹤資料 其他治療-藥物";
+        public const string OperationCategory追蹤資料其他治療藥物 = "問卷 化療副作用";
+        public const string OperationCategory問卷_化療副作用 = "問卷 化療副作用";
+        public const string OperationCategory問卷_標靶副作用 = "問卷 標靶副作用";
+        public const string OperationCategory問卷_放療副作用 = "問卷 放療副作用";
+        public const string OperationCategory問卷_Whooqol = "問卷 Whooqol";
+        public const string OperationCategory問卷_個人史問卷 = "問卷 個人史問卷";
+        public const string OperationCategory問卷_家族史問卷 = "問卷 家族史問卷";
+        public const string OperationCategory問卷_生活品質問卷 = "問卷 生活品質問卷";
+        public const string OperationCategory問卷_健康 = "問卷 健康";
         public const string OperationCategory追蹤資料其他治療影像 = "追蹤資料 其他治療-影像";
         public const string OperationCategory風險評估維護 = "風險評估維護";
         public const string OperationCategory放射科風險評估確認 = "放射科風險評估確認";

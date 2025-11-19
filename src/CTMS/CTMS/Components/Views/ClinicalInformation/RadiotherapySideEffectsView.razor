@@ -12,6 +12,11 @@
 @inject DropDownListDataService DropDownListDataService
 @inject SurveyService SurveyService
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <PageTitle>問卷 放療副作用</PageTitle>
 
 <div>
@@ -125,6 +130,9 @@
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     #endregion
 
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
+
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
@@ -138,6 +146,7 @@
         header = patientData.臨床資料.Survey放療副作用;
         if (isFirst)
         {
+            sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.Survey放療副作用);
             data = header.Items.FirstOrDefault();
 
             if (data != null)
@@ -175,6 +184,16 @@
         // data = patientData.臨床資料.問卷.放療副作用;
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
+
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.Survey放療副作用);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory問卷_放療副作用, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory問卷_放療副作用);
+        #endregion
+      
         InitData(false);
         editMode = false;
         // <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"

@@ -13,11 +13,11 @@ namespace CTMS.Middlewares
 
         public async Task InvokeAsync(HttpContext context, RequestInformation requestInformation)
         {
-            // Log the request path
-            Console.WriteLine($"Request Path: {context.Request.Path}");
-            string url = $"{context.Request.Scheme}://{context.Request.Host}";
-            requestInformation.Url = url;
-            // Call the next middleware in the pipeline
+            //// Log the request path
+            //Console.WriteLine($"Request Path: {context.Request.Path}");
+            //string url = $"{context.Request.Scheme}://{context.Request.Host}";
+            //requestInformation.Url = url;
+            //// Call the next middleware in the pipeline
             await _next(context);
         }
     }

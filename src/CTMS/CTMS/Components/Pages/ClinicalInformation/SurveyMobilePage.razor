@@ -15,50 +15,41 @@
 
 <PageTitle>問卷 儀錶板</PageTitle>
 
-@if (string.IsNullOrEmpty(RoleMessage) == false)
-{
-    <div class="alert alert-danger" role="alert">
-        @RoleMessage
-    </div>
-}
-else
-{
-    <div>
-        @{
-            string backUri = $"/BasicClinical/{Code}";
-        }
-        <HeaderView BackUri=@backUri CurrentUser=@CurrentUserService.CurrentUser />
+<div>
+    @{
+        string backUri = $"/BasicClinical/{Code}";
+    }
+    <HeaderView BackUri=@backUri CurrentUser=@CurrentUserService.CurrentUser />
 
-        <div class="page-body">
-            <MudTabs PanelClass="pa-6">
-                <MudTabPanel Text="化療副作用">
-                    <ChemotherapySideEffectsSurveyView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="標靶副作用">
-                    <TargetedTherapySideEffectsView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="放療副作用">
-                    <RadiotherapySideEffectsView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="WHOQOL 問卷">
-                    <WhoqolQuestionnaireView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="個人史">
-                    <PersonalHistorySurveyView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="家族史">
-                    <FamilyHistorySurveyView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="生活品質">
-                    <QualityOfLifeSurveyView Code="@Code" />
-                </MudTabPanel>
-                <MudTabPanel Text="健康">
-                    <HealthSurveyView Code="@Code" />
-                </MudTabPanel>
-            </MudTabs>
-        </div>
+    <div class="page-body">
+        <MudTabs PanelClass="pa-6">
+            <MudTabPanel Text="化療副作用">
+                <ChemotherapySideEffectsSurveyView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="標靶副作用">
+                <TargetedTherapySideEffectsView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="放療副作用">
+                <RadiotherapySideEffectsView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="WHOQOL 問卷">
+                <WhoqolQuestionnaireView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="個人史">
+                <PersonalHistorySurveyView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="家族史">
+                <FamilyHistorySurveyView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="生活品質">
+                <QualityOfLifeSurveyView Code="@Code" />
+            </MudTabPanel>
+            <MudTabPanel Text="健康">
+                <HealthSurveyView Code="@Code" />
+            </MudTabPanel>
+        </MudTabs>
     </div>
-}
+</div>
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -82,6 +73,7 @@ else
 
     protected override void OnInitialized()
     {
+        int foo = 1;
     }
 
     protected override async Task OnInitializedAsync()

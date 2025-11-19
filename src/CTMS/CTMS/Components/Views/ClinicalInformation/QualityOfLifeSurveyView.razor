@@ -12,6 +12,11 @@
 @inject DropDownListDataService DropDownListDataService
 @inject SurveyService SurveyService
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <PageTitle>問卷 生活品質</PageTitle>
 
 <div>
@@ -123,6 +128,9 @@
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     #endregion
 
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
+
     protected override async Task OnInitializedAsync()
     {
         patientAdapterModel = await PatientService.GetAsync(Code);
@@ -136,6 +144,7 @@
         header = patientData.臨床資料.Survey生活品質問卷;
         if (isFirst)
         {
+            sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.Survey生活品質問卷);
             data = header.Items.FirstOrDefault();
 
             if (data != null)
@@ -171,6 +180,16 @@
     {
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
+
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.Survey生活品質問卷);
+
+        #region 更新操作日誌
+        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+        .GetUserInformation(authStateProvider);
+
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory問卷_生活品質問卷, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory問卷_生活品質問卷);
+        #endregion
+
         InitData(false);
         editMode = false;
         // <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"

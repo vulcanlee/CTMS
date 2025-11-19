@@ -13,6 +13,11 @@
 @inject DropDownListDataService DropDownListDataService
 @inject SurveyService SurveyService
 
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@using Newtonsoft.Json
+
 <PageTitle>行動裝置填寫問卷 QR Code</PageTitle>
 
 <div>
@@ -82,6 +87,9 @@
     DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
     List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
     #endregion
+
+    string sourceObjectJson = "{}";
+    string targetObjectJson = "{}";
 
     protected override async Task OnInitializedAsync()
     {
