@@ -49,6 +49,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="mx-3">
+                            <button type="button" class="btn btn-warning"
+                                    @onclick=OnLockEdit>
+                                @if (isLockEdit)
+                                {
+                                    <span>解除鎖定</span>
+                                }
+                                else
+                                {
+                                    <span>鎖定編輯</span>
+
+                                }
+                            </button>
+
+                        </div>
                         <div class="btn-group mx-3 " role="group" aria-label="按鈕組">
                             <button type="button" class="btn btn-sm btn-primary save-button"
                                     @onclick=OnSave>
@@ -119,7 +134,29 @@
                             <td class="result-cell @item.TextClassName">
                                 @if (editMode)
                                 {
-                                    <SfTextBox @bind-Value="item.檢驗數值" />
+                                    if (isLockEdit)
+                                    {
+                                        var foundItem = dataOriginal.抽血檢驗生化.FirstOrDefault(x => x.項目名稱 == item.項目名稱);
+                                        if (foundItem == null)
+                                        {
+                                            <SfTextBox @bind-Value="item.檢驗數值" />
+                                        }
+                                        else
+                                        {
+                                            if (string.IsNullOrEmpty(foundItem.檢驗數值) == true)
+                                            {
+                                                <SfTextBox @bind-Value="item.檢驗數值" />
+                                            }
+                                            else
+                                            {
+                                                @item.檢驗數值
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <SfTextBox @bind-Value="item.檢驗數值" />
+                                    }
                                 }
                                 else
                                 {
@@ -129,8 +166,34 @@
                             <td class="sampling-cell ">
                                 @if (editMode)
                                 {
-                                    <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
-                                                  @bind-Value="@item.SamplingDate"></SfDatePicker>
+                                    if (isLockEdit)
+                                    {
+                                        var foundItem = dataOriginal.抽血檢驗生化.FirstOrDefault(x => x.項目名稱 == item.項目名稱);
+                                        if (foundItem == null)
+                                        {
+                                            <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
+                                                          @bind-Value="@item.SamplingDate"></SfDatePicker>
+                                        }
+                                        else
+                                        {
+                                            if (string.IsNullOrEmpty(foundItem.檢驗數值) == true)
+                                            {
+                                                <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd" @bind-Value="@item.SamplingDate"></SfDatePicker>
+                                            }
+                                            else
+                                            {
+                                                @if (item.SamplingDate.HasValue)
+                                                {
+                                                    @item.SamplingDate.Value.ToString("yyyy-MM-dd")
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
+                                                      @bind-Value="@item.SamplingDate"></SfDatePicker>
+                                    }
                                 }
                                 else
                                 {
@@ -171,6 +234,7 @@
 
     BloodTest抽血檢驗生化Node data = new();
     BloodTest抽血檢驗生化 header = new();
+    BloodTest抽血檢驗生化Node dataOriginal = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowVisitCodeDialog = false;
@@ -184,6 +248,8 @@
 
     DateTime? resetDate = null;
     #endregion
+
+    bool isLockEdit = true;
 
     string sourceObjectJson = "{}";
     string targetObjectJson = "{}";
@@ -215,6 +281,9 @@
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
+            var dataJson = JsonConvert.SerializeObject(data);
+            dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+
             RefreshVisitCode();
             RefreshDropDwonVisitCode();
             var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
@@ -226,6 +295,8 @@
             if (SelectVisitCode != null)
             {
                 data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
+                var dataJson = JsonConvert.SerializeObject(data);
+                dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
             }
         }
     }
@@ -245,6 +316,11 @@
         sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗生化);
     }
 
+    void OnLockEdit()
+    {
+        isLockEdit = !isLockEdit;
+    }
+
     async Task OnSave()
     {
         if (data != null)
@@ -252,6 +328,9 @@
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
+
+        var dataJson = JsonConvert.SerializeObject(data);
+        dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
 
         targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗生化);
 
@@ -280,6 +359,9 @@
             if (item != null)
             {
                 data = item;
+
+                var dataJson = JsonConvert.SerializeObject(data);
+                dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
             }
         }
     }
