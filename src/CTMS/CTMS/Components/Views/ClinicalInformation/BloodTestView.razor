@@ -297,6 +297,8 @@
     {
         foreach (var item in data.抽血檢驗血液)
         {
+            if(string.IsNullOrEmpty(item.檢驗數值) == true)
+                continue;
             item.SamplingDate = resetDate;
         }
     }
