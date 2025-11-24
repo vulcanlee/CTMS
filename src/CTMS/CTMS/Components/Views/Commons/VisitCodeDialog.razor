@@ -34,10 +34,14 @@
                                 <span class="toggle-icon">@((expanded) ? "▼" : "▶")</span>
                                 <span class="visit-title">@itemVisitCode.GetVisitCodeTitle()</span>
                             </div>
-                            <button class="btn-edit" 
-                            @onclick="async () =>await OnEditVisitCodeAsync(itemVisitCode)">修改</button>
+                            <button class="btn-edit"
+                                    @onclick="async () => await OnEditVisitCodeAsync(itemVisitCode)">
+                                修改
+                            </button>
                             <button class="btn-delete"
-                            @onclick="async () => await OnDeleteVisitCodeAsync(itemVisitCode)">刪除</button>
+                                    @onclick="async () => await OnDeleteVisitCodeAsync(itemVisitCode)">
+                                刪除
+                            </button>
                         </div>
 
                         @if (expanded)
@@ -275,6 +279,8 @@
         {
             var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
                  "沒有傳入任何 Protein 物件", ConfirmMessageBox.HiddenAsync);
+            StateHasChanged();
+            await checkTask;
             OpenPicker = false;
         }
         OpenPicker = false;
@@ -327,7 +333,7 @@
 
     async Task OnEditVisitCodeAsync(VisitCodeModel itemVisitCode)
     {
-        VisitCode = itemVisitCode; 
+        VisitCode = itemVisitCode;
         VisitCodeBackup = itemVisitCode.Clone();
         VisitCodeMode = "Edit";
         ShowVisitCodeEditorDialog = true;
@@ -335,10 +341,11 @@
 
     async Task OnDeleteVisitCodeAsync(VisitCodeModel itemVisitCode)
     {
-        var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
         "警告", $"確定要刪除 Visit Code : {itemVisitCode.GetVisitCodeTitle()} 嗎？",
         ConfirmMessageBox.HiddenAsync);
-
+        StateHasChanged();
+        var confirmDelete = await task;
         if (confirmDelete == true)
         {
             sourceObjectJson = JsonConvert.SerializeObject(data);

@@ -8,6 +8,7 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 
+@inject ILogger<BrowseView> Logger
 @inject NavigationManager NavigationManager
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
@@ -266,10 +267,11 @@
         string subjectNo = patientData.臨床資訊.SubjectNo;
         string FIGO = patientData.臨床資訊.FIGOStaging;
         // 使用 ConfirmMessageBox 來確認刪除操作
-        var confirmDelete = await ConfirmMessageBox.ShowAsync("400px", "200px",
+        var task = ConfirmMessageBox.ShowAsync("400px", "200px",
         "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
         ConfirmMessageBox.HiddenAsync);
-
+        StateHasChanged(); // 更新 UI
+        var confirmDelete = await task;
         if (confirmDelete == true)
         {
             // 刪除病患資料的邏輯
@@ -293,7 +295,9 @@
             else
             {
                 // 刪除失敗，顯示錯誤訊息
-                await MessageBox.ShowAsync("400px", "200px", "錯誤", deleteResult.Message, MessageBox.HiddenAsync);
+                var task3 = MessageBox.ShowAsync("400px", "200px", "錯誤", deleteResult.Message, MessageBox.HiddenAsync);
+                StateHasChanged(); // 更新 UI
+                await task3;
             }
             StateHasChanged(); // 更新 UI
         }
@@ -350,7 +354,9 @@
         else
         {
             // 新增失敗，顯示錯誤訊息
-            await MessageBox.ShowAsync("400px", "200px", "錯誤", result.Message, MessageBox.HiddenAsync);
+            var task1 = MessageBox.ShowAsync("400px", "200px", "錯誤", result.Message, MessageBox.HiddenAsync);
+            StateHasChanged(); // 更新 UI
+            await task1;
         }
     }
 

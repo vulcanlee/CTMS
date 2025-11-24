@@ -181,6 +181,7 @@
         {
             var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
                  "沒有傳入任何 Protein 物件", ConfirmMessageBox.HiddenAsync);
+            await checkTask;
             OpenPicker = false;
         }
         OpenPicker = false;

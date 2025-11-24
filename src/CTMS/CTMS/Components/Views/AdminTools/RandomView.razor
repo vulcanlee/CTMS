@@ -213,7 +213,6 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要清除這個 Subject Code 嗎？",
              ConfirmMessageBox.HiddenAsync);
-        await Task.Delay(100);
         StateHasChanged();
         result = await task;
         return result;

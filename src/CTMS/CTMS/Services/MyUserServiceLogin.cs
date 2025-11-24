@@ -56,6 +56,7 @@ public class MyUserServiceLogin
             string hashPassword = PasswordHelper.GetPasswordSHA(item.Salt, password);
             if (item.Password != hashPassword)
             {
+                Logger.LogWarning($"使用者 {username} 嘗試登入，但密碼錯誤");
                 return ($"帳號或者密碼不正確", null);
             }
 
@@ -63,6 +64,7 @@ public class MyUserServiceLogin
         }
         else
         {
+            Logger.LogWarning($"使用者 {username} 嘗試登入，但查無此帳號");
             return ($"帳號或者密碼不正確", item);
         }
     }

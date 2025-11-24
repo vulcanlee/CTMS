@@ -142,6 +142,7 @@ public class MyUserViewModel
             await Task.Yield();
             var checkTask = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
                  "確認要刪除這筆紀錄嗎?", ConfirmMessageBox.HiddenAsync);
+
             await thisView.NeedRefreshAsync();
             var checkAgain = await checkTask;
             if (checkAgain == true)

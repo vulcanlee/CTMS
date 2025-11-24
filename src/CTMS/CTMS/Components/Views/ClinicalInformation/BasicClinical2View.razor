@@ -1482,6 +1482,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要重新計算亂數表中的組別嗎？",
              ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         result = await task;
         if (result == false)
         {
@@ -1522,8 +1523,6 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
              "再次確認", $"確定要寄送通知給放射科醫師嗎？",
              ConfirmMessageBox.HiddenAsync);
-        StateHasChanged();
-        await Task.Delay(100);
         StateHasChanged();
         result = await task;
     }

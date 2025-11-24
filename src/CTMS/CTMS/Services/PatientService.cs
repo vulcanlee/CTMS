@@ -250,6 +250,7 @@ public class PatientService
             await context.Patient
                 .AddAsync(itemParameter);
             await context.SaveChangesAsync();
+            Logger.LogInformation($"新增病患資料，Id={itemParameter.Id}, Name={itemParameter.Name}, Subject No={subjectNo}");
 
             PatientAdapterModel result = Mapper.Map<PatientAdapterModel>(itemParameter);
             CleanTrackingHelper.Clean<Patient>(context);
@@ -272,6 +273,7 @@ public class PatientService
             await context.Patient
                 .AddAsync(itemParameter);
             await context.SaveChangesAsync();
+            Logger.LogInformation($"新增病患資料，Id={itemParameter.Id}, Name={itemParameter.Name}");
             CleanTrackingHelper.Clean<Patient>(context);
             return VerifyRecordResultFactory.Build(true);
         }
@@ -305,6 +307,7 @@ public class PatientService
                 CleanTrackingHelper.Clean<Patient>(context);
                 context.Entry(itemData).State = EntityState.Modified;
                 await context.SaveChangesAsync();
+                Logger.LogInformation($"修改病患資料，Id={itemData.Id}, Name={itemData.Name}, Subject No={itemData.Name}");
                 CleanTrackingHelper.Clean<Patient>(context);
                 return VerifyRecordResultFactory.Build(true);
             }
@@ -333,6 +336,7 @@ public class PatientService
                 CleanTrackingHelper.Clean<Patient>(context);
                 context.Entry(item).State = EntityState.Deleted;
                 await context.SaveChangesAsync();
+                Logger.LogInformation($"刪除病患資料，Id={item.Id}, Name={item.Name}");
                 CleanTrackingHelper.Clean<Patient>(context);
                 return VerifyRecordResultFactory.Build(true);
             }

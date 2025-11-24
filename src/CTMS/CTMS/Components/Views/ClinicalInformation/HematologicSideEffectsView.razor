@@ -245,8 +245,10 @@
     {
         if (SelectVisitCode != null)
         {
-            var checkTask = await ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
+            var task = ConfirmMessageBox.ShowAsync("400px", "200px", "警告",
                  $"確認要刪除這筆 Visit Code ({SelectVisitCode.Name}) 紀錄嗎?", ConfirmMessageBox.HiddenAsync);
+            StateHasChanged();
+            var checkTask = await task;
             if (checkTask)
             {
                 var itemDelete = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
@@ -321,9 +323,9 @@
             if (VisitCodeOperateMode == "Add")
             {
                 var newRecord = new HematologicSideEffects血液副作用Node()
-                    {
-                        VisitCode = visitCodeModel,
-                    };
+                {
+                    VisitCode = visitCodeModel,
+                };
 
                 SideEffectsService.InitAll(newRecord);
                 SideEffectsService.Update副作用All(patientData.臨床資料, newRecord);

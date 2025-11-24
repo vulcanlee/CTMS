@@ -232,6 +232,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
         "再次確認", $"確定要以婦產科醫師身分確認這些影像與數據正確無誤嗎？",
         ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         bool result = await task;
         if (result == false)
         {
@@ -281,6 +282,7 @@
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
         "再次確認", $"確定要以放射科醫師身分確認這些影像與數據正確無誤嗎？",
         ConfirmMessageBox.HiddenAsync);
+        StateHasChanged();
         bool result = await task;
         if (result == false)
         {

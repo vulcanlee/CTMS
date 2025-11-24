@@ -7,7 +7,7 @@
 @using System.Security.Claims
 @inject MyUserServiceLogin MyUserServiceLogin
 @layout NoFooterLayout
-@inject ILogger<Login> Logger
+@inject ILogger<Login> logger
 @inject OperationHistoryTraceService OperationHistoryTraceService
 
 @inject NavigationManager NavigationManager
@@ -118,24 +118,24 @@
                 {
                     if (HttpMethods.IsGet(HttpContext.Request.Method))
                     {
-                        Logger.LogInformation("Cookie : Login: OnInitializedAsync Need SignOut");
+                        // logger.LogInformation("Cookie : Login: OnInitializedAsync Need SignOut");
                         // Clear the existing external cookie to ensure a clean login process
                         // await HttpContext.SignOutAsync("CookieAuthenticationScheme");
                     }
                     else
                     {
-                        Logger.LogInformation("Cookie : Login: OnInitializedAsync No SignOut");
+                        // logger.LogInformation("Cookie : Login: OnInitializedAsync No SignOut");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogDebug(ex, "登入初始化發生例外異常-1");
+                // logger.LogDebug(ex, "登入初始化發生例外異常-1");
             }
         }
         catch (Exception ex)
         {
-            Logger.LogDebug(ex, "登入初始化發生例外異常");
+            //  logger.LogDebug(ex, "登入初始化發生例外異常");
 
         }
     }
@@ -168,7 +168,7 @@
         (string result, MyUser myUser) = await MyUserServiceLogin.LoginAsync(Input.Account, Input.Password);
         if (result != string.Empty)
         {
-            Logger.LogInformation($"""使用者 {Input.Account} 登入失敗，原因：{result} """);
+            logger.LogWarning($"""使用者 {Input.Account} 登入失敗，原因：{result} """);
             message = result;
         }
         else
@@ -207,13 +207,13 @@
 
                 await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUser.Name, "", MagicObjectHelper.OperationCategory登入, MagicObjectHelper.OperationMessage使用者登入操作, $"{myUser.Name} {MagicObjectHelper.OperationCategory登入}"));
 
-                Logger.LogInformation($"""使用者 {Input.Account} 登入成功，原因：{result} """);
+                logger.LogInformation($"""使用者 {Input.Account} 登入成功，原因：{result} """);
 
             }
             catch (Exception ex)
             {
                 message = ex.Message;
-                Logger.LogError(ex, $"""使用者 {Input.Account} 登入發生例外異常，原因：{ex.Message} """);
+                logger.LogError(ex, $"""使用者 {Input.Account} 登入發生例外異常，原因：{ex.Message} """);
             }
             #endregion
         }
