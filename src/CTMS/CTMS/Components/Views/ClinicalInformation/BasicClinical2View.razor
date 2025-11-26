@@ -505,7 +505,11 @@
                                 @onclick=OnUploadBtn>
                             上傳影像
                         </button>
-                        <button class="btn flex-fill" style="background-color:#cfe2ff"
+                            <button class="btn flex-fill" style="background-color:#cfe2ff"
+                                    @onclick=OnUploadEditAnnotationsBtn>
+                                上傳修改標註
+                            </button>
+                            <button class="btn flex-fill" style="background-color:#cfe2ff"
                                 @onclick=OnPushToAIBtn>
                             AI推論
                         </button>
@@ -1224,6 +1228,10 @@
         {
             ShowUploadDicomDialog = true;
         }
+    }
+
+    void OnUploadEditAnnotationsBtn()
+    {
     }
 
     async Task OnPushToAIBtn()
