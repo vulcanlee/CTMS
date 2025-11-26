@@ -18,6 +18,8 @@ public class ButtonIdHelper
     public static string ButtonNameDetail => "明細";
     public static string ButtonIdEdit => "mdi mdi-18px mdi-square-edit-outline command-icon-width";
     public static string ButtonNameEdit => "修改";
+    public static string ButtonIdRetry => "mdi mdi-18px mdi-file-compare command-icon-width";
+    public static string ButtonNameRetry => "重試";
     public static string ButtonIdDelete => "mdi mdi-18px mdi-delete-forever e-danger command-icon-width";
     public static string ButtonNameDelete => "刪除";
     public static string ButtonIdRead => "mdi mdi-18px mdi-book-open-variant command-icon-width";

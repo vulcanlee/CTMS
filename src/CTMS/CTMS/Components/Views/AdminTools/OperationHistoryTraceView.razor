@@ -14,9 +14,18 @@
 @implements IDataGrid
 
 <style>
+    .multiline3-textbox textarea {
+        min-height: 120px !important;
+        height: 80px !important;
+        font-size: 24px !important; /* 新增字體大小 */
+        line-height: 1.4;
+    }
+
     .multiline-textbox textarea {
         min-height: 120px !important;
-        height: 120px;
+        height: 350px !important;
+        font-size: 24px !important; /* 新增字體大小 */
+        line-height: 1.4;
     }
 
     /* 包一層外框，針對該 Grid 內所有文字放大為 20px */
@@ -40,16 +49,23 @@
     .operation-history-edit-dialog .e-input-group,
     .operation-history-edit-dialog .e-control,
     .operation-history-edit-dialog .e-btn,
-    .operation-history-edit-dialog .validation-message,
-    .operation-history-edit-dialog .multiline-textbox textarea {
+    .operation-history-edit-dialog .validation-message {
         font-size: 20px !important;
-        line-height: 1.4;
+        line-height: 1.2;
     }
+
+        /* Dialog 內表單文字 20px */
+        .operation-history-edit-dialog .multiline-textbox textarea,
+        .operation-history-edit-dialog .multiline3-textbox textarea {
+            font-size: 28px !important;
+            line-height: 1.4;
+        }
+
 </style>
 
 <div class="operation-history-grid">
     <SfGrid @ref="Grid" TValue="OperationHistoryTraceAdapterModel"
-            AllowPaging="true" 
+            AllowPaging="true"
             Toolbar="ViewModel.Toolbaritems">
         <SfDataManager Adaptor="Adaptors.CustomAdaptor">
             <OperationHistoryTraceAdapter></OperationHistoryTraceAdapter>
@@ -74,12 +90,15 @@
             <GridColumn Field=@nameof(OperationHistoryTraceAdapterModel.CreateAt)
                         HeaderText="發生時間"
                         HideAtMedia="(min-width: 640px)" />
-            <GridColumn HeaderText="命令" Width="@MagicObjectHelper.DataGrid2個命令寬度" TextAlign="@TextAlign.Center"
+            <GridColumn HeaderText="命令" Width="@MagicObjectHelper.DataGrid3個命令寬度" TextAlign="@TextAlign.Center"
                         CustomAttributes="@(new Dictionary<string, object>(){ { "class", "p-0 m-0" }})">
                 <GridCommandColumns>
                     <GridCommandColumn Title="@ButtonIdHelper.ButtonNameEdit"
                                        ButtonOption="@(new CommandButtonOptions()
                                        { Content = "", IconCss = @ButtonIdHelper.ButtonIdEdit })" />
+                    <GridCommandColumn Title="@ButtonIdHelper.ButtonNameRetry"
+                                       ButtonOption="@(new CommandButtonOptions()
+                                       { Content = "", IconCss = @ButtonIdHelper.ButtonIdRetry })" />
                     <GridCommandColumn Title="@ButtonIdHelper.ButtonNameDelete"
                                        ButtonOption="@(new CommandButtonOptions()
                                        { Content = "", IconCss = ButtonIdHelper.ButtonIdDelete })" />
@@ -122,7 +141,10 @@
                         <div class="form-group col">
                             <label class="control-label">主題</label>
                             <SfTextBox @bind-Value="ViewModel.CurrentRecord.Name"
-                                       Placeholder="請輸入主題" />
+                                       Placeholder="請輸入主題"
+                                       Multiline="true"
+                                       RowCount="3"
+                                       CssClass="multiline3-textbox" />
                             <ValidationMessage For="@(() => ViewModel.CurrentRecord.Name)" />
                         </div>
                     </div>
@@ -133,7 +155,7 @@
                             <SfTextBox @bind-Value="ViewModel.CurrentRecord.Description"
                                        Placeholder="請輸入詳細說明"
                                        Multiline="true"
-                                       RowCount="5"
+                                       RowCount="10"
                                        CssClass="multiline-textbox" />
                             <ValidationMessage For="@(() => ViewModel.CurrentRecord.Description)" />
                         </div>
