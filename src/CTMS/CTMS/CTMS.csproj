@@ -7,31 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="UploadFiles\202509131009394306\**" />
-	  <Content Remove="UploadFiles\202509131009394306\**" />
-	  <EmbeddedResource Remove="UploadFiles\202509131009394306\**" />
-	  <None Remove="UploadFiles\202509131009394306\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Remove="Data\RandomListRuntime.json" />
 		<Content Remove="Data\SubjectNoGenerator.json" />
-		<Content Remove="UploadFiles\202509131306485168\Phase1Result\202509131246158036.json" />
-		<Content Remove="UploadFiles\202509131306485168\Phase2Result\202509131246158036.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="OperationContent\readme.md" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="Data\RandomList.xlsx">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="OperationContent\readme.md">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="PdfFiles\readme.md">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
@@ -60,19 +41,19 @@
 
 	<ItemGroup>
 		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 
@@ -83,36 +64,114 @@
 		<None Update="Data\Test for PE dashboard.xlsx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="DawnCache\readme.md">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="DownloadFiles\readme.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="UploadFiles\readme.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="DecompressFiles\readme.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="UploadTemp\readme.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Controllers\" />
-	  <Folder Include="Properties\PublishProfiles\" />
+		<Folder Include="Controllers\" />
+		<Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Data\RandomListRuntime.json" />
-	  <None Include="Data\SubjectNoGenerator.json" />
-	  <None Include="UploadFiles\202509131306485168\Phase1Result\202509131246158036.json" />
+		<None Include="Data\RandomListRuntime.json" />
+		<None Include="Data\SubjectNoGenerator.json" />
+	</ItemGroup>
+
+	<!-- ***** OperationContent ***** -->
+	<ItemGroup>
+		<Content Remove="OperationContent\**" />
+		<None Remove="OperationContent\**" />
+		<Compile Remove="OperationContent\**" />
+		<EmbeddedResource Remove="OperationContent\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Include="UploadFiles\202509131306485168\Phase2Result\202509131246158036.json" />
+		<Content Include="OperationContent\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- ***** UploadFiles ***** -->
+	<ItemGroup>
+		<Content Remove="UploadFiles\**" />
+		<None Remove="UploadFiles\**" />
+		<Compile Remove="UploadFiles\**" />
+		<EmbeddedResource Remove="UploadFiles\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="UploadFiles\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- ***** DawnCache ***** -->
+	<ItemGroup>
+		<Content Remove="DawnCache\**" />
+		<None Remove="DawnCache\**" />
+		<Compile Remove="DawnCache\**" />
+		<EmbeddedResource Remove="DawnCache\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="DawnCache\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
+	<!-- ***** DownloadFiles ***** -->
+	<ItemGroup>
+		<Content Remove="DownloadFiles\**" />
+		<None Remove="DownloadFiles\**" />
+		<Compile Remove="DownloadFiles\**" />
+		<EmbeddedResource Remove="DownloadFiles\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="DownloadFiles\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
+	<!-- ***** DecompressFiles ***** -->
+	<ItemGroup>
+		<Content Remove="DecompressFiles\**" />
+		<None Remove="DecompressFiles\**" />
+		<Compile Remove="DecompressFiles\**" />
+		<EmbeddedResource Remove="DecompressFiles\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="DecompressFiles\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
+	<!-- ***** UploadTemp ***** -->
+	<ItemGroup>
+		<Content Remove="UploadTemp\**" />
+		<None Remove="UploadTemp\**" />
+		<Compile Remove="UploadTemp\**" />
+		<EmbeddedResource Remove="UploadTemp\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="UploadTemp\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- ***** PdfFiles ***** -->
+	<ItemGroup>
+		<Content Remove="PdfFiles\**" />
+		<None Remove="PdfFiles\**" />
+		<Compile Remove="PdfFiles\**" />
+		<EmbeddedResource Remove="PdfFiles\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="PdfFiles\readme.md">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 </Project>
