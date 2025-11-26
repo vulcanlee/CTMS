@@ -94,7 +94,7 @@
                             </td>
                             <td class="item-cell ">
                                 <Button Type="AntDesign.ButtonType.Primary"
-                                        OnClick="()=>OnShowPicker(item)">
+                                        OnClick="()=>OnShowChangeSubjectNoPicker(item)">
                                     變更病歷號
                                 </Button>
                             </td>
@@ -225,7 +225,7 @@
         await JS.InvokeVoidAsync("downloadFileFromStream", Path.GetFileName(zipFileName), streamRef);
     }
 
-    async Task OnShowPicker(PatientAIKeyNameViewModel patientAIKeyNameViewModel)
+    async Task OnShowChangeSubjectNoPicker(PatientAIKeyNameViewModel patientAIKeyNameViewModel)
     {
         string keyName = patientAIKeyNameViewModel.KeyName;
         string subjectNo = patientAIKeyNameViewModel.SubjectNo;
@@ -385,6 +385,7 @@
 
         patient.JsonData = patientData.ToJson();
         patient.SubjectNo = willReplaceSubjectNo;
+        patient.Name = willReplaceSubjectNo;
         await PatientService.UpdateAsync(patient);
 
     }
