@@ -187,7 +187,7 @@
         MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
         .GetUserInformation(authStateProvider);
 
-        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory抽血檢驗血液, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory抽血檢驗血液);
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory問卷_健康, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory問卷_健康);
         #endregion
 
         InitData(false);

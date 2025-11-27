@@ -47,12 +47,15 @@ public class OperationHistoryTraceService
             .AsNoTracking();
 
         #region 進行搜尋動作
-        //if (!string.IsNullOrWhiteSpace(dataRequest.Search))
-        //{
-        //    DataSource = DataSource
-        //    .Where(x => x.Name.Contains(dataRequest.Search) ||
-        //    x.Account.Contains(dataRequest.Search));
-        //}
+        if (!string.IsNullOrWhiteSpace(dataRequest.Search))
+        {
+            DataSource = DataSource
+            .Where(x => x.Name.Contains(dataRequest.Search) ||
+            x.Category.Contains(dataRequest.Search) ||
+            x.SubjectCode.Contains(dataRequest.Search) ||
+            x.Description.Contains(dataRequest.Search) ||
+            x.Name.Contains(dataRequest.Search));
+        }
         #endregion
 
         #region 進行排序動作
