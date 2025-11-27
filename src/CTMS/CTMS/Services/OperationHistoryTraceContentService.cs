@@ -2,7 +2,9 @@
 using CTMS.DataModel.Models;
 using CTMS.EntityModel.Models;
 using CTMS.Share.Helpers;
+using JsonDiffPatchDotNet;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace CTMS.Services;
@@ -96,6 +98,72 @@ public class OperationHistoryTraceContentService
                 var gptService = scope.ServiceProvider.GetRequiredService<GptService>();
                 var logger = scope.ServiceProvider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<OperationHistoryTraceContentService>>();
                 logger.LogInformation($"開始呼叫 GPT 產生操作差異摘要 (ID={operationHistoryTrace.Id}) ...{Environment.NewLine}{builder.ToString()}");
+                try
+                {
+                    chatCompletions = await gptService.Get操作差異摘要Async(builder.ToString());
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"操作差異摘要生成發生異常 ID={operationHistoryTrace.Id}: {ex.Message}");
+                }
+
+                if (!string.IsNullOrWhiteSpace(chatCompletions))
+                {
+                    OperationHistoryTraceResponseModel operationHistoryTraceResponseModel = JsonConvert.DeserializeObject<OperationHistoryTraceResponseModel>(chatCompletions);
+                    if (operationHistoryTraceResponseModel != null && operationHistoryTraceResponseModel.IsChanged == true)
+                    {
+                        operationHistoryTrace.Name = operationHistoryTraceResponseModel.Summary;
+                        operationHistoryTrace.Description = operationHistoryTraceResponseModel.Detail;
+
+                        await operationHistoryTraceService.UpdateAsync(operationHistoryTrace);
+                        logger.LogInformation($"GPT 已回傳有效的操作差異摘要內容 (ID={operationHistoryTrace.Id}) Name={operationHistoryTrace.Name} ___ {operationHistoryTrace.Description}");
+                    }
+                    else
+                    {
+                        operationHistoryTrace.Name = "有儲存，但未有異動";
+                        operationHistoryTrace.Description = "操作差異摘要內容未標示未有變更";
+
+                        await operationHistoryTraceService.UpdateAsync(operationHistoryTrace);
+                        //logger.LogWarning($"GPT 回傳的操作差異摘要內容未標示未有變更 (ID={operationHistoryTrace.Id})");
+                    }
+                }
+                else
+                {
+                    logger.LogWarning($"GPT 未回傳有效的操作差異摘要內容 (ID={operationHistoryTrace.Id})");
+                }
+            }
+        });
+    }
+
+    public async Task Process操作差異摘要UpdateJson差異前置處理Async(OperationHistoryTrace operationHistoryTrace)
+    {
+        var task = Task.Run(async () =>
+        {
+            (string sourceObjectJson, string targetObjectJson) = await ReadAsync(operationHistoryTrace);
+
+            var jdp = new JsonDiffPatch();
+            var left = JToken.Parse(sourceObjectJson);
+            var right = JToken.Parse(targetObjectJson);
+            JToken patch = jdp.Diff(left, right);
+            var diffResult = patch.ToString();
+
+            StringBuilder builder = new StringBuilder();
+            string Prompt最初說明Instruction = MagicObjectHelper.Prompt最初說明Instruction.Replace("@@", operationHistoryTrace.Category);
+            builder.AppendLine(Prompt最初說明Instruction + Environment.NewLine);
+            builder.AppendLine(diffResult);
+            //builder.AppendLine(MagicObjectHelper.Prompt原始資料Instruction + Environment.NewLine);
+            //builder.AppendLine(sourceObjectJson + Environment.NewLine);
+            //builder.AppendLine(MagicObjectHelper.Prompt編輯後Instruction + Environment.NewLine);
+            //builder.AppendLine(targetObjectJson + Environment.NewLine);
+            builder.AppendLine(MagicObjectHelper.PromptOperationHistoryInstruction + Environment.NewLine);
+            string chatCompletions = string.Empty;
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var operationHistoryTraceService = scope.ServiceProvider.GetRequiredService<OperationHistoryTraceService>();
+                var gptService = scope.ServiceProvider.GetRequiredService<GptService>();
+                var logger = scope.ServiceProvider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<OperationHistoryTraceContentService>>();
+                var prompt = builder.ToString();
+                logger.LogInformation($"開始呼叫 GPT 產生操作差異摘要 (ID={operationHistoryTrace.Id}) ...{Environment.NewLine}{prompt}");
                 try
                 {
                     chatCompletions = await gptService.Get操作差異摘要Async(builder.ToString());
