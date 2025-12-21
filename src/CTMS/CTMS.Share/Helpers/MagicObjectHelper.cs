@@ -102,6 +102,7 @@
         public const string 耀瑄科技股份有限公司 = "耀瑄科技股份有限公司";
         public const string 癌別 = "癌別";
         public const string 院別 = "院別";
+        public const string 狀態 = "狀態";
 
         public const string Blood抽血檢驗血液 = "抽血檢驗血液";
         public const string Blood抽血檢驗生化 = "抽血檢驗生化";
@@ -155,6 +156,8 @@
         public const string HemoglobinHb血色素Hb = "血色素 Hb(g/dL)";
         public const string PlateletCount血小板Plt = "血小板 Plt (10^3/μL)";
 
+        public const string Patient狀態_收案 = "收案";
+        public const string Patient狀態_退出 = "退出";
         #endregion
 
         #region AIAgent 專用

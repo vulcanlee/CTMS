@@ -17,6 +17,7 @@ public class PatientAdapterModel : ICloneable
     public string 組別中文 { get; set; }
     public string AI評估 { get; set; }
     public string AI處理 { get; set; }
+    public string 狀態 { get; set; }
     public string JsonData { get; set; }
     public string SubjectNo { get; set; }
 

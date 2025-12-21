@@ -11,6 +11,7 @@ public class BrowseSearchingModel
 {
     public List<string> 院別 { get; set; } = new List<string>();
     public List<string> 癌別 { get; set; } = new List<string>();
+    public List<string> 狀態 { get; set; } = new List<string>();
     public string SearchKeyword { get; set; } = string.Empty;
     public int PageIndex { get; set; } = 1;
     public int PageSize { get; set; } = 6;

@@ -341,7 +341,19 @@ namespace CTMS
                     //dbContext.SaveChanges();
                     #endregion
 
-                    //migrationExamineService.MigrateExamineAsync().Wait();
+                    #region Patient 的狀態給予預設值
+                    var Patients = dbContext.Patient
+                        .AsNoTracking()
+                        .Where(x => string.IsNullOrEmpty(x.狀態))
+                        .ToList();
+                    foreach (var item in Patients)
+                    {
+                        item.狀態 = MagicObjectHelper.Patient狀態_收案;
+                        dbContext.Patient.Update(item);
+                    }
+                    dbContext.SaveChanges();
+                    #endregion
+
                 }
                 #endregion
 

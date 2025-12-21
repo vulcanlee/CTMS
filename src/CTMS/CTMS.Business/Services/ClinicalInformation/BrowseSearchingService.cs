@@ -19,9 +19,9 @@ namespace CTMS.Business.Services.ClinicalInformation
         {
             BrowseSearchingModel.院別.Clear();
             BrowseSearchingModel.癌別.Clear();
+            BrowseSearchingModel.狀態.Clear();
             BrowseSearchingModel.SearchKeyword = string.Empty;
             BrowseSearchingModel.PageIndex = 1;
-            BrowseSearchingModel.PageSize = 10;
             BrowseSearchingModel.Total = 0;
             BrowseSearchingModel.Current = 10;
         }
@@ -31,6 +31,14 @@ namespace CTMS.Business.Services.ClinicalInformation
             if (!string.IsNullOrEmpty(hospital) && !BrowseSearchingModel.院別.Contains(hospital))
             {
                 BrowseSearchingModel.院別.Add(hospital);
+            }
+        }
+
+        public void AddStatus(string Status)
+        {
+            if (!string.IsNullOrEmpty(Status) && !BrowseSearchingModel.狀態.Contains(Status))
+            {
+                BrowseSearchingModel.狀態.Add(Status);
             }
         }
 
@@ -47,6 +55,14 @@ namespace CTMS.Business.Services.ClinicalInformation
             if (!string.IsNullOrEmpty(hospital) && BrowseSearchingModel.院別.Contains(hospital))
             {
                 BrowseSearchingModel.院別.Remove(hospital);
+            }
+        }
+
+        public void RemoveStatus(string status)
+        {
+            if (!string.IsNullOrEmpty(status) && BrowseSearchingModel.狀態.Contains(status))
+            {
+                BrowseSearchingModel.狀態.Remove(status);
             }
         }
 

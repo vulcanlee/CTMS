@@ -2,6 +2,7 @@
 
 ```
 Add-Migration Init -Project CTMS.EntityModel -StartupProject CTMS 
+Add-Migration Add-Status -Project CTMS.EntityModel -StartupProject CTMS 
 ```
 
 * -Context <String>	

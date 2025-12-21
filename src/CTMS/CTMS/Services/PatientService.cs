@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using AntDesign;
+using AutoMapper;
 using CTMS.AdapterModels;
 using CTMS.Business.Factories;
 using CTMS.Business.Helpers;
 using CTMS.Business.Services.ClinicalInformation;
+using CTMS.DataModel.Dtos;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.DataModel.Models.Systems;
@@ -10,6 +12,7 @@ using CTMS.EntityModel;
 using CTMS.EntityModel.Models;
 using CTMS.Share.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.Xml;
 
 namespace CTMS.Services;
 
@@ -170,6 +173,13 @@ public class PatientService
                     continue;
                 }
             }
+            if (browseSearching.狀態.Count > 0)
+            {
+                if (!browseSearching.狀態.Contains(item.狀態))
+                {
+                    continue;
+                }
+            }
             if (!string.IsNullOrEmpty(browseSearching.SearchKeyword))
             {
                 if (!(item.癌別.Contains(browseSearching.SearchKeyword) ||
@@ -205,7 +215,7 @@ public class PatientService
         }
     }
 
-    public async Task<(VerifyRecordResult,PatientAdapterModel,string)> AddEmptyAsync(string hospital)
+    public async Task<(VerifyRecordResult, PatientAdapterModel, string)> AddEmptyAsync(string hospital)
     {
         try
         {
@@ -246,6 +256,7 @@ public class PatientService
                 AI評估 = MagicObjectHelper.NA,
                 AI處理 = MagicObjectHelper.NA,
                 組別 = MagicObjectHelper.NA,
+                狀態 = MagicObjectHelper.Patient狀態_收案,
             };
             await context.Patient
                 .AddAsync(itemParameter);
@@ -259,7 +270,7 @@ public class PatientService
         catch (Exception ex)
         {
             Logger.LogError(ex, "新增記錄發生例外異常");
-            return (VerifyRecordResultFactory.Build(false, "新增記錄發生例外異常", ex), null,null);
+            return (VerifyRecordResultFactory.Build(false, "新增記錄發生例外異常", ex), null, null);
         }
     }
 
@@ -401,6 +412,40 @@ public class PatientService
     async Task OhterDependencyData(PatientAdapterModel data)
     {
         await Task.Yield();
+    }
+
+   public async Task ChangeStatusData(PatientAdapterModel data)
+    {
+        Patient itemData = Mapper.Map<Patient>(data);
+        CleanTrackingHelper.Clean<Patient>(context);
+        Patient item = await context.Patient
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == data.Id);
+        if (item == null)
+        {
+            return;
+        }
+
+        if (data.狀態 == MagicObjectHelper.Patient狀態_收案)
+        {
+            // 變更為結案
+            itemData.狀態 = MagicObjectHelper.Patient狀態_退出;
+            CleanTrackingHelper.Clean<Patient>(context);
+            context.Entry(itemData).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            Logger.LogInformation($"修改病患資料，Id={itemData.Id}, Name={itemData.Name}, Subject No={itemData.Name} 狀態為 {MagicObjectHelper.Patient狀態_退出}");
+            CleanTrackingHelper.Clean<Patient>(context);
+        }
+        else if (data.狀態 == MagicObjectHelper.Patient狀態_退出)
+        {
+            // 變更為收案
+            itemData.狀態 = MagicObjectHelper.Patient狀態_收案;
+            CleanTrackingHelper.Clean<Patient>(context);
+            context.Entry(itemData).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            Logger.LogInformation($"修改病患資料，Id={itemData.Id}, Name={itemData.Name}, Subject No={itemData.Name} 狀態為 {MagicObjectHelper.Patient狀態_收案}");
+            CleanTrackingHelper.Clean<Patient>(context);
+        }
     }
 
     #endregion

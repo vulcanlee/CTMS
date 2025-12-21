@@ -26,7 +26,7 @@
     <!-- 功能按鈕區域 -->
     <div class="function-buttons">
         <button class="btn btn-add" @onclick="@(async () => await OnAddAsync())">
-            <span class="icon-plus">+</span> 新增病患資料
+            <span class="icon-plus">+</span> 新增受測者資料
         </button>
         <button class="btn btn-refresh" @onclick="@(async () => await OnRefreshAsync())">
             <span class="icon-refresh">↻</span> 重新整理
@@ -71,11 +71,23 @@
                         </SfDropDownList>
                     </div>
                 </div>
+                <div class="filter-group">
+                    <label>狀態</label>
+                    <div class="select-container">
+                        <SfDropDownList TValue="DropDownListDataModel" TItem="DropDownListDataModel"
+                                        Placeholder="請選擇狀態" DataSource="@List狀態"
+                                        @bind-Value="@Select狀態" class="flex-grow-1">
+                            <DropDownListFieldSettings Value="Key" Text="Name"></DropDownListFieldSettings>
+                            <DropDownListEvents TItem="DropDownListDataModel" TValue="DropDownListDataModel"
+                                                ValueChange="@On狀態Changed"></DropDownListEvents>
+                        </SfDropDownList>
+                    </div>
+                </div>
                 <div class="search-container">
                     <label></label>
                     <div class="search-box">
                         <span class="search-icon" @onclick=OnSetKeyword>🔍</span>
-                        <input type="text" placeholder="搜尋病患編號" @bind="Keyword" />
+                        <input type="text" placeholder="搜尋受測者編號" @bind="Keyword" />
                     </div>
                 </div>
             </div>
@@ -91,7 +103,7 @@
                     }
                 </div>
                 <div class="filter-result">
-                    <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的病患
+                    <span class="result-icon">✓</span> 共找到 @FoundCount 位符合條件的受測者
                 </div>
             </div>
         </div>
@@ -111,8 +123,7 @@
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.癌別)" Title="癌症類型" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.期別)" Title="期別" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.組別中文)" Title="組別" />
-            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI處理)" Title="處理" />
-            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.AI評估)" Title="AI評估" />
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.狀態)" Title="處理" />
             <ActionColumn Fixed="ColumnFixPlacement.Right" Title="操作">
                 <Space>
                     <SpaceItem>
@@ -121,13 +132,15 @@
                             <span class="icon-edit">✏️</span> 修改
                         </button>
                     </SpaceItem>
-                    @*                     <SpaceItem>
-                        <button class="btn-delete" title="刪除"
-                                @onclick="@(async () => await OnDeleteAsync(@context))">
-                            <span class="icon-delete">🗑️</span> 刪除
-                        </button>
-                    </SpaceItem>
- *@
+                    @if (isAdmin)
+                    {
+                        <SpaceItem>
+                            <button class="btn-edit" title="變更狀態"
+                                    @onclick="@(async () => await OnChangeStatusAsync(@context))">
+                                <span class="icon-edit">🔀</span> 變更狀態
+                            </button>
+                        </SpaceItem>
+                    }
                 </Space>
             </ActionColumn>
         </Table>
@@ -173,6 +186,8 @@
     DropDownListDataModel Select癌別 = new DropDownListDataModel();
     List<DropDownListDataModel> List院別 = new List<DropDownListDataModel>();
     DropDownListDataModel Select院別 = new DropDownListDataModel();
+    List<DropDownListDataModel> List狀態 = new List<DropDownListDataModel>();
+    DropDownListDataModel Select狀態 = new DropDownListDataModel();
     #endregion
 
     ITable table;
@@ -181,6 +196,7 @@
     int _total = 0;
 
     bool isShowFilter = false;
+    bool isAdmin = false;
 
     void On篩選條件()
     {
@@ -201,6 +217,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var checkResult = await AuthenticationStateHelper
+        .Check(authStateProvider, NavigationManager);
+        if (checkResult == true)
+        {
+            isAdmin = AuthenticationStateHelper.CheckIsAdmin();
+        }
+
         Keyword = BrowseSearchingService.BrowseSearchingModel.SearchKeyword;
         foreach (var item in BrowseSearchingService.BrowseSearchingModel.院別)
         {
@@ -215,6 +238,14 @@
             browseFilterCondition.Items.Add(new BrowseFilterConditionNode()
             {
                 Category = MagicObjectHelper.癌別,
+                Name = item,
+            });
+        }
+        foreach (var item in BrowseSearchingService.BrowseSearchingModel.狀態)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode()
+            {
+                Category = MagicObjectHelper.狀態,
                 Name = item,
             });
         }
@@ -252,6 +283,52 @@
         }
     }
 
+    async Task OnChangeStatusAsync(PatientAdapterModel patientAdapterModel)
+    {
+        bool confirmChange;
+
+        patientData.FromJson(patientAdapterModel.JsonData);
+        string subjectNo = patientData.臨床資訊.SubjectNo;
+        string FIGO = patientData.臨床資訊.FIGOStaging;
+
+        string stringFromTo = string.Empty;
+        if (patientAdapterModel.狀態 == MagicObjectHelper.Patient狀態_收案)
+        {
+            stringFromTo = $"{MagicObjectHelper.Patient狀態_收案} 變更為 {MagicObjectHelper.Patient狀態_退出}";
+        }
+        else if (patientAdapterModel.狀態 == MagicObjectHelper.Patient狀態_退出)
+        {
+            stringFromTo = $"{MagicObjectHelper.Patient狀態_退出} 變更為 {MagicObjectHelper.Patient狀態_收案}";
+        }
+
+        if (patientAdapterModel.狀態 == MagicObjectHelper.Patient狀態_收案)
+        {
+            var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+     "變更受測者狀態", $"確定要變更受測者 {patientData.臨床資訊.SubjectNo} 的狀態從 {stringFromTo} 嗎？", ConfirmMessageBox.HiddenAsync);
+            StateHasChanged(); // 更新 UI
+            confirmChange = await task;
+            if (confirmChange == true)
+            {
+                // 變更受測者狀態的邏輯
+                await PatientService.ChangeStatusData(patientAdapterModel);
+                await ReloadAsync();
+            }
+        }
+        else
+        {
+            var task = ConfirmMessageBox.ShowAsync("400px", "200px",
+"變更受測者狀態", $"確定要變更受測者 {patientData.臨床資訊.SubjectNo} 的狀態從 {stringFromTo} 嗎？", ConfirmMessageBox.HiddenAsync);
+            StateHasChanged(); // 更新 UI
+            confirmChange = await task;
+            if (confirmChange == true)
+            {
+                // 變更受測者狀態的邏輯
+                await PatientService.ChangeStatusData(patientAdapterModel);
+                await ReloadAsync();
+            }
+        }
+    }
+
     async Task OnEditAsync(PatientAdapterModel patientAdapterModel)
     {
         patientData.FromJson(patientAdapterModel.JsonData);
@@ -268,13 +345,13 @@
         string FIGO = patientData.臨床資訊.FIGOStaging;
         // 使用 ConfirmMessageBox 來確認刪除操作
         var task = ConfirmMessageBox.ShowAsync("400px", "200px",
-        "刪除病患資料", $"確定要刪除病患 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
+        "刪除受測者資料", $"確定要刪除受測者 {patientData.臨床資訊.SubjectNo} 的資料嗎？",
         ConfirmMessageBox.HiddenAsync);
         StateHasChanged(); // 更新 UI
         var confirmDelete = await task;
         if (confirmDelete == true)
         {
-            // 刪除病患資料的邏輯
+            // 刪除受測者資料的邏輯
             var deleteResult = await PatientService.DeleteAsync(patientAdapterModel.Id);
             if (deleteResult.Success)
             {
@@ -289,7 +366,7 @@
 
 
                 // 刪除成功，顯示提示訊息
-                // await MessageBox.ShowAsync("400px", "200px", "成功", "病患資料已成功刪除。", MessageBox.HiddenAsync);
+                // await MessageBox.ShowAsync("400px", "200px", "成功", "受測者資料已成功刪除。", MessageBox.HiddenAsync);
                 await ReloadAsync();
             }
             else
@@ -332,7 +409,7 @@
 
     async Task AddNewPatientAsync(string Hospital)
     {
-        // 呼叫新增病患的服務方法
+        // 呼叫新增受測者的服務方法
         (var result, PatientAdapterModel patientAdapterModel, string newSubjectNo) = await PatientService.AddEmptyAsync(Hospital);
         if (result.Success)
         {
@@ -348,7 +425,7 @@
             await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, newSubjectNo, MagicObjectHelper.OperationCategory建立紀錄, MagicObjectHelper.OperationMessage建立一筆受測者資料, $"新增受測者 {patientAdapterModel.醫院} 的 Subject Code : {newSubjectNo} "));
             #endregion
 
-            MessageBox.Show("400px", "200px", "成功", "病患資料已成功新增。", MessageBox.HiddenAsync);
+            MessageBox.Show("400px", "200px", "成功", "受測者資料已成功新增。", MessageBox.HiddenAsync);
             await ReloadAsync();
         }
         else
@@ -380,6 +457,12 @@
         }
         #endregion
 
+        #region 狀態
+        {
+            List狀態 = DropDownListDataService.Get狀態();
+        }
+        #endregion
+
     }
 
     async Task RemoveFilterAsync(BrowseFilterConditionNode item)
@@ -390,6 +473,8 @@
             BrowseSearchingService.RemoveHospital(item.Name);
         else if (item.Category == MagicObjectHelper.癌別)
             BrowseSearchingService.RemoveCancerType(item.Name);
+        else if (item.Category == MagicObjectHelper.狀態)
+            BrowseSearchingService.RemoveStatus(item.Name);
         await ReloadAsync();
     }
 
@@ -434,6 +519,24 @@
                 Name = args.Value.Name
             });
             BrowseSearchingService.AddCancerType(args.Value.Name);
+        }
+
+        await ReloadAsync();
+    }
+
+    async Task On狀態Changed(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
+    {
+        if (args.Value == null) return;
+
+        var item = browseFilterCondition.Items.FirstOrDefault(i => i.Name == args.Value.Name);
+        if (item == null)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode
+            {
+                Category = MagicObjectHelper.狀態,
+                Name = args.Value.Name
+            });
+            BrowseSearchingService.AddStatus(args.Value.Name);
         }
 
         await ReloadAsync();

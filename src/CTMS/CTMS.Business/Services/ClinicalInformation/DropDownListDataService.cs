@@ -50,6 +50,14 @@ namespace CTMS.Business.Services.ClinicalInformation
             return result;
         }
 
+        public List<DropDownListDataModel> Get狀態()
+        {
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"{MagicObjectHelper.Patient狀態_收案}", Name = $"{MagicObjectHelper.Patient狀態_收案}" });
+            result.Add(new DropDownListDataModel() { Key = $"{MagicObjectHelper.Patient狀態_退出}", Name = $"{MagicObjectHelper.Patient狀態_退出}" });
+            return result;
+        }
+
         public List<DropDownListDataModel> Get月經狀態()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
