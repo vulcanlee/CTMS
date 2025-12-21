@@ -311,10 +311,18 @@
             {
                 // 變更受測者狀態的邏輯
                 await PatientService.ChangeStatusData(patientAdapterModel);
+
+                #region 更新操作日誌
+                MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+                .GetUserInformation(authStateProvider);
+
+                await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, subjectNo, MagicObjectHelper.OperationCategory變更狀態, MagicObjectHelper.OperationMessage受測者狀態變動, $"修改受測者狀態資料發生變動，Subject No={subjectNo} 狀態為 {MagicObjectHelper.Patient狀態_退出}"));
+                #endregion
+
                 await ReloadAsync();
             }
         }
-        else
+        else if (patientAdapterModel.狀態 == MagicObjectHelper.Patient狀態_退出)
         {
             var task = ConfirmMessageBox.ShowAsync("400px", "200px",
 "變更受測者狀態", $"確定要變更受測者 {patientData.臨床資訊.SubjectNo} 的狀態從 {stringFromTo} 嗎？", ConfirmMessageBox.HiddenAsync);
@@ -324,6 +332,13 @@
             {
                 // 變更受測者狀態的邏輯
                 await PatientService.ChangeStatusData(patientAdapterModel);
+
+                #region 更新操作日誌
+                MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
+                .GetUserInformation(authStateProvider);
+
+                await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, subjectNo, MagicObjectHelper.OperationCategory變更狀態, MagicObjectHelper.OperationMessage受測者狀態變動, $"修改受測者狀態資料發生變動，Subject No={subjectNo} 狀態為 {MagicObjectHelper.Patient狀態_收案}"));
+                #endregion
                 await ReloadAsync();
             }
         }

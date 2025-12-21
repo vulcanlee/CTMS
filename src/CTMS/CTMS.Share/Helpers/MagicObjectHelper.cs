@@ -180,12 +180,14 @@
 
         public const string OperationMessage使用者登入操作 = "使用者登入操作";
         public const string OperationMessage建立一筆受測者資料 = "建立一筆受測者資料";
+        public const string OperationMessage受測者狀態變動 = "受測者狀態變動";
         public const string OperationMessage完成影像上傳 = "完成影像上傳";
         public const string OperationMessageAI推論 = "進行AI推論";
         public const string OperationMessage推論狀態呈現 = "進行推論狀態呈現檢查";
 
         public const string OperationCategory登入 = "登入";
         public const string OperationCategory建立紀錄 = "新增";
+        public const string OperationCategory變更狀態 = "變更狀態";
         public const string OperationCategoryVisitCode = "VisitCode";
         public const string OperationCategory臨床資訊 = "臨床資訊";
         public const string OperationCategory臨床資料手術 = "臨床資料 手術";
