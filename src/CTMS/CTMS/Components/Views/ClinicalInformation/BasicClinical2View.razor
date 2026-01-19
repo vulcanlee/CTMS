@@ -1249,7 +1249,10 @@
         string preCheckMessage = await AIIntegrateService.PushToAICheck(patient, patientData, dicomImage);
         if (string.IsNullOrEmpty(preCheckMessage) == false)
         {
+            StateHasChanged();
+            await Task.Delay(100);
             MessageBox.Show("400px", "200px", "錯誤", preCheckMessage, MessageBox.HiddenAsync);
+            StateHasChanged();
             return;
         }
 
