@@ -499,9 +499,25 @@ public class SurveySideEffectsService
     #endregion
 
     #region Update副作用 1
+    /// <summary>
+    /// 更新「化療副作用問卷－第一部分」所有副作用項目的顯示狀態。
+    /// </summary>
+    /// <param name="main臨床資料">
+    /// 包含所有問卷與就診紀錄的主臨床資料物件，內含化療副作用問卷回答結果。
+    /// </param>
+    /// <param name="surveySideEffects副作用Node">
+    /// 前端目前顯示的「化療副作用(第1部分)」節點資料，
+    /// 會依據 <paramref name="main臨床資料"/> 中的作答結果更新各副作用項目的 Grade 樣式。
+    /// </param>
     public void Update副作用1All(Main臨床資料 main臨床資料,
         Survey1SideEffects副作用Node surveySideEffects副作用Node)
     {
+        // 依序更新各副作用項目：噁心、嘔吐、口腔炎、腹瀉、便秘、食慾不振
+        // 每個子方法會：
+        // 1. 依就診代碼(VisitCode)從 main臨床資料 中找到對應的化療副作用問卷節點。
+        // 2. 以題目文字比對方式取得對應問題 (Question)。
+        // 3. 根據該問題的作答內容(Answer)決定要標記哪一個 Grade 為「已選取」 ，
+        //    並呼叫 ResetCssClassFound() 以更新前端樣式。
         Update副作用Nausea噁心(main臨床資料, surveySideEffects副作用Node);
         Update副作用Vomiting嘔吐(main臨床資料, surveySideEffects副作用Node);
         Update副作用MucositisOral口腔炎(main臨床資料, surveySideEffects副作用Node);
@@ -672,14 +688,16 @@ public class SurveySideEffectsService
 
         if (question == null) return;
 
-        if (question.Answer == "2")
-            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
+        if (question.Answer == "1") { }
+        //surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade1.ResetCssClassFound();
+        else if (question.Answer == "2")
             surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
+        else if (question.Answer == "3")
             surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
+        else if (question.Answer == "4")
             surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade4.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade5.ResetCssClassFound();
     }
 
     public void Update副作用Fatigue疲倦(Main臨床資料 main臨床資料,
@@ -695,12 +713,16 @@ public class SurveySideEffectsService
 
         if (question == null) return;
 
-        if (question.Answer == "2")
-            surveySideEffects.Fatigue疲倦.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
+        if (question.Answer == "1") { }
+        //surveySideEffects.Fatigue疲倦.Grade1.ResetCssClassFound();
+        else if (question.Answer == "2")
             surveySideEffects.Fatigue疲倦.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
+        else if (question.Answer == "3")
             surveySideEffects.Fatigue疲倦.Grade3.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Fatigue疲倦.Grade4.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.Fatigue疲倦.Grade5.ResetCssClassFound();
     }
 
     public void Update副作用SkinRash紅疹(Main臨床資料 main臨床資料,
@@ -716,14 +738,16 @@ public class SurveySideEffectsService
 
         if (question == null) return;
 
-        if (question.Answer == "2")
-            surveySideEffects.SkinRash紅疹.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
+        if (question.Answer == "1") { }
+        //surveySideEffects.SkinRash紅疹.Grade1.ResetCssClassFound();
+        else if (question.Answer == "2")
             surveySideEffects.SkinRash紅疹.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
+        else if (question.Answer == "3")
             surveySideEffects.SkinRash紅疹.Grade3.ResetCssClassFound();
-        else if (question.Answer == "5")
+        else if (question.Answer == "4")
             surveySideEffects.SkinRash紅疹.Grade4.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.SkinRash紅疹.Grade5.ResetCssClassFound();
     }
 
     public void Update副作用HandFootSyndrome手足症候群(Main臨床資料 main臨床資料,
@@ -739,12 +763,16 @@ public class SurveySideEffectsService
 
         if (question == null) return;
 
-        if (question.Answer == "2")
-            surveySideEffects.HandFootSyndrome手足症候群.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
+        if (question.Answer == "1") { }
+        //surveySideEffects.HandFootSyndrome手足症候群.Grade1.ResetCssClassFound();
+        else if (question.Answer == "2")
             surveySideEffects.HandFootSyndrome手足症候群.Grade2.ResetCssClassFound();
-        else if (question.Answer == "4")
+        else if (question.Answer == "3")
             surveySideEffects.HandFootSyndrome手足症候群.Grade3.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.HandFootSyndrome手足症候群.Grade4.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.HandFootSyndrome手足症候群.Grade5.ResetCssClassFound();
     }
 
     public void Update副作用Alopecia掉髮(Main臨床資料 main臨床資料,
@@ -760,10 +788,16 @@ public class SurveySideEffectsService
 
         if (question == null) return;
 
-        if (question.Answer == "2")
-            surveySideEffects.Alopecia掉髮.Grade1.ResetCssClassFound();
-        else if (question.Answer == "3")
+        if (question.Answer == "1") { }
+        //surveySideEffects.Alopecia掉髮.Grade1.ResetCssClassFound();
+        else if (question.Answer == "2")
             surveySideEffects.Alopecia掉髮.Grade2.ResetCssClassFound();
+        else if (question.Answer == "3")
+            surveySideEffects.Alopecia掉髮.Grade3.ResetCssClassFound();
+        else if (question.Answer == "4")
+            surveySideEffects.Alopecia掉髮.Grade4.ResetCssClassFound();
+        else if (question.Answer == "5")
+            surveySideEffects.Alopecia掉髮.Grade5.ResetCssClassFound();
     }
     #endregion
 
