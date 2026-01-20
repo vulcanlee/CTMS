@@ -128,6 +128,7 @@ public partial class Survey1SideEffectsView
 
         var item = Main臨床資料.SurveySideEffects副作用1.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
 
+        SurveySideEffectsService.Init1All(item);
         SurveySideEffectsService.Update副作用1All(Main臨床資料, item);
 
         patientAdapterModel.JsonData = patientData.ToJson();

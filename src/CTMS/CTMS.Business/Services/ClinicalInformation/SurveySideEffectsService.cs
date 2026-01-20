@@ -691,13 +691,13 @@ public class SurveySideEffectsService
         if (question.Answer == "1") { }
         //surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade1.ResetCssClassFound();
         else if (question.Answer == "2")
-            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade2.ResetCssClassFound();
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade1.ResetCssClassFound();
         else if (question.Answer == "3")
-            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade3.ResetCssClassFound();
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade2.ResetCssClassFound();
         else if (question.Answer == "4")
-            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade4.ResetCssClassFound();
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade3.ResetCssClassFound();
         else if (question.Answer == "5")
-            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade5.ResetCssClassFound();
+            surveySideEffects.PeripheralNeuropathy周邊感覺神經異常.Grade4.ResetCssClassFound();
     }
 
     public void Update副作用Fatigue疲倦(Main臨床資料 main臨床資料,
@@ -716,13 +716,13 @@ public class SurveySideEffectsService
         if (question.Answer == "1") { }
         //surveySideEffects.Fatigue疲倦.Grade1.ResetCssClassFound();
         else if (question.Answer == "2")
-            surveySideEffects.Fatigue疲倦.Grade2.ResetCssClassFound();
+            surveySideEffects.Fatigue疲倦.Grade1.ResetCssClassFound();
         else if (question.Answer == "3")
-            surveySideEffects.Fatigue疲倦.Grade3.ResetCssClassFound();
+            surveySideEffects.Fatigue疲倦.Grade2.ResetCssClassFound();
         else if (question.Answer == "4")
-            surveySideEffects.Fatigue疲倦.Grade4.ResetCssClassFound();
+            surveySideEffects.Fatigue疲倦.Grade3.ResetCssClassFound();
         else if (question.Answer == "5")
-            surveySideEffects.Fatigue疲倦.Grade5.ResetCssClassFound();
+            surveySideEffects.Fatigue疲倦.Grade4.ResetCssClassFound();
     }
 
     public void Update副作用SkinRash紅疹(Main臨床資料 main臨床資料,
@@ -741,13 +741,13 @@ public class SurveySideEffectsService
         if (question.Answer == "1") { }
         //surveySideEffects.SkinRash紅疹.Grade1.ResetCssClassFound();
         else if (question.Answer == "2")
-            surveySideEffects.SkinRash紅疹.Grade2.ResetCssClassFound();
+            surveySideEffects.SkinRash紅疹.Grade1.ResetCssClassFound();
         else if (question.Answer == "3")
-            surveySideEffects.SkinRash紅疹.Grade3.ResetCssClassFound();
+            surveySideEffects.SkinRash紅疹.Grade2.ResetCssClassFound();
         else if (question.Answer == "4")
-            surveySideEffects.SkinRash紅疹.Grade4.ResetCssClassFound();
+            surveySideEffects.SkinRash紅疹.Grade3.ResetCssClassFound();
         else if (question.Answer == "5")
-            surveySideEffects.SkinRash紅疹.Grade5.ResetCssClassFound();
+            surveySideEffects.SkinRash紅疹.Grade4.ResetCssClassFound();
     }
 
     public void Update副作用HandFootSyndrome手足症候群(Main臨床資料 main臨床資料,
@@ -766,13 +766,13 @@ public class SurveySideEffectsService
         if (question.Answer == "1") { }
         //surveySideEffects.HandFootSyndrome手足症候群.Grade1.ResetCssClassFound();
         else if (question.Answer == "2")
-            surveySideEffects.HandFootSyndrome手足症候群.Grade2.ResetCssClassFound();
+            surveySideEffects.HandFootSyndrome手足症候群.Grade1.ResetCssClassFound();
         else if (question.Answer == "3")
-            surveySideEffects.HandFootSyndrome手足症候群.Grade3.ResetCssClassFound();
+            surveySideEffects.HandFootSyndrome手足症候群.Grade2.ResetCssClassFound();
         else if (question.Answer == "4")
-            surveySideEffects.HandFootSyndrome手足症候群.Grade4.ResetCssClassFound();
+            surveySideEffects.HandFootSyndrome手足症候群.Grade3.ResetCssClassFound();
         else if (question.Answer == "5")
-            surveySideEffects.HandFootSyndrome手足症候群.Grade5.ResetCssClassFound();
+            surveySideEffects.HandFootSyndrome手足症候群.Grade4.ResetCssClassFound();
     }
 
     public void Update副作用Alopecia掉髮(Main臨床資料 main臨床資料,
@@ -791,13 +791,13 @@ public class SurveySideEffectsService
         if (question.Answer == "1") { }
         //surveySideEffects.Alopecia掉髮.Grade1.ResetCssClassFound();
         else if (question.Answer == "2")
-            surveySideEffects.Alopecia掉髮.Grade2.ResetCssClassFound();
+            surveySideEffects.Alopecia掉髮.Grade1.ResetCssClassFound();
         else if (question.Answer == "3")
-            surveySideEffects.Alopecia掉髮.Grade3.ResetCssClassFound();
+            surveySideEffects.Alopecia掉髮.Grade2.ResetCssClassFound();
         else if (question.Answer == "4")
-            surveySideEffects.Alopecia掉髮.Grade4.ResetCssClassFound();
+            surveySideEffects.Alopecia掉髮.Grade3.ResetCssClassFound();
         else if (question.Answer == "5")
-            surveySideEffects.Alopecia掉髮.Grade5.ResetCssClassFound();
+            surveySideEffects.Alopecia掉髮.Grade4.ResetCssClassFound();
     }
     #endregion
 
