@@ -23,29 +23,29 @@
 
     <div class="page-body">
         <MudTabs PanelClass="pa-6">
-            <MudTabPanel Text="化療副作用">
-                <ChemotherapySideEffectsSurveyView Code="@Code" />
+            <MudTabPanel Text="化療副作用" Icon="@Icon化療副作用">
+                <ChemotherapySideEffectsSurveyView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="標靶副作用">
-                <TargetedTherapySideEffectsView Code="@Code" />
+            <MudTabPanel Text="標靶副作用" Icon="@Icon標靶副作用">
+                <TargetedTherapySideEffectsView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="放療副作用">
-                <RadiotherapySideEffectsView Code="@Code" />
+            <MudTabPanel Text="放療副作用" Icon="@Icon放療副作用">
+                <RadiotherapySideEffectsView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="WHOQOL 問卷">
-                <WhoqolQuestionnaireView Code="@Code" />
+            <MudTabPanel Text="WHOQOL 問卷" Icon="@IconWHOQOL問卷">
+                <WhoqolQuestionnaireView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="個人史">
-                <PersonalHistorySurveyView Code="@Code" />
+            <MudTabPanel Text="個人史" Icon="@Icon個人史">
+                <PersonalHistorySurveyView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="家族史">
-                <FamilyHistorySurveyView Code="@Code" />
+            <MudTabPanel Text="家族史" Icon="@Icon家族史">
+                <FamilyHistorySurveyView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="生活品質">
-                <QualityOfLifeSurveyView Code="@Code" />
+            <MudTabPanel Text="生活品質" Icon="@Icon生活品質">
+                <QualityOfLifeSurveyView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
-            <MudTabPanel Text="健康">
-                <HealthSurveyView Code="@Code" />
+            <MudTabPanel Text="健康" Icon="@Icon健康">
+                <HealthSurveyView Code="@Code" SurveyTabDisplayModelChanged="OnSurveyTabDisplayModelChanged" />
             </MudTabPanel>
         </MudTabs>
     </div>
@@ -71,6 +71,15 @@
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string RoleMessage = string.Empty;
 
+    string Icon化療副作用 = string.Empty;
+    string Icon標靶副作用 = string.Empty;
+    string Icon放療副作用 = string.Empty;
+    string IconWHOQOL問卷 = string.Empty;
+    string Icon個人史 = string.Empty;
+    string Icon家族史 = string.Empty;
+    string Icon生活品質 = string.Empty;
+    string Icon健康 = string.Empty;
+
     protected override void OnInitialized()
     {
         int foo = 1;
@@ -94,5 +103,17 @@
     void OnBack()
     {
         NavigationManager.NavigateTo($"/BasicClinical/{Code}");
+    }
+
+    private void OnSurveyTabDisplayModelChanged(SurveyTabDisplayModel args)
+    {
+        Icon化療副作用 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName化療副作用)?.CircleIcon;
+        Icon標靶副作用 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName標靶副作用)?.CircleIcon;
+        Icon放療副作用 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName放療副作用)?.CircleIcon;
+        IconWHOQOL問卷 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyNameWHOQOL問卷)?.CircleIcon;
+        Icon個人史 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName個人史)?.CircleIcon;
+        Icon家族史 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName家族史)?.CircleIcon;
+        Icon生活品質 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName生活品質)?.CircleIcon;
+        Icon健康 = args.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName健康)?.CircleIcon;
     }
 }

@@ -11,7 +11,7 @@ public class Icons
 
 """;
 
-    public string GetCircleIcon(Syncfusion.Drawing.Color color)
+    public static string GetCircleIcon(Syncfusion.Drawing.Color color)
     {
         //紅燈:
         //有新增頁面但尚未填入任何資料
@@ -39,5 +39,32 @@ public class Icons
             result = Circle_Red.Replace("#ff0000", "#808080");
         }
         return result;
+    }
+
+    public static string SetCircleColor(string completionPercent)
+    {
+        string CircleIcon = "";
+        if (string.IsNullOrEmpty(completionPercent))
+        {
+            CircleIcon = CTMS.Helper.Icons.GetCircleIcon(Color.Gray);
+        }
+        else
+        {
+            float percent = 0;
+            float.TryParse(completionPercent, out percent);
+            if (percent < 50)
+            {
+                CircleIcon = CTMS.Helper.Icons.GetCircleIcon(Color.Red);
+            }
+            else if (percent < 100)
+            {
+                CircleIcon = CTMS.Helper.Icons.GetCircleIcon(Color.Yellow);
+            }
+            else if (percent >= 100)
+            {
+                CircleIcon = CTMS.Helper.Icons.GetCircleIcon(Color.Green);
+            }
+        }
+        return CircleIcon;
     }
 }

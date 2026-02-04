@@ -10,11 +10,12 @@
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
 @inject DropDownListDataService DropDownListDataService
-@inject SurveyService SurveyService
 
 @inject OperationHistoryTraceService OperationHistoryTraceService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
+@inject SurveyService SurveyService
+@inject SurveyTabDisplayHelper SurveyTabDisplayHelper
 @using Newtonsoft.Json
 
 <PageTitle>問卷 化療副作用</PageTitle>
@@ -69,7 +70,7 @@
                                     string title = $"{itemOption.Value} {itemOption.Label}";
 
                                     <div @onclick="() =>
-                                                                                                                                                               OnOptionChange(item, item.Options, itemOption)">
+                                                                                                                                                                                                                                                 OnOptionChange(item, item.Options, itemOption)">
                         <span class="mx-3 mdi mdi-24px @itemOption.CheckBoxIcon command-icon-width cursor-pointer"></span>
                         <span class="card-text my-2 cursor-pointer">@title</span>
                     </div>
@@ -111,6 +112,8 @@
 @code {
     [Parameter]
     public string Code { get; set; }
+    [Parameter]
+    public EventCallback<SurveyTabDisplayModel> SurveyTabDisplayModelChanged { get; set; }
 
     PatientData patientData = new();
     PatientAdapterModel patientAdapterModel = new();
@@ -133,15 +136,18 @@
     string sourceObjectJson = "{}";
     string targetObjectJson = "{}";
 
+    SurveyTabDisplayModel surveyTabDisplayModel;
+
     protected override async Task OnInitializedAsync()
     {
+        surveyTabDisplayModel = SurveyTabDisplayHelper.Build();
         patientAdapterModel = await PatientService.GetAsync(Code);
         patientData.FromJson(patientAdapterModel.JsonData);
 
-        InitData(true);
+       await InitDataAsync(true);
     }
 
-    void InitData(bool isFirst = true)
+    async Task InitDataAsync(bool isFirst = true)
     {
         header = patientData.臨床資料.Survey化療副作用;
         if (isFirst)
@@ -172,6 +178,9 @@
                 data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
             }
         }
+
+        SurveyTabDisplayHelper.Get(patientData, SelectVisitCode, surveyTabDisplayModel);
+        await SurveyTabDisplayModelChanged.InvokeAsync(surveyTabDisplayModel);
     }
 
     void OnChangeEditMode()
@@ -195,9 +204,9 @@
         await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory問卷_化療副作用, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory問卷_化療副作用);
         #endregion
 
-        InitData(false);
+        await InitDataAsync(false);
         editMode = false;
-      
+
         MessageBox.Show("400px", "200px", "資訊", "儲存成功", MessageBox.HiddenAsync);
     }
 
@@ -205,7 +214,7 @@
     {
         patientData.FromJson(patientAdapterModel.JsonData);
         editMode = false;
-        InitData(false);
+        await InitDataAsync(false);
     }
 
     void OnOptionChange(Question question, List<Option> options, Option option)

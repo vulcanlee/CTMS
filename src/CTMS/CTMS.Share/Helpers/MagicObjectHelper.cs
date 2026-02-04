@@ -215,6 +215,15 @@
         public const string OperationCategoryAI推論 = "AI推論";
         public const string OperationCategory推論狀態呈現 = "推論狀態呈現";
 
+        public const string SurveyName化療副作用 = "化療副作用";
+        public const string SurveyName標靶副作用 = "標靶副作用";
+        public const string SurveyName放療副作用 = "放療副作用";
+        public const string SurveyNameWHOQOL問卷 = "WHOQOL問卷";
+        public const string SurveyName個人史 = "個人史";
+        public const string SurveyName家族史 = "家族史";
+        public const string SurveyName生活品質 = "生活品質";
+        public const string SurveyName健康 = "健康";
+
         public const string Prompt最初說明Instruction = "這是一個 @@ 的紀錄編修內容";
         public const string Prompt原始資料Instruction = "原始資料";
         public const string Prompt編輯後Instruction = "編輯後";
