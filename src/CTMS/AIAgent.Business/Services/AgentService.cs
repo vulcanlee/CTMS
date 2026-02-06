@@ -631,12 +631,22 @@ namespace AIAgent.Services
             Agentsetting agentsetting)
         {
             string queueFolderPath = agentsetting.QueueFolderPath;
+            string completeQueueName = agentsetting.CompleteQueueName;
             string inBoundQueueName = agentsetting.InBoundQueueName;
+            string completeQueuePath = Path.Combine(queueFolderPath, completeQueueName);
             string inBoundQueuePath = Path.Combine(queueFolderPath, inBoundQueueName);
             string patientFolder = Path.Combine(inBoundQueuePath, patientAIInfo.KeyName);
             string sourceDicomFilename = Path.GetFileName(patientAIInfo.DicomFilename);
             patientAIInfo.DestionatioDicomFilename = Path.Combine(patientFolder, sourceDicomFilename);
             patientAIInfo.DestionatioPatientJSONFilename = Path.Combine(patientFolder, $"{MagicObjectHelper.PrefixPatientData}.json");
+
+            #region 清除 Completion Queue
+            string targetCompletionFolder = Path.Combine(completeQueuePath, patientAIInfo.KeyName);
+            if(Directory.Exists(targetCompletionFolder))
+            {
+                Directory.Delete(targetCompletionFolder, true);
+            }
+            #endregion
 
             #region 確保目錄要存在
             if (!Directory.Exists(inBoundQueuePath))
