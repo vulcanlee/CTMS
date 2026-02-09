@@ -134,11 +134,16 @@ public class AIIntegrateService
         return result;
     }
 
-    public async Task<InputCsvModel> GetInputCsv(string KeyName)
+    public async Task<InputCsvModel> GetInputCsv(string KeyName, string rootPath="")
     {
         InputCsvModel result = new();
-        var uploadFilesPath = MagicObjectHelper.UploadFinalPath;
-        var destinationKeyNamePath = Path.Combine(uploadFilesPath, KeyName, "Phase3Result", "input.csv");
+        string uploadFilesPath = MagicObjectHelper.UploadFinalPath;
+        string destinationKeyNamePath = Path.Combine(uploadFilesPath, KeyName, "Phase3Result", "input.csv");
+
+        if (string.IsNullOrEmpty(rootPath) == false)
+        {
+            destinationKeyNamePath = Path.Combine(rootPath, KeyName, "Phase3Result", "input.csv");
+        }
 
         if (!(File.Exists(destinationKeyNamePath)))
             return result;
