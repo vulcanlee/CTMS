@@ -630,6 +630,7 @@ namespace AIAgent.Services
         public void CreateInBound(PatientAIInfo patientAIInfo,
             Agentsetting agentsetting)
         {
+            logger.LogInformation("CreateInBound for {KeyName}", patientAIInfo.KeyName);
             string queueFolderPath = agentsetting.QueueFolderPath;
             string completeQueueName = agentsetting.CompleteQueueName;
             string inBoundQueueName = agentsetting.InBoundQueueName;
@@ -641,6 +642,7 @@ namespace AIAgent.Services
             patientAIInfo.DestionatioPatientJSONFilename = Path.Combine(patientFolder, $"{MagicObjectHelper.PrefixPatientData}.json");
 
             #region 清除 Completion Queue
+            logger.LogInformation("Clear Completion Queue for {KeyName}", patientAIInfo.KeyName);
             string targetCompletionFolder = Path.Combine(completeQueuePath, patientAIInfo.KeyName);
             if(Directory.Exists(targetCompletionFolder))
             {
@@ -660,19 +662,23 @@ namespace AIAgent.Services
 
             #endregion
 
+            logger.LogInformation("Copy DICOM for {KeyName}", patientAIInfo.KeyName);
             var destinationFile = Path.Combine(agentsetting.DicomFolderPath, $"{patientAIInfo.KeyName}.dcm");
             var foo = Path.Combine(patientFolder, patientAIInfo.DestionatioDicomFilename);
             File.Copy(patientAIInfo.DicomFilename,
                 destinationFile, true);
+           
             string oldFilename = Path.GetFileName(patientAIInfo.DestionatioDicomFilename);
             string newFilename = Path.GetFileName(destinationFile);
 
             patientAIInfo.DicomFilename = destinationFile;
             patientAIInfo.DestionatioDicomFilename = patientAIInfo.DestionatioDicomFilename.Replace(oldFilename, newFilename);
 
+            logger.LogInformation("Copy DICOM to {Destination} for {KeyName}", patientAIInfo.DestionatioDicomFilename, patientAIInfo.KeyName);
             File.Copy(destinationFile, patientAIInfo.DestionatioDicomFilename, true);
 
             var json = patientAIInfo.ToJson();
+            logger.LogInformation("Write Patient JSON for {KeyName}", patientAIInfo.KeyName);
             File.WriteAllText(patientAIInfo.DestionatioPatientJSONFilename, json, Encoding.UTF8);
         }
         #endregion
