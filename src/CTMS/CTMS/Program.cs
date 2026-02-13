@@ -109,6 +109,7 @@ namespace CTMS
                 builder.Services.AddScoped<SurveyTabDisplayHelper>();
                 builder.Services.AddScoped<VisitCodeHelper>();
                 builder.Services.AddScoped<VisitCodeCollectionHelper>();
+                builder.Services.AddScoped<DashboardService>();
                 builder.Services.AddTransient<RolePermissionService>();
                 builder.Services.AddHttpContextAccessor();
                 builder.Services.AddSingleton<RequestInformation>();

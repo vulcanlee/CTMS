@@ -4,6 +4,7 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject RandomListService RandomListService
 @inject SubjectNoGeneratorService SubjectNoGeneratorService
+@inject DashboardService DashboardService
 
 <div class="logo-container">
     <img src="images/splash.png" class="responsive-logo" alt="Logo" />
@@ -17,6 +18,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DashboardService.Build();
+        await DashboardService.RefreshAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
