@@ -1,0 +1,19 @@
+﻿@page "/Dashboard"
+@using CTMS.DataModel.Models.Systems
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+@inject Microsoft.Extensions.Options.IOptions<CTMSSettings> options
+
+@inject RandomListService RandomListService
+@inject RandomListService SubjectNoGeneratorService
+
+<PageTitle>瀏覽</PageTitle>
+
+<DashboardView />
