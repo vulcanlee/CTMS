@@ -1,27 +1,30 @@
 ﻿// Chart.js default settings (global scope so toggleTheme can access it)
 function updateChartDefaults() {
-    const isLightMode = document.body.classList.contains('light-mode');
+    // 取得 id 為 dashboard-container 的元素
+    const dashboardContainer = document.getElementById('dashboard-container');
+
+    const isLightMode = document.getElementById('dashboard-container').classList.contains('light-mode');
     Chart.defaults.color = isLightMode ? '#bdc3c7' : '#999';
     Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
 }
 
 // Helper functions (global scope)
 function getGridColor() {
-    return document.body.classList.contains('light-mode') ? '#f0f0f0' : '#4a4a4a';
+    return document.getElementById('dashboard-container').classList.contains('light-mode') ? '#f0f0f0' : '#4a4a4a';
 }
 function getBorderColor() {
-    return document.body.classList.contains('light-mode') ? '#f0f0f0' : '#4a4a4a';
+    return document.getElementById('dashboard-container').classList.contains('light-mode') ? '#f0f0f0' : '#4a4a4a';
 }
 function getTickColor() {
-    return document.body.classList.contains('light-mode') ? '#bdc3c7' : '#999';
+    return document.getElementById('dashboard-container').classList.contains('light-mode') ? '#bdc3c7' : '#999';
 }
 function getTooltipBg() {
-    return document.body.classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
+    return document.getElementById('dashboard-container').classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
 }
 
 // Theme Toggle Function
 function toggleTheme() {
-    const body = document.body;
+    const body = document.getElementById('dashboard-container');
     const themeIcon = document.querySelector('.theme-icon');
 
     body.classList.toggle('light-mode');
@@ -33,7 +36,7 @@ function toggleTheme() {
         themeIcon.textContent = '☀️';
         localStorage.setItem('theme', 'dark');
     }
-    location.reload();
+    //location.reload();
 }
 
 // Load saved theme on page load
@@ -110,10 +113,14 @@ window.initDashboardCharts = function () {
     // Initialize theme on load
     const savedTheme = localStorage.getItem('theme');
     const themeIcon = document.querySelector('.theme-icon');
+
     if (!savedTheme || savedTheme === 'light') {
-        document.body.classList.add('light-mode');
+        document.getElementById('dashboard-container').classList.add('light-mode');
         if (themeIcon) themeIcon.textContent = '🌙';
         localStorage.setItem('theme', 'light');
+    } else if (savedTheme === 'dark') {
+        document.getElementById('dashboard-container').classList.remove('light-mode');
+        if (themeIcon) themeIcon.textContent = '☀️';
     }
 
     // Animate stat values on page load
@@ -145,8 +152,8 @@ window.initDashboardCharts = function () {
                 legend: { display: false },
                 tooltip: {
                     backgroundColor: getTooltipBg(),
-                    titleColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
-                    bodyColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    titleColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    bodyColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
                     borderColor: '#e0e0e0',
                     borderWidth: 1,
                     padding: 12,
@@ -220,8 +227,8 @@ window.initDashboardCharts = function () {
                 legend: { display: false },
                 tooltip: {
                     backgroundColor: getTooltipBg(),
-                    titleColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
-                    bodyColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    titleColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    bodyColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
                     borderColor: '#e0e0e0',
                     borderWidth: 1,
                     padding: 12,
@@ -297,8 +304,8 @@ window.initDashboardCharts = function () {
                 legend: { display: false },
                 tooltip: {
                     backgroundColor: getTooltipBg(),
-                    titleColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
-                    bodyColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    titleColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    bodyColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
                     borderColor: '#e0e0e0',
                     borderWidth: 1,
                     padding: 12,
@@ -341,8 +348,8 @@ window.initDashboardCharts = function () {
                 legend: { display: false },
                 tooltip: {
                     backgroundColor: getTooltipBg(),
-                    titleColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
-                    bodyColor: document.body.classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    titleColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
+                    bodyColor: document.getElementById('dashboard-container').classList.contains('light-mode') ? '#2c3e50' : '#fff',
                     borderColor: '#e0e0e0',
                     borderWidth: 1,
                     padding: 12,

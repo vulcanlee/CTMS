@@ -14,7 +14,8 @@ public partial class ExportPage
     public async Task ExportData()
     {
 
-        patientAdapterModel = await PatientService.GetAsync("ddabf6f3-08a4-4ed4-8031-9f05fdffc3c3");
+        patientAdapterModel = await PatientService.GetAsync("ddabf6f3-08a4-4ed4-8031-9f05f" +
+            "dffc3c3");
         patientData.FromJson(patientAdapterModel.JsonData);
     }
 }
