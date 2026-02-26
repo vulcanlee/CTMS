@@ -31,7 +31,7 @@ namespace AIAgent.Services
             DirectoryHelperService directoryHelperService,
             RiskAssessmentExcelService riskAssessmentExcelService)
         {
-            logger = logger;
+            this.logger = logger;
             this.agentsetting = agentsettingOptions.Value;
             this.patientAIInfoService = patientAIInfoService;
             this.phase1Phase2Service = phase1Phase2Service;
