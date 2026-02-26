@@ -1,5 +1,4 @@
 ﻿@page "/Auths/Logout"
-
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
@@ -9,6 +8,7 @@
 @inject ILogger<Logout> Logger
 
 @inject NavigationManager NavigationManager
+@attribute [ExcludeFromInteractiveRouting]
 
 <PageTitle>登出</PageTitle>
 

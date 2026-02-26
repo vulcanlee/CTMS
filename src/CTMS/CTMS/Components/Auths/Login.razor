@@ -1,5 +1,4 @@
 ﻿@page "/Auths/Login"
-
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
@@ -11,7 +10,7 @@
 @inject OperationHistoryTraceService OperationHistoryTraceService
 
 @inject NavigationManager NavigationManager
-
+@attribute [ExcludeFromInteractiveRouting]
 <style>
 
     .form-input {
@@ -137,15 +136,6 @@
         {
             //  logger.LogDebug(ex, "登入初始化發生例外異常");
 
-        }
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        if (firstRender)
-        {
-            NavigationManager.NavigateTo("/Auths/Login", forceLoad: true);
         }
     }
 
