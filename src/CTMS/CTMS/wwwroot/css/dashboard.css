@@ -9,9 +9,15 @@
     color: #fff ;
 }
 
-.dashboard-label{
-    font-size:28px;
-    font-weight:700;
+.dashboard-label {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.nckuh-label {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom:2px;
 }
 
 /* Sidebar */

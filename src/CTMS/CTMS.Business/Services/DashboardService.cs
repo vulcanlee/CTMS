@@ -196,11 +196,11 @@ public class DashboardService
 
                 #region Row 3
                 #region 癌別統計
-                if (patientData.臨床資訊.CancerType.Contains("卵巢癌"))
+                if (patientData.臨床資訊?.CancerType?.Contains("卵巢癌") == true)
                 {
                     Dashboard.CancerTypeStats.OvarianCancerCount++;
                 }
-                else if (patientData.臨床資訊.CancerType.Contains("子宮內膜癌"))
+                else if (patientData.臨床資訊?.CancerType?.Contains("子宮內膜癌") == true)
                 {
                     Dashboard.CancerTypeStats.EndometrialCancerCount++;
                 }
