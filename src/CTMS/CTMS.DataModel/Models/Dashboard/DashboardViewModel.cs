@@ -19,6 +19,12 @@ public class DashboardViewModel
 
     // 5. 右下：完成率分佈 (Pie Chart)
     public CompletionDistribution CompletionStats { get; set; } = new();
+
+    public void ComputeCompletion()
+    {
+        CompletionStats.CompletedCount = Summary.TotalCases;
+        CompletionStats.IncompleteCount = Summary.TargetCases-Summary.TotalCases;
+    }
 }
 
 /// <summary>
@@ -29,6 +35,12 @@ public class DashboardSummary
     // 卡片 1: 合作醫院
     public int PartnerHospitalCount { get; set; }
     public List<string> HospitalNames { get; set; } = new(); // e.g., ["成大", "郭綜合", "奇美"]
+
+    // 成大、郭綜合、奇美
+    public string GetHospitalList()
+    {
+        return string.Join("、", HospitalNames);
+    }
 
     // 卡片 2: 總病例數
     public int TotalCases { get; set; }

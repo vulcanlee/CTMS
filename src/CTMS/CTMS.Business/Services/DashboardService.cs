@@ -176,7 +176,8 @@ public class DashboardService
                     if (cancerStage.Contains("IV") && cancerStage.IndexOf("IV") == 0)
                     {
                         Dashboard.StageStats.FirstOrDefault(a => a.StageName == "IV").Count++;
-                    } else if (cancerStage.Contains("III") && cancerStage.IndexOf("III") == 0)
+                    }
+                    else if (cancerStage.Contains("III") && cancerStage.IndexOf("III") == 0)
                     {
                         Dashboard.StageStats.FirstOrDefault(a => a.StageName == "III").Count++;
                     }
@@ -195,7 +196,7 @@ public class DashboardService
 
                 #region Row 3
                 #region 癌別統計
-                if(patientData.臨床資訊.CancerType.Contains("卵巢癌"))
+                if (patientData.臨床資訊.CancerType.Contains("卵巢癌"))
                 {
                     Dashboard.CancerTypeStats.OvarianCancerCount++;
                 }
@@ -214,6 +215,8 @@ public class DashboardService
                 #endregion
             }
         }
+
+        Dashboard.ComputeCompletion();
     }
 }
 

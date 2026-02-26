@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CTMS.Business.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace CTMS.Components.Views.ClinicalInformation;
@@ -9,12 +10,21 @@ public partial class DashboardView
     private IJSRuntime JS { get; set; } = default!;
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
+    [Inject]
+    private DashboardService DashboardService { get; set; } = default!;
 
+    protected override async Task OnInitializedAsync()
+    {
+        DashboardService.Build();
+        await DashboardService.RefreshAsync();
+
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initDashboardCharts");
+            // 將 DashboardViewModel 傳遞給 JavaScript
+            await JS.InvokeVoidAsync("initDashboardCharts", DashboardService.Dashboard);
         }
     }
 

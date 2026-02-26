@@ -109,7 +109,7 @@ function animateStatValues() {
     });
 }
 
-window.initDashboardCharts = function () {
+window.initDashboardCharts = function (viewModel) {
     // Initialize theme on load
     const savedTheme = localStorage.getItem('theme');
     const themeIcon = document.querySelector('.theme-icon');
@@ -128,14 +128,33 @@ window.initDashboardCharts = function () {
 
     updateChartDefaults();
 
+    // 從 ViewModel 提取數據，如果沒有提供則使用默認值
+    const hospitalLabels = viewModel?.hospitalStats?.map(h => h.hospitalName) || ['成大', '郭綜合', '奇美'];
+    const hospitalData = viewModel?.hospitalStats?.map(h => h.caseCount) || [402, 475, 285];
+    const hospitalMaxValue = Math.max(...hospitalData) * 1.2; // 動態計算最大值，給予 20% 的空間
+
+    const stageLabels = viewModel?.stageStats?.map(s => s.stageName) || ['1期', '2期', '3期', '4期'];
+    const stageData = viewModel?.stageStats?.map(s => s.count) || [380, 490, 315, 270];
+    const stageMaxValue = Math.max(...stageData) * 1.2;
+
+    const cancerTypeData = [
+        viewModel?.cancerTypeStats?.ovarianCancerCount || 524,
+        viewModel?.cancerTypeStats?.endometrialCancerCount || 638
+    ];
+
+    const completionData = [
+        viewModel?.completionStats?.completedCount || 907,
+        viewModel?.completionStats?.incompleteCount || 255
+    ];
+
     // Hospital Bar Chart
     const hospitalCtx = document.getElementById('hospitalChart').getContext('2d');
     const hospitalChart = new Chart(hospitalCtx, {
         type: 'bar',
         data: {
-            labels: ['成大', '郭綜合', '奇美'],
+            labels: hospitalLabels,
             datasets: [{
-                data: [0, 0, 0],
+                data: new Array(hospitalData.length).fill(0),
                 backgroundColor: ['#4caf50', '#ff6b6b', '#ffc107'],
                 borderRadius: 8,
                 barThickness: 80
@@ -165,13 +184,13 @@ window.initDashboardCharts = function () {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 600,
+                    max: hospitalMaxValue,
                     grid: {
                         color: getGridColor(),
                         drawBorder: false
                     },
                     ticks: {
-                        stepSize: 150,
+                        stepSize: Math.ceil(hospitalMaxValue / 4),
                         font: { size: 12 },
                         color: getTickColor()
                     }
@@ -195,8 +214,7 @@ window.initDashboardCharts = function () {
     });
 
     // Animate hospital bars one by one after a short delay
-    const hospitalTargets = [402, 475, 285];
-    hospitalTargets.forEach((target, i) => {
+    hospitalData.forEach((target, i) => {
         setTimeout(() => {
             hospitalChart.data.datasets[0].data[i] = target;
             hospitalChart.update();
@@ -208,9 +226,9 @@ window.initDashboardCharts = function () {
     const stageChart = new Chart(stageCtx, {
         type: 'bar',
         data: {
-            labels: ['1期', '2期', '3期', '4期'],
+            labels: stageLabels,
             datasets: [{
-                data: [0, 0, 0, 0],
+                data: new Array(stageData.length).fill(0),
                 backgroundColor: ['#4caf50', '#ff6b6b', '#ffc107', '#42a5f5'],
                 borderRadius: 8,
                 barThickness: 70
@@ -240,13 +258,13 @@ window.initDashboardCharts = function () {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 600,
+                    max: stageMaxValue,
                     grid: {
                         color: getGridColor(),
                         drawBorder: false
                     },
                     ticks: {
-                        stepSize: 150,
+                        stepSize: Math.ceil(stageMaxValue / 4),
                         font: { size: 12 },
                         color: getTickColor()
                     }
@@ -270,8 +288,7 @@ window.initDashboardCharts = function () {
     });
 
     // Animate stage bars one by one after a short delay
-    const stageTargets = [380, 490, 315, 270];
-    stageTargets.forEach((target, i) => {
+    stageData.forEach((target, i) => {
         setTimeout(() => {
             stageChart.data.datasets[0].data[i] = target;
             stageChart.update();
@@ -318,7 +335,7 @@ window.initDashboardCharts = function () {
     });
 
     setTimeout(() => {
-        cancerTypeChart.data.datasets[0].data = [524, 638];
+        cancerTypeChart.data.datasets[0].data = cancerTypeData;
         cancerTypeChart.update();
     }, 300);
 
@@ -362,7 +379,7 @@ window.initDashboardCharts = function () {
     });
 
     setTimeout(() => {
-        completionChart.data.datasets[0].data = [907, 255];
+        completionChart.data.datasets[0].data = completionData;
         completionChart.update();
     }, 300);
 };

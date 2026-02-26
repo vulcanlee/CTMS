@@ -39,11 +39,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-    <HeadOutlet @rendermode="@RenderModeForPage()" />
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 </head>
 
 <body>
-    <Routes @rendermode="@RenderModeForPage()" />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
     <script src="_framework/blazor.web.js"></script>
 
     @* MudBlazor *@
@@ -79,12 +79,4 @@
     //     ? null
     //     : InteractiveServer;
 
-    private IComponentRenderMode? RenderModeForPage()
-    {
-        var foo = HttpContext.Request.Path.StartsWithSegments("/Auths")
-      ? null : InteractiveServer;
-
-        Logger.LogInformation($"Cookie : RenderModeForPage: {foo}");
-        return foo;
-    }
 }
