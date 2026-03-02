@@ -103,7 +103,7 @@ public class AIIntegrateService
         return result;
     }
 
-    public async Task<bool> CheckAIProcess(string KeyName)
+    public async Task<bool> CheckAIProcess(string KeyName, bool onlyCheck=false)
     {
         bool result = false;
         var completionRootPath = agentsetting.GetCompleteQueuePath();
@@ -127,6 +127,8 @@ public class AIIntegrateService
         {
             Directory.CreateDirectory(destinationKeyNamePath);
         }
+
+        if (onlyCheck == true) return true;
 
         directoryHelperService.CopyDirectory(completionKeyNamePath, destinationKeyNamePath, true);
         result = true;
@@ -152,6 +154,14 @@ public class AIIntegrateService
 
         if (foo != null)
             result = foo;
+        return result;
+    }
+
+
+    public async Task<string> CopyAIImage(string KeyName)
+    {
+        string result = "";
+
         return result;
     }
 

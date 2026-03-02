@@ -21,6 +21,7 @@ public partial class RiskAssessmentView
     MyUserAdapterModel myUserAdapterModel = new();
     bool hasRiskAssessment = false;
     string imageVersion = DateTime.Now.Ticks.ToString();
+    string imageAIUrl = string.Empty;
 
     SignatureNode signatureNode婦產科醫師確認 = new SignatureNode();
     SignatureNode signatureNode放射科醫師確認 = new SignatureNode();
@@ -55,6 +56,9 @@ public partial class RiskAssessmentView
         {
             hasRiskAssessment = true;
         }
+
+        imageAIUrl= $"UploadFiles/{patientData.臨床資訊.KeyName}/Phase2Result/{patientData.臨床資訊.KeyName}_muscle5.png";
+        //< img src = "UploadFiles/@patientData.臨床資訊.ImagePng?
     }
 
     void OnShowHistory()

@@ -142,7 +142,7 @@ public class DashboardService
                 #region 分析報告
                 if (string.IsNullOrEmpty(patientData.臨床資訊.KeyName) == false)
                 {
-                    bool isCompletion = await aiIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName);
+                    bool isCompletion = await aiIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName, onlyCheck:true);
                     if (isCompletion)
                     {
                         Dashboard.Summary.AnalysisReportCount++;
