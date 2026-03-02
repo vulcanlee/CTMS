@@ -64,6 +64,8 @@ namespace EncodeJSON
         {
             try
             {
+                var utf8NoBom = new UTF8Encoding(false);
+
                 // 讀取原始 JSON 檔案
                 string inputFile = "202510201648386456.json";
                 string jsonContent = File.ReadAllText(inputFile, Encoding.UTF8);
@@ -74,20 +76,20 @@ namespace EncodeJSON
                 string outputFile = "202510201648386456.crypt.json";
                 File.WriteAllText(outputFile,
                     JsonConvert.SerializeObject(encoded, Newtonsoft.Json.Formatting.Indented),
-                    Encoding.UTF8);
+                    utf8NoBom);
 
                 Console.WriteLine($"加密完成，已產生檔案：{outputFile}");
 
                 // 測試解密（確認是否能還原）
                 string encodedText = JsonConvert.DeserializeObject<string>(
-                    File.ReadAllText(outputFile, Encoding.UTF8)
+                    File.ReadAllText(outputFile, utf8NoBom)
                 );
 
                 var decoded = DecodeJson<object>(encodedText);
                 string restoredFile = "202510201648386456.decrypt.json";
                 File.WriteAllText(restoredFile,
                     JsonConvert.SerializeObject(decoded, Newtonsoft.Json.Formatting.Indented),
-                    Encoding.UTF8);
+                    utf8NoBom);
 
                 Console.WriteLine($"已解密回原始內容：{restoredFile}");
             }
