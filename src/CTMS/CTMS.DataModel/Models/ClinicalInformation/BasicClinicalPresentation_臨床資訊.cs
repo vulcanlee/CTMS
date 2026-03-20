@@ -162,6 +162,7 @@ public class BasicClinicalPresentation_臨床資訊
     /// 病人編號
     /// </summary>
     public string SubjectNo { get; set; }
+    public DateTime 收案日期 { get; set; } = DateTime.Now;
     /// <summary>
     /// 臨床資訊 癌別 EC or OCC(自填)
     /// </summary>

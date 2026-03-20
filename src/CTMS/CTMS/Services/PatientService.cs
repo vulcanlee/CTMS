@@ -8,6 +8,7 @@ using CTMS.DataModel.Dtos;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.DataModel.Models.Systems;
+using CTMS.DataModel.ViewModels;
 using CTMS.EntityModel;
 using CTMS.EntityModel.Models;
 using CTMS.Share.Helpers;
@@ -215,7 +216,8 @@ public class PatientService
         }
     }
 
-    public async Task<(VerifyRecordResult, PatientAdapterModel, string)> AddEmptyAsync(string hospital)
+    //public async Task<(VerifyRecordResult, PatientAdapterModel, string)> AddEmptyAsync(string hospital)
+    public async Task<(VerifyRecordResult, PatientAdapterModel, string)> AddEmptyAsync(AddNewPatientViewModel addNewPatientViewModel)
     {
         try
         {
@@ -224,7 +226,7 @@ public class PatientService
 
             #region 依據院別，產生出 Name
             string subjectNoPrefix = "";
-            switch (hospital)
+            switch (addNewPatientViewModel.院別)
             {
                 case "成大醫院":
                     subjectNoPrefix = MagicObjectHelper.prefix成大醫院;
@@ -244,6 +246,7 @@ public class PatientService
 
             string subjectNo = newSubjectNo;
             patientData.臨床資訊.SubjectNo = subjectNo;
+            patientData.臨床資訊.收案日期 = addNewPatientViewModel.Select收案日期;
 
             Patient itemParameter = new()
             {
@@ -251,7 +254,7 @@ public class PatientService
                 Code = Guid.NewGuid().ToString(),
                 Name = subjectNo,
                 JsonData = patientData.ToJson(),
-                醫院 = hospital,
+                醫院 = addNewPatientViewModel.院別,
                 癌別 = MagicObjectHelper.NA,
                 AI評估 = MagicObjectHelper.NA,
                 AI處理 = MagicObjectHelper.NA,

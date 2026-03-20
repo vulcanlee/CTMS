@@ -99,6 +99,7 @@ public class DashboardService
         PatientData patientData = new();
         int pageSize = 10;
         int page = 1;
+        var today = DateTime.Today;
 
         while (true)
         {
@@ -127,7 +128,12 @@ public class DashboardService
                 {
                     Dashboard.Summary.TotalCases++;
                     Dashboard.Summary.MonthlyGrowthRate++;
-                    Dashboard.Summary.NewCasesThisMonth++;
+
+                    if (patientData.臨床資訊.收案日期.Year == today.Year &&
+                        patientData.臨床資訊.收案日期.Month == today.Month)
+                    {
+                        Dashboard.Summary.NewCasesThisMonth++;
+                    }
                 }
                 #endregion
 
@@ -135,7 +141,12 @@ public class DashboardService
                 if (patient.狀態 == MagicObjectHelper.Patient狀態_收案)
                 {
                     Dashboard.Summary.CompletionRate++;
-                    Dashboard.Summary.CompletionRateGrowth++;
+
+                    if (patientData.臨床資訊.收案日期.Year == today.Year &&
+         patientData.臨床資訊.收案日期.Month == today.Month)
+                    {
+                        Dashboard.Summary.CompletionRateGrowth++;
+                    }
                 }
                 #endregion
 

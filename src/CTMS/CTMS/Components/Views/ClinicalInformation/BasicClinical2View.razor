@@ -129,6 +129,23 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="label-column">收案日期</td>
+                                <td class="value-column">
+                                    <div class="">
+                                        @if (editMode)
+                                        {
+                                            <SfDatePicker TValue="DateTime" Format="yyyy-MM-dd"
+                                                          @bind-Value="@patientData.臨床資訊.收案日期"
+                                                          class="flex-grow-1"></SfDatePicker>
+                                        }
+                                        else
+                                        {
+                                            @patientData.臨床資訊.收案日期.ToString("yyyy-MM-dd")
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="label-column">年齡 (Age)</td>
                                 <td class="value-column">
                                     @if (editMode)

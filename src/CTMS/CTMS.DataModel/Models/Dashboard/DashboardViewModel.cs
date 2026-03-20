@@ -24,6 +24,9 @@ public class DashboardViewModel
     {
         CompletionStats.CompletedCount = Summary.TotalCases;
         CompletionStats.IncompleteCount = Summary.TargetCases-Summary.TotalCases;
+
+        Summary.CompletionRatePercent = Summary.CompletionRate == 0 ? "0" : $"{(Summary.CompletionRate / Summary.TargetCases * 100):F2}";
+        Summary.CompletionRateGrowthPercent = Summary.CompletionRateGrowth == 0 ? "0" : $"{(Summary.CompletionRateGrowth / Summary.TargetCases * 100):F2}";
     }
 }
 
@@ -51,6 +54,8 @@ public class DashboardSummary
     // 卡片 3: 完成率
     public double CompletionRate { get; set; }
     public double CompletionRateGrowth { get; set; }
+    public string CompletionRatePercent { get; set; }
+    public string CompletionRateGrowthPercent { get; set; }
 
     // 卡片 4: 分析報告
     public int AnalysisReportCount { get; set; }
