@@ -136,6 +136,31 @@ public class AIIntegrateService
         return result;
     }
 
+    public async Task<bool> ManualAnnotationPreprocess(string KeyName)
+    {
+        bool result = false;
+        var completionRootPath = agentsetting.GetCompleteQueuePath();
+        var completionKeyNamePath = Path.Combine(completionRootPath, KeyName);
+        Directory.Delete(completionKeyNamePath, true);
+
+        result = true;
+
+        return result;
+    }
+
+    public async Task<bool> ManualAnnotationProcess(string sourcePath)
+    {
+        bool result = false;
+        var queue2Path = agentsetting.GetPhase2QueuePath();
+        var sourceDirectoryName = Path.GetFileName(sourcePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+        var targetPath = Path.Combine(queue2Path, sourceDirectoryName);
+        directoryHelperService.CopyDirectory(sourcePath, targetPath, true);
+
+        result = true;
+
+        return result;
+    }
+
     public async Task<InputCsvModel> GetInputCsv(string KeyName, string rootPath="")
     {
         InputCsvModel result = new();

@@ -5,6 +5,7 @@ using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.EntityModel.Models;
 using CTMS.Share.Extensions;
 using CTMS.Share.Helpers;
+using FellowOakDicom.Imaging;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Syncfusion.Blazor.DropDowns;
@@ -15,6 +16,8 @@ public partial class BasicClinical2View
 {
     [Parameter]
     public string Code { get; set; }
+    [Inject]
+    ILogger<BasicClinical2View> Logger { get; set; }
 
     PatientData patientData = new();
     PatientData beforePatientData = new();
@@ -24,6 +27,7 @@ public partial class BasicClinical2View
     bool ShowMMRProteinSettingDialog = false;
     bool ShowVisitCodeDialog = false;
     bool ShowUploadDicomDialog = false;
+    bool ShowUploadManualAnnotationDialog = false;
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     UploadDicomModel UploadDicomModel { get; set; } = new UploadDicomModel();
@@ -662,6 +666,10 @@ public partial class BasicClinical2View
 
     void OnUploadEditAnnotationsBtn()
     {
+        if (AuthenticationStateHelper.CheckAccessPage(MagicObjectHelper.ROLEAI操作) == true)
+        {
+            ShowUploadManualAnnotationDialog = true;
+        }
     }
 
     async Task OnPushToAIBtn()
@@ -868,6 +876,95 @@ public partial class BasicClinical2View
         }
         imageVersion = DateTime.Now.Ticks.ToString();
         ShowUploadDicomDialog = false;
+        await GetDataAsync();
+        StateHasChanged();
+    }
+
+    async Task OnUploadShowUploadManualAnnotationDialogAsync(string filename)
+    {
+        if (filename != null)
+        {
+            string prepareRootPath = Path.Combine(Directory.GetCurrentDirectory(), MagicObjectHelper.UploadTempPath, patientData.臨床資訊.KeyName);
+            string prepareAIResult1Path = Path.Combine(Directory.GetCurrentDirectory(), MagicObjectHelper.UploadTempPath, patientData.臨床資訊.KeyName, MagicObjectHelper.Phase1ResultPath);
+            string hasAIResultRootPath = Path.Combine(Directory.GetCurrentDirectory(), MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.KeyName);
+            string hasAIResult1Path = Path.Combine(Directory.GetCurrentDirectory(), MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.KeyName, MagicObjectHelper.Phase1ResultPath);
+            string hasAIResult2Path = Path.Combine(Directory.GetCurrentDirectory(), MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.KeyName, MagicObjectHelper.Phase2ResultPath);
+            string hasAIResu3t1Path = Path.Combine(Directory.GetCurrentDirectory(), MagicObjectHelper.UploadFinalPath, patientData.臨床資訊.KeyName, MagicObjectHelper.Phase3ResultPath);
+
+            if (Directory.Exists(hasAIResult1Path) == false)
+            {
+                Logger.LogWarning($"處理上傳人工標註檔案 Directory {hasAIResult1Path} does not exist.");
+                return;
+            }
+            var files = Directory.GetFiles(hasAIResult1Path);
+            // 找出 files 內，檔案名稱有 .json的值
+            string jsonFile = files.FirstOrDefault(x => x.EndsWith(".json"));
+            if (string.IsNullOrEmpty(jsonFile))
+            {
+                Logger.LogWarning($"處理上傳人工標註檔案 沒有發現到檔案名稱有 .json 的檔案");
+                return;
+            }
+
+            #region 若已經有成功推論，先做清除
+            await AIIntegrateService.ManualAnnotationPreprocess(patientData.臨床資訊.KeyName);
+
+            PatientAdapterModel taskPatientAdapterModel = new();
+            PatientData taskPatientData = new();
+
+            taskPatientAdapterModel = await PatientService.GetAsync(Code);
+            taskPatientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+            await PatientService.UpdateAsync(taskPatientAdapterModel);
+            #endregion
+
+            #region 在 UploadTemp 目錄下，準備相關檔案
+            if (Directory.Exists(prepareAIResult1Path) == true)
+            {
+                Directory.Delete(prepareAIResult1Path, true);
+            }
+            Directory.CreateDirectory(prepareAIResult1Path);
+            foreach (var file in files)
+            {
+                var destFile = Path.Combine(prepareAIResult1Path, Path.GetFileName(file));
+                File.Copy(file, destFile, true);
+            }
+            var hasAIResult1Files = Directory.GetFiles(hasAIResultRootPath);
+            foreach (var file in hasAIResult1Files)
+            {
+                var destFile = Path.Combine(prepareRootPath, Path.GetFileName(file));
+                File.Copy(file, destFile, true);
+            }
+
+            var patientInfoFilename = Directory.GetFiles(hasAIResultRootPath).FirstOrDefault(x => x.Contains("PatientData.json"));
+            PatientAIInfo fromFile = JsonConvert.DeserializeObject<PatientAIInfo>(File.ReadAllText(patientInfoFilename));
+
+            PatientAIInfo patientAIInfo = new()
+            {
+                Age = patientData.臨床資訊.Age,
+                Code = patientData.臨床資訊.SubjectNo,
+                Gender = "F",
+                Height = patientData.臨床資訊.Height,
+                Weight = patientData.臨床資訊.Weight,
+                SubjectCode = patientData.臨床資訊.SubjectNo,
+                癌別 = patientData.臨床資訊.ECorOC,
+                DicomFilename = fromFile.DicomFilename,
+                DestionatioDicomFilename = "",
+                DestionatioPatientJSONFilename = "",
+                KeyName = patientData.臨床資訊.KeyName,
+            };
+            var jsonContent = JsonConvert.SerializeObject(patientAIInfo);
+            File.WriteAllText(Path.Combine(prepareRootPath, "PatientData.json"), jsonContent);
+            #endregion
+
+            #region 複製到 Queue\Phase2 下
+
+            #endregion
+
+            await AIIntegrateService.ManualAnnotationProcess(prepareRootPath);
+
+            return;
+        }
+        imageVersion = DateTime.Now.Ticks.ToString();
+        ShowUploadManualAnnotationDialog = false;
         await GetDataAsync();
         StateHasChanged();
     }

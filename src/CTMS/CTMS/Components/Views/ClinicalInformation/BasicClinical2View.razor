@@ -540,29 +540,6 @@
             </div>
         </div>
 
-        <!-- 底部導航按鈕 -->
-        @* <div class="navigation-buttons">
-            <div class="row g-2">
-                <div class="col-2">
-                    <button class="btn btn-light btn-pink w-100" @onclick=On臨床資料>臨床資料</button>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-light btn-yellow w-100" @onclick=On抽血資料>抽血資料</button>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-light btn-green w-100" @onclick=On副作用>CTCAE 5.0</button>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-light btn-blue w-100" @onclick=On問卷>問卷</button>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-light btn-pink w-100" @onclick=On追蹤資料>追蹤資料</button>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-light btn-yellow w-100" @onclick=On風險評估>風險評估</button>
-                </div>
-            </div>
-        </div> *@
     </div>
 </div>
 
@@ -578,6 +555,9 @@
 <UploadDicomDialog OpenPicker=ShowUploadDicomDialog
                    SubjectNo="@SubjectNo"
                    OnConfirmCallback=OnUploadDicomAsync />
+
+<UploadManualAnnotationView OpenPicker=ShowUploadManualAnnotationDialog
+                   SubjectNo="@SubjectNo"                            OnConfirmCallback=OnUploadShowUploadManualAnnotationDialogAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
