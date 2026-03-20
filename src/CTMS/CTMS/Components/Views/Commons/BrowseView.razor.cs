@@ -261,7 +261,7 @@ public partial class BrowseView
 
     async Task OnAddPatientAsync(AddNewPatientViewModel addNewPatientViewModel)
     {
-        if (addNewPatientViewModel.院別 != null)
+        if (addNewPatientViewModel?.院別 != null)
         {
             await AddNewPatientAsync(addNewPatientViewModel);
         }
