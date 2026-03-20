@@ -34,6 +34,9 @@
         <button class="btn btn-filter" @onclick=On篩選條件>
             <span class="icon-refresh">🔍</span> 篩選條件
         </button>
+        <button class="btn btn-refresh" @onclick="On儀表板">
+            <span class="icon-refresh">📊</span> 儀表板
+        </button>
     </div>
 
     <!-- 篩選條件區域 -->
@@ -201,6 +204,11 @@
     void On篩選條件()
     {
         isShowFilter = !isShowFilter;
+    }
+
+    void On儀表板()
+    {
+        NavigationManager.NavigateTo("/Dashboard");
     }
 
     async Task OnTableChange(AntDesign.TableModels.QueryModel<PatientAdapterModel> args)
