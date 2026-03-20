@@ -960,8 +960,6 @@ public partial class BasicClinical2View
             #endregion
 
             await AIIntegrateService.ManualAnnotationProcess(prepareRootPath);
-
-            return;
         }
         imageVersion = DateTime.Now.Ticks.ToString();
         ShowUploadManualAnnotationDialog = false;
