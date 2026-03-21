@@ -309,6 +309,96 @@
 
 因此，對畫面最終呈現來說，兩條流程的出口是相同的；差異只發生在送件與前段 queue。
 
+## 完成判斷機制
+
+本節專門說明第二種作法在程式中如何判定人工標註重跑已完成，以及為什麼正常情況下不會提早顯示完成訊息。
+
+### 完成判斷入口
+
+這條流程的完成判斷入口與第一種作法相同，仍然有兩個：
+
+- 自動輪詢：`BasicClinical2View.OnAfterRenderAsync(bool firstRender)`
+- 手動檢查：`BasicClinical2View.OnConfirmAIBtn()`
+
+兩者最後仍然共用：
+
+- `AIIntegrateService.CheckAIProcess(KeyName)`
+
+完成訊息也仍然只會在：
+
+- `BasicClinical2View.ShowAICompletionAsync()`
+
+被顯示。
+
+### 自動輪詢判斷
+
+人工標註流程開始時，`OnUploadShowUploadManualAnnotationDialogAsync(string filename)` 會先做兩件和完成判斷直接相關的事情：
+
+1. 呼叫 `AIIntegrateService.ManualAnnotationPreprocess(patientData.臨床資訊.KeyName)` 刪除舊的 `Complete/<KeyName>`。
+2. 把 `taskPatientAdapterModel.AI處理` 設回 `處理中`。
+
+因此 `OnAfterRenderAsync()` 內的 `checkTask` 之後會重新開始檢查，但它檢查的是「新的人工標註重跑結果」，不是上一次 DICOM 推論留下的完成狀態。
+
+`checkTask` 的判斷條件依然是：
+
+1. 每秒輪詢一次。
+2. 若 `AI處理 != 處理中`，不檢查。
+3. 若 `AI處理 == 處理中`，才呼叫 `CheckAIProcess(KeyName)`。
+
+### 手動檢查判斷
+
+使用者按下 `推論狀態呈現` 時，`OnConfirmAIBtn()` 仍然會直接呼叫：
+
+- `CheckAIProcess(patientData.臨床資訊.KeyName)`
+
+因此在人工標註流程裡，手動檢查也不會繞過既有判斷邏輯。只要新的完成條件尚未成立，就會和自動輪詢一樣得到 `false`，並顯示「AI處理 尚未 完成」。
+
+### 完成訊息的觸發條件
+
+這條流程雖然是人工標註重跑，但 `CheckAIProcess()` 的完成條件並沒有改變，仍然是：
+
+- `Complete/<KeyName>/Phase3Result` 存在
+- 該目錄內已有檔案
+- 其中找得到 `output.csv`
+
+只有當新的人工標註重跑真的產出新的 `Complete/<KeyName>/Phase3Result/output.csv`，`CheckAIProcess()` 才會回傳 `true`，然後再由 `ShowAICompletionAsync()` 顯示：
+
+- `"AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果"`
+
+因此，完成訊息的唯一觸發點仍然是 `ShowAICompletionAsync()`，而不是人工標註檔案剛上傳完成的當下。
+
+### 本流程是否可能提早顯示完成
+
+正常情況下，不會。
+
+原因如下：
+
+- 人工標註重跑開始時，會先刪除舊的 `Complete/<KeyName>`。
+- 同時把病患 `AI處理` 狀態設回 `處理中`。
+- `CheckAIProcess()` 只認 `Complete/<KeyName>/Phase3Result/output.csv`，不會因為 `UploadFinalPath` 內還有舊檔案就直接判定完成。
+
+所以即使這個個案之前已經完成過第一種 DICOM 推論，只要新的人工標註重跑尚未產出新的 `output.csv`，就不會提前顯示：
+
+- `"AI處理  已經  完成，可以在 風險評估 頁籤看到推論結果"`
+
+### 例外與風險
+
+這條流程仍有一個必須明確記錄的風險：
+
+- 若 `ManualAnnotationPreprocess()` 沒有成功刪除舊的 `Complete/<KeyName>`，則 `CheckAIProcess()` 仍可能因為舊的 `output.csv` 殘留而回傳 `true`。
+
+在這種異常情況下，系統就可能提早顯示完成訊息，讓人誤以為新的人工標註推論已經完成。
+
+也就是說，這條流程的「不會提早顯示完成」成立前提是：
+
+- `ManualAnnotationPreprocess()` 有成功清掉舊的完成結果。
+
+### 維護注意事項
+
+- 若有人修改 `ManualAnnotationPreprocess()` 的刪除邏輯，必須重新確認人工標註流程是否仍然能避免舊完成結果干擾。
+- 若有人改成讓人工標註流程產生新的 `KeyName`，則目前文件中「沿用同一個 `KeyName` 重跑」的完成判斷說明也必須一起調整。
+- 若未來排查「人工標註重跑為什麼一開始就顯示已完成」，優先檢查：`Complete/<KeyName>` 是否真的被刪除、`AI處理` 是否已設回 `處理中`、`CheckAIProcess()` 是否讀到舊 `output.csv`。
+
 ## 關鍵限制與維護重點
 
 ### 1. 這不是全新送件流程
