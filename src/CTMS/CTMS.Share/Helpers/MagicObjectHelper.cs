@@ -103,6 +103,8 @@
         public const string 癌別 = "癌別";
         public const string 院別 = "院別";
         public const string 狀態 = "狀態";
+        public const string 收案開始日 = "收案開始日";
+        public const string 收案結束日 = "收案結束日";
 
         public const string Blood抽血檢驗血液 = "抽血檢驗血液";
         public const string Blood抽血檢驗生化 = "抽血檢驗生化";

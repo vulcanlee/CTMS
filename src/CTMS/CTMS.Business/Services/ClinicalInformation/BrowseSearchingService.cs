@@ -20,6 +20,8 @@ namespace CTMS.Business.Services.ClinicalInformation
             BrowseSearchingModel.院別.Clear();
             BrowseSearchingModel.癌別.Clear();
             BrowseSearchingModel.狀態.Clear();
+            BrowseSearchingModel.收案開始日 = null;
+            BrowseSearchingModel.收案結束日 = null;
             BrowseSearchingModel.SearchKeyword = string.Empty;
             BrowseSearchingModel.PageIndex = 1;
             BrowseSearchingModel.Total = 0;
@@ -84,6 +86,16 @@ namespace CTMS.Business.Services.ClinicalInformation
             {
                 BrowseSearchingModel.SearchKeyword = string.Empty;
             }
+        }
+
+        public void Set收案開始日(DateTime? date)
+        {
+            BrowseSearchingModel.收案開始日 = date?.Date;
+        }
+
+        public void Set收案結束日(DateTime? date)
+        {
+            BrowseSearchingModel.收案結束日 = date?.Date;
         }
     }
 }

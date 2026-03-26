@@ -86,6 +86,28 @@
                         </SfDropDownList>
                     </div>
                 </div>
+                <div class="filter-group">
+                    <label>收案開始日</label>
+                    <div class="select-container">
+                        <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd" ShowClearButton="true"
+                                      Placeholder="請選擇收案開始日"
+                                      @bind-Value="@收案開始日"
+                                      @bind-Value:after="On收案開始日ChangedAsync"
+                                      class="flex-grow-1">
+                        </SfDatePicker>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>收案結束日</label>
+                    <div class="select-container">
+                        <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd" ShowClearButton="true"
+                                      Placeholder="請選擇收案結束日"
+                                      @bind-Value="@收案結束日"
+                                      @bind-Value:after="On收案結束日ChangedAsync"
+                                      class="flex-grow-1">
+                        </SfDatePicker>
+                    </div>
+                </div>
                 <div class="search-container">
                     <label></label>
                     <div class="search-box">
@@ -121,6 +143,7 @@
                @bind-PageIndex="BrowseSearchingService.BrowseSearchingModel.PageIndex"
                @bind-PageSize="BrowseSearchingService.BrowseSearchingModel.PageSize"
                @bind-Total=BrowseSearchingService.BrowseSearchingModel.Total>
+            <Column TData="string" DataIndex="@nameof(PatientAdapterModel.收案日期)" Title="收案日期" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.SubjectNo)" Title="病人編號" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.醫院)" Title="醫院名稱" />
             <Column TData="string" DataIndex="@nameof(PatientAdapterModel.癌別)" Title="癌症類型" />

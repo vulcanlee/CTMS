@@ -27,6 +27,8 @@ public partial class BrowseView
     BrowseFilterCondition browseFilterCondition = new();
     string Keyword = string.Empty;
     int FoundCount = 0;
+    DateTime? 收案開始日;
+    DateTime? 收案結束日;
 
     #region 拉霸選單物件宣告
     List<DropDownListDataModel> List癌別 = new List<DropDownListDataModel>();
@@ -101,6 +103,9 @@ public partial class BrowseView
                 Name = item,
             });
         }
+        收案開始日 = BrowseSearchingService.BrowseSearchingModel.收案開始日;
+        收案結束日 = BrowseSearchingService.BrowseSearchingModel.收案結束日;
+        同步收案日期篩選條件();
         DropDownListDataInit();
     }
 
@@ -120,6 +125,7 @@ public partial class BrowseView
         foreach (var item in patientsAdapterModel)
         {
             patientData.FromJson(item.JsonData);
+            item.收案日期 = patientData.臨床資訊.收案日期.ToString("yyyy-MM-dd");
             item.SubjectNo = patientData.臨床資訊.SubjectNo; // Accessing PatientId property
             item.期別 = patientData.臨床資訊.FIGOStaging;
             item.Get組別DisplayName();
@@ -342,6 +348,16 @@ public partial class BrowseView
             BrowseSearchingService.RemoveCancerType(item.Name);
         else if (item.Category == MagicObjectHelper.狀態)
             BrowseSearchingService.RemoveStatus(item.Name);
+        else if (item.Category == MagicObjectHelper.收案開始日)
+        {
+            收案開始日 = null;
+            BrowseSearchingService.Set收案開始日(null);
+        }
+        else if (item.Category == MagicObjectHelper.收案結束日)
+        {
+            收案結束日 = null;
+            BrowseSearchingService.Set收案結束日(null);
+        }
         await ReloadAsync();
     }
 
@@ -349,6 +365,8 @@ public partial class BrowseView
     {
         BrowseSearchingService.Reset();
         browseFilterCondition.Items.Clear();
+        收案開始日 = null;
+        收案結束日 = null;
         BrowseSearchingService.Reset();
         await ReloadAsync();
     }
@@ -407,5 +425,42 @@ public partial class BrowseView
         }
 
         await ReloadAsync();
+    }
+
+    async Task On收案開始日ChangedAsync()
+    {
+        BrowseSearchingService.Set收案開始日(收案開始日);
+        同步收案日期篩選條件();
+        await ReloadAsync();
+    }
+
+    async Task On收案結束日ChangedAsync()
+    {
+        BrowseSearchingService.Set收案結束日(收案結束日);
+        同步收案日期篩選條件();
+        await ReloadAsync();
+    }
+
+    void 同步收案日期篩選條件()
+    {
+        browseFilterCondition.Items.RemoveAll(x => x.Category == MagicObjectHelper.收案開始日 || x.Category == MagicObjectHelper.收案結束日);
+
+        if (收案開始日.HasValue)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode
+            {
+                Category = MagicObjectHelper.收案開始日,
+                Name = $"收案開始日：{收案開始日.Value:yyyy-MM-dd}"
+            });
+        }
+
+        if (收案結束日.HasValue)
+        {
+            browseFilterCondition.Items.Add(new BrowseFilterConditionNode
+            {
+                Category = MagicObjectHelper.收案結束日,
+                Name = $"收案結束日：{收案結束日.Value:yyyy-MM-dd}"
+            });
+        }
     }
 }

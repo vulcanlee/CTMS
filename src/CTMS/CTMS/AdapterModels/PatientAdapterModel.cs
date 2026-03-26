@@ -10,6 +10,7 @@ public class PatientAdapterModel : ICloneable
     public int Id { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
+    public string 收案日期 { get; set; }
     public string 醫院 { get; set; }
     public string 癌別 { get; set; }
     public string 期別 { get; set; }

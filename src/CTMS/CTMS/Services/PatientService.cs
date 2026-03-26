@@ -160,6 +160,9 @@ public class PatientService
 
         foreach (var item in tempItems)
         {
+            PatientData patientData = new();
+            patientData.FromJson(item.JsonData);
+
             if (browseSearching.院別.Count > 0)
             {
                 if (!browseSearching.院別.Contains(item.醫院))
@@ -177,6 +180,20 @@ public class PatientService
             if (browseSearching.狀態.Count > 0)
             {
                 if (!browseSearching.狀態.Contains(item.狀態))
+                {
+                    continue;
+                }
+            }
+            if (browseSearching.收案開始日.HasValue)
+            {
+                if (patientData.臨床資訊.收案日期.Date < browseSearching.收案開始日.Value.Date)
+                {
+                    continue;
+                }
+            }
+            if (browseSearching.收案結束日.HasValue)
+            {
+                if (patientData.臨床資訊.收案日期.Date > browseSearching.收案結束日.Value.Date)
                 {
                     continue;
                 }
