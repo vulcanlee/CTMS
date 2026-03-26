@@ -40,6 +40,7 @@
                                     <div class="menu-item" @onclick='() => OnMenuItemClick("下載AI結果")'> <span class="me-1 mdi mdi-24px mdi-robot-outline"></span>下載AI結果 </div>
                                     <div class="menu-item" @onclick='() => OnMenuItemClick("申請帳號審查")'> <span class="me-1 mdi mdi-24px mdi-account-clock-outline"></span>申請帳號審查 </div>
                                     <div class="menu-item" @onclick='() => OnMenuItemClick("操作歷程")'> <span class="me-1 mdi mdi-24px mdi-history "></span>操作歷程 </div>
+                                    <div class="menu-item" @onclick='() => OnMenuItemClick("系統維護")'> <span class="me-1 mdi mdi-24px mdi-alert-plus-outline "></span>系統維護 </div>
                                     <hr />
                                 }
                                 <div class="menu-item" @onclick='() => OnMenuItemClick("變更密碼")'> <span class="me-1 mdi mdi-24px mdi-lock-reset"></span>變更密碼 </div>
@@ -143,6 +144,7 @@
             "下載AI結果" => "/PatientKeyName",
             "申請帳號審查" => "/ApprovalRegistration",
             "操作歷程" => "/HistoryTrace",
+            "系統維護" => "/SystemMaintain",
             "變更密碼" => "/ChangePassword",
             "登出系統" => "/Auths/Logout",
             _ => "/"

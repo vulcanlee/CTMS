@@ -1,0 +1,50 @@
+﻿@page "/SystemMaintain"
+@using CTMS.DataModel.Models.Systems
+@using CTMS.Share.Helpers
+@using Newtonsoft.Json
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+
+@inject NavigationManager NavigationManager
+@inject CurrentUserService CurrentUserService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+@using Microsoft.Extensions.Options
+@inject IOptions<CTMSSettings> options
+@inject RandomListService RandomListService
+@inject RegisterModelService RegisterModelService
+
+<PageTitle>系統維護</PageTitle>
+
+@if (string.IsNullOrEmpty(RoleMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @RoleMessage
+    </div>
+}
+else
+{
+    <div>
+        <AdminHeaderView />
+
+        <div class="page-body">
+            <SystemMaintainView />
+        </div>
+    </div>
+}
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+}

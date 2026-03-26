@@ -110,6 +110,7 @@ namespace CTMS
                 builder.Services.AddScoped<VisitCodeHelper>();
                 builder.Services.AddScoped<VisitCodeCollectionHelper>();
                 builder.Services.AddScoped<DashboardService>();
+                builder.Services.AddScoped<SystemMaintainServices>();
                 builder.Services.AddTransient<RolePermissionService>();
                 builder.Services.AddHttpContextAccessor();
                 builder.Services.AddSingleton<RequestInformation>();
@@ -141,11 +142,11 @@ namespace CTMS
                 builder.Services.AddTransient<SendEmailService>();
 
                 #region MyUser
-                builder.Services.AddTransient<MyUserService>();
-                builder.Services.AddTransient<MyUserViewModel>();
-                builder.Services.AddTransient<MyUserAdapterModel>();
-                builder.Services.AddTransient<MyUser>();
-                builder.Services.AddTransient<MyUserDto>();
+                builder.Services.AddScoped<MyUserService>();
+                builder.Services.AddScoped<MyUserViewModel>();
+                builder.Services.AddScoped<MyUserAdapterModel>();
+                builder.Services.AddScoped<MyUser>();
+                builder.Services.AddScoped<MyUserDto>();
                 #endregion
 
                 #region OperationHistoryTrace
