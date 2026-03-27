@@ -9,6 +9,8 @@ using FellowOakDicom.Imaging;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.PivotView;
+using System.Diagnostics;
 
 namespace CTMS.Components.Views.ClinicalInformation;
 
@@ -922,11 +924,54 @@ public partial class BasicClinical2View
                 Directory.Delete(prepareAIResult1Path, true);
             }
             Directory.CreateDirectory(prepareAIResult1Path);
+            string needEncodeJsonFile = string.Empty;
+            string hasEncodingJsonFilename = string.Empty;
+            string targetCopyEncodingJsonFilename = string.Empty;
             foreach (var file in files)
             {
                 var destFile = Path.Combine(prepareAIResult1Path, Path.GetFileName(file));
-                File.Copy(file, destFile, true);
+                if (file.EndsWith(".json") == true)
+                {
+                    needEncodeJsonFile = Path.Combine(Directory.GetCurrentDirectory(), filename);
+                    hasEncodingJsonFilename = Path.Combine(Directory.GetCurrentDirectory(), filename+".encoded");
+                    targetCopyEncodingJsonFilename = destFile;
+                    File.Copy(needEncodeJsonFile, destFile, true);
+                }
+                else
+                    File.Copy(file, destFile, true);
             }
+
+            #region 使用 python 對 destFile 做編碼
+            if (string.IsNullOrEmpty(hasEncodingJsonFilename) == false)
+            {
+                string pythonExe = "python";
+                string mode = "encode";
+                string script = Path.Combine(Directory.GetCurrentDirectory(), "Scripts", "encode_json.py");
+
+                string inputFile = needEncodeJsonFile;
+                string outputFile = hasEncodingJsonFilename;
+
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = pythonExe,
+                    Arguments = $"{script} {mode} \"{inputFile}\" \"{outputFile}\"",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using Process process = Process.Start(psi);
+
+                string stdout = process.StandardOutput.ReadToEnd();
+                string stderr = process.StandardError.ReadToEnd();
+
+                process.WaitForExit();
+
+                File.Copy(outputFile, targetCopyEncodingJsonFilename, true);
+            }
+            #endregion
+
             var hasAIResult1Files = Directory.GetFiles(hasAIResultRootPath);
             foreach (var file in hasAIResult1Files)
             {
@@ -952,6 +997,10 @@ public partial class BasicClinical2View
                 KeyName = patientData.臨床資訊.KeyName,
             };
             var jsonContent = JsonConvert.SerializeObject(patientAIInfo);
+
+            string filePathPatientAIInfo = Path.GetFullPath(targetCopyEncodingJsonFilename);
+            string filenamePatientAIInfo = Path.GetFullPath(targetCopyEncodingJsonFilename);
+            
             File.WriteAllText(Path.Combine(prepareRootPath, "PatientData.json"), jsonContent);
             #endregion
 

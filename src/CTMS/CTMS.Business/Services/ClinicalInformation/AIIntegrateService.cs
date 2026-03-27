@@ -103,7 +103,7 @@ public class AIIntegrateService
         return result;
     }
 
-    public async Task<bool> CheckAIProcess(string KeyName, bool onlyCheck=false)
+    public async Task<bool> CheckAIProcess(string KeyName, bool onlyCheck = false)
     {
         bool result = false;
         var completionRootPath = agentsetting.GetCompleteQueuePath();
@@ -141,7 +141,8 @@ public class AIIntegrateService
         bool result = false;
         var completionRootPath = agentsetting.GetCompleteQueuePath();
         var completionKeyNamePath = Path.Combine(completionRootPath, KeyName);
-        Directory.Delete(completionKeyNamePath, true);
+        if (Directory.Exists(completionKeyNamePath))
+            Directory.Delete(completionKeyNamePath, true);
 
         result = true;
 
@@ -161,7 +162,7 @@ public class AIIntegrateService
         return result;
     }
 
-    public async Task<InputCsvModel> GetInputCsv(string KeyName, string rootPath="")
+    public async Task<InputCsvModel> GetInputCsv(string KeyName, string rootPath = "")
     {
         InputCsvModel result = new();
         string uploadFilesPath = MagicObjectHelper.UploadFinalPath;

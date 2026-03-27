@@ -69,6 +69,7 @@
 
 	<ItemGroup>
 		<Folder Include="Controllers\" />
+		<Folder Include="Scripts\" />
 		<Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 
