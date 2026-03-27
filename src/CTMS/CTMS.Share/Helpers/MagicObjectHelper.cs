@@ -78,6 +78,10 @@
         public const string TimelineSurgery = "Surgery";
         public const string TimelineChemotherapyDate = "Chemotherapy Date";
         public const string TimelinePostChemotherapy = "Post Chemotherapy";
+        public const string TimelinePost6CycleFollow = "Post 6 Cycle Follow";
+        public const string TimelineOtherFollowER = "Other Follow – ER";
+        public const string TimelineOtherFollowOPD = "Other Follow – OPD";
+        public const string TimelineOtherFollowAdmission = "Other Follow – Admission";
 
         public const string NotFoundClass = "not-found";
         public const string FoundClass = "has-found";

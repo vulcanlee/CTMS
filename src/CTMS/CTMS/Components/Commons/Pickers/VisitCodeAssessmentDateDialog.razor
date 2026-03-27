@@ -68,6 +68,34 @@
                                         <span class="mx-3 mdi mdi-24px @icon4 command-icon-width cursor-pointer"></span>
                                         <span class="cursor-pointer">Post Chemotherapy</span>
                                     </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelinePost6CycleFollow)">
+                                        @{
+                                            string icon5 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelinePost6CycleFollow);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon5 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">@MagicObjectHelper.TimelinePost6CycleFollow</span>
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelineOtherFollowER)">
+                                        @{
+                                            string icon6 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineOtherFollowER);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon6 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">@MagicObjectHelper.TimelineOtherFollowER</span>
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelineOtherFollowOPD)">
+                                        @{
+                                            string icon7 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineOtherFollowOPD);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon7 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">MagicObjectHelper.TimelineOtherFollowOPD</span>
+                                    </div>
+                                    <div @onclick="() => OnTimelineChanged(MagicObjectHelper.TimelineOtherFollowAdmission)">
+                                        @{
+                                            string icon8 = data.GetTimelineCheckboxIcon(MagicObjectHelper.TimelineOtherFollowAdmission);
+                                        }
+                                        <span class="mx-3 mdi mdi-24px @icon8 command-icon-width cursor-pointer"></span>
+                                        <span class="cursor-pointer">@MagicObjectHelper.TimelineOtherFollowAdmission</span>
+                                    </div>
 
                                 </div>
 
