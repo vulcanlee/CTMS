@@ -1,13 +1,16 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Xml;
-using static EncodeJSON.Program;
 
 namespace EncodeJSON
 {
     internal class Program
     {
+        private static readonly JsonSerializerSettings PythonCompatibleJsonSettings = new()
+        {
+            StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
+        };
+
         /// <summary>
         /// 將物件序列化並加密為字串
         /// </summary>
@@ -21,15 +24,15 @@ namespace EncodeJSON
             {'8', '1'}, {'9', '8'}
         };
 
-            // 序列化為 JSON 字串
-            string jsonString = JsonConvert.SerializeObject(obj);
+            // 序列化為與 Python json.dumps(..., ensure_ascii=True) 相近的 JSON 字串
+            string jsonString = SerializeJsonLikePython(obj);
 
             // 第一步：字符替換
             var j = jsonString.Select(x => corr.ContainsKey(x) ? corr[x] : x).ToArray();
 
             // 第二步：加密
             var encode = j.Select((x, i) =>
-                (char)(((byte)x * 7 + (i % 5)) % 256)
+                (char)((x * 7 + (i % 5)) % 256)
             ).ToArray();
 
             return new string(encode);
@@ -50,7 +53,7 @@ namespace EncodeJSON
 
             // 第一步：解密
             var decode = encodedString.Select((x, i) =>
-                (char)((183 * ((byte)x - (i % 5))) % 256)
+                (char)((NormalizeByte(x - (i % 5)) * 183) % 256)
             ).ToArray();
 
             // 第二步：字符還原
@@ -69,13 +72,13 @@ namespace EncodeJSON
                 // 讀取原始 JSON 檔案
                 string inputFile = "202510201648386456.json";
                 string jsonContent = File.ReadAllText(inputFile, Encoding.UTF8);
-                var originalData = JsonConvert.DeserializeObject(jsonContent);
+                var originalData = ParseJsonLikePython(jsonContent);
 
                 // 加密並輸出
                 string encoded = EncodeJson(originalData);
                 string outputFile = "202510201648386456.crypt.json";
                 File.WriteAllText(outputFile,
-                    JsonConvert.SerializeObject(encoded, Newtonsoft.Json.Formatting.Indented),
+                    JsonConvert.SerializeObject(encoded, PythonCompatibleJsonSettings),
                     utf8NoBom);
 
                 Console.WriteLine($"加密完成，已產生檔案：{outputFile}");
@@ -85,10 +88,10 @@ namespace EncodeJSON
                     File.ReadAllText(outputFile, utf8NoBom)
                 );
 
-                var decoded = DecodeJson<object>(encodedText);
+                var decoded = DecodeJson<JToken>(encodedText);
                 string restoredFile = "202510201648386456.decrypt.json";
                 File.WriteAllText(restoredFile,
-                    JsonConvert.SerializeObject(decoded, Newtonsoft.Json.Formatting.Indented),
+                    SerializeJsonLikePython(decoded),
                     utf8NoBom);
 
                 Console.WriteLine($"已解密回原始內容：{restoredFile}");
@@ -98,5 +101,61 @@ namespace EncodeJSON
                 Console.WriteLine($"錯誤：{ex.Message}");
             }
         }
+
+        private static JToken ParseJsonLikePython(string jsonContent)
+        {
+            using var stringReader = new StringReader(jsonContent);
+            using var jsonReader = new JsonTextReader(stringReader)
+            {
+                DateParseHandling = DateParseHandling.None
+            };
+
+            return JToken.ReadFrom(jsonReader);
+        }
+
+        private static string SerializeJsonLikePython(object obj)
+        {
+            var json = JsonConvert.SerializeObject(obj, PythonCompatibleJsonSettings);
+            return AddSpacesAfterSeparators(json);
+        }
+
+        private static string AddSpacesAfterSeparators(string json)
+        {
+            var builder = new StringBuilder(json.Length);
+            var inString = false;
+            var isEscaped = false;
+
+            foreach (var ch in json)
+            {
+                builder.Append(ch);
+
+                if (inString && isEscaped)
+                {
+                    isEscaped = false;
+                    continue;
+                }
+
+                if (ch == '\\' && inString)
+                {
+                    isEscaped = true;
+                    continue;
+                }
+
+                if (ch == '"')
+                {
+                    inString = !inString;
+                    continue;
+                }
+
+                if (!inString && (ch == ',' || ch == ':'))
+                {
+                    builder.Append(' ');
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        private static int NormalizeByte(int value) => ((value % 256) + 256) % 256;
     }
 }
