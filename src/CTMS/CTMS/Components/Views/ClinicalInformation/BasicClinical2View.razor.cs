@@ -944,21 +944,24 @@ public partial class BasicClinical2View
             #region 使用 python 對 destFile 做編碼
             if (string.IsNullOrEmpty(hasEncodingJsonFilename) == false)
             {
-                string pythonExe = "python";
+                string pythonExe = "C:\\temp\\Python310\\python";
                 string mode = "encode";
                 string script = Path.Combine(Directory.GetCurrentDirectory(), "Scripts", "encode_json.py");
 
                 string inputFile = needEncodeJsonFile;
                 string outputFile = hasEncodingJsonFilename;
 
+                string arg = $"{script} {mode} \"{inputFile}\" \"{outputFile}\"";
+                Logger.LogInformation($"執行 {pythonExe} 會用到引數 : {arg} ");
+
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = pythonExe,
-                    Arguments = $"{script} {mode} \"{inputFile}\" \"{outputFile}\"",
+                    Arguments = arg,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
-                    CreateNoWindow = true
+                    CreateNoWindow = true,
                 };
 
                 using Process process = Process.Start(psi);
@@ -967,6 +970,19 @@ public partial class BasicClinical2View
                 string stderr = process.StandardError.ReadToEnd();
 
                 process.WaitForExit();
+                if (string.IsNullOrWhiteSpace(stdout) == false)
+                {
+                    Logger.LogInformation("encode_json.py stdout: {Stdout}", stdout);
+                }
+
+                if (string.IsNullOrWhiteSpace(stderr) == false)
+                {
+                    Logger.LogWarning("encode_json.py stderr: {Stderr}", stderr);
+                }
+
+                if(process.ExitCode != 0) {              
+                    Logger.LogError("encode_json.py 執行失敗，ExitCode: {ExitCode}", process.ExitCode);
+                }
 
                 File.Copy(outputFile, targetCopyEncodingJsonFilename, true);
             }
