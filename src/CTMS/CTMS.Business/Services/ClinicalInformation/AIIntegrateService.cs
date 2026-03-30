@@ -155,7 +155,19 @@ public class AIIntegrateService
         var queue2Path = agentsetting.GetPhase2QueuePath();
         var sourceDirectoryName = Path.GetFileName(sourcePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
         var targetPath = Path.Combine(queue2Path, sourceDirectoryName);
+        try
+        {
+            if (Directory.Exists(targetPath))
+                Directory.Delete(targetPath, true);
+        }
+        catch { }
         directoryHelperService.CopyDirectory(sourcePath, targetPath, true);
+        try
+        {
+            if (Directory.Exists(sourcePath))
+                Directory.Delete(sourcePath, true);
+        }
+        catch { }
 
         result = true;
 
