@@ -9,7 +9,7 @@ using Syncfusion.Blazor.DropDowns;
 
 namespace CTMS.Components.Views.ClinicalInformation;
 
-public partial class BloodChemistryTestView
+public partial class BloodTestView
 {
     [Parameter]
     public string Code { get; set; }
@@ -18,9 +18,9 @@ public partial class BloodChemistryTestView
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
-    BloodTest抽血檢驗生化Node data = new();
-    BloodTest抽血檢驗生化 header = new();
-    BloodTest抽血檢驗生化Node dataOriginal = new();
+    BloodTest抽血檢驗血液Node data = new();
+    BloodTest抽血檢驗血液 header = new();
+    BloodTest抽血檢驗血液Node dataOriginal = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowVisitCodeDialog = false;
@@ -46,39 +46,26 @@ public partial class BloodChemistryTestView
         patientData.FromJson(patientAdapterModel.JsonData);
         InitData(true);
         if (data != null)
-        {
-            var item1 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "LDH U/L");
-            var item2 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "乳酸脫氫酶 (LDH)" && string.IsNullOrEmpty(z.單位));
-            if (item1 != null)
-            {
-                item1.項目名稱 = "乳酸脫氫酶 (LDH)";
-                item1.單位 = "U/L";
-            }
-            if (item2 != null)
-            {
-                data.抽血檢驗生化.Remove(item2);
-            }
-            BloodExameService.CheckBloodExame(data.抽血檢驗生化);
-        }
+            BloodExameService.CheckBloodExame(data.抽血檢驗血液);
     }
 
     void InitData(bool isFirst = true)
     {
-        header = patientData.臨床資料.抽血檢驗生化;
+        header = patientData.臨床資料.抽血檢驗血液;
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
             var dataJson = JsonConvert.SerializeObject(data);
-            dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+            dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗血液Node>(dataJson);
             if (data != null)
             {
-                BloodExameService.NormalizeBloodExameItems(data.抽血檢驗生化);
-                BloodExameService.FillUnitsFor生化Node(data, patientData.臨床資訊.SubjectNo);
+                BloodExameService.NormalizeBloodExameItems(data.抽血檢驗血液);
+                BloodExameService.FillUnitsFor血液Node(data, patientData.臨床資訊.SubjectNo);
             }
             if (dataOriginal != null)
             {
-                BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗生化);
-                BloodExameService.FillUnitsFor生化Node(dataOriginal, patientData.臨床資訊.SubjectNo);
+                BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗血液);
+                BloodExameService.FillUnitsFor血液Node(dataOriginal, patientData.臨床資訊.SubjectNo);
             }
 
             RefreshVisitCode();
@@ -93,16 +80,16 @@ public partial class BloodChemistryTestView
             {
                 data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
                 var dataJson = JsonConvert.SerializeObject(data);
-                dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+                dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗血液Node>(dataJson);
                 if (data != null)
                 {
-                    BloodExameService.NormalizeBloodExameItems(data.抽血檢驗生化);
-                    BloodExameService.FillUnitsFor生化Node(data, patientData.臨床資訊.SubjectNo);
+                    BloodExameService.NormalizeBloodExameItems(data.抽血檢驗血液);
+                    BloodExameService.FillUnitsFor血液Node(data, patientData.臨床資訊.SubjectNo);
                 }
                 if (dataOriginal != null)
                 {
-                    BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗生化);
-                    BloodExameService.FillUnitsFor生化Node(dataOriginal, patientData.臨床資訊.SubjectNo);
+                    BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗血液);
+                    BloodExameService.FillUnitsFor血液Node(dataOriginal, patientData.臨床資訊.SubjectNo);
                 }
             }
         }
@@ -110,7 +97,7 @@ public partial class BloodChemistryTestView
 
     void OnResetDate()
     {
-        foreach (var item in data.抽血檢驗生化)
+        foreach (var item in data.抽血檢驗血液)
         {
             if (string.IsNullOrEmpty(item.檢驗數值) == true)
                 continue;
@@ -122,7 +109,7 @@ public partial class BloodChemistryTestView
     {
         editMode = !editMode;
 
-        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗生化);
+        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗血液);
     }
 
     void OnLockEdit()
@@ -133,21 +120,21 @@ public partial class BloodChemistryTestView
     async Task OnSave()
     {
         if (data != null)
-            BloodExameService.CheckBloodExame(data.抽血檢驗生化);
+            BloodExameService.CheckBloodExame(data.抽血檢驗血液);
         patientAdapterModel.JsonData = patientData.ToJson();
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
 
         var dataJson = JsonConvert.SerializeObject(data);
-        dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+        dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗血液Node>(dataJson);
 
-        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗生化);
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.抽血檢驗血液);
 
         #region 更新操作日誌
         MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
         .GetUserInformation(authStateProvider);
 
-        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory抽血檢驗生化, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory抽血檢驗生化);
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory抽血檢驗血液, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory抽血檢驗血液);
         #endregion
     }
 
@@ -156,7 +143,7 @@ public partial class BloodChemistryTestView
         patientData.FromJson(patientAdapterModel.JsonData);
         editMode = false;
         InitData(false);
-        BloodExameService.CheckBloodExame(data.抽血檢驗生化);
+        BloodExameService.CheckBloodExame(data.抽血檢驗血液);
     }
 
     #region 針對 VisitCode 的方法
@@ -168,15 +155,15 @@ public partial class BloodChemistryTestView
             if (item != null)
             {
                 data = item;
-                BloodExameService.NormalizeBloodExameItems(data.抽血檢驗生化);
-                BloodExameService.FillUnitsFor生化Node(data, patientData.臨床資訊.SubjectNo);
+                BloodExameService.NormalizeBloodExameItems(data.抽血檢驗血液);
+                BloodExameService.FillUnitsFor血液Node(data, patientData.臨床資訊.SubjectNo);
 
                 var dataJson = JsonConvert.SerializeObject(data);
-                dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+                dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗血液Node>(dataJson);
                 if (dataOriginal != null)
                 {
-                    BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗生化);
-                    BloodExameService.FillUnitsFor生化Node(dataOriginal, patientData.臨床資訊.SubjectNo);
+                    BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗血液);
+                    BloodExameService.FillUnitsFor血液Node(dataOriginal, patientData.臨床資訊.SubjectNo);
                 }
             }
         }

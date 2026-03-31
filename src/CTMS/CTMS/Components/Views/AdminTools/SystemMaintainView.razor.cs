@@ -32,4 +32,22 @@ public partial class SystemMaintainView
             await systemMaintainServices.Fix_20260326_成大抽血生化_eGFR參考區間修正();
         }
     }
+
+    public async Task OnFillBloodTestUnits()
+    {
+        var ok = await modalService.ConfirmAsync(new ConfirmOptions
+        {
+            Title = "再次確認",
+            Content = "確定要補齊所有既有抽血血液/生化紀錄的單位嗎？",
+            OkText = "是",
+            CancelText = "取消",
+            OkButtonProps = new ButtonProps { Danger = true },
+            MaskClosable = false
+        });
+
+        if (ok)
+        {
+            await systemMaintainServices.FillBloodTestUnitsAsync();
+        }
+    }
 }

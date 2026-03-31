@@ -322,6 +322,8 @@ public class PatientService
             Patient itemData = Mapper.Map<Patient>(paraObject);
             PatientData patientData = new();
             patientData.FromJson(itemData.JsonData);
+            FillBloodTestUnits(patientData);
+            itemData.JsonData = patientData.ToJson();
 
             CleanTrackingHelper.Clean<Patient>(context);
             Patient item = await context.Patient
@@ -432,6 +434,24 @@ public class PatientService
     async Task OhterDependencyData(PatientAdapterModel data)
     {
         await Task.Yield();
+    }
+
+    void FillBloodTestUnits(PatientData patientData)
+    {
+        if (patientData?.臨床資訊 == null || string.IsNullOrWhiteSpace(patientData.臨床資訊.SubjectNo))
+        {
+            return;
+        }
+
+        foreach (var item in patientData.臨床資料.抽血檢驗血液.Items)
+        {
+            bloodExameService.FillUnitsFor血液Node(item, patientData.臨床資訊.SubjectNo);
+        }
+
+        foreach (var item in patientData.臨床資料.抽血檢驗生化.Items)
+        {
+            bloodExameService.FillUnitsFor生化Node(item, patientData.臨床資訊.SubjectNo);
+        }
     }
 
    public async Task ChangeStatusData(PatientAdapterModel data)

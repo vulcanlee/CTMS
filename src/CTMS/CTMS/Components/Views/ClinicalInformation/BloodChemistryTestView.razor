@@ -112,6 +112,7 @@
                 <thead>
                     <tr>
                         <th class="header-item">檢驗項目</th>
+                        <th class="header-reference">單位</th>
                         <th class="header-reference">參考區間</th>
                         <th class="header-result">檢驗數據</th>
                         <th class="header-sampling">Sampling</th>
@@ -130,6 +131,7 @@
                         }
                         <tr class="@rowClass">
                             <td class="item-cell ">@item.項目名稱</td>
+                            <td class="reference-cell ">@item.單位</td>
                             <td class="reference-cell ">@item.參考區間</td>
                             <td class="result-cell @item.TextClassName">
                                 @if (editMode)

@@ -842,6 +842,14 @@ public partial class BasicClinical2View
 
 
             Main臨床資料HelperService.SyncData(patientData.臨床資訊.SubjectNo, patientData.臨床資料, visitCodeSetModel);
+            foreach (var item in patientData.臨床資料.抽血檢驗血液.Items)
+            {
+                BloodExameService.FillUnitsFor血液Node(item, patientData.臨床資訊.SubjectNo);
+            }
+            foreach (var item in patientData.臨床資料.抽血檢驗生化.Items)
+            {
+                BloodExameService.FillUnitsFor生化Node(item, patientData.臨床資訊.SubjectNo);
+            }
             patientData.SyncData();
             patientAdapterModel.JsonData = patientData.ToJson();
             await PatientService.UpdateAsync(patientAdapterModel);

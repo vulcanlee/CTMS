@@ -215,6 +215,9 @@ public class Main臨床資料HelperService
                     {
                         if (node.Checked抽血檢驗血液 == true)
                         {
+                            bloodExameService.NormalizeBloodExameItems(item.抽血檢驗血液);
+                            bloodExameService.FillUnitsFromSubjectNo(item.抽血檢驗血液, subjectNo, MagicObjectHelper.Blood抽血檢驗血液);
+
                             #region 將欠缺的 帶狀性中性球 Band(%) 加入進來
                             var itemNeutrophilCount帶狀性中性球Target = item.抽血檢驗血液
                                 .FirstOrDefault(x => x.項目名稱 == MagicObjectHelper.NeutrophilCount帶狀性中性球Band);
@@ -266,6 +269,8 @@ public class Main臨床資料HelperService
                     {
                         if (node.Checked抽血檢驗生化 == true)
                         {
+                            bloodExameService.NormalizeBloodExameItems(item.抽血檢驗生化);
+                            bloodExameService.FillUnitsFromSubjectNo(item.抽血檢驗生化, subjectNo, MagicObjectHelper.Blood抽血檢驗生化);
                             return;
                         }
                         Main臨床資料.抽血檢驗生化.Items.Remove(item);
