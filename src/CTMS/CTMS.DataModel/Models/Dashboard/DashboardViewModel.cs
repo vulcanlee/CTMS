@@ -86,6 +86,8 @@ public class CancerStageStat
 {
     public string StageName { get; set; } 
     public int Count { get; set; }
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
 }
 
 /// <summary>
@@ -95,6 +97,10 @@ public class CancerTypeDistribution
 {
     public int OvarianCancerCount { get; set; }  
     public int EndometrialCancerCount { get; set; }
+    public int OvarianCancerExperimentalGroupCount { get; set; }
+    public int OvarianCancerControlGroupCount { get; set; }
+    public int EndometrialCancerExperimentalGroupCount { get; set; }
+    public int EndometrialCancerControlGroupCount { get; set; }
 
     // 方便計算總數或百分比的唯讀屬性
     public int Total => OvarianCancerCount + EndometrialCancerCount;

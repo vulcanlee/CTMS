@@ -88,10 +88,10 @@ public class DashboardService
         #region 分期統計
         Dashboard.StageStats = new List<CancerStageStat>
         {
-            new CancerStageStat { StageName = "I", Count = 0 },
-            new CancerStageStat { StageName = "II", Count = 0 },
-            new CancerStageStat { StageName = "III", Count = 0 },
-            new CancerStageStat { StageName = "IV", Count = 0 },
+            new CancerStageStat { StageName = "I", Count = 0, ExperimentalGroupCount = 0, ControlGroupCount = 0 },
+            new CancerStageStat { StageName = "II", Count = 0, ExperimentalGroupCount = 0, ControlGroupCount = 0 },
+            new CancerStageStat { StageName = "III", Count = 0, ExperimentalGroupCount = 0, ControlGroupCount = 0 },
+            new CancerStageStat { StageName = "IV", Count = 0, ExperimentalGroupCount = 0, ControlGroupCount = 0 },
         };
         #endregion
 
@@ -101,6 +101,10 @@ public class DashboardService
         #region 癌別統計
         Dashboard.CancerTypeStats.OvarianCancerCount = 0;
         Dashboard.CancerTypeStats.EndometrialCancerCount = 0;
+        Dashboard.CancerTypeStats.OvarianCancerExperimentalGroupCount = 0;
+        Dashboard.CancerTypeStats.OvarianCancerControlGroupCount = 0;
+        Dashboard.CancerTypeStats.EndometrialCancerExperimentalGroupCount = 0;
+        Dashboard.CancerTypeStats.EndometrialCancerControlGroupCount = 0;
         #endregion
 
         #region 完成度統計
@@ -209,21 +213,37 @@ public class DashboardService
                 var cancerStage = patientData.臨床資訊.FIGOStaging;
                 if (string.IsNullOrEmpty(cancerStage) == false)
                 {
+                    CancerStageStat? stageStat = null;
+
                     if (cancerStage.Contains("IV") && cancerStage.IndexOf("IV") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "IV").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "IV");
                     }
                     else if (cancerStage.Contains("III") && cancerStage.IndexOf("III") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "III").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "III");
                     }
                     else if (cancerStage.Contains("II") && cancerStage.IndexOf("II") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "II").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "II");
                     }
                     else if (cancerStage.Contains("I") && cancerStage.IndexOf("I") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "I").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "I");
+                    }
+
+                    if (stageStat is not null)
+                    {
+                        if (patient.組別 == MagicObjectHelper.組別實驗組英文)
+                        {
+                            stageStat.ExperimentalGroupCount++;
+                            stageStat.Count++;
+                        }
+                        else if (patient.組別 == MagicObjectHelper.組別對照組英文)
+                        {
+                            stageStat.ControlGroupCount++;
+                            stageStat.Count++;
+                        }
                     }
                 }
                 #endregion
@@ -235,10 +255,28 @@ public class DashboardService
                 if (patientData.臨床資訊?.CancerType?.Contains("卵巢癌") == true)
                 {
                     Dashboard.CancerTypeStats.OvarianCancerCount++;
+
+                    if (patient.組別 == MagicObjectHelper.組別實驗組英文)
+                    {
+                        Dashboard.CancerTypeStats.OvarianCancerExperimentalGroupCount++;
+                    }
+                    else if (patient.組別 == MagicObjectHelper.組別對照組英文)
+                    {
+                        Dashboard.CancerTypeStats.OvarianCancerControlGroupCount++;
+                    }
                 }
                 else if (patientData.臨床資訊?.CancerType?.Contains("子宮內膜癌") == true)
                 {
                     Dashboard.CancerTypeStats.EndometrialCancerCount++;
+
+                    if (patient.組別 == MagicObjectHelper.組別實驗組英文)
+                    {
+                        Dashboard.CancerTypeStats.EndometrialCancerExperimentalGroupCount++;
+                    }
+                    else if (patient.組別 == MagicObjectHelper.組別對照組英文)
+                    {
+                        Dashboard.CancerTypeStats.EndometrialCancerControlGroupCount++;
+                    }
                 }
                 #endregion
 
