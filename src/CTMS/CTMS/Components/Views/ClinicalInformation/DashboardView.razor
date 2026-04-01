@@ -87,6 +87,47 @@
             </div>
         </div>
 
+        <div class="stats-grid-secondary">
+            <div class="stat-card stat-card-secondary">
+                <div class="stat-header">
+                    <div class="stat-title">實驗組人數</div>
+                    <svg class="stat-icon icon-teal" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 3v3.5l-4.5 7.8A3 3 0 0 0 7.1 19h9.8a3 3 0 0 0 2.6-4.7L15 6.5V3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M8 13h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        <path d="M10 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="stat-value">@DashboardService.Dashboard.Summary.ExperimentalGroupCount</div>
+                <div class="stat-subtitle">全部病人中的實驗組</div>
+            </div>
+
+            <div class="stat-card stat-card-secondary">
+                <div class="stat-header">
+                    <div class="stat-title">對照組人數</div>
+                    <svg class="stat-icon icon-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="currentColor" />
+                        <path d="M3.5 18.5c.6-2.4 2.8-4 5.5-4s4.9 1.6 5.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        <path d="M12.5 18.5c.5-1.9 2.2-3.2 4.5-3.2 2.1 0 3.8 1.2 4.5 3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="stat-value">@DashboardService.Dashboard.Summary.ControlGroupCount</div>
+                <div class="stat-subtitle">全部病人中的對照組</div>
+            </div>
+
+            <div class="stat-card stat-card-secondary">
+                <div class="stat-header">
+                    <div class="stat-title">高風險人數</div>
+                    <svg class="stat-icon icon-orange" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4 20 18H4L12 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                        <path d="M12 9v4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        <circle cx="12" cy="16.5" r="1" fill="currentColor" />
+                    </svg>
+                </div>
+                <div class="stat-value">@DashboardService.Dashboard.Summary.HighRiskCount</div>
+                <div class="stat-subtitle">風險程度為高風險</div>
+            </div>
+        </div>
+
         <!-- Charts Grid -->
         <div class="charts-grid">
             <div class="chart-card">

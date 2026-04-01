@@ -60,6 +60,11 @@ public class DashboardSummary
     // 卡片 4: 分析報告
     public int AnalysisReportCount { get; set; }
 
+    // 卡片 5-7: 第二排摘要統計
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
+    public int HighRiskCount { get; set; }
+
     #region Method
     public string GetHospitalNamesDisplay() => string.Join("、", HospitalNames); // 用於顯示醫院名稱的輔助方法
     public string GetMonthlyGrowthDescription() => $"+{MonthlyGrowthRate} 本月新增{NewCasesThisMonth}例"; 
