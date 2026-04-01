@@ -129,9 +129,13 @@ window.initDashboardCharts = function (viewModel) {
     updateChartDefaults();
 
     // 從 ViewModel 提取數據，如果沒有提供則使用默認值
-    const hospitalLabels = viewModel?.hospitalStats?.map(h => h.hospitalName) || ['成大', '郭綜合', '奇美'];
-    const hospitalData = viewModel?.hospitalStats?.map(h => h.caseCount) || [402, 475, 285];
-    const hospitalMaxValue = Math.max(...hospitalData) * 1.2; // 動態計算最大值，給予 20% 的空間
+    const hospitalLabels = viewModel?.hospitalStats?.map(h => h.hospitalName) || ['成大', '奇美', '郭綜合'];
+    const experimentalHospitalData = viewModel?.hospitalStats?.map(h => h.experimentalGroupCount ?? 0) || [210, 185, 150];
+    const controlHospitalData = viewModel?.hospitalStats?.map(h => h.controlGroupCount ?? 0) || [192, 164, 135];
+    const hospitalTotals = hospitalLabels.map((_, index) =>
+        (experimentalHospitalData[index] || 0) + (controlHospitalData[index] || 0)
+    );
+    const hospitalMaxValue = Math.max(...hospitalTotals, 0) * 1.2 || 1; // 動態計算最大值，給予 20% 的空間
 
     const stageLabels = viewModel?.stageStats?.map(s => s.stageName) || ['1期', '2期', '3期', '4期'];
     const stageData = viewModel?.stageStats?.map(s => s.count) || [380, 490, 315, 270];
@@ -153,12 +157,22 @@ window.initDashboardCharts = function (viewModel) {
         type: 'bar',
         data: {
             labels: hospitalLabels,
-            datasets: [{
-                data: new Array(hospitalData.length).fill(0),
-                backgroundColor: ['#4caf50', '#ff6b6b', '#ffc107'],
-                borderRadius: 8,
-                barThickness: 80
-            }]
+            datasets: [
+                {
+                    label: '實驗組',
+                    data: new Array(hospitalLabels.length).fill(0),
+                    backgroundColor: '#4caf50',
+                    borderRadius: 8,
+                    barThickness: 80
+                },
+                {
+                    label: '對照組',
+                    data: new Array(hospitalLabels.length).fill(0),
+                    backgroundColor: '#ff6b6b',
+                    borderRadius: 8,
+                    barThickness: 80
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -185,6 +199,7 @@ window.initDashboardCharts = function (viewModel) {
                 y: {
                     beginAtZero: true,
                     max: hospitalMaxValue,
+                    stacked: true,
                     grid: {
                         color: getGridColor(),
                         drawBorder: false
@@ -196,6 +211,7 @@ window.initDashboardCharts = function (viewModel) {
                     }
                 },
                 x: {
+                    stacked: true,
                     grid: {
                         display: false,
                         drawBorder: true,
@@ -214,9 +230,10 @@ window.initDashboardCharts = function (viewModel) {
     });
 
     // Animate hospital bars one by one after a short delay
-    hospitalData.forEach((target, i) => {
+    hospitalLabels.forEach((_, i) => {
         setTimeout(() => {
-            hospitalChart.data.datasets[0].data[i] = target;
+            hospitalChart.data.datasets[0].data[i] = experimentalHospitalData[i];
+            hospitalChart.data.datasets[1].data[i] = controlHospitalData[i];
             hospitalChart.update();
         }, i * 400);
     });

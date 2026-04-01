@@ -74,7 +74,9 @@ public class DashboardSummary
 public class HospitalCaseStat
 {
     public string HospitalName { get; set; } 
-    public int CaseCount { get; set; }       
+    public int CaseCount { get; set; }
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
 }
 
 /// <summary>

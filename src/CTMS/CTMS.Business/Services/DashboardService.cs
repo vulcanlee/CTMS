@@ -61,9 +61,27 @@ public class DashboardService
         #region 醫院個數
         Dashboard.HospitalStats = new List<HospitalCaseStat>
         {
-            new HospitalCaseStat { HospitalName = MagicObjectHelper.PrefixSheetName成大醫院, CaseCount = 0 },
-            new HospitalCaseStat { HospitalName = MagicObjectHelper.PrefixSheetName奇美醫院, CaseCount = 0 },
-            new HospitalCaseStat { HospitalName = MagicObjectHelper.PrefixSheetName郭綜合醫院, CaseCount = 0 },
+            new HospitalCaseStat
+            {
+                HospitalName = MagicObjectHelper.PrefixSheetName成大醫院,
+                CaseCount = 0,
+                ExperimentalGroupCount = 0,
+                ControlGroupCount = 0
+            },
+            new HospitalCaseStat
+            {
+                HospitalName = MagicObjectHelper.PrefixSheetName奇美醫院,
+                CaseCount = 0,
+                ExperimentalGroupCount = 0,
+                ControlGroupCount = 0
+            },
+            new HospitalCaseStat
+            {
+                HospitalName = MagicObjectHelper.PrefixSheetName郭綜合醫院,
+                CaseCount = 0,
+                ExperimentalGroupCount = 0,
+                ControlGroupCount = 0
+            },
         };
         #endregion
 
@@ -165,18 +183,25 @@ public class DashboardService
 
                 #region Row 2
                 #region 醫院個數
-                var hospital = patient.醫院;
-                if (hospital.Contains(MagicObjectHelper.PrefixSheetName成大醫院))
+                var normalizedHospitalName = GetHospitalName(patient.醫院);
+                if (string.IsNullOrEmpty(normalizedHospitalName) == false)
                 {
-                    Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == MagicObjectHelper.PrefixSheetName成大醫院).CaseCount++;
-                }
-                else if (hospital.Contains(MagicObjectHelper.PrefixSheetName奇美醫院))
-                {
-                    Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == MagicObjectHelper.PrefixSheetName奇美醫院).CaseCount++;
-                }
-                else if (hospital.Contains(MagicObjectHelper.PrefixSheetName郭綜合醫院))
-                {
-                    Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == MagicObjectHelper.PrefixSheetName郭綜合醫院).CaseCount++;
+                    var hospitalStat = Dashboard.HospitalStats
+                        .FirstOrDefault(a => a.HospitalName == normalizedHospitalName);
+
+                    if (hospitalStat is not null)
+                    {
+                        if (patient.組別 == MagicObjectHelper.組別實驗組英文)
+                        {
+                            hospitalStat.ExperimentalGroupCount++;
+                            hospitalStat.CaseCount++;
+                        }
+                        else if (patient.組別 == MagicObjectHelper.組別對照組英文)
+                        {
+                            hospitalStat.ControlGroupCount++;
+                            hospitalStat.CaseCount++;
+                        }
+                    }
                 }
                 #endregion
 
@@ -228,6 +253,31 @@ public class DashboardService
         }
 
         Dashboard.ComputeCompletion();
+    }
+
+    private static string? GetHospitalName(string? hospital)
+    {
+        if (string.IsNullOrEmpty(hospital))
+        {
+            return null;
+        }
+
+        if (hospital.Contains(MagicObjectHelper.PrefixSheetName成大醫院))
+        {
+            return MagicObjectHelper.PrefixSheetName成大醫院;
+        }
+
+        if (hospital.Contains(MagicObjectHelper.PrefixSheetName奇美醫院))
+        {
+            return MagicObjectHelper.PrefixSheetName奇美醫院;
+        }
+
+        if (hospital.Contains(MagicObjectHelper.PrefixSheetName郭綜合醫院))
+        {
+            return MagicObjectHelper.PrefixSheetName郭綜合醫院;
+        }
+
+        return null;
     }
 }
 
