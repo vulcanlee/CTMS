@@ -1,10 +1,13 @@
 ﻿using AntDesign;
 using CTMS.AdapterModels;
+using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.DataModel.ViewModels;
 using CTMS.EntityModel.Models;
 using CTMS.Share.Helpers;
+using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.DropDowns;
 
 namespace CTMS.Components.Views.Commons;
@@ -314,6 +317,32 @@ public partial class BrowseView
     async Task OnRefreshAsync()
     {
         await ReloadAsync();
+    }
+
+    [Inject] PatientCsvExportService PatientCsvExportService { get; set; } = default!;
+
+    async Task On匯出ExcelAsync()
+    {
+        // 取得全部病人（不分頁）
+        var allPatients = await PatientService.GetAsync();
+
+        // 反序列化每位病人的 JsonData
+        var patientDataList = new List<PatientData>();
+        var tempData = new PatientData();
+        foreach (var item in allPatients)
+        {
+            var pd = new PatientData();
+            pd.FromJson(item.JsonData);
+            patientDataList.Add(pd);
+        }
+
+        // 呼叫匯出服務
+        var csvBytes = PatientCsvExportService.Export(patientDataList);
+
+        var stream = new MemoryStream(csvBytes);
+        using var streamRef = new DotNetStreamReference(stream: stream);
+        var fileName = $"CTMS大表_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
     }
 
     void DropDownListDataInit()

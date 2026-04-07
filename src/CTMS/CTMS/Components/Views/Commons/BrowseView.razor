@@ -21,6 +21,7 @@
 @inject BrowseSearchingService BrowseSearchingService
 @inject RandomListService RandomListService
 @inject OperationHistoryTraceService OperationHistoryTraceService
+@inject IJSRuntime JS
 
 <div class="browse-container">
     <!-- 功能按鈕區域 -->
@@ -36,6 +37,9 @@
         </button>
         <button class="btn btn-refresh" @onclick="On儀表板">
             <span class="icon-refresh">📊</span> 儀表板
+        </button>
+        <button class="btn btn-export" @onclick="@(async () => await On匯出ExcelAsync())">
+            <span class="icon-refresh">📥</span> 匯出 Excel
         </button>
     </div>
 
