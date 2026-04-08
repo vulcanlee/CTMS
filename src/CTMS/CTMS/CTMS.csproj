@@ -1,184 +1,166 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
-	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Content Remove="Data\RandomListRuntime.json" />
-		<Content Remove="Data\SubjectNoGenerator.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="Data\RandomList.xlsx">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Scripts\encode_json.py">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="AntDesign" Version="1.4.3" />
-		<PackageReference Include="JsonDiffPatch.Net" Version="2.5.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="MudBlazor" Version="7.7.0" />
-		<PackageReference Include="NLog.Web.AspNetCore" Version="5.3.15" />
-		<PackageReference Include="QRCoder" Version="1.6.0" />
-		<PackageReference Include="Syncfusion.Blazor" Version="26.2.13" />
-		<PackageReference Include="Syncfusion.Blazor.Themes" Version="26.2.13" />
-		<PackageReference Include="AutoMapper" Version="14.0.0" />
-		<PackageReference Include="Syncfusion.HtmlToPdfConverter.Net.Windows" Version="28.1.39" />
-		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="26.2.13" />-->
-		<!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.Cef.Net.Windows" Version="28.1.39" />-->
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\CTMS.Business\CTMS.Business.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="Data\readme.md">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Data\Test for PE dashboard.xlsx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Controllers\" />
-		<Folder Include="Properties\PublishProfiles\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="Data\RandomListRuntime.json" />
-		<None Include="Data\SubjectNoGenerator.json" />
-	</ItemGroup>
-
-	<!-- ***** OperationContent ***** -->
-	<ItemGroup>
-		<Content Remove="OperationContent\**" />
-		<None Remove="OperationContent\**" />
-		<Compile Remove="OperationContent\**" />
-		<EmbeddedResource Remove="OperationContent\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="OperationContent\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<!-- ***** UploadFiles ***** -->
-	<ItemGroup>
-		<Content Remove="UploadFiles\**" />
-		<None Remove="UploadFiles\**" />
-		<Compile Remove="UploadFiles\**" />
-		<EmbeddedResource Remove="UploadFiles\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="UploadFiles\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<!-- ***** DawnCache ***** -->
-	<ItemGroup>
-		<Content Remove="DawnCache\**" />
-		<None Remove="DawnCache\**" />
-		<Compile Remove="DawnCache\**" />
-		<EmbeddedResource Remove="DawnCache\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="DawnCache\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	
-	<!-- ***** DownloadFiles ***** -->
-	<ItemGroup>
-		<Content Remove="DownloadFiles\**" />
-		<None Remove="DownloadFiles\**" />
-		<Compile Remove="DownloadFiles\**" />
-		<EmbeddedResource Remove="DownloadFiles\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="DownloadFiles\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	
-	<!-- ***** DecompressFiles ***** -->
-	<ItemGroup>
-		<Content Remove="DecompressFiles\**" />
-		<None Remove="DecompressFiles\**" />
-		<Compile Remove="DecompressFiles\**" />
-		<EmbeddedResource Remove="DecompressFiles\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="DecompressFiles\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	
-	<!-- ***** UploadTemp ***** -->
-	<ItemGroup>
-		<Content Remove="UploadTemp\**" />
-		<None Remove="UploadTemp\**" />
-		<Compile Remove="UploadTemp\**" />
-		<EmbeddedResource Remove="UploadTemp\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="UploadTemp\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<!-- ***** PdfFiles ***** -->
-	<ItemGroup>
-		<Content Remove="PdfFiles\**" />
-		<None Remove="PdfFiles\**" />
-		<Compile Remove="PdfFiles\**" />
-		<EmbeddedResource Remove="PdfFiles\**" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="Scripts\encode_json.py" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="PdfFiles\readme.md">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="Data\RandomListRuntime.json" />
+    <Content Remove="Data\SubjectNoGenerator.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\RandomList.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\encode_json.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AntDesign" Version="1.4.3" />
+    <PackageReference Include="JsonDiffPatch.Net" Version="2.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MudBlazor" Version="7.7.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.15" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="Syncfusion.Blazor" Version="26.2.13" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="26.2.13" />
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Syncfusion.HtmlToPdfConverter.Net.Windows" Version="28.1.39" />
+    <!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="26.2.13" />-->
+    <!--<PackageReference Include="Syncfusion.HtmlToPdfConverter.Cef.Net.Windows" Version="28.1.39" />-->
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CTMS.Business\CTMS.Business.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Data\readme.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\Test for PE dashboard.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\RandomListRuntime.json" />
+    <None Include="Data\SubjectNoGenerator.json" />
+  </ItemGroup>
+  <!-- ***** OperationContent ***** -->
+  <ItemGroup>
+    <Content Remove="OperationContent\**" />
+    <None Remove="OperationContent\**" />
+    <Compile Remove="OperationContent\**" />
+    <EmbeddedResource Remove="OperationContent\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OperationContent\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- ***** UploadFiles ***** -->
+  <ItemGroup>
+    <Content Remove="UploadFiles\**" />
+    <None Remove="UploadFiles\**" />
+    <Compile Remove="UploadFiles\**" />
+    <EmbeddedResource Remove="UploadFiles\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UploadFiles\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- ***** DawnCache ***** -->
+  <ItemGroup>
+    <Content Remove="DawnCache\**" />
+    <None Remove="DawnCache\**" />
+    <Compile Remove="DawnCache\**" />
+    <EmbeddedResource Remove="DawnCache\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DawnCache\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- ***** DownloadFiles ***** -->
+  <ItemGroup>
+    <Content Remove="DownloadFiles\**" />
+    <None Remove="DownloadFiles\**" />
+    <Compile Remove="DownloadFiles\**" />
+    <EmbeddedResource Remove="DownloadFiles\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DownloadFiles\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- ***** DecompressFiles ***** -->
+  <ItemGroup>
+    <Content Remove="DecompressFiles\**" />
+    <None Remove="DecompressFiles\**" />
+    <Compile Remove="DecompressFiles\**" />
+    <EmbeddedResource Remove="DecompressFiles\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DecompressFiles\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- ***** UploadTemp ***** -->
+  <ItemGroup>
+    <Content Remove="UploadTemp\**" />
+    <None Remove="UploadTemp\**" />
+    <Compile Remove="UploadTemp\**" />
+    <EmbeddedResource Remove="UploadTemp\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UploadTemp\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- ***** PdfFiles ***** -->
+  <ItemGroup>
+    <Content Remove="PdfFiles\**" />
+    <None Remove="PdfFiles\**" />
+    <Compile Remove="PdfFiles\**" />
+    <EmbeddedResource Remove="PdfFiles\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Scripts\encode_json.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PdfFiles\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Http" Version="8.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="8.*" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="8.*" />
+  </ItemGroup>
 </Project>
