@@ -24,6 +24,8 @@ public partial class BasicClinical2View
     PatientData patientData = new();
     PatientData beforePatientData = new();
     PatientAdapterModel patientAdapterModel = new();
+    PatientAdapterModel taskPatientAdapterModel = new();
+    PatientData taskPatientData = new();
     bool editMode = false;
 
     bool ShowMMRProteinSettingDialog = false;
@@ -85,8 +87,8 @@ public partial class BasicClinical2View
                     var checkCompleted = false;
                     checkTask = Task.Run(async () =>
                     {
-                        PatientAdapterModel taskPatientAdapterModel = new();
-                        PatientData taskPatientData = new();
+                        taskPatientAdapterModel = new();
+                        taskPatientData = new();
 
                         while (!token.IsCancellationRequested)
                         {
@@ -109,6 +111,7 @@ public partial class BasicClinical2View
                             if (isCompletion)
                             {
                                 checkCompleted = true;
+                                await Task.Delay(1000);
                                 await InvokeAsync(async () =>
                                 {
                                     var task = ShowAICompletionAsync();
@@ -903,6 +906,7 @@ public partial class BasicClinical2View
 
             if (Directory.Exists(hasAIResult1Path) == false)
             {
+                MessageBox.Show("600px", "200px", "警告", $"處理上傳人工標註檔案 需要目錄 {hasAIResult1Path} 不存在.", MessageBox.HiddenAsync);
                 Logger.LogWarning($"處理上傳人工標註檔案 Directory {hasAIResult1Path} does not exist.");
                 return;
             }
@@ -918,12 +922,12 @@ public partial class BasicClinical2View
             #region 若已經有成功推論，先做清除
             await AIIntegrateService.ManualAnnotationPreprocess(patientData.臨床資訊.KeyName);
 
-            PatientAdapterModel taskPatientAdapterModel = new();
-            PatientData taskPatientData = new();
+            //PatientAdapterModel taskPatientAdapterModel = new();
+            //PatientData taskPatientData = new();
 
-            taskPatientAdapterModel = await PatientService.GetAsync(Code);
-            taskPatientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
-            await PatientService.UpdateAsync(taskPatientAdapterModel);
+            //taskPatientAdapterModel = await PatientService.GetAsync(Code);
+            //taskPatientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+            //await PatientService.UpdateAsync(taskPatientAdapterModel);
             #endregion
 
             #region 在 UploadTemp 目錄下，準備相關檔案
@@ -941,7 +945,7 @@ public partial class BasicClinical2View
                 if (file.EndsWith(".json") == true)
                 {
                     needEncodeJsonFile = Path.Combine(Directory.GetCurrentDirectory(), filename);
-                    hasEncodingJsonFilename = Path.Combine(Directory.GetCurrentDirectory(), filename+".encoded");
+                    hasEncodingJsonFilename = Path.Combine(Directory.GetCurrentDirectory(), filename + ".encoded");
                     targetCopyEncodingJsonFilename = destFile;
                     File.Copy(needEncodeJsonFile, destFile, true);
                 }
@@ -988,7 +992,8 @@ public partial class BasicClinical2View
                     Logger.LogWarning("encode_json.py stderr: {Stderr}", stderr);
                 }
 
-                if(process.ExitCode != 0) {              
+                if (process.ExitCode != 0)
+                {
                     Logger.LogError("encode_json.py 執行失敗，ExitCode: {ExitCode}", process.ExitCode);
                 }
 
@@ -1024,7 +1029,7 @@ public partial class BasicClinical2View
 
             string filePathPatientAIInfo = Path.GetFullPath(targetCopyEncodingJsonFilename);
             string filenamePatientAIInfo = Path.GetFullPath(targetCopyEncodingJsonFilename);
-            
+
             File.WriteAllText(Path.Combine(prepareRootPath, "PatientData.json"), jsonContent);
             #endregion
 
@@ -1032,12 +1037,46 @@ public partial class BasicClinical2View
 
             #endregion
 
+            #region 移除之前推論結果目錄 AIResult1~3
+            var dirs = Directory.GetDirectories(hasAIResultRootPath);
+            if (dirs.Length > 0)
+            {
+                foreach (var dir in dirs)
+                {
+                    Directory.Delete(dir, true);
+                }
+            }
+            #endregion
+
             await AIIntegrateService.ManualAnnotationProcess(prepareRootPath);
+
+            #region 清空之前計算結果
+
+            patientData.臨床資訊.RiskAssessmentResult.SMD骨骼肌密度 = "";
+            patientData.臨床資訊.RiskAssessmentResult.IMAT肌間肌肉脂肪組織 = "";
+            patientData.臨床資訊.RiskAssessmentResult.LAMA低密度肌肉區域 = "";
+            patientData.臨床資訊.RiskAssessmentResult.NAMA正常密度肌肉區域 = "";
+            patientData.臨床資訊.RiskAssessmentResult.SMA骨骼肌面積 = "";
+            patientData.臨床資訊.RiskAssessmentResult.SMI骨骼肌指標 = "";
+            patientData.臨床資訊.RiskAssessmentResult.Myosteatosis肌肉脂肪變性 = "";
+
+            patientAdapterModel.JsonData = patientData.ToJson();
+            patientAdapterModel.AI處理 = MagicObjectHelper.AI處理處理中;
+            patientAdapterModel.AI評估 = MagicObjectHelper.NA;
+            await PatientService.UpdateAsync(patientAdapterModel);
+            #endregion
+      
         }
         imageVersion = DateTime.Now.Ticks.ToString();
+
         ShowUploadManualAnnotationDialog = false;
-        await GetDataAsync();
+        // await GetDataAsync();
         StateHasChanged();
+        if (filename != null)
+        {
+            MessageBox.Show("400px", "200px", "資訊", $"已經將此 人工標註 紀錄送至 AI 推論中 (ID: {patientData.臨床資訊.KeyName})", MessageBox.HiddenAsync);
+            StateHasChanged();
+        }
     }
 
     void OnChangeEditMode()
