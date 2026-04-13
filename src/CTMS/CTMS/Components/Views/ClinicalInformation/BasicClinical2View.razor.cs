@@ -956,7 +956,38 @@ public partial class BasicClinical2View
             #region 使用 python 對 destFile 做編碼
             if (string.IsNullOrEmpty(hasEncodingJsonFilename) == false)
             {
-                string pythonExe = "C:\\temp\\Python310\\python";
+                #region 加入需要用到的框架
+                string uploadJsonContent = File.ReadAllText(needEncodeJsonFile);
+                if (uploadJsonContent.ToLower().Contains("""version""") &&
+                    uploadJsonContent.ToLower().Contains("""imageheight""") &&
+                    uploadJsonContent.ToLower().Contains("""imagewidth"""))
+                {
+                    string newContent = """
+                        {
+                          "version": "4.5.6",
+                          "flags": {},
+                          "shapes": [
+                          @@@@
+                          ],
+                          "imagePath": "",
+                          "imageHeight": 512,
+                          "imageWidth": 512,
+                          "inferenceResult": {
+                            "table": {},
+                            "observeValue": {
+                              "unique": [
+                                "L3"
+                              ]
+                            }
+                          }
+                        }
+                        """;
+                    newContent = newContent.Replace("@@@@", uploadJsonContent);
+                    File.WriteAllText(needEncodeJsonFile, newContent);
+                }
+                #endregion
+
+                    string pythonExe = "C:\\temp\\Python310\\python";
                 string mode = "encode";
                 string script = Path.Combine(Directory.GetCurrentDirectory(), "Scripts", "encode_json.py");
 
