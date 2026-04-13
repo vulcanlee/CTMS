@@ -958,9 +958,9 @@ public partial class BasicClinical2View
             {
                 #region 加入需要用到的框架
                 string uploadJsonContent = File.ReadAllText(needEncodeJsonFile);
-                if (uploadJsonContent.ToLower().Contains("""version""") &&
+                if (!(uploadJsonContent.ToLower().Contains("""version""") &&
                     uploadJsonContent.ToLower().Contains("""imageheight""") &&
-                    uploadJsonContent.ToLower().Contains("""imagewidth"""))
+                    uploadJsonContent.ToLower().Contains("""imagewidth""")))
                 {
                     string newContent = """
                         {
