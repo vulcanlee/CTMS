@@ -221,6 +221,21 @@
                     <summary>查看 Raw XML</summary>
                     <pre class="mt-2">@MedicationResult.RawXml</pre>
                 </details>
+
+                @if (!string.IsNullOrWhiteSpace(MedicationRequestSummary) || !string.IsNullOrWhiteSpace(MedicationRequestRawXml))
+                {
+                    <details class="mt-3">
+                        <summary>查看 Request XML</summary>
+                        @if (!string.IsNullOrWhiteSpace(MedicationRequestSummary))
+                        {
+                            <div class="mt-2">@MedicationRequestSummary</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(MedicationRequestRawXml))
+                        {
+                            <pre class="mt-2">@MedicationRequestRawXml</pre>
+                        }
+                    </details>
+                }
             </div>
         }
     </div>

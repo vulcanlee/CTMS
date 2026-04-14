@@ -6,6 +6,7 @@ using CTMS.Services;
 using LisServiceReference;
 using Microsoft.AspNetCore.Components;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.ServiceModel;
 using System.Text;
@@ -30,6 +31,8 @@ public partial class SystemMaintainView
     public WcfCallResult? LabDataResult { get; set; }
     public WcfCallResult? TextReportResult { get; set; }
     public WcfCallResult? MedicationResult { get; set; }
+    public string MedicationRequestRawXml { get; set; } = string.Empty;
+    public string MedicationRequestSummary { get; set; } = string.Empty;
 
     public async Task OnApi呼叫測試()
     {
@@ -37,6 +40,8 @@ public partial class SystemMaintainView
         LabDataResult = null;
         TextReportResult = null;
         MedicationResult = null;
+        MedicationRequestRawXml = string.Empty;
+        MedicationRequestSummary = string.Empty;
 
         if (string.IsNullOrWhiteSpace(ApiTestChartNo))
         {
@@ -70,16 +75,25 @@ public partial class SystemMaintainView
                 textResponse.SYSPOWERGetTextReportByChartNoResult?.Any,
                 textResponse.SYSPOWERGetTextReportByChartNoResult?.Any1);
 
-            var medicationRequest = BuildGetPatientMedicationsRequest(chartNo, beginTime, endTime);
-            var medicationResponse = await pipClient.GetPatientMedicationsAsync(medicationRequest);
-            MedicationResult = BuildWcfCallResult(
-                "GetPatientMedications",
-                medicationResponse.GetPatientMedicationsResult?.Any,
-                medicationResponse.GetPatientMedicationsResult?.Any1);
+            if (TryNormalizeMedicationQueryDateRange(beginTime, endTime, out var medicationBeginTime, out var medicationEndTime, out var medicationDateError))
+            {
+                var medicationRequest = BuildGetPatientMedicationsRequest(chartNo, medicationBeginTime, medicationEndTime);
+                MedicationRequestRawXml = BuildRawXml(medicationRequest.Any, medicationRequest.Any1);
+                MedicationRequestSummary = $"Chart_No={chartNo}, Order_Effect_Start_Date={medicationBeginTime}, Order_Effect_End_Date={medicationEndTime}";
+                var medicationResponse = await pipClient.GetPatientMedicationsAsync(medicationRequest);
+                MedicationResult = BuildWcfCallResult(
+                    "GetPatientMedications",
+                    medicationResponse.GetPatientMedicationsResult?.Any,
+                    medicationResponse.GetPatientMedicationsResult?.Any1);
+                ApiCallMessage = "WCF 呼叫完成。";
+            }
+            else
+            {
+                ApiCallMessage = $"LIS WCF 呼叫完成；用藥查詢日期格式錯誤：{medicationDateError}";
+            }
 
             ((ICommunicationObject)lisClient).Close();
             ((ICommunicationObject)pipClient).Close();
-            ApiCallMessage = "WCF 呼叫完成。";
         }
         catch (Exception ex)
         {
@@ -180,6 +194,51 @@ public partial class SystemMaintainView
             Any = schemaElements,
             Any1 = diffgramElement,
         };
+    }
+
+    private static bool TryNormalizeMedicationQueryDateRange(
+        string beginTime,
+        string endTime,
+        out string normalizedBeginTime,
+        out string normalizedEndTime,
+        out string errorMessage)
+    {
+        if (!TryNormalizeMedicationQueryDate(beginTime, out normalizedBeginTime))
+        {
+            normalizedEndTime = string.Empty;
+            errorMessage = "開始日期請輸入 yyyyMMdd、yyyy-MM-dd 或 yyyy/MM/dd。";
+            return false;
+        }
+
+        if (!TryNormalizeMedicationQueryDate(endTime, out normalizedEndTime))
+        {
+            errorMessage = "結束日期請輸入 yyyyMMdd、yyyy-MM-dd 或 yyyy/MM/dd。";
+            return false;
+        }
+
+        errorMessage = string.Empty;
+        return true;
+    }
+
+    private static bool TryNormalizeMedicationQueryDate(string value, out string normalizedValue)
+    {
+        normalizedValue = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var trimmedValue = value.Trim();
+        var acceptedFormats = new[] { "yyyyMMdd", "yyyy-MM-dd", "yyyy/MM/dd" };
+
+        if (!DateOnly.TryParseExact(trimmedValue, acceptedFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
+        {
+            return false;
+        }
+
+        normalizedValue = parsedDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        return true;
     }
 
     private static XmlElement[] ConvertDataTableToSchemaElements(DataTable dataTable)
