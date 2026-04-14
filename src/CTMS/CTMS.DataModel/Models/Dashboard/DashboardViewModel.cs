@@ -14,7 +14,7 @@ public class DashboardViewModel
     // 3. 中右：分期統計 (Bar Chart)
     public List<CancerStageStat> StageStats { get; set; } = new();
 
-    // 4. 左下：卵巢癌 / 內膜癌分佈 (Donut/Pie Chart)
+    // 4. 左下：卵巢癌 / 內膜癌分佈 (Stacked Bar Chart)
     public CancerTypeDistribution CancerTypeStats { get; set; } = new();
 
     // 5. 右下：完成率分佈 (Pie Chart)
@@ -73,8 +73,10 @@ public class DashboardSummary
 /// </summary>
 public class HospitalCaseStat
 {
-    public string HospitalName { get; set; } 
-    public int CaseCount { get; set; }       
+    public string HospitalName { get; set; }
+    public int CaseCount { get; set; }
+    public int AiCount { get; set; }
+    public int ControlCount { get; set; }
 }
 
 /// <summary>
@@ -82,20 +84,24 @@ public class HospitalCaseStat
 /// </summary>
 public class CancerStageStat
 {
-    public string StageName { get; set; } 
+    public string StageName { get; set; }
     public int Count { get; set; }
+    public int AiCount { get; set; }
+    public int ControlCount { get; set; }
 }
 
 /// <summary>
-/// 癌症類型分佈 (卵巢癌 vs 內膜癌)
+/// 癌症類型分佈，各癌別含 AI組 / 對照組 (Stacked Bar Chart)
 /// </summary>
 public class CancerTypeDistribution
 {
-    public int OvarianCancerCount { get; set; }  
-    public int EndometrialCancerCount { get; set; }
+    public int OvarianAiCount { get; set; }
+    public int OvarianControlCount { get; set; }
+    public int EndometrialAiCount { get; set; }
+    public int EndometrialControlCount { get; set; }
 
-    // 方便計算總數或百分比的唯讀屬性
-    public int Total => OvarianCancerCount + EndometrialCancerCount;
+    public int OvarianCancerCount => OvarianAiCount + OvarianControlCount;
+    public int EndometrialCancerCount => EndometrialAiCount + EndometrialControlCount;
 }
 
 /// <summary>

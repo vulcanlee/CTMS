@@ -130,35 +130,52 @@ window.initDashboardCharts = function (viewModel) {
 
     // 從 ViewModel 提取數據，如果沒有提供則使用默認值
     const hospitalLabels = viewModel?.hospitalStats?.map(h => h.hospitalName) || ['成大', '郭綜合', '奇美'];
-    const hospitalData = viewModel?.hospitalStats?.map(h => h.caseCount) || [402, 475, 285];
-    const hospitalMaxValue = Math.max(...hospitalData) * 1.2; // 動態計算最大值，給予 20% 的空間
+    const hospitalAiData = viewModel?.hospitalStats?.map(h => h.aiCount) || [200, 240, 140];
+    const hospitalControlData = viewModel?.hospitalStats?.map(h => h.controlCount) || [202, 235, 145];
+    const hospitalMaxValue = Math.max(...hospitalAiData.map((ai, i) => ai + hospitalControlData[i])) * 1.2; // 動態計算最大值，給予 20% 的空間
 
-    const stageLabels = viewModel?.stageStats?.map(s => s.stageName) || ['1期', '2期', '3期', '4期'];
-    const stageData = viewModel?.stageStats?.map(s => s.count) || [380, 490, 315, 270];
-    const stageMaxValue = Math.max(...stageData) * 1.2;
+    const stageLabels = viewModel?.stageStats?.map(s => s.stageName) || ['I', 'II', 'III', 'IV'];
+    const stageAiData = viewModel?.stageStats?.map(s => s.aiCount) || [190, 245, 158, 135];
+    const stageControlData = viewModel?.stageStats?.map(s => s.controlCount) || [190, 245, 157, 135];
+    const stageMaxValue = Math.max(...stageAiData.map((ai, i) => ai + stageControlData[i])) * 1.2;
 
-    const cancerTypeData = [
-        viewModel?.cancerTypeStats?.ovarianCancerCount || 524,
-        viewModel?.cancerTypeStats?.endometrialCancerCount || 638
+    const cancerTypeAiData = [
+        viewModel?.cancerTypeStats?.ovarianAiCount || 0,
+        viewModel?.cancerTypeStats?.endometrialAiCount || 0
     ];
+    const cancerTypeControlData = [
+        viewModel?.cancerTypeStats?.ovarianControlCount || 0,
+        viewModel?.cancerTypeStats?.endometrialControlCount || 0
+    ];
+    const cancerTypeMaxValue = Math.max(...cancerTypeAiData.map((ai, i) => ai + cancerTypeControlData[i])) * 1.2 || 10;
 
     const completionData = [
         viewModel?.completionStats?.completedCount || 907,
         viewModel?.completionStats?.incompleteCount || 255
     ];
 
-    // Hospital Bar Chart
+    // Hospital Stacked Bar Chart
     const hospitalCtx = document.getElementById('hospitalChart').getContext('2d');
     const hospitalChart = new Chart(hospitalCtx, {
         type: 'bar',
         data: {
             labels: hospitalLabels,
-            datasets: [{
-                data: new Array(hospitalData.length).fill(0),
-                backgroundColor: ['#4caf50', '#ff6b6b', '#ffc107'],
-                borderRadius: 8,
-                barThickness: 80
-            }]
+            datasets: [
+                {
+                    label: 'AI組',
+                    data: new Array(hospitalLabels.length).fill(0),
+                    backgroundColor: '#42a5f5',
+                    borderRadius: 0,
+                    barThickness: 60
+                },
+                {
+                    label: '對照組',
+                    data: new Array(hospitalLabels.length).fill(0),
+                    backgroundColor: '#ff6b6b',
+                    borderRadius: 8,
+                    barThickness: 60
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -178,11 +195,18 @@ window.initDashboardCharts = function (viewModel) {
                     padding: 12,
                     titleFont: { size: 14 },
                     bodyFont: { size: 13 },
-                    cornerRadius: 8
+                    cornerRadius: 8,
+                    callbacks: {
+                        footer: function(tooltipItems) {
+                            const total = tooltipItems.reduce((sum, item) => sum + item.parsed.y, 0);
+                            return '總計: ' + total;
+                        }
+                    }
                 }
             },
             scales: {
                 y: {
+                    stacked: true,
                     beginAtZero: true,
                     max: hospitalMaxValue,
                     grid: {
@@ -196,6 +220,7 @@ window.initDashboardCharts = function (viewModel) {
                     }
                 },
                 x: {
+                    stacked: true,
                     grid: {
                         display: false,
                         drawBorder: true,
@@ -213,26 +238,37 @@ window.initDashboardCharts = function (viewModel) {
         }
     });
 
-    // Animate hospital bars one by one after a short delay
-    hospitalData.forEach((target, i) => {
+    // Animate hospital stacked bars one by one after a short delay
+    hospitalLabels.forEach((_, i) => {
         setTimeout(() => {
-            hospitalChart.data.datasets[0].data[i] = target;
+            hospitalChart.data.datasets[0].data[i] = hospitalAiData[i];
+            hospitalChart.data.datasets[1].data[i] = hospitalControlData[i];
             hospitalChart.update();
         }, i * 400);
     });
 
-    // Stage Bar Chart
+    // Stage Stacked Bar Chart
     const stageCtx = document.getElementById('stageChart').getContext('2d');
     const stageChart = new Chart(stageCtx, {
         type: 'bar',
         data: {
             labels: stageLabels,
-            datasets: [{
-                data: new Array(stageData.length).fill(0),
-                backgroundColor: ['#4caf50', '#ff6b6b', '#ffc107', '#42a5f5'],
-                borderRadius: 8,
-                barThickness: 70
-            }]
+            datasets: [
+                {
+                    label: 'AI組',
+                    data: new Array(stageLabels.length).fill(0),
+                    backgroundColor: '#42a5f5',
+                    borderRadius: 0,
+                    barThickness: 60
+                },
+                {
+                    label: '對照組',
+                    data: new Array(stageLabels.length).fill(0),
+                    backgroundColor: '#ff6b6b',
+                    borderRadius: 8,
+                    barThickness: 60
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -252,11 +288,18 @@ window.initDashboardCharts = function (viewModel) {
                     padding: 12,
                     titleFont: { size: 14 },
                     bodyFont: { size: 13 },
-                    cornerRadius: 8
+                    cornerRadius: 8,
+                    callbacks: {
+                        footer: function(tooltipItems) {
+                            const total = tooltipItems.reduce((sum, item) => sum + item.parsed.y, 0);
+                            return '總計: ' + total;
+                        }
+                    }
                 }
             },
             scales: {
                 y: {
+                    stacked: true,
                     beginAtZero: true,
                     max: stageMaxValue,
                     grid: {
@@ -270,6 +313,7 @@ window.initDashboardCharts = function (viewModel) {
                     }
                 },
                 x: {
+                    stacked: true,
                     grid: {
                         display: false,
                         drawBorder: true,
@@ -287,35 +331,44 @@ window.initDashboardCharts = function (viewModel) {
         }
     });
 
-    // Animate stage bars one by one after a short delay
-    stageData.forEach((target, i) => {
+    // Animate stage stacked bars one by one after a short delay
+    stageLabels.forEach((_, i) => {
         setTimeout(() => {
-            stageChart.data.datasets[0].data[i] = target;
+            stageChart.data.datasets[0].data[i] = stageAiData[i];
+            stageChart.data.datasets[1].data[i] = stageControlData[i];
             stageChart.update();
         }, i * 400);
     });
 
-    // Cancer Type Pie Chart
+    // Cancer Type Stacked Bar Chart (卵巢癌 / 內膜癌, AI組 / 對照組)
     const cancerTypeCtx = document.getElementById('cancerTypeChart').getContext('2d');
     const cancerTypeChart = new Chart(cancerTypeCtx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels: ['卵巢癌', '內膜癌'],
-            datasets: [{
-                data: [0, 0],
-                backgroundColor: ['#ff6b6b', '#4caf50'],
-                borderWidth: 0
-            }]
+            datasets: [
+                {
+                    label: 'AI組',
+                    data: [0, 0],
+                    backgroundColor: '#42a5f5',
+                    borderRadius: 0,
+                    barThickness: 60
+                },
+                {
+                    label: '對照組',
+                    data: [0, 0],
+                    backgroundColor: '#ff6b6b',
+                    borderRadius: 8,
+                    barThickness: 60
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '65%',
             animation: {
-                animateRotate: true,
-                animateScale: true,
-                duration: 2000,
-                easing: 'easeInOutQuart'
+                duration: 1800,
+                easing: 'easeOutQuart'
             },
             plugins: {
                 legend: { display: false },
@@ -328,14 +381,52 @@ window.initDashboardCharts = function (viewModel) {
                     padding: 12,
                     titleFont: { size: 14 },
                     bodyFont: { size: 13 },
-                    cornerRadius: 8
+                    cornerRadius: 8,
+                    callbacks: {
+                        footer: function(tooltipItems) {
+                            const total = tooltipItems.reduce((sum, item) => sum + item.parsed.y, 0);
+                            return '總計: ' + total;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: cancerTypeMaxValue,
+                    grid: {
+                        color: getGridColor(),
+                        drawBorder: false
+                    },
+                    ticks: {
+                        stepSize: Math.ceil(cancerTypeMaxValue / 4),
+                        font: { size: 12 },
+                        color: getTickColor()
+                    }
+                },
+                x: {
+                    stacked: true,
+                    grid: {
+                        display: false,
+                        drawBorder: true,
+                        borderColor: getBorderColor()
+                    },
+                    ticks: {
+                        font: { size: 13 },
+                        color: getTickColor()
+                    },
+                    border: {
+                        color: getBorderColor()
+                    }
                 }
             }
         }
     });
 
     setTimeout(() => {
-        cancerTypeChart.data.datasets[0].data = cancerTypeData;
+        cancerTypeChart.data.datasets[0].data = cancerTypeAiData;
+        cancerTypeChart.data.datasets[1].data = cancerTypeControlData;
         cancerTypeChart.update();
     }, 300);
 
