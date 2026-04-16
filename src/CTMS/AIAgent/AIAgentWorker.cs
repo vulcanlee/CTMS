@@ -1,86 +1,86 @@
-using AIAgent.Models;
-using AIAgent.Services;
-using CTMS.DataModel.Models.AIAgent;
-using Microsoft.Extensions.Options;
-using SyncExcel.Services;
-
-namespace AIAgent
-{
-    public class AIAgentWorker : BackgroundService
-    {
-        private readonly ILogger<AIAgentWorker> _logger;
-        private readonly AgentService agentService;
-        private readonly Agentsetting agentsetting;
-
-        public AIAgentWorker(ILogger<AIAgentWorker> logger,
-            AgentService agentService,
-            IOptions<Agentsetting> agentsettingOptions)
-        {
-            _logger = logger;
-            this.agentService = agentService;
-            agentsetting = agentsettingOptions.Value;
-        }
-
-        PatientAIInfo Sample()
-        {
-            PatientAIInfo patientAIInfo = new PatientAIInfo()
-            {
-                Code = "P2024001",
-                SubjectCode = "S2024001",
-                Height = "183.0",
-                Weight = "55",
-                Age = "49",
-                Gender = "M",
-                ¿˘ßO = "EC",
-                DicomFilename = @"C:\temp\A19R5802373.DCM",
-            };
-            patientAIInfo.InitKeyName();
-            return patientAIInfo;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-
-            //RiskAssessmentExcelService excel = new();
-            //var result = excel.ReadExcel("C:\\temp\\CTMS\\Queue\\Phase3Waiting\\202509091713313054\\Phase2Result\\202509091713313054.csv");
-            try
-            {
-                await agentService.PrepareQueueDirectoryAsync();
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    if (_logger.IsEnabled(LogLevel.Information))
-                    {
-                        //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                        Console.WriteLine($"Worker running at: {DateTimeOffset.Now}" );
-
-                    }
-
-                    #region ´ÿ•ﬂ¥˙∏’∏ÍÆ∆
-                    //PatientAIInfo patientAIInfo = Sample();
-                    //agentService.CreateInBound(patientAIInfo, agentsetting);
-                    #endregion
-
-                    await agentService.RunAsync();
-
-                    await Task.Delay(500, stoppingToken);
-                }
-            }
-            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
-            {
-                // •ø±`®˙Æ¯°A©ø≤§®“•~
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Worker µo•Õ•ºπw¥¡™∫®“•~°A™A∞»±Nµ≤ßÙ°C");
-                throw;
-            }
-            finally
-            {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker stopping at: {time}", DateTimeOffset.Now);
-                }
-            }
-        }
-    }
-}
+using AIAgent.Models;
+using AIAgent.Services;
+using CTMS.DataModel.Models.AIAgent;
+using Microsoft.Extensions.Options;
+using SyncExcel.Services;
+
+namespace AIAgent
+{
+    public class AIAgentWorker : BackgroundService
+    {
+        private readonly ILogger<AIAgentWorker> _logger;
+        private readonly AgentService agentService;
+        private readonly Agentsetting agentsetting;
+
+        public AIAgentWorker(ILogger<AIAgentWorker> logger,
+            AgentService agentService,
+            IOptions<Agentsetting> agentsettingOptions)
+        {
+            _logger = logger;
+            this.agentService = agentService;
+            agentsetting = agentsettingOptions.Value;
+        }
+
+        PatientAIInfo Sample()
+        {
+            PatientAIInfo patientAIInfo = new PatientAIInfo()
+            {
+                Code = "P2024001",
+                SubjectCode = "S2024001",
+                Height = "183.0",
+                Weight = "55",
+                Age = "49",
+                Gender = "M",
+                ÁôåÂà• = "EC",
+                DicomFilename = @"C:\temp\A19R5802373.DCM",
+            };
+            patientAIInfo.InitKeyName();
+            return patientAIInfo;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+
+            //RiskAssessmentExcelService excel = new();
+            //var result = excel.ReadExcel("C:\\temp\\CTMS\\Queue\\Phase3Waiting\\202509091713313054\\Phase2Result\\202509091713313054.csv");
+            try
+            {
+                await agentService.PrepareQueueDirectoryAsync();
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    if (_logger.IsEnabled(LogLevel.Information))
+                    {
+                        //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                        Console.WriteLine($"Worker running at: {DateTimeOffset.Now}" );
+
+                    }
+
+                    #region Âª∫Á´ãÊ∏¨Ë©¶Ë≥áÊñô
+                    //PatientAIInfo patientAIInfo = Sample();
+                    //agentService.CreateInBound(patientAIInfo, agentsetting);
+                    #endregion
+
+                    await agentService.RunAsync();
+
+                    await Task.Delay(500, stoppingToken);
+                }
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                // Ê≠£Â∏∏ÂèñÊ∂àÔºåÂøΩÁï•‰æãÂ§ñ
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Worker ÁôºÁîüÊú™È†êÊúüÁöÑ‰æãÂ§ñÔºåÊúçÂãôÂ∞áÁµêÊùü„ÄÇ");
+                throw;
+            }
+            finally
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation("Worker stopping at: {time}", DateTimeOffset.Now);
+                }
+            }
+        }
+    }
+}
