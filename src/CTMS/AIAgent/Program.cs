@@ -1,66 +1,66 @@
-using AIAgent.Models;
-using AIAgent.Services;
-using CTMS.Share.Helpers;
-using NLog;
-using NLog.Web;
-using SyncExcel.Services;
-using System.Diagnostics;
-
-namespace AIAgent
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            #region ≠Y¶s¶b∞ı¶Ê™∫¶PºÀµ{¶°ΩX°A´h¶π¶∏¥Nµ≤ßÙ
-            var processes = Process.GetProcesses().ToList();
-            var LaunchPacsProcesses = processes.Where(x => x.ProcessName.ToLower().Contains("AIAgent".ToLower())).ToList();
-            var currentProcess = Process.GetCurrentProcess();
-            foreach (var item in LaunchPacsProcesses)
-            {
-                if (item.Id != currentProcess.Id)
-                {
-                    Console.WriteLine($"Process {item.Id} will be killed!");
-                    return;
-                }
-            }
-            #endregion
-
-            #region NLog ™Ï©l§∆
-            var logger = NLog.LogManager.Setup()
-                .LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-            logger.Debug("init main");
-            #endregion
-
-            try
-            {
-                var builder = Host.CreateApplicationBuilder(args);
-                builder.Services.AddHostedService<AIAgentWorker>();
-                builder.Services.AddTransient<AgentService>();
-                builder.Services.AddTransient<PatientAIInfoService>();
-                builder.Services.AddTransient<Phase1Phase2Service>();
-                builder.Services.AddTransient<DirectoryHelperService>();
-                builder.Services.AddTransient<RiskAssessmentExcelService>();
-
-                #region •[§J≥]©w±j´¨ßO™`§J´≈ßi
-                builder.Services.Configure<Agentsetting>(builder.Configuration
-                    .GetSection(MagicObjectHelper.Agentsetting));
-                #endregion
-
-                var host = builder.Build();
-                host.Run();
-            }
-            catch (Exception exception)
-            {
-                // NLog: catch setup errors
-                logger.Error(exception, "Stopped program because of exception");
-                throw;
-            }
-            finally
-            {
-                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-                NLog.LogManager.Shutdown();
-            }
-        }
-    }
+using AIAgent.Models;
+using AIAgent.Services;
+using CTMS.Share.Helpers;
+using NLog;
+using NLog.Web;
+using SyncExcel.Services;
+using System.Diagnostics;
+
+namespace AIAgent
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            #region Ëã•Â≠òÂú®Âü∑Ë°åÁöÑÂêåÊ®£Á®ãÂºèÁ¢ºÔºåÂâáÊ≠§Ê¨°Â∞±ÁµêÊùü
+            var processes = Process.GetProcesses().ToList();
+            var LaunchPacsProcesses = processes.Where(x => x.ProcessName.ToLower().Contains("AIAgent".ToLower())).ToList();
+            var currentProcess = Process.GetCurrentProcess();
+            foreach (var item in LaunchPacsProcesses)
+            {
+                if (item.Id != currentProcess.Id)
+                {
+                    Console.WriteLine($"Process {item.Id} will be killed!");
+                    return;
+                }
+            }
+            #endregion
+
+            #region NLog ÂàùÂßãÂåñ
+            var logger = NLog.LogManager.Setup()
+                .LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            logger.Debug("init main");
+            #endregion
+
+            try
+            {
+                var builder = Host.CreateApplicationBuilder(args);
+                builder.Services.AddHostedService<AIAgentWorker>();
+                builder.Services.AddTransient<AgentService>();
+                builder.Services.AddTransient<PatientAIInfoService>();
+                builder.Services.AddTransient<Phase1Phase2Service>();
+                builder.Services.AddTransient<DirectoryHelperService>();
+                builder.Services.AddTransient<RiskAssessmentExcelService>();
+
+                #region Âä†ÂÖ•Ë®≠ÂÆöÂº∑ÂûãÂà•Ê≥®ÂÖ•ÂÆ£Âëä
+                builder.Services.Configure<Agentsetting>(builder.Configuration
+                    .GetSection(MagicObjectHelper.Agentsetting));
+                #endregion
+
+                var host = builder.Build();
+                host.Run();
+            }
+            catch (Exception exception)
+            {
+                // NLog: catch setup errors
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                NLog.LogManager.Shutdown();
+            }
+        }
+    }
 }
