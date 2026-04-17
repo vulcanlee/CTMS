@@ -183,8 +183,10 @@ public partial class SystemMaintainView
         table.Columns.Add("Chart_No", typeof(string));
         table.Columns.Add("Order_Effect_Start_Date", typeof(string));
         table.Columns.Add("Order_Effect_End_Date", typeof(string));
+        table.Columns.Add("Order_End_Start_Date", typeof(string));
+        table.Columns.Add("Order_End_End_Date", typeof(string));
 
-        table.Rows.Add(chartNo, orderEffectStartDate, orderEffectEndDate);
+        table.Rows.Add(chartNo, orderEffectStartDate, orderEffectEndDate, "", "");
 
         var schemaElements = ConvertDataTableToSchemaElements(table);
         var diffgramElement = ConvertDataTableToDiffgramElement(table);
