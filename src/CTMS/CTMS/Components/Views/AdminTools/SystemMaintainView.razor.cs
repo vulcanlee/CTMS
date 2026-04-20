@@ -39,7 +39,8 @@ public partial class SystemMaintainView
     public async Task OnTestApi()
     {
         //await NckuhApiService.GetBloodAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
-        await NckuhApiService.GetReportAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
+        //await NckuhApiService.GetReportAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
+        await NckuhApiService.GetMedicationAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
     }
 
     public async Task OnApi呼叫測試()
