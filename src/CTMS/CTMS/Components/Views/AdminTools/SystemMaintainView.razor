@@ -21,7 +21,12 @@
 @inject RoleViewService RoleViewService
 
 <div class="system-maintain-view">
-    <div class="card p-3 mb-3 system-maintain-card">
+
+    <div class="m-2">
+        <Button Type="AntDesign.ButtonType.Primary" OnClick="async () => await OnTestApi()">測試 API</Button>
+    </div>
+
+    <div class="card p-3 m-2 system-maintain-card">
         <div class="mb-2 fw-bold">LIS WCF API 測試</div>
         <div class="row g-2 align-items-end">
             <div class="col-md-3">
@@ -240,7 +245,7 @@
         }
     </div>
 
-    <div>
+    <div class="mt-2">
         <Button Type="AntDesign.ButtonType.Primary" OnClick="async () => await OnFix成大抽血生化eGFR參考區間()">2026/03/26 修正成大的 eGFR參考區間是>=60</Button>
     </div>
     <div class="mt-2">

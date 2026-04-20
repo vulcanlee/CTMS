@@ -22,6 +22,8 @@ public partial class SystemMaintainView
     public SystemMaintainServices systemMaintainServices { get; set; }
     [Inject]
     public ModalService modalService { get; set; }
+    [Inject]
+    public NckuhApiService NckuhApiService { get; set; }
 
     public string ApiTestChartNo { get; set; } = "23061697";
     public string ApiTestBeginTime { get; set; } = "20251001";
@@ -33,6 +35,12 @@ public partial class SystemMaintainView
     public WcfCallResult? MedicationResult { get; set; }
     public string MedicationRequestRawXml { get; set; } = string.Empty;
     public string MedicationRequestSummary { get; set; } = string.Empty;
+
+    public async Task OnTestApi()
+    {
+        //await NckuhApiService.GetBloodAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
+        await NckuhApiService.GetReportAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
+    }
 
     public async Task OnApi呼叫測試()
     {

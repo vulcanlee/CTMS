@@ -197,6 +197,7 @@ namespace CTMS
 
                 builder.Services.AddScoped<RegisterModelService>();
 
+                builder.Services.AddScoped<NckuhApiService>();
                 builder.Services.AddScoped<RequestInfoService>();
 
                 builder.Services.AddScoped<CurrentUserService>();
