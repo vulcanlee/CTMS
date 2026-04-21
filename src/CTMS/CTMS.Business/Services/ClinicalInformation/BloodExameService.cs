@@ -61,6 +61,56 @@ public class BloodExameService
         CheckBloodExame(bloodExame ?? new List<TestItem檢驗項目>());
     }
 
+    public void MatchApiChemistrydResult(List<TestItem檢驗項目>? bloodExame, List<BloodApiModel> apiResult)
+    {
+        if (apiResult == null)
+        {
+            return;
+        }
+
+        int apiResultCount = apiResult.Count;
+        TestItem檢驗項目 foundItem;
+        for (int i = apiResultCount - 1; i >= 0; i--)
+        {
+            BloodApiModel bloodApiModelItem = apiResult[i];
+            var itemName = bloodApiModelItem.ItemName;
+            foundItem = null;
+            if (itemName.ToLower() == "k".ToLower() || itemName.ToLower() == "na".ToLower())
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower() == itemName.ToLower());
+            }
+            else if (itemName.ToLower() == "ca 125".ToLower())
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("CA125".ToLower()));
+            }
+            else if (itemName.ToLower() == "ca 199".ToLower())
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("CA19-9".ToLower()));
+            }
+            else
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(itemName.ToLower()));
+            }
+
+            if (foundItem != null)
+            {
+                foundItem.檢驗數值 = bloodApiModelItem.TestValue;
+                foundItem.單位 = bloodApiModelItem.Unit;
+                foundItem.參考區間 = bloodApiModelItem.RefData;
+                DateTime executeTime;
+                if (DateTime.TryParse(bloodApiModelItem.ExecuteTime, out executeTime))
+                {
+                    foundItem.SamplingDate = executeTime;
+                }
+            }
+            else
+            {
+            }
+        }
+
+        CheckBloodExame(bloodExame ?? new List<TestItem檢驗項目>());
+    }
+
     public bool FillUnitsFor血液Node(BloodTest抽血檢驗血液Node bloodTest, string subjectNo)
     {
         return FillUnitsFromSubjectNo(bloodTest.抽血檢驗血液, subjectNo, MagicObjectHelper.Blood抽血檢驗血液);

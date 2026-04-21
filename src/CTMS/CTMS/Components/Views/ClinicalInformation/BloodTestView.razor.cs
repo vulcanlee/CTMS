@@ -106,10 +106,11 @@ public partial class BloodTestView
 
         if (bloodApiData != null && bloodApiData.Count > 0)
         {
+            string visitCodeTitle = data?.VisitCode?.VisitCodeTitle;
             var ok = await modalService.ConfirmAsync(new ConfirmOptions
             {
                 Title = "再次確認",
-                Content = "確定要匯入這裡選取的成大抽血之血液方面的資料到該 Visit Code 內嗎?",
+                Content = $"確定要匯入這裡選取的成大抽血之血液方面的資料到該 Visit Code : {visitCodeTitle} 內嗎?",
                 OkText = "是",
                 CancelText = "取消",
                 OkButtonProps = new ButtonProps { Danger = true },
@@ -119,7 +120,7 @@ public partial class BloodTestView
             if (ok)
             {
                 BloodExameService.MatchApiBloodResult(data.抽血檢驗血液, bloodApiData);
-                await OnSave();
+               // await OnSave();
                 await InvokeAsync(StateHasChanged);
             }
         }

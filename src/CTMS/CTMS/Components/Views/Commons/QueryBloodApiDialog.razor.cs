@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using CTMS.AdapterModels;
+using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.Apis;
 using CTMS.DataModel.Models.ClinicalInformation;
@@ -12,6 +13,8 @@ namespace CTMS.Components.Views.Commons;
 
 public partial class QueryBloodApiDialog
 {
+    [Inject]
+    public ApiConditionService ApiConditionService { get; set; }
     [Inject]
     public NckuhApiService NckuhApiService { get; set; }
     [Inject]
@@ -30,13 +33,19 @@ public partial class QueryBloodApiDialog
     public string MessageBoxTitle { get; set; } = "";
 
     List<BloodApiModel> data = new List<BloodApiModel>();
-    public string ApiTestChartNo { get; set; } = "23061697";
-    public string ApiTestBeginTime { get; set; } = "20251009";
-    public string ApiTestEndTime { get; set; } = "20251009";
+    public string ApiTestChartNo { get; set; } = string.Empty;
+    public string ApiTestBeginTime { get; set; } = string.Empty;
+    public string ApiTestEndTime { get; set; } = string.Empty;
     bool IsApiCalling = false;
 
     protected override async Task OnInitializedAsync()
     {
+        if(string.IsNullOrEmpty(ApiTestChartNo))
+        {
+            ApiTestChartNo = ApiConditionService.ApiTestChartNo;
+            ApiTestBeginTime = ApiConditionService.ApiTestBeginTime;
+            ApiTestEndTime = ApiConditionService.ApiTestEndTime;
+        }
         await GetData();
     }
 
@@ -47,6 +56,10 @@ public partial class QueryBloodApiDialog
     public async Task OnApi呼叫()
     {
         IsApiCalling = true;
+
+        ApiConditionService.ApiTestChartNo = ApiTestChartNo;
+        ApiConditionService.ApiTestBeginTime = ApiTestBeginTime;
+        ApiConditionService.ApiTestEndTime = ApiTestEndTime;
 
         var apiResult = await NckuhApiService.GetBloodAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
 
