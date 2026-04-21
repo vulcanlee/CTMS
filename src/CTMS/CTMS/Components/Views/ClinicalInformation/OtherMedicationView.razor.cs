@@ -11,7 +11,7 @@ using Syncfusion.Blazor.DropDowns;
 
 namespace CTMS.Components.Views.ClinicalInformation;
 
-public partial class OtherImageView
+public partial class OtherMedicationView
 {
     [Inject]
     public ModalService modalService { get; set; }
@@ -22,8 +22,8 @@ public partial class OtherImageView
     PatientAdapterModel patientAdapterModel = new();
     bool editMode = false;
 
-    OtherTreatmentImageNode data = new();
-    OtherTreatmentImage header = new();
+    OtherMedicationNode data = new();
+    OtherMedication header = new();
 
     #region 操作 Visit Code 用到的物件
     bool ShowCallApiDialog = false;
@@ -48,7 +48,7 @@ public partial class OtherImageView
 
     void InitData(bool isFirst = true)
     {
-        header = patientData.臨床資料.其他治療影像;
+        header = patientData.臨床資料.其他治療藥物;
         if (isFirst)
         {
             data = header.Items.FirstOrDefault();
@@ -67,7 +67,7 @@ public partial class OtherImageView
         }
     }
 
-    async Task OnGetReportApiAsync(List<ReportApiModel> reportApiData)
+    async Task OnGetMedicationApiAsync(List<MedicationApiModel> reportApiData)
     {
         ShowCallApiDialog = false;
         await InvokeAsync(StateHasChanged);
@@ -78,7 +78,7 @@ public partial class OtherImageView
             var ok = await modalService.ConfirmAsync(new ConfirmOptions
             {
                 Title = "再次確認",
-                Content = $"確定要匯入這裡選取的成大檢查報告方面的資料到該 Visit Code {visitCodeTitle} 內嗎?",
+                Content = $"確定要匯入這裡選取的成大藥品方面的資料到該 Visit Code {visitCodeTitle} 內嗎?",
                 OkText = "是",
                 CancelText = "取消",
                 OkButtonProps = new ButtonProps { Danger = true },
@@ -103,7 +103,7 @@ public partial class OtherImageView
     {
         editMode = !editMode;
 
-        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療影像);
+        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療藥物);
     }
 
     async Task OnSave()
@@ -112,13 +112,13 @@ public partial class OtherImageView
         await PatientService.UpdateAsync(patientAdapterModel);
         editMode = false;
 
-        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療影像);
+        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療藥物);
 
         #region 更新操作日誌
         MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
         .GetUserInformation(authStateProvider);
 
-        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory追蹤資料其他治療影像, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory追蹤資料其他治療影像);
+        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory追蹤資料其他治療藥物, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory追蹤資料其他治療藥物);
         #endregion
     }
 
@@ -131,10 +131,18 @@ public partial class OtherImageView
 
     async Task OnAddAsync()
     {
+        data.Items.Add(new OtherMedicationItem());
+        await OnSave();
     }
 
-    async Task OnDeleteAsync(OtherTreatmentImageItem item)
+    async Task OnDeleteAsync(OtherMedicationItem item)
     {
+        // Assuming we need to remove the last item for deletion
+        if (data.Items.Count > 0)
+        {
+            data.Items.Remove(item);
+            await OnSave();
+        }
     }
 
 

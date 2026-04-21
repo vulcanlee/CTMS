@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CTMS.Components.Views.Commons;
 
-public partial class QueryReportApiDialog
+public partial class QueryMedicationApiDialog
 {
     [Inject]
     public ApiConditionService ApiConditionService { get; set; }
@@ -19,17 +19,17 @@ public partial class QueryReportApiDialog
     [Parameter]
     public bool OpenPicker { get; set; } = false;
     [Parameter]
-    public EventCallback<List<ReportApiModel>> OnConfirmCallback { get; set; }
+    public EventCallback<List<MedicationApiModel>> OnConfirmCallback { get; set; }
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
-    string DialogTitle = "查詢檢查文字報告";
+    string DialogTitle = "查詢藥品紀錄";
     public bool ShowMessageBox { get; set; } = false;
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";
 
-    List<ReportApiModel> data = new List<ReportApiModel>();
+    List<MedicationApiModel> data = new List<MedicationApiModel>();
     public string ApiTestChartNo { get; set; } = string.Empty;
     public string ApiTestBeginTime { get; set; } = string.Empty;
     public string ApiTestEndTime { get; set; } = string.Empty;
@@ -58,7 +58,7 @@ public partial class QueryReportApiDialog
         ApiConditionService.ApiTestBeginTime = ApiTestBeginTime;
         ApiConditionService.ApiTestEndTime = ApiTestEndTime;
 
-        var apiResult = await NckuhApiService.GetReportAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
+        var apiResult = await NckuhApiService.GetMedicationAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
 
         var apiResultJson = JsonConvert.SerializeObject(apiResult);
 

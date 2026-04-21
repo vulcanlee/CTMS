@@ -381,7 +381,7 @@ namespace CTMS.Services
                         Order_Effect_Date = GetRowValue(row, nameof(MedicationApiModel.Order_Effect_Date)),
                         Order_End_Date = GetRowValue(row, nameof(MedicationApiModel.Order_End_Date)),
                         Frequency_Code = GetRowValue(row, nameof(MedicationApiModel.Frequency_Code)),
-                        User_Code = GetRowValue(row, nameof(MedicationApiModel.User_Code)),
+                        Usage_Code = GetRowValue(row, nameof(MedicationApiModel.Usage_Code)),
                         Tqty_Unit = GetRowValue(row, nameof(MedicationApiModel.Tqty_Unit)),
                         Dosage_Unit = GetRowValue(row, nameof(MedicationApiModel.Dosage_Unit)),
                         Days = GetRowValue(row, nameof(MedicationApiModel.Days)),

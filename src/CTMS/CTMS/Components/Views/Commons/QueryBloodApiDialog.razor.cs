@@ -27,7 +27,7 @@ public partial class QueryBloodApiDialog
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
 
-    string DialogTitle = "設定 Visit Code";
+    string DialogTitle = "查詢檢驗抽血結果";
     public bool ShowMessageBox { get; set; } = false;
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";

@@ -10,7 +10,7 @@ public class MedicationApiModel
     public string Order_Effect_Date { get; set; } = string.Empty;
     public string Order_End_Date { get; set; } = string.Empty;
     public string Frequency_Code { get; set; } = string.Empty;
-    public string User_Code { get; set; } = string.Empty;
+    public string Usage_Code { get; set; } = string.Empty;
     public string Tqty_Unit { get; set; } = string.Empty;
     public string Dosage_Unit { get; set; } = string.Empty;
     public string Days { get; set; } = string.Empty;
