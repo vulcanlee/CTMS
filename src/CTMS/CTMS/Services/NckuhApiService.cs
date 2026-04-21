@@ -21,7 +21,6 @@ namespace CTMS.Services
             this.logger = logger;
             lisClient = new BusinessLogicClient(BusinessLogicClient.EndpointConfiguration.BasicHttpBinding_IBusinessLogic);
             pipClient = new PipServiceReference.PipServiceClient(PipServiceReference.PipServiceClient.EndpointConfiguration.WSHttpBinding_IPipService);
-
         }
 
         public async Task<List<BloodApiModel>> GetBloodAsync(string chartNo, string beginDate, string endDate)
@@ -337,11 +336,11 @@ namespace CTMS.Services
                         ChargeTime = GetRowValue(row, nameof(ReportApiModel.ChargeTime)),
                         ExecuteTime = GetRowValue(row, nameof(ReportApiModel.ExecuteTime)),
                         ReportTime = GetRowValue(row, nameof(ReportApiModel.ReportTime)),
-                        OrderCode = GetRowValue(row, nameof(ReportApiModel.OrderCode), "Order_Code"),
-                        ProductCode = GetRowValue(row, nameof(ReportApiModel.ProductCode), "Product_Code"),
+                        OrderCode = GetRowValue(row, nameof(ReportApiModel.OrderCode)),
+                        OrderName = GetRowValue(row, nameof(ReportApiModel.OrderName)),
                         ItemCode = GetRowValue(row, nameof(ReportApiModel.ItemCode)),
                         ItemName = GetRowValue(row, nameof(ReportApiModel.ItemName)),
-                        ReportText = GetRowValue(row, nameof(ReportApiModel.ReportText), "ResultText", "TextReport", "Report_Content")
+                        ReportText = GetRowValue(row, nameof(ReportApiModel.ReportText))
                     });
                 }
             }
@@ -419,7 +418,7 @@ namespace CTMS.Services
                 nameof(ReportApiModel.ReportType),
                 nameof(ReportApiModel.RequestNo),
                 nameof(ReportApiModel.OrderCode),
-                nameof(ReportApiModel.ProductCode),
+                nameof(ReportApiModel.OrderName),
                 nameof(ReportApiModel.ItemCode),
                 nameof(ReportApiModel.ItemName),
                 nameof(ReportApiModel.ReportText),

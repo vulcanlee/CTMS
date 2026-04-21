@@ -10,7 +10,7 @@ public class ReportApiModel
     public string ExecuteTime { get; set; } = string.Empty;
     public string ReportTime { get; set; } = string.Empty;
     public string OrderCode { get; set; } = string.Empty;
-    public string ProductCode { get; set; } = string.Empty;
+    public string OrderName { get; set; } = string.Empty;
     public string ItemCode { get; set; } = string.Empty;
     public string ItemName { get; set; } = string.Empty;
     public string ReportText { get; set; } = string.Empty;
