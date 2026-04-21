@@ -10,7 +10,7 @@ public class BloodApiModel
     public string SpecKind { get; set; } = string.Empty;
     public string SpecName { get; set; } = string.Empty;
     public string OrderCode { get; set; } = string.Empty;
-    public string OorderName { get; set; } = string.Empty;
+    public string OrderName { get; set; } = string.Empty;
     public string ItemCode { get; set; } = string.Empty;
     public string ItemName { get; set; } = string.Empty;
     public string TestValue { get; set; } = string.Empty;

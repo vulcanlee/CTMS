@@ -1,4 +1,5 @@
 ﻿using CTMS.Business.Helpers;
+using CTMS.DataModel.Models.Apis;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Share.Extensions;
 using CTMS.Share.Helpers;
@@ -26,6 +27,38 @@ public class BloodExameService
         string filename = subjectNoHelper
       .GetBloodFilename(subjectNo, MagicObjectHelper.Blood抽血檢驗生化);
         bloodTest.抽血檢驗生化 = ReadFile(filename);
+    }
+
+    public void MatchApiBloodResult(List<TestItem檢驗項目>? bloodExame, List<BloodApiModel> apiResult)
+    {
+        if (apiResult == null)
+        {
+            return;
+        }
+
+        int apiResultCount = apiResult.Count;
+        for (int i = apiResultCount - 1; i >= 0; i--)
+        {
+            BloodApiModel bloodApiModelItem = apiResult[i];
+            var itemName = bloodApiModelItem.ItemName;
+            TestItem檢驗項目 foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(itemName.ToLower()));
+            if (foundItem != null)
+            {
+                foundItem.檢驗數值 = bloodApiModelItem.TestValue;
+                foundItem.單位 = bloodApiModelItem.Unit;
+                foundItem.參考區間 = bloodApiModelItem.RefData;
+                DateTime executeTime;
+                if (DateTime.TryParse(bloodApiModelItem.ExecuteTime, out executeTime))
+                {
+                    foundItem.SamplingDate = executeTime;
+                }
+            }
+            else
+            {
+            }
+        }
+
+        CheckBloodExame(bloodExame ?? new List<TestItem檢驗項目>());
     }
 
     public bool FillUnitsFor血液Node(BloodTest抽血檢驗血液Node bloodTest, string subjectNo)

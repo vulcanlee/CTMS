@@ -1,11 +1,5 @@
-﻿@using Syncfusion.Blazor
-@using Syncfusion.Blazor.Data
-@using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Inputs
+﻿@using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
@@ -15,7 +9,6 @@
 @inject OperationHistoryTraceService OperationHistoryTraceService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
-@using Newtonsoft.Json
 
 <PageTitle>臨床資料 抽血檢驗(血液)</PageTitle>
 
@@ -39,7 +32,7 @@
                                 </div>
 
                                 <div>
-                                    <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
+                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
                                                   @bind-Value="@resetDate"></SfDatePicker>
                                 </div>
                                 <div>
@@ -79,9 +72,14 @@
                 }
                 else
                 {
-                    <span class="edit-icon d-flex align-items-center cursor-pointer"
-                          @onclick="OnChangeEditMode">
-                        <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                    <span class="d-flex align-items-center">
+                        <span class="edit-icon cursor-pointer"
+                              @onclick="OnChangeEditMode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                        </span>
+                        <span class="ms-5 edit-icon cursor-pointer" @onclick="OnShowApiDialog">
+                            <i class="mx-3 mdi mdi-18px mdi-api command-icon-width cursor-pointer"></i>呼叫
+                        </span>
                     </span>
                 }
             </div>
@@ -141,7 +139,7 @@
                                         var foundItem = dataOriginal.抽血檢驗血液.FirstOrDefault(x => x.項目名稱 == item.項目名稱);
                                         if (foundItem == null)
                                         {
-                                            <SfTextBox @bind-Value="item.檢驗數值"  />
+                                            <SfTextBox @bind-Value="item.檢驗數值" />
                                         }
                                         else
                                         {
@@ -173,14 +171,14 @@
                                         var foundItem = dataOriginal.抽血檢驗血液.FirstOrDefault(x => x.項目名稱 == item.項目名稱);
                                         if (foundItem == null)
                                         {
-                                            <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
+                                            <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
                                                           @bind-Value="@item.SamplingDate"></SfDatePicker>
                                         }
                                         else
                                         {
                                             if (string.IsNullOrEmpty(foundItem.檢驗數值) == true)
                                             {
-                                                <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd" @bind-Value="@item.SamplingDate"></SfDatePicker>
+                                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd" @bind-Value="@item.SamplingDate"></SfDatePicker>
                                             }
                                             else
                                             {
@@ -193,7 +191,7 @@
                                     }
                                     else
                                     {
-                                        <SfDatePicker TValue="DateTime ?" Format="yyyy-MM-dd"
+                                        <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
                                                       @bind-Value="@item.SamplingDate"></SfDatePicker>
                                     }
                                 }
@@ -213,6 +211,10 @@
         </div>
     }
 </div>
+
+
+<QueryBloodApiDialog OpenPicker=ShowCallApiDialog
+                     OnConfirmCallback=OnGetBloodApiAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"

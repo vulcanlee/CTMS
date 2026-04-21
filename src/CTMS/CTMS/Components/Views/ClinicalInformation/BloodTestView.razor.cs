@@ -1,5 +1,7 @@
-﻿using CTMS.AdapterModels;
+﻿using AntDesign;
+using CTMS.AdapterModels;
 using CTMS.DataModel.Models;
+using CTMS.DataModel.Models.Apis;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Helper;
 using CTMS.Share.Helpers;
@@ -11,6 +13,8 @@ namespace CTMS.Components.Views.ClinicalInformation;
 
 public partial class BloodTestView
 {
+    [Inject]
+    public ModalService modalService { get; set; }
     [Parameter]
     public string Code { get; set; }
 
@@ -23,7 +27,7 @@ public partial class BloodTestView
     BloodTest抽血檢驗血液Node dataOriginal = new();
 
     #region 操作 Visit Code 用到的物件
-    bool ShowVisitCodeDialog = false;
+    bool ShowCallApiDialog = false;
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string VisitCodeOperateMode = string.Empty;
@@ -93,6 +97,37 @@ public partial class BloodTestView
                 }
             }
         }
+    }
+
+    async Task OnGetBloodApiAsync(List<BloodApiModel> bloodApiData)
+    {
+        ShowCallApiDialog = false;
+        await InvokeAsync(StateHasChanged);
+
+        if (bloodApiData != null && bloodApiData.Count > 0)
+        {
+            var ok = await modalService.ConfirmAsync(new ConfirmOptions
+            {
+                Title = "再次確認",
+                Content = "確定要匯入這裡選取的成大抽血之血液方面的資料到該 Visit Code 內嗎?",
+                OkText = "是",
+                CancelText = "取消",
+                OkButtonProps = new ButtonProps { Danger = true },
+                MaskClosable = false
+            });
+
+            if (ok)
+            {
+                BloodExameService.MatchApiBloodResult(data.抽血檢驗血液, bloodApiData);
+                await OnSave();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    void OnShowApiDialog()
+    {
+        ShowCallApiDialog = true;
     }
 
     void OnResetDate()

@@ -1,9 +1,7 @@
 ﻿using CTMS.DataModel.Models.Apis;
 using LisServiceReference;
-using Syncfusion.Blazor.Schedule;
 using System.Data;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using System.Xml;
 using static CTMS.Components.Views.AdminTools.SystemMaintainView;
@@ -291,7 +289,7 @@ namespace CTMS.Services
                         SpecKind = GetRowValue(row, nameof(BloodApiModel.SpecKind)),
                         SpecName = GetRowValue(row, nameof(BloodApiModel.SpecName)),
                         OrderCode = GetRowValue(row, nameof(BloodApiModel.OrderCode), "Order_Code"),
-                        OorderName = GetRowValue(row, nameof(BloodApiModel.OorderName), "OrderName", "OOrderName"),
+                        OrderName = GetRowValue(row, nameof(BloodApiModel.OrderName)),
                         ItemCode = GetRowValue(row, nameof(BloodApiModel.ItemCode), "ProductCode"),
                         ItemName = GetRowValue(row, nameof(BloodApiModel.ItemName)),
                         TestValue = GetRowValue(row, nameof(BloodApiModel.TestValue), "ResultValue"),
@@ -409,7 +407,7 @@ namespace CTMS.Services
                 nameof(BloodApiModel.ReportType),
                 nameof(BloodApiModel.RequestNo),
                 nameof(BloodApiModel.OrderCode),
-                nameof(BloodApiModel.OorderName),
+                nameof(BloodApiModel.OrderName),
                 nameof(BloodApiModel.ItemCode),
                 nameof(BloodApiModel.ItemName),
                 nameof(BloodApiModel.TestValue));
