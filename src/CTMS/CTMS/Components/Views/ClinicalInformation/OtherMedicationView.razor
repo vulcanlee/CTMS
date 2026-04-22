@@ -37,10 +37,10 @@
                 else
                 {
                     <span class="d-flex align-items-center">
-                        <span class="edit-icon cursor-pointer"
+                        @*                         <span class="edit-icon cursor-pointer"
                               @onclick="OnChangeEditMode">
                             <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
-                        </span>
+                        </span> *@   
                         <span class="ms-5 edit-icon cursor-pointer" @onclick="OnShowApiDialog">
                             <i class="mx-3 mdi mdi-18px mdi-api command-icon-width cursor-pointer"></i>呼叫
                         </span>
@@ -72,8 +72,8 @@
         <div class="view-container">
             <div>
                 @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" 
-                @onclick="async () =>await OnAddAsync()">
+                <button class="btn btn-primary add-button"
+                        @onclick="async () => await OnAddAsync()">
                     新增一筆紀錄
                 </button>
             </div>

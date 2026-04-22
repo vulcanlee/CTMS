@@ -8,6 +8,7 @@ using CTMS.Share.Helpers;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Syncfusion.Blazor.DropDowns;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CTMS.Components.Views.ClinicalInformation;
 
@@ -87,15 +88,39 @@ public partial class OtherImageView
 
             if (ok)
             {
-                //BloodExameService.MatchApiChemistrydResult(data.抽血檢驗生化, reportApiData);
-                //await OnSave();
+                foreach (var report in reportApiData)
+                {
+                    OtherTreatmentImageItem tItem = new()
+                    {
+                        ExecuteTime = report.ExecuteTime,
+                        OrderCode = report.OrderCode,
+                        OrderName = report.OrderName,
+                        ReportText = report.ReportText
+                    };
+                    data.Items.Add(tItem);
+                }
+                await OnSave();
                 await InvokeAsync(StateHasChanged);
             }
         }
     }
 
-    void OnShowApiDialog()
+    async Task OnShowApiDialog()
     {
+        if(data == null || data.VisitCode == null || data.VisitCode.AssessmentDate == null)
+        {
+            var ok = await modalService.InfoAsync(new ConfirmOptions
+            {
+                Title = "警告",
+                Content = $"沒有發現可用的 Visit Code",
+                OkText = "確定",
+                OkButtonProps = new ButtonProps { Danger = true },
+                MaskClosable = false
+            });
+
+            return;
+        }
+
         ShowCallApiDialog = true;
     }
 
@@ -135,6 +160,23 @@ public partial class OtherImageView
 
     async Task OnDeleteAsync(OtherTreatmentImageItem item)
     {
+        var ok = await modalService.ConfirmAsync(new ConfirmOptions
+        {
+            Title = "再次確認",
+            Content = $"確定要刪除該篇檢查報告 Order Code {item.OrderCode} / Order Name {item.OrderName} 嗎?",
+            OkText = "確定",
+            CancelText = "取消",
+            OkButtonProps = new ButtonProps { Danger = true },
+            MaskClosable = false
+        });
+
+        if (ok)
+        {
+            data.Items.Remove(item);
+            await OnSave();
+            await InvokeAsync(StateHasChanged);
+        }
+
     }
 
 

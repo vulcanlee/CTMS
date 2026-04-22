@@ -37,10 +37,10 @@
                 else
                 {
                     <span class="d-flex align-items-center">
-                        <span class="edit-icon cursor-pointer"
+                        @* <span class="edit-icon cursor-pointer"
                               @onclick="OnChangeEditMode">
                             <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
-                        </span>
+                        </span> *@
                         <span class="ms-5 edit-icon cursor-pointer" @onclick="OnShowApiDialog">
                             <i class="mx-3 mdi mdi-18px mdi-api command-icon-width cursor-pointer"></i>呼叫
                         </span>
@@ -73,147 +73,36 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>CXR</th>
-                        <th>12-lead EKG</th>
-                        <th>Chest CT</th>
-                        <th>Abd CT</th>
-                        <th>Brain MRI</th>
-                        <th>Bone scan</th>
+                        <th>Execute Time</th>
+                        <th>Order Code</th>
+                        <th>Order Name</th>
+                        <th>Report Text</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clinics-rower-row">
-                        <td class="location-cell">Examination Date</td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                              @bind-Value="@data.Item.ChestXRayDate"></SfDatePicker>
-                            }
-                            else
-                            {
-                                @data.Item.ChestXRayDate?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                              @bind-Value="@data.Item.LeadEKG12Date"></SfDatePicker>
-                            }
-                            else
-                            {
-                                @data.Item.LeadEKG12Date?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                              @bind-Value="@data.Item.ChestCTDate"></SfDatePicker>
-                            }
-                            else
-                            {
-                                @data.Item.ChestCTDate?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                              @bind-Value="@data.Item.AbdCTDate"></SfDatePicker>
-                            }
-                            else
-                            {
-                                @data.Item.AbdCTDate?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                              @bind-Value="@data.Item.BrainMRIDate"></SfDatePicker>
-                            }
-                            else
-                            {
-                                @data.Item.BrainMRIDate?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                              @bind-Value="@data.Item.BoneScanDate"></SfDatePicker>
-                            }
-                            else
-                            {
-                                @data.Item.BoneScanDate?.ToString("yyyy-MM-dd")
-                            }
-                        </td>
-                    </tr>
-                    <tr class="er-row">
-                        <td class="location-cell">Report</td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfTextBox @bind-Value="@data.Item.ChestXRay" />
-                            }
-                            else
-                            {
-                                @data.Item.ChestXRay
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfTextBox @bind-Value="@data.Item.LeadEKG12" />
-                            }
-                            else
-                            {
-                                @data.Item.LeadEKG12
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfTextBox @bind-Value="@data.Item.ChestCT" />
-                            }
-                            else
-                            {
-                                @data.Item.ChestCT
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfTextBox @bind-Value="@data.Item.AbdCT" />
-                            }
-                            else
-                            {
-                                @data.Item.AbdCT
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfTextBox @bind-Value="@data.Item.BrainMRI" />
-                            }
-                            else
-                            {
-                                @data.Item.BrainMRI
-                            }
-                        </td>
-                        <td>
-                            @if (editMode)
-                            {
-                                <SfTextBox @bind-Value="@data.Item.BoneScan" />
-                            }
-                            else
-                            {
-                                @data.Item.BoneScan
-                            }
-                        </td>
-                    </tr>
+                    @foreach(var reportItem in data.Items)
+                    {
+                        <tr class="clinics-rower-row">
+                            <td class="location-cell">
+                                <button class="btn-delete"
+                                        @onclick="async () => await OnDeleteAsync(reportItem)">
+                                    刪除
+                                </button>
+                            </td>
+                            <td>
+                                @reportItem.ExecuteTime
+                            </td>
+                            <td>
+                                @reportItem.OrderCode
+                            </td>
+                            <td>
+                                @reportItem.OrderName
+                            </td>
+                            <td>
+                                @reportItem.ReportText
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
