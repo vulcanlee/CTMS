@@ -105,7 +105,13 @@
                             }
 
                             <tr class="@rowClass">
-                                <td class="location-cell"></td>
+                                <td class="location-cell">
+                                    <button class="btn-delete"
+                                            @onclick="async () => await OnDeleteAsync(item)">
+                                        刪除
+                                    </button>
+
+                                </td>
                                 <td>@item.Order_Code</td>
                                 <td>@item.Pharmacy_Name</td>
                                 <td>@item.Frequency_Code</td>

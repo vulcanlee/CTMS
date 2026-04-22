@@ -102,7 +102,7 @@ public partial class OtherMedicationView
                     };
                     data.Items.Add(tItem);
                 }
-                //await OnSave();
+                await OnSave();
                 await InvokeAsync(StateHasChanged);
             }
         }
@@ -151,11 +151,24 @@ public partial class OtherMedicationView
 
     async Task OnDeleteAsync(OtherMedicationItem item)
     {
-        // Assuming we need to remove the last item for deletion
-        if (data.Items.Count > 0)
+        var ok = await modalService.ConfirmAsync(new ConfirmOptions
         {
-            data.Items.Remove(item);
-            await OnSave();
+            Title = "再次確認",
+            Content = $"確定要刪除該筆藥品紀錄 Order Code {item.Order_Code} / Order Name {item.Pharmacy_Name} 嗎?",
+            OkText = "確定",
+            CancelText = "取消",
+            OkButtonProps = new ButtonProps { Danger = true },
+            MaskClosable = false
+        });
+
+        if (ok)
+        {
+            if (data.Items.Count > 0)
+            {
+                data.Items.Remove(item);
+                await OnSave();
+            }
+            await InvokeAsync(StateHasChanged);
         }
     }
 
