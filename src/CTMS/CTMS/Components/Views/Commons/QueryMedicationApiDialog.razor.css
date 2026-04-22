@@ -1,6 +1,22 @@
 ﻿.visit-code-dialog {
     font-family: Arial, "Microsoft JhengHei", sans-serif;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.api-result-section {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.api-result-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: calc(100vh - 280px);
 }
 
 .table-scroll-container {
