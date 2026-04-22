@@ -70,23 +70,26 @@
         string rowClass = string.Empty;
 
         <div class="view-container">
-            <div>
-                @* 新增一筆紀錄按鈕 *@
+            @* <div>
                 <button class="btn btn-primary add-button"
                         @onclick="async () => await OnAddAsync()">
                     新增一筆紀錄
                 </button>
-            </div>
+            </div> *@
 
             <div class="table-scroll-container">
                 <table class="tracking-table">
                     <thead>
                         <tr>
-                            <th>Drug</th>
-                            <th>Treatment Date</th>
-                            <th>dose</th>
-                            <th>Route Code</th>
-                            <th>Unit Code</th>
+                            <th></th>
+                            <th>藥品代碼</th>
+                            <th>藥品名稱</th>
+                            <th>頻次</th>
+                            <th>劑量值</th>
+                            <th>劑量單位</th>
+                            <th>給藥途徑</th>
+                            <th>起日</th>
+                            <th>訖日</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,57 +105,15 @@
                             }
 
                             <tr class="@rowClass">
-                                <td class="location-cell">
-                                    @if (editMode)
-                                    {
-                                        <SfTextBox @bind-Value="item.Drug" />
-                                    }
-                                    else
-                                    {
-                                        @item.Drug
-                                    }
-                                </td>
-                                <td>
-                                    @if (editMode)
-                                    {
-                                        <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                                      @bind-Value="@item.TreatmentDate"></SfDatePicker>
-                                    }
-                                    else
-                                    {
-                                        @item.TreatmentDate?.ToString("yyyy-MM-dd")
-                                    }
-                                </td>
-                                <td>
-                                    @if (editMode)
-                                    {
-                                        <SfTextBox @bind-Value="item.dose" />
-                                    }
-                                    else
-                                    {
-                                        @item.dose
-                                    }
-                                </td>
-                                <td>
-                                    @if (editMode)
-                                    {
-                                        <SfTextBox @bind-Value="item.RouteCode" />
-                                    }
-                                    else
-                                    {
-                                        @item.RouteCode
-                                    }
-                                </td>
-                                <td>
-                                    @if (editMode)
-                                    {
-                                        <SfTextBox @bind-Value="item.UnitCode" />
-                                    }
-                                    else
-                                    {
-                                        @item.UnitCode
-                                    }
-                                </td>
+                                <td class="location-cell"></td>
+                                <td>@item.Order_Code</td>
+                                <td>@item.Pharmacy_Name</td>
+                                <td>@item.Frequency_Code</td>
+                                <td>@item.Totally_Dosage_Unit</td>
+                                <td>@item.Dosage_Unit</td>
+                                <td>@item.Usage_Code</td>
+                                <td>@item.Order_Effect_Date</td>
+                                <td>@item.Order_End_Date</td>
                             </tr>
                         }
                     </tbody>

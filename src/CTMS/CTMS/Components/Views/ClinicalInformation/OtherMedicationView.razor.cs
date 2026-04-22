@@ -67,12 +67,12 @@ public partial class OtherMedicationView
         }
     }
 
-    async Task OnGetMedicationApiAsync(List<MedicationApiModel> reportApiData)
+    async Task OnGetMedicationApiAsync(List<MedicationApiModel> medicationApiData)
     {
         ShowCallApiDialog = false;
         await InvokeAsync(StateHasChanged);
 
-        if (reportApiData != null && reportApiData.Count > 0)
+        if (medicationApiData != null && medicationApiData.Count > 0)
         {
             string visitCodeTitle = data?.VisitCode?.VisitCodeTitle;
             var ok = await modalService.ConfirmAsync(new ConfirmOptions
@@ -87,7 +87,21 @@ public partial class OtherMedicationView
 
             if (ok)
             {
-                //BloodExameService.MatchApiChemistrydResult(data.抽血檢驗生化, reportApiData);
+                foreach (var medication in medicationApiData)
+                {
+                    OtherMedicationItem tItem = new()
+                    {
+                        Order_Code = medication.Order_Code,
+                        Pharmacy_Name = medication.Pharmacy_Name,
+                        Frequency_Code = medication.Frequency_Code,
+                        Totally_Dosage_Unit = medication.Totally_Dosage_Unit,
+                        Dosage_Unit = medication.Dosage_Unit,
+                        Usage_Code = medication.Usage_Code,
+                        Order_Effect_Date = medication.Order_Effect_Date,
+                        Order_End_Date = medication.Order_End_Date
+                    };
+                    data.Items.Add(tItem);
+                }
                 //await OnSave();
                 await InvokeAsync(StateHasChanged);
             }
