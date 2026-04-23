@@ -52,6 +52,14 @@ public partial class QueryReportApiDialog
 
     public async Task OnApi呼叫()
     {
+        if (string.IsNullOrEmpty(ApiTestChartNo) || string.IsNullOrEmpty(ApiTestBeginTime) || string.IsNullOrEmpty(ApiTestEndTime))
+        {
+            var checkTask = MessageBox.ShowAsync("400px", "200px", "錯誤", "請確認輸入的資料是否完整，病歷號、起訖日期必須要有值", MessageBox.HiddenAsync);
+            StateHasChanged();
+            await checkTask;
+            return;
+        }
+
         IsApiCalling = true;
 
         ApiTestBeginTime = ApiTestBeginTime.Replace("-", "").Replace("/", "");

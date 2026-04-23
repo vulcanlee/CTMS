@@ -7,7 +7,12 @@ public class ApiConditionService
     //public string ApiTestChartNo { get; set; } = "23061697";
     //public string ApiTestBeginTime { get; set; } = "20251001";
     //public string ApiTestEndTime { get; set; } = "20260401";
-    public string ApiTestChartNo { get; set; } = "12372333";
-    public string ApiTestBeginTime { get; set; } = "20260201";
-    public string ApiTestEndTime { get; set; } = "20260401";
+
+    //public string ApiTestChartNo { get; set; } = "12372333";
+    //public string ApiTestBeginTime { get; set; } = "20260201";
+    //public string ApiTestEndTime { get; set; } = "20260401";
+
+    public string ApiTestChartNo { get; set; } = "";
+    public string ApiTestBeginTime { get; set; } = "";
+    public string ApiTestEndTime { get; set; } = "";
 }
