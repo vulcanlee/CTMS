@@ -57,6 +57,8 @@ public partial class QueryBloodApiDialog
     {
         IsApiCalling = true;
 
+        ApiTestBeginTime = ApiTestBeginTime.Replace("-", "").Replace("/", "");
+        ApiTestEndTime = ApiTestEndTime.Replace("-", "").Replace("/", "");
         ApiConditionService.ApiTestChartNo = ApiTestChartNo;
         ApiConditionService.ApiTestBeginTime = ApiTestBeginTime;
         ApiConditionService.ApiTestEndTime = ApiTestEndTime;

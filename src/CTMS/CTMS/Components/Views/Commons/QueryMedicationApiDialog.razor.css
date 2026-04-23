@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    max-height: calc(100vh - 280px);
+    max-height: calc(100vh - 380px);
 }
 
 .table-scroll-container {

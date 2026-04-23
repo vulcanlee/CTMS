@@ -54,6 +54,8 @@ public partial class QueryMedicationApiDialog
     {
         IsApiCalling = true;
 
+        ApiTestBeginTime = ApiTestBeginTime.Replace("-", "").Replace("/", "");
+        ApiTestEndTime = ApiTestEndTime.Replace("-", "").Replace("/", "");
         ApiConditionService.ApiTestChartNo = ApiTestChartNo;
         ApiConditionService.ApiTestBeginTime = ApiTestBeginTime;
         ApiConditionService.ApiTestEndTime = ApiTestEndTime;
