@@ -139,8 +139,22 @@ public partial class BloodChemistryTestView
         }
     }
 
-    void OnShowApiDialog()
+    async Task OnShowApiDialogAsync()
     {
+        if (data == null || data.VisitCode == null || data.VisitCode.AssessmentDate == null)
+        {
+            var ok = await modalService.InfoAsync(new ConfirmOptions
+            {
+                Title = "警告",
+                Content = $"沒有發現可用的 Visit Code",
+                OkText = "確定",
+                OkButtonProps = new ButtonProps { Danger = true },
+                MaskClosable = false
+            });
+
+            return;
+        }
+
         ShowCallApiDialog = true;
     }
 
