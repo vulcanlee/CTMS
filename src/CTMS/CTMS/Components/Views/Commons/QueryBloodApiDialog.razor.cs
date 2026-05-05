@@ -36,6 +36,7 @@ public partial class QueryBloodApiDialog
     public string ApiTestChartNo { get; set; } = string.Empty;
     public string ApiTestBeginTime { get; set; } = string.Empty;
     public string ApiTestEndTime { get; set; } = string.Empty;
+    public string RequestNo { get; set; } = string.Empty;
     bool IsApiCalling = false;
 
     protected override async Task OnInitializedAsync()
@@ -45,6 +46,7 @@ public partial class QueryBloodApiDialog
             ApiTestChartNo = ApiConditionService.ApiTestChartNo;
             ApiTestBeginTime = ApiConditionService.ApiTestBeginTime;
             ApiTestEndTime = ApiConditionService.ApiTestEndTime;
+            RequestNo = ApiConditionService.RequestNo;
         }
         await GetData();
     }
@@ -70,6 +72,7 @@ public partial class QueryBloodApiDialog
         ApiConditionService.ApiTestChartNo = ApiTestChartNo;
         ApiConditionService.ApiTestBeginTime = ApiTestBeginTime;
         ApiConditionService.ApiTestEndTime = ApiTestEndTime;
+        ApiConditionService.RequestNo = RequestNo;
 
         var apiResult = await NckuhApiService.GetBloodAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
 
@@ -80,6 +83,18 @@ public partial class QueryBloodApiDialog
         data.Clear();
         foreach (var item in apiResult)
         {
+            if(string.IsNullOrEmpty(RequestNo)== false)
+            {
+                if (item.RequestNo != RequestNo)
+                {
+                    continue;
+                }
+            }
+            if(string.IsNullOrEmpty(item.SpecKind) == false &&
+                item.SpecKind!="10")
+            {
+                continue;
+            }
             data.Add(item);
         }
     }
