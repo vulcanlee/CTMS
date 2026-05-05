@@ -29,11 +29,12 @@ public partial class QueryMedicationApiDialog
     public string MessageBoxBody { get; set; } = "";
     public string MessageBoxTitle { get; set; } = "";
 
-    List<MedicationApiModel> data = new List<MedicationApiModel>();
+    List<MedicationApiSelectionItem> data = new List<MedicationApiSelectionItem>();
     public string ApiTestChartNo { get; set; } = string.Empty;
     public string ApiTestBeginTime { get; set; } = string.Empty;
     public string ApiTestEndTime { get; set; } = string.Empty;
     bool IsApiCalling = false;
+    bool IsAllSelected = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,6 +49,27 @@ public partial class QueryMedicationApiDialog
 
     async Task GetData()
     {
+    }
+
+    void SetAllSelections(bool isSelected)
+    {
+        IsAllSelected = isSelected;
+
+        foreach (var item in data)
+        {
+            item.IsSelected = isSelected;
+        }
+    }
+
+    void ToggleAllSelections(ChangeEventArgs args)
+    {
+        bool isSelected = args.Value is bool value && value;
+        SetAllSelections(isSelected);
+    }
+
+    void OnItemSelectionChanged()
+    {
+        IsAllSelected = data.Count > 0 && data.All(x => x.IsSelected);
     }
 
     public async Task OnApi呼叫()
@@ -74,11 +96,15 @@ public partial class QueryMedicationApiDialog
 
         IsApiCalling = false;
 
-        data.Clear();
-        foreach (var item in apiResult)
-        {
-            data.Add(item);
-        }
+        data = apiResult
+            .Select(item => new MedicationApiSelectionItem
+            {
+                Item = item,
+                IsSelected = false
+            })
+            .ToList();
+
+        IsAllSelected = false;
     }
 
     async Task Init()
@@ -103,14 +129,26 @@ public partial class QueryMedicationApiDialog
             await checkTask;
             OpenPicker = false;
         }
+
+        var selectedItems = data
+            .Where(x => x.IsSelected)
+            .Select(x => x.Item)
+            .ToList();
+
         OpenPicker = false;
-        await OnConfirmCallback.InvokeAsync(data);
+        await OnConfirmCallback.InvokeAsync(selectedItems);
     }
 
     async Task OnPickerCancel()
     {
         OpenPicker = false;
         await OnConfirmCallback.InvokeAsync(null);
+    }
+
+    class MedicationApiSelectionItem
+    {
+        public MedicationApiModel Item { get; set; } = new();
+        public bool IsSelected { get; set; }
     }
 
 }

@@ -47,6 +47,11 @@
                                     <table class="table table-sm table-bordered api-result-table">
                                         <thead>
                                             <tr>
+                                                <th>
+                                                    <input type="checkbox"
+                                                           checked="@IsAllSelected"
+                                                           @onchange="ToggleAllSelections" />
+                                                </th>
                                                 <th>Chart_No</th>
                                                 <th>Order_Source</th>
                                                 <th>Order_Code</th>
@@ -76,28 +81,33 @@
                                             @foreach (var row in data)
                                             {
                                                 <tr>
-                                                    <td>@row.Chart_No</td>
-                                                    <td>@row.Order_Source</td>
-                                                    <td>@row.Order_Code</td>
-                                                    <td>@row.Pharmacy_Name</td>
-                                                    <td>@row.Scientific_Name</td>
-                                                    <td>@row.Order_Effect_Date</td>
-                                                    <td>@row.Order_End_Date</td>
-                                                    <td>@row.Frequency_Code</td>
-                                                    <td>@row.Usage_Code</td>
-                                                    <td>@row.Tqty_Unit</td>
-                                                    <td>@row.Dosage_Unit</td>
-                                                    <td>@row.Days</td>
-                                                    <td>@row.Totally_Dosage_Unit</td>
-                                                    <td>@row.Prescription_Type</td>
-                                                    <td>@row.Doctor_Code</td>
-                                                    <td>@row.Employee_Name</td>
-                                                    <td>@row.ATC_Code</td>
-                                                    <td>@row.Medicine_Type</td>
-                                                    <td>@row.Medicine_ID</td>
-                                                    <td>@row.chronic_medicine</td>
-                                                    <td>@row.Hospital_Code</td>
-                                                    <td>@row.Hospital_Name</td>
+                                                    <td>
+                                                        <input type="checkbox"
+                                                               @bind="row.IsSelected"
+                                                               @bind:after="OnItemSelectionChanged" />
+                                                    </td>
+                                                    <td>@row.Item.Chart_No</td>
+                                                    <td>@row.Item.Order_Source</td>
+                                                    <td>@row.Item.Order_Code</td>
+                                                    <td>@row.Item.Pharmacy_Name</td>
+                                                    <td>@row.Item.Scientific_Name</td>
+                                                    <td>@row.Item.Order_Effect_Date</td>
+                                                    <td>@row.Item.Order_End_Date</td>
+                                                    <td>@row.Item.Frequency_Code</td>
+                                                    <td>@row.Item.Usage_Code</td>
+                                                    <td>@row.Item.Tqty_Unit</td>
+                                                    <td>@row.Item.Dosage_Unit</td>
+                                                    <td>@row.Item.Days</td>
+                                                    <td>@row.Item.Totally_Dosage_Unit</td>
+                                                    <td>@row.Item.Prescription_Type</td>
+                                                    <td>@row.Item.Doctor_Code</td>
+                                                    <td>@row.Item.Employee_Name</td>
+                                                    <td>@row.Item.ATC_Code</td>
+                                                    <td>@row.Item.Medicine_Type</td>
+                                                    <td>@row.Item.Medicine_ID</td>
+                                                    <td>@row.Item.chronic_medicine</td>
+                                                    <td>@row.Item.Hospital_Code</td>
+                                                    <td>@row.Item.Hospital_Name</td>
                                                 </tr>
                                             }
 
