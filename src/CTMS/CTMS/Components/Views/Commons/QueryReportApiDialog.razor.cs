@@ -33,6 +33,7 @@ public partial class QueryReportApiDialog
     public string ApiTestChartNo { get; set; } = string.Empty;
     public string ApiTestBeginTime { get; set; } = string.Empty;
     public string ApiTestEndTime { get; set; } = string.Empty;
+    public string RequestNo { get; set; } = string.Empty;
     bool IsApiCalling = false;
 
     protected override async Task OnInitializedAsync()
@@ -42,6 +43,7 @@ public partial class QueryReportApiDialog
             ApiTestChartNo = ApiConditionService.ApiTestChartNo;
             ApiTestBeginTime = ApiConditionService.ApiTestBeginTime;
             ApiTestEndTime = ApiConditionService.ApiTestEndTime;
+            RequestNo = ApiConditionService.RequestNo;
         }
         await GetData();
     }
@@ -67,6 +69,7 @@ public partial class QueryReportApiDialog
         ApiConditionService.ApiTestChartNo = ApiTestChartNo;
         ApiConditionService.ApiTestBeginTime = ApiTestBeginTime;
         ApiConditionService.ApiTestEndTime = ApiTestEndTime;
+        ApiConditionService.RequestNo = RequestNo;
 
         var apiResult = await NckuhApiService.GetReportAsync(ApiTestChartNo, ApiTestBeginTime, ApiTestEndTime);
 
@@ -77,6 +80,10 @@ public partial class QueryReportApiDialog
         data.Clear();
         foreach (var item in apiResult)
         {
+            if(!string.IsNullOrEmpty(RequestNo) && item.RequestNo != RequestNo)
+            {
+                continue;
+            }
             data.Add(item);
         }
     }

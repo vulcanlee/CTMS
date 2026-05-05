@@ -22,15 +22,19 @@
                             <label class="form-label">Chart No</label>
                             <input class="form-control" @bind="ApiTestChartNo" placeholder="請輸入病歷號" />
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Begin Time / bg</label>
+                        <div class="col-md-2">
+                            <label class="form-label">Begin Date</label>
                             <input class="form-control" @bind="ApiTestBeginTime" placeholder="例如 20240101" />
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">End Time / ed</label>
+                        <div class="col-md-2">
+                            <label class="form-label">End Date</label>
                             <input class="form-control" @bind="ApiTestEndTime" placeholder="例如 20241231" />
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <label class="form-label">RequestNo</label>
+                            <input class="form-control" @bind="RequestNo" placeholder="請輸入 RequestNo" />
+                        </div>
+                        <div class="col-md-2">
                             <Button Type="AntDesign.ButtonType.Primary"
                                     Loading="@IsApiCalling"
                                     OnClick="async () => await OnApi呼叫()">
