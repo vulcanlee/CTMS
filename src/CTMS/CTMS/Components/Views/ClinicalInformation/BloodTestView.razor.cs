@@ -120,7 +120,12 @@ public partial class BloodTestView
             if (ok)
             {
                 BloodExameService.MatchApiBloodResult(data.抽血檢驗血液, bloodApiData);
-               // await OnSave();
+                var itemBand = data.抽血檢驗血液.FirstOrDefault(x => x.項目名稱.Contains("Band"));
+                if (itemBand != null)
+                {
+                    itemBand.檢驗數值 = "0";
+                }
+                // await OnSave();
                 await InvokeAsync(StateHasChanged);
             }
         }
