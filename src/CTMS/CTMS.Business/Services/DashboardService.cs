@@ -105,10 +105,12 @@ public class DashboardService
 
         #region Row 3
         #region 癌別統計
-        Dashboard.CancerTypeStats.OvarianAiCount = 0;
-        Dashboard.CancerTypeStats.OvarianControlCount = 0;
-        Dashboard.CancerTypeStats.EndometrialAiCount = 0;
-        Dashboard.CancerTypeStats.EndometrialControlCount = 0;
+        Dashboard.CancerTypeStats.OvarianCancerCount = 0;
+        Dashboard.CancerTypeStats.EndometrialCancerCount = 0;
+        Dashboard.CancerTypeStats.OvarianCancerExperimentalGroupCount = 0;
+        Dashboard.CancerTypeStats.OvarianCancerControlGroupCount = 0;
+        Dashboard.CancerTypeStats.EndometrialCancerExperimentalGroupCount = 0;
+        Dashboard.CancerTypeStats.EndometrialCancerControlGroupCount = 0;
         #endregion
 
         #region 完成度統計
@@ -179,7 +181,7 @@ public class DashboardService
                 #region 分析報告
                 if (string.IsNullOrEmpty(patientData.臨床資訊.KeyName) == false)
                 {
-                    bool isCompletion = await aiIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName, onlyCheck:true);
+                    bool isCompletion = await aiIntegrateService.CheckAIProcess(patientData.臨床資訊.KeyName, onlyCheck: true);
                     if (isCompletion)
                     {
                         Dashboard.Summary.AnalysisReportCount++;
@@ -207,22 +209,24 @@ public class DashboardService
 
                 #region Row 2
                 #region 醫院個數
-                var hospitalName = GetHospitalName(patient.醫院);
-                var groupName = patient.組別;
-                var hospitalStat = hospitalName == null
-                    ? null
-                    : Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == hospitalName);
-
-                if (hospitalStat != null)
+                var normalizedHospitalName = GetHospitalName(patient.醫院);
+                if (string.IsNullOrEmpty(normalizedHospitalName) == false)
                 {
-                    hospitalStat.CaseCount++;
-                    if (groupName == MagicObjectHelper.組別實驗組英文)
+                    var hospitalStat = Dashboard.HospitalStats
+                        .FirstOrDefault(a => a.HospitalName == normalizedHospitalName);
+
+                    if (hospitalStat is not null)
                     {
-                        hospitalStat.ExperimentalGroupCount++;
-                    }
-                    else if (groupName == MagicObjectHelper.組別對照組英文)
-                    {
-                        hospitalStat.ControlGroupCount++;
+                        if (patient.組別 == MagicObjectHelper.組別實驗組英文)
+                        {
+                            hospitalStat.ExperimentalGroupCount++;
+                            hospitalStat.CaseCount++;
+                        }
+                        else if (patient.組別 == MagicObjectHelper.組別對照組英文)
+                        {
+                            hospitalStat.ControlGroupCount++;
+                            hospitalStat.CaseCount++;
+                        }
                     }
                 }
                 #endregion
@@ -250,16 +254,17 @@ public class DashboardService
                         stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "I");
                     }
 
-                    if (stageStat != null)
+                    if (stageStat is not null)
                     {
-                        stageStat.Count++;
-                        if (groupName == MagicObjectHelper.組別實驗組英文)
+                        if (patient.組別 == MagicObjectHelper.組別實驗組英文)
                         {
                             stageStat.ExperimentalGroupCount++;
+                            stageStat.Count++;
                         }
-                        else if (groupName == MagicObjectHelper.組別對照組英文)
+                        else if (patient.組別 == MagicObjectHelper.組別對照組英文)
                         {
                             stageStat.ControlGroupCount++;
+                            stageStat.Count++;
                         }
                     }
                 }
@@ -271,24 +276,28 @@ public class DashboardService
                 #region 癌別統計
                 if (patientData.臨床資訊?.CancerType?.Contains("卵巢癌") == true)
                 {
-                    if (groupName == MagicObjectHelper.組別實驗組英文)
+                    Dashboard.CancerTypeStats.OvarianCancerCount++;
+
+                    if (patient.組別 == MagicObjectHelper.組別實驗組英文)
                     {
-                        Dashboard.CancerTypeStats.OvarianAiCount++;
+                        Dashboard.CancerTypeStats.OvarianCancerExperimentalGroupCount++;
                     }
-                    else if (groupName == MagicObjectHelper.組別對照組英文)
+                    else if (patient.組別 == MagicObjectHelper.組別對照組英文)
                     {
-                        Dashboard.CancerTypeStats.OvarianControlCount++;
+                        Dashboard.CancerTypeStats.OvarianCancerControlGroupCount++;
                     }
                 }
                 else if (patientData.臨床資訊?.CancerType?.Contains("子宮內膜癌") == true)
                 {
-                    if (groupName == MagicObjectHelper.組別實驗組英文)
+                    Dashboard.CancerTypeStats.EndometrialCancerCount++;
+
+                    if (patient.組別 == MagicObjectHelper.組別實驗組英文)
                     {
-                        Dashboard.CancerTypeStats.EndometrialAiCount++;
+                        Dashboard.CancerTypeStats.EndometrialCancerExperimentalGroupCount++;
                     }
-                    else if (groupName == MagicObjectHelper.組別對照組英文)
+                    else if (patient.組別 == MagicObjectHelper.組別對照組英文)
                     {
-                        Dashboard.CancerTypeStats.EndometrialControlCount++;
+                        Dashboard.CancerTypeStats.EndometrialCancerControlGroupCount++;
                     }
                 }
                 #endregion
