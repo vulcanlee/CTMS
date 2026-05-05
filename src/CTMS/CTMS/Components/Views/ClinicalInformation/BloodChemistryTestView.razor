@@ -1,11 +1,5 @@
-﻿@using Syncfusion.Blazor
-@using Syncfusion.Blazor.Data
-@using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Inputs
+﻿@using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
@@ -15,7 +9,6 @@
 @inject OperationHistoryTraceService OperationHistoryTraceService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
-@using Newtonsoft.Json
 
 <PageTitle>臨床資料 抽血檢驗(生化)</PageTitle>
 
@@ -78,9 +71,14 @@
                 }
                 else
                 {
-                    <span class="edit-icon d-flex align-items-center cursor-pointer"
-                          @onclick="OnChangeEditMode">
-                        <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                    <span class="d-flex align-items-center">
+                        <span class="edit-icon cursor-pointer"
+                              @onclick="OnChangeEditMode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                        </span>
+                        <span class="ms-5 edit-icon cursor-pointer" @onclick="OnShowApiDialogAsync">
+                            <i class="mx-3 mdi mdi-18px mdi-api command-icon-width cursor-pointer"></i>呼叫
+                        </span>
                     </span>
                 }
             </div>
@@ -112,6 +110,7 @@
                 <thead>
                     <tr>
                         <th class="header-item">檢驗項目</th>
+                        <th class="header-reference">單位</th>
                         <th class="header-reference">參考區間</th>
                         <th class="header-result">檢驗數據</th>
                         <th class="header-sampling">Sampling</th>
@@ -130,6 +129,7 @@
                         }
                         <tr class="@rowClass">
                             <td class="item-cell ">@item.項目名稱</td>
+                            <td class="reference-cell ">@item.單位</td>
                             <td class="reference-cell ">@item.參考區間</td>
                             <td class="result-cell @item.TextClassName">
                                 @if (editMode)
@@ -211,6 +211,9 @@
         </div>
     }
 </div>
+
+<QueryBloodApiDialog OpenPicker=ShowCallApiDialog
+                     OnConfirmCallback=OnGetBloodApiAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"

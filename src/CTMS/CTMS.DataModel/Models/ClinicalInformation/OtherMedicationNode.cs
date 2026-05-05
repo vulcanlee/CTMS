@@ -17,10 +17,13 @@ namespace CTMS.DataModel.Models.ClinicalInformation
 
     public class OtherMedicationItem
     {
-        public string Drug { get; set; }
-        public DateTime? TreatmentDate  { get; set; }
-        public string dose { get; set; }
-        public string RouteCode { get; set; }
-        public string UnitCode { get; set; }
+        public string Order_Code { get; set; }
+        public string Pharmacy_Name { get; set; }
+        public string Frequency_Code { get; set; }
+        public string Totally_Dosage_Unit { get; set; }
+        public string Dosage_Unit { get; set; }
+        public string Usage_Code { get; set; }
+        public string Order_Effect_Date { get; set; }
+        public string Order_End_Date { get; set; }
     }
 }

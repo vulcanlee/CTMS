@@ -1,5 +1,7 @@
-﻿using CTMS.AdapterModels;
+﻿using AntDesign;
+using CTMS.AdapterModels;
 using CTMS.DataModel.Models;
+using CTMS.DataModel.Models.Apis;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Helper;
 using CTMS.Share.Helpers;
@@ -11,6 +13,8 @@ namespace CTMS.Components.Views.ClinicalInformation;
 
 public partial class BloodChemistryTestView
 {
+    [Inject]
+    public ModalService modalService { get; set; }
     [Parameter]
     public string Code { get; set; }
 
@@ -23,7 +27,7 @@ public partial class BloodChemistryTestView
     BloodTest抽血檢驗生化Node dataOriginal = new();
 
     #region 操作 Visit Code 用到的物件
-    bool ShowVisitCodeDialog = false;
+    bool ShowCallApiDialog = false;
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
     string VisitCodeOperateMode = string.Empty;
@@ -48,10 +52,11 @@ public partial class BloodChemistryTestView
         if (data != null)
         {
             var item1 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "LDH U/L");
-            var item2 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "乳酸脫氫酶 (LDH)");
+            var item2 = data.抽血檢驗生化.FirstOrDefault(z => z.項目名稱 == "乳酸脫氫酶 (LDH)" && string.IsNullOrEmpty(z.單位));
             if (item1 != null)
             {
-                item1.項目名稱 = "乳酸脫氫酶 (LDH) U/L";
+                item1.項目名稱 = "乳酸脫氫酶 (LDH)";
+                item1.單位 = "U/L";
             }
             if (item2 != null)
             {
@@ -69,6 +74,16 @@ public partial class BloodChemistryTestView
             data = header.Items.FirstOrDefault();
             var dataJson = JsonConvert.SerializeObject(data);
             dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+            if (data != null)
+            {
+                BloodExameService.NormalizeBloodExameItems(data.抽血檢驗生化);
+                BloodExameService.FillUnitsFor生化Node(data, patientData.臨床資訊.SubjectNo);
+            }
+            if (dataOriginal != null)
+            {
+                BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗生化);
+                BloodExameService.FillUnitsFor生化Node(dataOriginal, patientData.臨床資訊.SubjectNo);
+            }
 
             RefreshVisitCode();
             RefreshDropDwonVisitCode();
@@ -83,8 +98,64 @@ public partial class BloodChemistryTestView
                 data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
                 var dataJson = JsonConvert.SerializeObject(data);
                 dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+                if (data != null)
+                {
+                    BloodExameService.NormalizeBloodExameItems(data.抽血檢驗生化);
+                    BloodExameService.FillUnitsFor生化Node(data, patientData.臨床資訊.SubjectNo);
+                }
+                if (dataOriginal != null)
+                {
+                    BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗生化);
+                    BloodExameService.FillUnitsFor生化Node(dataOriginal, patientData.臨床資訊.SubjectNo);
+                }
             }
         }
+    }
+
+    async Task OnGetBloodApiAsync(List<BloodApiModel> bloodApiData)
+    {
+        ShowCallApiDialog = false;
+        await InvokeAsync(StateHasChanged);
+
+        if (bloodApiData != null && bloodApiData.Count > 0)
+        {
+            string visitCodeTitle = data?.VisitCode?.VisitCodeTitle;
+            var ok = await modalService.ConfirmAsync(new ConfirmOptions
+            {
+                Title = "再次確認",
+                Content = $"確定要匯入這裡選取的成大抽血之生化方面的資料到該 Visit Code {visitCodeTitle} 內嗎?",
+                OkText = "是",
+                CancelText = "取消",
+                OkButtonProps = new ButtonProps { Danger = true },
+                MaskClosable = false
+            });
+
+            if (ok)
+            {
+                BloodExameService.MatchApiChemistrydResult(data.抽血檢驗生化, bloodApiData);
+                //await OnSave();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    async Task OnShowApiDialogAsync()
+    {
+        if (data == null || data.VisitCode == null || data.VisitCode.AssessmentDate == null)
+        {
+            var ok = await modalService.InfoAsync(new ConfirmOptions
+            {
+                Title = "警告",
+                Content = $"沒有發現可用的 Visit Code",
+                OkText = "確定",
+                OkButtonProps = new ButtonProps { Danger = true },
+                MaskClosable = false
+            });
+
+            return;
+        }
+
+        ShowCallApiDialog = true;
     }
 
     void OnResetDate()
@@ -147,9 +218,16 @@ public partial class BloodChemistryTestView
             if (item != null)
             {
                 data = item;
+                BloodExameService.NormalizeBloodExameItems(data.抽血檢驗生化);
+                BloodExameService.FillUnitsFor生化Node(data, patientData.臨床資訊.SubjectNo);
 
                 var dataJson = JsonConvert.SerializeObject(data);
                 dataOriginal = JsonConvert.DeserializeObject<BloodTest抽血檢驗生化Node>(dataJson);
+                if (dataOriginal != null)
+                {
+                    BloodExameService.NormalizeBloodExameItems(dataOriginal.抽血檢驗生化);
+                    BloodExameService.FillUnitsFor生化Node(dataOriginal, patientData.臨床資訊.SubjectNo);
+                }
             }
         }
     }

@@ -60,6 +60,11 @@ public class DashboardSummary
     // 卡片 4: 分析報告
     public int AnalysisReportCount { get; set; }
 
+    // 卡片 5-7: 第二排摘要統計
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
+    public int HighRiskCount { get; set; }
+
     #region Method
     public string GetHospitalNamesDisplay() => string.Join("、", HospitalNames); // 用於顯示醫院名稱的輔助方法
     public string GetMonthlyGrowthDescription() => $"+{MonthlyGrowthRate} 本月新增{NewCasesThisMonth}例"; 
@@ -73,10 +78,8 @@ public class DashboardSummary
 /// </summary>
 public class HospitalCaseStat
 {
-    public string HospitalName { get; set; }
-    public int CaseCount { get; set; }
-    public int AiCount { get; set; }
-    public int ControlCount { get; set; }
+    public string HospitalName { get; set; } 
+    public int CaseCount { get; set; }       
 }
 
 /// <summary>
@@ -86,8 +89,6 @@ public class CancerStageStat
 {
     public string StageName { get; set; }
     public int Count { get; set; }
-    public int AiCount { get; set; }
-    public int ControlCount { get; set; }
 }
 
 /// <summary>
@@ -95,10 +96,8 @@ public class CancerStageStat
 /// </summary>
 public class CancerTypeDistribution
 {
-    public int OvarianAiCount { get; set; }
-    public int OvarianControlCount { get; set; }
-    public int EndometrialAiCount { get; set; }
-    public int EndometrialControlCount { get; set; }
+    public int OvarianCancerCount { get; set; }  
+    public int EndometrialCancerCount { get; set; }
 
     public int OvarianCancerCount => OvarianAiCount + OvarianControlCount;
     public int EndometrialCancerCount => EndometrialAiCount + EndometrialControlCount;

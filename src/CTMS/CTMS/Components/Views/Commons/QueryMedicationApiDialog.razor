@@ -1,0 +1,136 @@
+﻿@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
+@inject NavigationManager NavigationManager
+@inject PatientService PatientService
+
+@inject OperationHistoryTraceService OperationHistoryTraceService
+@inject AuthenticationStateHelper AuthenticationStateHelper
+@inject AuthenticationStateProvider authStateProvider
+
+<SfDialog @bind-Visible="@OpenPicker" IsModal="true"
+          Width="95%" Height="100%" CssClass="dialogSize">
+    <DialogTemplates>
+        <Header>@DialogTitle</Header>
+        <Content>
+
+            <div class="visit-code-dialog">
+
+                <div class="card p-3 m-2 system-maintain-card">
+                    <div class="mb-2 fw-bold">查詢藥品結果</div>
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label">Chart No</label>
+                            <input class="form-control" @bind="ApiTestChartNo" placeholder="請輸入病歷號" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Begin Time / bg</label>
+                            <input class="form-control" @bind="ApiTestBeginTime" placeholder="例如 20240101" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">End Time / ed</label>
+                            <input class="form-control" @bind="ApiTestEndTime" placeholder="例如 20241231" />
+                        </div>
+                        <div class="col-md-3">
+                            <Button Type="AntDesign.ButtonType.Primary"
+                                    Loading="@IsApiCalling"
+                                    OnClick="async () => await OnApi呼叫()">
+                                查詢
+                            </Button>
+                        </div>
+                    </div>
+
+                    @if (data != null)
+                    {
+                        <div class="mt-3 border-top pt-3 api-result-section">
+                            <div class="api-result-panel">
+                                <div class="mt-3 table-scroll-container">
+                                    <table class="table table-sm table-bordered api-result-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Chart_No</th>
+                                                <th>Order_Source</th>
+                                                <th>Order_Code</th>
+                                                <th>Pharmacy_Name</th>
+                                                <th>Scientific_Name</th>
+                                                <th>Order_Effect_Date</th>
+                                                <th>Order_End_Date</th>
+                                                <th>Frequency_Code</th>
+                                                <th>Usage_Code</th>
+                                                <th>Tqty_Unit</th>
+                                                <th>Dosage_Unit</th>
+                                                <th>Days</th>
+                                                <th>Totally_Dosage_Unit</th>
+                                                <th>Prescription_Type</th>
+                                                <th>Doctor_Code</th>
+                                                <th>Employee_Name</th>
+                                                <th>ATC_Code</th>
+                                                <th>Medicine_Type</th>
+                                                <th>Medicine_ID</th>
+                                                <th>chronic_medicine</th>
+                                                <th>Hospital_Code</th>
+                                                <th>Hospital_Name</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var row in data)
+                                            {
+                                                <tr>
+                                                    <td>@row.Chart_No</td>
+                                                    <td>@row.Order_Source</td>
+                                                    <td>@row.Order_Code</td>
+                                                    <td>@row.Pharmacy_Name</td>
+                                                    <td>@row.Scientific_Name</td>
+                                                    <td>@row.Order_Effect_Date</td>
+                                                    <td>@row.Order_End_Date</td>
+                                                    <td>@row.Frequency_Code</td>
+                                                    <td>@row.Usage_Code</td>
+                                                    <td>@row.Tqty_Unit</td>
+                                                    <td>@row.Dosage_Unit</td>
+                                                    <td>@row.Days</td>
+                                                    <td>@row.Totally_Dosage_Unit</td>
+                                                    <td>@row.Prescription_Type</td>
+                                                    <td>@row.Doctor_Code</td>
+                                                    <td>@row.Employee_Name</td>
+                                                    <td>@row.ATC_Code</td>
+                                                    <td>@row.Medicine_Type</td>
+                                                    <td>@row.Medicine_ID</td>
+                                                    <td>@row.chronic_medicine</td>
+                                                    <td>@row.Hospital_Code</td>
+                                                    <td>@row.Hospital_Name</td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+        </Content>
+        <FooterTemplate>
+            <SfButton @onclick="@OnPickerOK" CssClass='e-primary'>確認</SfButton>
+            <SfButton @onclick="@OnPickerCancel" CssClass='e-secondary'>取消</SfButton>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogPositionData X="center" Y="center"></DialogPositionData>
+</SfDialog>
+
+<MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
+            IsVisible="@MessageBox.IsVisible"
+            Title="@MessageBox.Title" Message="@MessageBox.Body"
+            Callback="MessageBox.MessageDelegate" />
+
+<ConfirmBox Height="@ConfirmMessageBox.Height" Width="@ConfirmMessageBox.Width"
+            IsVisible="@ConfirmMessageBox.IsVisible"
+            Title="@ConfirmMessageBox.Title" Message="@ConfirmMessageBox.Body"
+            Callback="ConfirmMessageBox.ConfirmDelegate" />
+
+<DialogBackground />
+
+@code {
+}

@@ -24,6 +24,15 @@
     gap: 10px;
 }
 
+.btn-edit, .btn-delete {
+    border: none;
+    padding: 6px 16px;
+    border-radius: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
 .btn {
     padding: 8px 15px;
     border: none;
