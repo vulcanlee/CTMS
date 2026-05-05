@@ -37,7 +37,8 @@ public class BloodExameService
         }
 
         int apiResultCount = apiResult.Count;
-        for (int i = apiResultCount - 1; i >= 0; i--)
+        //for (int i = apiResultCount - 1; i >= 0; i--)
+        for (int i = 0; i < apiResultCount; i++)
         {
             BloodApiModel bloodApiModelItem = apiResult[i];
             var itemName = bloodApiModelItem.ItemName;
