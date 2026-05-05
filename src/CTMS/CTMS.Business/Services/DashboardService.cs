@@ -105,8 +105,10 @@ public class DashboardService
 
         #region Row 3
         #region 癌別統計
-        Dashboard.CancerTypeStats.OvarianCancerCount = 0;
-        Dashboard.CancerTypeStats.EndometrialCancerCount = 0;
+        Dashboard.CancerTypeStats.OvarianAiCount = 0;
+        Dashboard.CancerTypeStats.OvarianControlCount = 0;
+        Dashboard.CancerTypeStats.EndometrialAiCount = 0;
+        Dashboard.CancerTypeStats.EndometrialControlCount = 0;
         #endregion
 
         #region 完成度統計
@@ -205,18 +207,23 @@ public class DashboardService
 
                 #region Row 2
                 #region 醫院個數
-                var hospital = patient.醫院;
-                if (hospital.Contains(MagicObjectHelper.PrefixSheetName成大醫院))
+                var hospitalName = GetHospitalName(patient.醫院);
+                var groupName = patient.組別;
+                var hospitalStat = hospitalName == null
+                    ? null
+                    : Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == hospitalName);
+
+                if (hospitalStat != null)
                 {
-                    Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == MagicObjectHelper.PrefixSheetName成大醫院).CaseCount++;
-                }
-                else if (hospital.Contains(MagicObjectHelper.PrefixSheetName奇美醫院))
-                {
-                    Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == MagicObjectHelper.PrefixSheetName奇美醫院).CaseCount++;
-                }
-                else if (hospital.Contains(MagicObjectHelper.PrefixSheetName郭綜合醫院))
-                {
-                    Dashboard.HospitalStats.FirstOrDefault(a => a.HospitalName == MagicObjectHelper.PrefixSheetName郭綜合醫院).CaseCount++;
+                    hospitalStat.CaseCount++;
+                    if (groupName == MagicObjectHelper.組別實驗組英文)
+                    {
+                        hospitalStat.ExperimentalGroupCount++;
+                    }
+                    else if (groupName == MagicObjectHelper.組別對照組英文)
+                    {
+                        hospitalStat.ControlGroupCount++;
+                    }
                 }
                 #endregion
 
@@ -224,24 +231,36 @@ public class DashboardService
                 var cancerStage = patientData.臨床資訊.FIGOStaging;
                 if (string.IsNullOrEmpty(cancerStage) == false)
                 {
+                    CancerStageStat? stageStat = null;
+
                     if (cancerStage.Contains("IV") && cancerStage.IndexOf("IV") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "IV").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "IV");
                     }
                     else if (cancerStage.Contains("III") && cancerStage.IndexOf("III") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "III").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "III");
                     }
                     else if (cancerStage.Contains("II") && cancerStage.IndexOf("II") == 0)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "II").Count++;
+                        stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "II");
                     }
                     else if (cancerStage.Contains("I") && cancerStage.IndexOf("I") == 0)
+                    {
                         stageStat = Dashboard.StageStats.FirstOrDefault(a => a.StageName == "I");
+                    }
 
                     if (stageStat != null)
                     {
-                        Dashboard.StageStats.FirstOrDefault(a => a.StageName == "I").Count++;
+                        stageStat.Count++;
+                        if (groupName == MagicObjectHelper.組別實驗組英文)
+                        {
+                            stageStat.ExperimentalGroupCount++;
+                        }
+                        else if (groupName == MagicObjectHelper.組別對照組英文)
+                        {
+                            stageStat.ControlGroupCount++;
+                        }
                     }
                 }
                 #endregion
@@ -252,11 +271,25 @@ public class DashboardService
                 #region 癌別統計
                 if (patientData.臨床資訊?.CancerType?.Contains("卵巢癌") == true)
                 {
-                    Dashboard.CancerTypeStats.OvarianCancerCount++;
+                    if (groupName == MagicObjectHelper.組別實驗組英文)
+                    {
+                        Dashboard.CancerTypeStats.OvarianAiCount++;
+                    }
+                    else if (groupName == MagicObjectHelper.組別對照組英文)
+                    {
+                        Dashboard.CancerTypeStats.OvarianControlCount++;
+                    }
                 }
                 else if (patientData.臨床資訊?.CancerType?.Contains("子宮內膜癌") == true)
                 {
-                    Dashboard.CancerTypeStats.EndometrialCancerCount++;
+                    if (groupName == MagicObjectHelper.組別實驗組英文)
+                    {
+                        Dashboard.CancerTypeStats.EndometrialAiCount++;
+                    }
+                    else if (groupName == MagicObjectHelper.組別對照組英文)
+                    {
+                        Dashboard.CancerTypeStats.EndometrialControlCount++;
+                    }
                 }
                 #endregion
 

@@ -78,8 +78,10 @@ public class DashboardSummary
 /// </summary>
 public class HospitalCaseStat
 {
-    public string HospitalName { get; set; } 
-    public int CaseCount { get; set; }       
+    public string HospitalName { get; set; }
+    public int CaseCount { get; set; }
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
 }
 
 /// <summary>
@@ -89,6 +91,8 @@ public class CancerStageStat
 {
     public string StageName { get; set; }
     public int Count { get; set; }
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
 }
 
 /// <summary>
@@ -96,8 +100,10 @@ public class CancerStageStat
 /// </summary>
 public class CancerTypeDistribution
 {
-    public int OvarianCancerCount { get; set; }  
-    public int EndometrialCancerCount { get; set; }
+    public int OvarianAiCount { get; set; }
+    public int OvarianControlCount { get; set; }
+    public int EndometrialAiCount { get; set; }
+    public int EndometrialControlCount { get; set; }
 
     public int OvarianCancerCount => OvarianAiCount + OvarianControlCount;
     public int EndometrialCancerCount => EndometrialAiCount + EndometrialControlCount;
