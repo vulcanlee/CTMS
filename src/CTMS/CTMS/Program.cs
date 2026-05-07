@@ -142,6 +142,7 @@ namespace CTMS
                 builder.Services.AddTransient<SendEmailService>();
                 builder.Services.AddTransient<PatientCsvExportService>();
                 builder.Services.AddTransient<PatientSingleRowCsvExportService>();
+                builder.Services.AddTransient<PatientSurveyCsvExportService>();
 
                 #region MyUser
                 builder.Services.AddScoped<MyUserService>();

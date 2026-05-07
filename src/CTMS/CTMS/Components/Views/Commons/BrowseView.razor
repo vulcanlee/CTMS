@@ -44,6 +44,9 @@
         <button class="btn btn-export" @onclick="@(async () => await On單一比ExcelAsync())">
             <span class="icon-refresh">📊</span> 單一筆excel匯出
         </button>
+        <button class="btn btn-export" @onclick="@(async () => await On問卷匯出Async())">
+            <span class="icon-refresh">📋</span> 問卷匯出
+        </button>
     </div>
 
     <!-- 篩選條件區域 -->

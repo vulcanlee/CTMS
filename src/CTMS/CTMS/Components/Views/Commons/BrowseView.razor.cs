@@ -321,6 +321,7 @@ public partial class BrowseView
 
     [Inject] PatientCsvExportService PatientCsvExportService { get; set; } = default!;
     [Inject] PatientSingleRowCsvExportService PatientSingleRowCsvExportService { get; set; } = default!;
+    [Inject] PatientSurveyCsvExportService PatientSurveyCsvExportService { get; set; } = default!;
 
     async Task On匯出ExcelAsync()
     {
@@ -366,6 +367,26 @@ public partial class BrowseView
         var stream = new MemoryStream(csvBytes);
         using var streamRef = new DotNetStreamReference(stream: stream);
         var fileName = $"CTMS單一比_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    async Task On問卷匯出Async()
+    {
+        var allPatients = await PatientService.GetAsync();
+
+        var patientDataList = new List<PatientData>();
+        foreach (var item in allPatients)
+        {
+            var pd = new PatientData();
+            pd.FromJson(item.JsonData);
+            patientDataList.Add(pd);
+        }
+
+        var csvBytes = PatientSurveyCsvExportService.Export(patientDataList);
+
+        var stream = new MemoryStream(csvBytes);
+        using var streamRef = new DotNetStreamReference(stream: stream);
+        var fileName = $"CTMS問卷_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
         await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
     }
 

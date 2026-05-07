@@ -10,15 +10,6 @@ namespace CTMS.Business.Services.ClinicalInformation;
 /// </summary>
 public class PatientCsvExportService
 {
-    private const string SV_化療 = "化療副作用";
-    private const string SV_標靶 = "標靶副作用";
-    private const string SV_放療 = "放療副作用";
-    private const string SV_WHOQOL = "WHOQOL";
-    private const string SV_個人史 = "個人史";
-    private const string SV_家族史 = "家族史";
-    private const string SV_生活品質 = "生活品質";
-    private const string SV_健康 = "健康";
-
     private static readonly string[] 血液模板檔 = { "抽血檢驗血液.json", "抽血檢驗血液1.json", "抽血檢驗血液2.json" };
     private static readonly string[] 生化模板檔 = { "抽血檢驗生化.json", "抽血檢驗生化1.json", "抽血檢驗生化2.json" };
 
@@ -27,20 +18,16 @@ public class PatientCsvExportService
     public byte[] Export(List<PatientData> patients)
     {
         int max化學治療 = 1;
-        int max合併用藥 = 1;
         int max其他治療藥物 = 1;
 
         var 血液欄位 = LoadBloodItemColumns(血液模板檔);
         var 生化欄位 = LoadBloodItemColumns(生化模板檔);
-        var 問卷題目 = LoadSurveyQuestionIds();
 
         foreach (var p in patients)
         {
             var m = p.臨床資料;
             foreach (var node in m.臨床資料化學治療.Items)
                 max化學治療 = Math.Max(max化學治療, node.Items.Count);
-            foreach (var node in m.臨床資料合併用藥.Items)
-                max合併用藥 = Math.Max(max合併用藥, node.Items.Count);
             foreach (var node in m.其他治療藥物.Items)
                 max其他治療藥物 = Math.Max(max其他治療藥物, node.Items.Count);
             foreach (var node in m.抽血檢驗血液.Items)
@@ -51,9 +38,13 @@ public class PatientCsvExportService
                     生化欄位.TryAdd(NormalizeItemName(item.項目名稱), ExtractChineseName(item.項目名稱));
         }
 
+        // 去除同名重複欄位，避免同一檢驗項目被排到後方形成大片空白欄。
+        血液欄位 = DeduplicateColumnsByDisplayName(血液欄位);
+        生化欄位 = DeduplicateColumnsByDisplayName(生化欄位);
+
         var columns = BuildColumnCatalog(
-            max化學治療, max合併用藥, max其他治療藥物,
-            血液欄位, 生化欄位, 問卷題目);
+            max化學治療, max其他治療藥物,
+            血液欄位, 生化欄位);
 
         var sb = new StringBuilder();
         sb.AppendLine(string.Join(",", columns.Select(c => EscapeCsv(c.Header))));
@@ -67,8 +58,8 @@ public class PatientCsvExportService
             if (visitCodes.Count == 0)
             {
                 var row = BuildRow(columns, 臨床資訊, m, null,
-                    max化學治療, max合併用藥, max其他治療藥物,
-                    血液欄位, 生化欄位, 問卷題目);
+                    max化學治療, max其他治療藥物,
+                    血液欄位, 生化欄位);
                 sb.AppendLine(string.Join(",", row.Select(EscapeCsv)));
             }
             else
@@ -76,8 +67,8 @@ public class PatientCsvExportService
                 foreach (var vc in visitCodes)
                 {
                     var row = BuildRow(columns, 臨床資訊, m, vc,
-                        max化學治療, max合併用藥, max其他治療藥物,
-                        血液欄位, 生化欄位, 問卷題目);
+                        max化學治療, max其他治療藥物,
+                        血液欄位, 生化欄位);
                     sb.AppendLine(string.Join(",", row.Select(EscapeCsv)));
                 }
             }
@@ -87,9 +78,8 @@ public class PatientCsvExportService
     }
 
     private List<ColumnDef> BuildColumnCatalog(
-        int max化學治療, int max合併用藥, int max其他治療藥物,
-        Dictionary<string, string> 血液欄位, Dictionary<string, string> 生化欄位,
-        Dictionary<string, List<string>> 問卷題目)
+        int max化學治療, int max其他治療藥物,
+        Dictionary<string, string> 血液欄位, Dictionary<string, string> 生化欄位)
     {
         var cols = new List<ColumnDef>();
 
@@ -102,65 +92,9 @@ public class PatientCsvExportService
         cols.Add(new("VisitTimeline",       "就診_Timeline"));
         cols.Add(new("VisitCycleMonth",     "就診_Cycle/Month"));
 
-        // 手術
-        cols.AddRange(PairCols("OP_", "手術_", new (string, string)[]
-        {
-            ("手術日期",                              "手術日期"),
-            ("術式",                                  "術式"),
-            ("OPOutcome",                             "OP outcome"),
-            ("Ascites",                               "Ascites"),
-            ("Uterus",                                "Uterus"),
-            ("UterusSite",                            "Uterus site"),
-            ("UterusTumorNumber",                     "Uterus Tumor number"),
-            ("UterusTumorSize",                       "Uterus Tumor size"),
-            ("Cervix",                                "Cervix"),
-            ("CervixSite",                            "Cervix site"),
-            ("CervixTumorNumber",                     "Cervix Tumor number"),
-            ("Endometrium",                           "Endometrium"),
-            ("Myometrium",                            "Myometrium"),
-            ("CulDeSac",                              "Cul de sac"),
-            ("OvarianSurfaceRuptureRight",            "Ovarian surface rupture-Right ovary"),
-            ("OvarianSurfaceRuptureLeft",             "Ovarian surface rupture-Left ovary"),
-            ("LeftAdnexa",                            "Left adnexa"),
-            ("LeftAdnexaTumorNumber",                 "Left adnexa Tumor number"),
-            ("LeftAdnexaTumorSize",                   "Left adnexa Tumor size"),
-            ("RightAdnexa",                           "Right adnexa"),
-            ("RightAdnexaTumorNumber",                "Right adnexa Tumor number"),
-            ("RightAdnexaTumorSize",                  "Right adnexa Tumor size"),
-            ("PelvicPeritonealCavity",                "Pelvic peritoneal cavity"),
-            ("PelvicPeritonealCavityTumorSize",       "Pelvic peritoneal cavity Tumor size"),
-            ("ExtrapelvicPeritonealCavity",           "Extrapelvic peritoneal cavity"),
-            ("ExtrapelvicPeritonealCavityOtherFinding","Extrapelvic peritoneal cavity Other findings"),
-            ("OtherOrganInvolvementGrossLooking",     "Other organ involvement (gross looking)"),
-            ("Optimal",                               "Optimal"),
-            ("ResidualTumor",                         "Residual tumor"),
-        }));
-
-        // 病理報告
-        cols.AddRange(PairCols("Path_", "病理報告_", new (string, string)[]
-        {
-            ("切片日期",                      "切片日期"),
-            ("Histology",                     "Histology"),
-            ("TnmStage",                      "TNM Stage"),
-            ("Myometrium",                    "Myometrium"),
-            ("UterineSerosaInvolvement",      "Uterine Serosa Involvement"),
-            ("BloodLymphaticVesselInvasion",  "Blood/lymphatic vessel invasion"),
-            ("Cervix",                        "Cervix"),
-            ("Parametrium",                   "Parametrium"),
-            ("OvaryRight",                    "Ovary-Right"),
-            ("OvaryLeft",                     "Ovary-Left"),
-            ("FallopianTubeRight",            "Fallopian tube-Right"),
-            ("FallopianTubeLeft",             "Fallopian tube-Left"),
-            ("Vagina",                        "Vagina"),
-            ("RegionalLymphNodes",            "Regional Lymph Nodes"),
-            ("IsolatedTumorCells",            "Isolated tumor cells"),
-            ("AdditionalPathologicalFindings","Additional pathological findings"),
-            ("ImmunohistochemicalTest",       "Immunohistochemical test"),
-        }));
-
         // 化學治療（1:N slot）
         for (int i = 1; i <= max化學治療; i++)
-            cols.AddRange(PairCols($"Chemo_{i}_", $"化學治療_{i}_", new (string, string)[]
+            cols.AddRange(PairCols($"Chemo_{i}_", $"臨床資料_化學治療_{i}_", new (string, string)[]
             {
                 ("TreatmentDate",      "治療日期"),
                 ("BSA",                "BSA"),
@@ -169,42 +103,6 @@ public class PatientCsvExportService
                 ("Reduction",          "Reduction"),
                 ("Bevacizumab",        "Bevacizumab"),
             }));
-
-        // 合併用藥（1:N slot）
-        for (int i = 1; i <= max合併用藥; i++)
-            cols.AddRange(PairCols($"Med_{i}_", $"合併用藥_{i}_", new (string, string)[]
-            {
-                ("TreatmentDate", "治療日期"),
-                ("Drug",          "Drug"),
-                ("Dose",          "Dose"),
-                ("RouteCode",     "Route Code"),
-                ("UnitCode",      "Unit Code"),
-            }));
-
-        // 病史記錄
-        cols.AddRange(PairCols("MH_", "病史記錄_", new (string, string)[]
-        {
-            ("CardiovascularIncludeHtn",           "Cardiovascular (include HTN)"),
-            ("PeripheralVascular",                 "Peripheral Vascular"),
-            ("Respiratory",                        "Respiratory"),
-            ("Gastrointestinal",                   "Gastrointestinal"),
-            ("Renal",                              "Renal"),
-            ("Genitourinary",                      "Genitourinary"),
-            ("EndocrineMetabolicIncludeDiabetes",  "Metabolic (Include Diabetes)"),
-            ("HematologicLymphatic",               "Hematologic-Lymphatic"),
-            ("Musculoskeletal",                    "Musculoskeletal"),
-            ("Dermatologic",                       "Dermatologic"),
-            ("DrugAbuse",                          "Drug Abuse"),
-            ("Tobacco",                            "Tobacco"),
-            ("Neurologic",                         "Neurologic"),
-            ("Psychiatric",                        "Psychiatric"),
-            ("Allergies",                          "Allergies"),
-            ("Neoplasia",                          "Neoplasia"),
-            ("AlcoholUse",                         "Alcohol Use"),
-            ("ImmunityIncludeHiv",                 "immunity (Include HIV)"),
-            ("HepatobiliaryIncludeHbvHcv",         "Hepatobiliary (Include HBV/HCV)"),
-            ("OtherSpecify",                       "other (specify)"),
-        }));
 
         // 抽血血液
         foreach (var (key, display) in 血液欄位)
@@ -233,11 +131,6 @@ public class PatientCsvExportService
         // CTCAE 其他副作用2
         foreach (var s in new[] { "周邊感覺神經異常", "疲倦", "紅疹", "手足症候群", "掉髮" })
             AddGradeCols(cols, $"SE2_{s}", $"CTCAE_副作用_{s}");
-
-        // 問卷
-        foreach (var kv in 問卷題目)
-            foreach (var qId in kv.Value)
-                cols.Add(new($"{kv.Key}_{qId}", $"問卷_{kv.Key}_{qId}"));
 
         // 追蹤_其他治療
         foreach (var group in new[] { "Admission", "ER", "Clinics" })
@@ -286,9 +179,8 @@ public class PatientCsvExportService
         BasicClinicalPresentation_臨床資訊 臨床資訊,
         Main臨床資料 m,
         VisitCodeModel? vc,
-        int max化學治療, int max合併用藥, int max其他治療藥物,
-        Dictionary<string, string> 血液欄位, Dictionary<string, string> 生化欄位,
-        Dictionary<string, List<string>> 問卷題目)
+        int max化學治療, int max其他治療藥物,
+        Dictionary<string, string> 血液欄位, Dictionary<string, string> 生化欄位)
     {
         var dict = new Dictionary<string, string>(StringComparer.Ordinal);
 
@@ -300,68 +192,6 @@ public class PatientCsvExportService
             dict["VisitAssessmentDate"] = vc.AssessmentDate?.ToString("yyyy-MM-dd") ?? "";
             dict["VisitTimeline"]       = vc.Timeline ?? "";
             dict["VisitCycleMonth"]     = vc.CycleMonth.ToString();
-        }
-
-        if (vc != null)
-        {
-            var op = m.臨床資料手術.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
-            if (op != null)
-            {
-                dict["OP_手術日期"] = op.手術日期.ToString("yyyy-MM-dd");
-                dict["OP_術式"] = op.術式 ?? "";
-                dict["OP_OPOutcome"] = op.OPOutcome ?? "";
-                dict["OP_Ascites"] = op.Ascites ?? "";
-                dict["OP_Uterus"] = op.Uterus ?? "";
-                dict["OP_UterusSite"] = op.UterusSite ?? "";
-                dict["OP_UterusTumorNumber"] = op.UterusTumorNumber ?? "";
-                dict["OP_UterusTumorSize"] = op.UterusTumorSize ?? "";
-                dict["OP_Cervix"] = op.Cervix ?? "";
-                dict["OP_CervixSite"] = op.CervixSite ?? "";
-                dict["OP_CervixTumorNumber"] = op.CervixTumorNumber ?? "";
-                dict["OP_Endometrium"] = op.Endometrium ?? "";
-                dict["OP_Myometrium"] = op.Myometrium ?? "";
-                dict["OP_CulDeSac"] = op.CulDeSac ?? "";
-                dict["OP_OvarianSurfaceRuptureRight"] = op.OvarianSurfaceRuptureOrNotRightOvary ?? "";
-                dict["OP_OvarianSurfaceRuptureLeft"] = op.OvarianSurfaceRuptureOrNotLeftOvary ?? "";
-                dict["OP_LeftAdnexa"] = op.LeftAdnexa ?? "";
-                dict["OP_LeftAdnexaTumorNumber"] = op.LeftAdnexaTumorNumber ?? "";
-                dict["OP_LeftAdnexaTumorSize"] = op.LeftAdnexaTumorSize ?? "";
-                dict["OP_RightAdnexa"] = op.RightAdnexa ?? "";
-                dict["OP_RightAdnexaTumorNumber"] = op.RightAdnexaTumorNumber ?? "";
-                dict["OP_RightAdnexaTumorSize"] = op.RightAdnexaTumorSize ?? "";
-                dict["OP_PelvicPeritonealCavity"] = op.PelvicPeritonealCavity ?? "";
-                dict["OP_PelvicPeritonealCavityTumorSize"] = op.PelvicPeritonealCavityTumorSize ?? "";
-                dict["OP_ExtrapelvicPeritonealCavity"] = op.ExtrapelvicPeritonealCavity ?? "";
-                dict["OP_ExtrapelvicPeritonealCavityOtherFinding"] = op.ExtrapelvicPeritonealCavityOtherFinding ?? "";
-                dict["OP_OtherOrganInvolvementGrossLooking"] = op.OtherOrganInvolvementGrossLooking ?? "";
-                dict["OP_Optimal"] = op.Optimal ?? "";
-                dict["OP_ResidualTumor"] = op.ResidualTumor ?? "";
-            }
-        }
-
-        if (vc != null)
-        {
-            var path = m.臨床資料病理報告.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
-            if (path != null)
-            {
-                dict["Path_切片日期"] = path.切片日期.ToString("yyyy-MM-dd");
-                dict["Path_Histology"] = path.Histology ?? "";
-                dict["Path_TnmStage"] = path.TnmStage ?? "";
-                dict["Path_Myometrium"] = path.Myometrium ?? "";
-                dict["Path_UterineSerosaInvolvement"] = path.UterineSerosaInvolvement ?? "";
-                dict["Path_BloodLymphaticVesselInvasion"] = path.BloodLymphaticVesselInvasion ?? "";
-                dict["Path_Cervix"] = path.Cervix ?? "";
-                dict["Path_Parametrium"] = path.Parametrium ?? "";
-                dict["Path_OvaryRight"] = path.OvaryRight ?? "";
-                dict["Path_OvaryLeft"] = path.OvaryLeft ?? "";
-                dict["Path_FallopianTubeRight"] = path.FallopianTubeRight ?? "";
-                dict["Path_FallopianTubeLeft"] = path.FallopianTubeLeft ?? "";
-                dict["Path_Vagina"] = path.Vagina ?? "";
-                dict["Path_RegionalLymphNodes"] = path.RegionalLymphNodes ?? "";
-                dict["Path_IsolatedTumorCells"] = path.IsolatedTumorCells ?? "";
-                dict["Path_AdditionalPathologicalFindings"] = path.AdditionalPathologicalFindings ?? "";
-                dict["Path_ImmunohistochemicalTest"] = path.ImmunohistochemicalTest ?? "";
-            }
         }
 
         if (vc != null)
@@ -385,60 +215,18 @@ public class PatientCsvExportService
 
         if (vc != null)
         {
-            var med = m.臨床資料合併用藥.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
-            if (med != null)
+            var bloodItems = m.抽血檢驗血液.Items
+                .Where(x => x.VisitCode.CompareTo(vc))
+                .SelectMany(x => x.抽血檢驗血液);
+            foreach (var item in bloodItems)
             {
-                for (int i = 0; i < med.Items.Count && i < max合併用藥; i++)
+                var key = ResolveColumnKey(血液欄位, item.項目名稱);
+                var value = item.檢驗數值 ?? "";
+                // 同一次 visit 可能拆成多筆資料，這裡合併後優先保留有值的那筆。
+                if (!string.IsNullOrEmpty(value) || !dict.ContainsKey($"Blood_{key}_Value"))
                 {
-                    var item = med.Items[i];
-                    int slot = i + 1;
-                    dict[$"Med_{slot}_TreatmentDate"] = item.TreatmentDate.ToString("yyyy-MM-dd");
-                    dict[$"Med_{slot}_Drug"] = item.Durg ?? "";
-                    dict[$"Med_{slot}_Dose"] = item.Dose ?? "";
-                    dict[$"Med_{slot}_RouteCode"] = item.RouteCode ?? "";
-                    dict[$"Med_{slot}_UnitCode"] = item.UnitCode ?? "";
-                }
-            }
-        }
-
-        if (vc != null)
-        {
-            var mh = m.BaselineMedicalHistoryForm.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
-            if (mh != null)
-            {
-                dict["MH_CardiovascularIncludeHtn"] = mh.CardiovascularIncludeHtn ?? "";
-                dict["MH_PeripheralVascular"] = mh.PeripheralVascular ?? "";
-                dict["MH_Respiratory"] = mh.Respiratory ?? "";
-                dict["MH_Gastrointestinal"] = mh.Gastrointestinal ?? "";
-                dict["MH_Renal"] = mh.Renal ?? "";
-                dict["MH_Genitourinary"] = mh.Genitourinary ?? "";
-                dict["MH_EndocrineMetabolicIncludeDiabetes"] = mh.EndocrineMetabolicIncludeDiabetes ?? "";
-                dict["MH_HematologicLymphatic"] = mh.HematologicLymphatic ?? "";
-                dict["MH_Musculoskeletal"] = mh.Musculoskeletal ?? "";
-                dict["MH_Dermatologic"] = mh.Dermatologic ?? "";
-                dict["MH_DrugAbuse"] = mh.DrugAbuse ?? "";
-                dict["MH_Tobacco"] = mh.Tobacco ?? "";
-                dict["MH_Neurologic"] = mh.Neurologic ?? "";
-                dict["MH_Psychiatric"] = mh.Psychiatric ?? "";
-                dict["MH_Allergies"] = mh.Allergies ?? "";
-                dict["MH_Neoplasia"] = mh.Neoplasia ?? "";
-                dict["MH_AlcoholUse"] = mh.AlcoholUse ?? "";
-                dict["MH_ImmunityIncludeHiv"] = mh.ImmunityIncludeHiv ?? "";
-                dict["MH_HepatobiliaryIncludeHbvHcv"] = mh.HepatobiliaryIncludeHbvHcv ?? "";
-                dict["MH_OtherSpecify"] = mh.OtherSpecify ?? "";
-            }
-        }
-
-        if (vc != null)
-        {
-            var blood = m.抽血檢驗血液.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
-            if (blood != null)
-            {
-                foreach (var item in blood.抽血檢驗血液)
-                {
-                    var key = NormalizeItemName(item.項目名稱);
                     dict[$"Blood_{key}_Unit"] = ExtractUnit(item.項目名稱);
-                    dict[$"Blood_{key}_Value"] = item.檢驗數值 ?? "";
+                    dict[$"Blood_{key}_Value"] = value;
                     dict[$"Blood_{key}_SamplingDate"] = item.SamplingDate?.ToString("yyyy-MM-dd") ?? "";
                 }
             }
@@ -446,14 +234,18 @@ public class PatientCsvExportService
 
         if (vc != null)
         {
-            var biochem = m.抽血檢驗生化.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
-            if (biochem != null)
+            var biochemItems = m.抽血檢驗生化.Items
+                .Where(x => x.VisitCode.CompareTo(vc))
+                .SelectMany(x => x.抽血檢驗生化);
+            foreach (var item in biochemItems)
             {
-                foreach (var item in biochem.抽血檢驗生化)
+                var key = ResolveColumnKey(生化欄位, item.項目名稱);
+                var value = item.檢驗數值 ?? "";
+                // 同一次 visit 可能拆成多筆資料，這裡合併後優先保留有值的那筆。
+                if (!string.IsNullOrEmpty(value) || !dict.ContainsKey($"Biochem_{key}_Value"))
                 {
-                    var key = NormalizeItemName(item.項目名稱);
                     dict[$"Biochem_{key}_Unit"] = ExtractUnit(item.項目名稱);
-                    dict[$"Biochem_{key}_Value"] = item.檢驗數值 ?? "";
+                    dict[$"Biochem_{key}_Value"] = value;
                     dict[$"Biochem_{key}_SamplingDate"] = item.SamplingDate?.ToString("yyyy-MM-dd") ?? "";
                 }
             }
@@ -496,18 +288,6 @@ public class PatientCsvExportService
                 FillGradeItem(dict, "SE2_手足症候群", se2.HandFootSyndrome手足症候群);
                 FillGradeItem(dict, "SE2_掉髮", se2.Alopecia掉髮);
             }
-        }
-
-        if (vc != null)
-        {
-            FillSurvey(dict, SV_化療,   m.Survey化療副作用.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_標靶,   m.Survey標靶副作用.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_放療,   m.Survey放療副作用.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_WHOQOL, m.SurveyWhooqol問卷.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_個人史, m.Survey個人史問卷.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_家族史, m.Survey家族史問卷.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_生活品質, m.Survey生活品質問卷.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
-            FillSurvey(dict, SV_健康,   m.Survey健康問卷.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc))?.Questions);
         }
 
         if (vc != null)
@@ -577,21 +357,9 @@ public class PatientCsvExportService
             if (vc == null) return;
             if (!result.Any(x => x.CompareTo(vc))) result.Add(vc);
         }
-        foreach (var x in m.臨床資料手術.Items) Add(x.VisitCode);
-        foreach (var x in m.臨床資料病理報告.Items) Add(x.VisitCode);
         foreach (var x in m.臨床資料化學治療.Items) Add(x.VisitCode);
-        foreach (var x in m.臨床資料合併用藥.Items) Add(x.VisitCode);
-        foreach (var x in m.BaselineMedicalHistoryForm.Items) Add(x.VisitCode);
         foreach (var x in m.抽血檢驗血液.Items) Add(x.VisitCode);
         foreach (var x in m.抽血檢驗生化.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey化療副作用.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey標靶副作用.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey放療副作用.Items) Add(x.VisitCode);
-        foreach (var x in m.SurveyWhooqol問卷.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey個人史問卷.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey家族史問卷.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey生活品質問卷.Items) Add(x.VisitCode);
-        foreach (var x in m.Survey健康問卷.Items) Add(x.VisitCode);
         foreach (var x in m.HematologicSideEffects血液副作用.Items) Add(x.VisitCode);
         foreach (var x in m.SurveySideEffects副作用1.Items) Add(x.VisitCode);
         foreach (var x in m.SurveySideEffects副作用2.Items) Add(x.VisitCode);
@@ -617,29 +385,36 @@ public class PatientCsvExportService
         return result;
     }
 
-    private Dictionary<string, List<string>> LoadSurveyQuestionIds()
+    private static Dictionary<string, string> DeduplicateColumnsByDisplayName(Dictionary<string, string> columns)
     {
-        var mapping = new Dictionary<string, string>
+        var result = new Dictionary<string, string>(StringComparer.Ordinal);
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var (key, display) in columns)
         {
-            [SV_化療]   = "化療副作用自填問卷.json",
-            [SV_標靶]   = "標靶副作用.json",
-            [SV_放療]   = "放療副作用.json",
-            [SV_WHOQOL] = "whooqol問卷.json",
-            [SV_個人史] = "個人史問卷.json",
-            [SV_家族史] = "家族史問卷.json",
-            [SV_生活品質] = "QOL-CIPN20生活品質問卷.json",
-            [SV_健康]   = "EQ-5D-3L健康問卷.json",
-        };
-        var result = new Dictionary<string, List<string>>();
-        foreach (var kv in mapping)
-        {
-            string path = Path.Combine("Data", kv.Value);
-            if (!File.Exists(path)) { result[kv.Key] = new(); continue; }
-            string content = File.ReadAllText(path);
-            var survey = Newtonsoft.Json.JsonConvert.DeserializeObject<SurveyTemplate>(content);
-            result[kv.Key] = survey?.Questions?.Select(q => q.Id).ToList() ?? new();
+            var normalizedDisplay = NormalizeDisplayName(display);
+            if (seen.Add(normalizedDisplay))
+                result[key] = display;
         }
+
         return result;
+    }
+
+    private static string ResolveColumnKey(Dictionary<string, string> columns, string itemName)
+    {
+        var normalizedKey = NormalizeItemName(itemName);
+        if (columns.ContainsKey(normalizedKey)) return normalizedKey;
+
+        var display = ExtractChineseName(itemName);
+        var normalizedDisplay = NormalizeDisplayName(display);
+
+        foreach (var (key, value) in columns)
+        {
+            if (NormalizeDisplayName(value) == normalizedDisplay)
+                return key;
+        }
+
+        return normalizedKey;
     }
 
     private static void FillGradeItem(Dictionary<string, string> dict, string prefix, GradeItemSideEffectsItem item)
@@ -664,17 +439,13 @@ public class PatientCsvExportService
         cols.Add(new($"{keyPrefix}_SelectedGrade", $"{headerPrefix}_等級"));
     }
 
-    private static void FillSurvey(Dictionary<string, string> dict, string surveyName, List<Question>? questions)
-    {
-        if (questions == null) return;
-        foreach (var q in questions)
-            dict[$"{surveyName}_{q.Id}"] = q.Answer ?? "";
-    }
-
     private static string NormalizeItemName(string name)
     {
         if (string.IsNullOrWhiteSpace(name)) return "Unknown";
-        return System.Text.RegularExpressions.Regex.Replace(name.Trim(), @"[\s\(\)\[\]\/\.\^\³μ]", "_").TrimEnd('_');
+        // 先移除括號及其內容（通常包含單位），避免相同項目產生不同的key
+        var cleaned = System.Text.RegularExpressions.Regex.Replace(name.Trim(), @"\s*[\(\[].*?[\)\]]", "");
+        // 移除其他特殊字符
+        return System.Text.RegularExpressions.Regex.Replace(cleaned, @"[\s\(\)\[\]\/\.\^\³μ]", "_").TrimEnd('_');
     }
 
     private static string ExtractUnit(string? itemName)
@@ -691,6 +462,13 @@ public class PatientCsvExportService
         return match.Success ? match.Value : itemName.Trim().Split(' ')[0];
     }
 
+    private static string NormalizeDisplayName(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return "Unknown";
+        var cleaned = System.Text.RegularExpressions.Regex.Replace(name.Trim(), @"\s*[\(\[].*?[\)\]]", "");
+        return System.Text.RegularExpressions.Regex.Replace(cleaned, @"[\s\-_/\.\(\)\[\]，,]+", "").ToUpperInvariant();
+    }
+
     private static IEnumerable<ColumnDef> PairCols(string keyPrefix, string headerPrefix, IEnumerable<(string key, string header)> items)
         => items.Select(x => new ColumnDef($"{keyPrefix}{x.key}", $"{headerPrefix}{x.header}"));
 
@@ -700,16 +478,5 @@ public class PatientCsvExportService
         if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
             return $"\"{value.Replace("\"", "\"\"")}\"";
         return value;
-    }
-
-    private class SurveyTemplate
-    {
-        [Newtonsoft.Json.JsonProperty("questions")]
-        public List<SurveyQuestionDto> Questions { get; set; } = new();
-    }
-    private class SurveyQuestionDto
-    {
-        [Newtonsoft.Json.JsonProperty("id")]
-        public string Id { get; set; } = "";
     }
 }
