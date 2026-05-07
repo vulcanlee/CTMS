@@ -56,6 +56,15 @@
     cursor: pointer;
 }
 
+.system-maintain-view {
+    width: 100%;
+}
+
+.system-maintain-card {
+    width: 100%;
+    max-width: none;
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
     .sample-table {

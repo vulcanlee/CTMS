@@ -130,6 +130,8 @@ public class AIIntegrateService
 
         if (onlyCheck == true) return true;
 
+        await Task.Delay(1000);
+
         directoryHelperService.CopyDirectory(completionKeyNamePath, destinationKeyNamePath, true);
         result = true;
 

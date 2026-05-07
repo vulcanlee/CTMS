@@ -1,11 +1,5 @@
-﻿@using Syncfusion.Blazor
-@using Syncfusion.Blazor.Data
-@using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Inputs
+﻿@using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Calendars
 @inject NavigationManager NavigationManager
 @inject PatientService PatientService
@@ -42,9 +36,14 @@
                 }
                 else
                 {
-                    <span class="edit-icon d-flex align-items-center cursor-pointer"
-                          @onclick="OnChangeEditMode">
-                        <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                    <span class="d-flex align-items-center">
+                        @*                         <span class="edit-icon cursor-pointer"
+                              @onclick="OnChangeEditMode">
+                            <i class="mx-3 mdi mdi-18px mdi-pencil-box-outline command-icon-width cursor-pointer"></i>編輯
+                        </span> *@   
+                        <span class="ms-5 edit-icon cursor-pointer" @onclick="OnShowApiDialog">
+                            <i class="mx-3 mdi mdi-18px mdi-api command-icon-width cursor-pointer"></i>呼叫
+                        </span>
                     </span>
                 }
             </div>
@@ -71,96 +70,68 @@
         string rowClass = string.Empty;
 
         <div class="view-container">
-            <div>
-                @* 新增一筆紀錄按鈕 *@
-                <button class="btn btn-primary add-button" 
-                @onclick="async () =>await OnAddAsync()">
+            @* <div>
+                <button class="btn btn-primary add-button"
+                        @onclick="async () => await OnAddAsync()">
                     新增一筆紀錄
                 </button>
-            </div>
+            </div> *@
 
-            <table class="tracking-table">
-                <thead>
-                    <tr>
-                        <th>Drug</th>
-                        <th>Treatment Date</th>
-                        <th>dose</th>
-                        <th>Route Code</th>
-                        <th>Unit Code</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in data.Items)
-                    {
-                        if (index++ % 2 == 0)
-                        {
-                            rowClass = "clinics-rower-row";
-                        }
-                        else
-                        {
-                            rowClass = "er-row";
-                        }
-
-                        <tr class="@rowClass">
-                            <td class="location-cell">
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.Drug" />
-                                }
-                                else
-                                {
-                                    @item.Drug
-                                }
-                            </td>
-                            <td>
-                                @if (editMode)
-                                {
-                                    <SfDatePicker TValue="DateTime?" Format="yyyy-MM-dd"
-                                                  @bind-Value="@item.TreatmentDate"></SfDatePicker>
-                                }
-                                else
-                                {
-                                    @item.TreatmentDate?.ToString("yyyy-MM-dd")
-                                }
-                            </td>
-                            <td>
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.dose" />
-                                }
-                                else
-                                {
-                                    @item.dose
-                                }
-                            </td>
-                            <td>
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.RouteCode" />
-                                }
-                                else
-                                {
-                                    @item.RouteCode
-                                }
-                            </td>
-                            <td>
-                                @if (editMode)
-                                {
-                                    <SfTextBox @bind-Value="item.UnitCode" />
-                                }
-                                else
-                                {
-                                    @item.UnitCode
-                                }
-                            </td>
+            <div class="table-scroll-container">
+                <table class="tracking-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>藥品代碼</th>
+                            <th>藥品名稱</th>
+                            <th>頻次</th>
+                            <th>劑量值</th>
+                            <th>劑量單位</th>
+                            <th>給藥途徑</th>
+                            <th>起日</th>
+                            <th>訖日</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in data.Items)
+                        {
+                            if (index++ % 2 == 0)
+                            {
+                                rowClass = "clinics-rower-row";
+                            }
+                            else
+                            {
+                                rowClass = "er-row";
+                            }
+
+                            <tr class="@rowClass">
+                                <td class="location-cell">
+                                    <button class="btn-delete"
+                                            @onclick="async () => await OnDeleteAsync(item)">
+                                        刪除
+                                    </button>
+
+                                </td>
+                                <td>@item.Order_Code</td>
+                                <td>@item.Pharmacy_Name</td>
+                                <td>@item.Frequency_Code</td>
+                                <td>@item.Totally_Dosage_Unit</td>
+                                <td>@item.Dosage_Unit</td>
+                                <td>@item.Usage_Code</td>
+                                <td>@item.Order_Effect_Date</td>
+                                <td>@item.Order_End_Date</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     }
 </div>
+
+<QueryMedicationApiDialog OpenPicker=ShowCallApiDialog
+                          OnConfirmCallback=OnGetMedicationApiAsync />
 
 <MessageBox Height="@MessageBox.Height" Width="@MessageBox.Width"
             IsVisible="@MessageBox.IsVisible"
@@ -175,153 +146,4 @@
 <DialogBackground />
 
 @code {
-    [Parameter]
-    public string Code { get; set; }
-
-    PatientData patientData = new();
-    PatientAdapterModel patientAdapterModel = new();
-    bool editMode = false;
-
-   OtherMedicationNode data = new();
-   OtherMedication header = new();
-
-    #region 操作 Visit Code 用到的物件
-    bool ShowVisitCodeDialog = false;
-    ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
-    MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
-    string VisitCodeOperateMode = string.Empty;
-    VisitCodeModel VisitCode = new();
-    SfDropDownList<DropDownListDataModel, DropDownListDataModel> VisitCodeDropDown;
-    DropDownListDataModel SelectVisitCode = new DropDownListDataModel();
-    List<DropDownListDataModel> ListVisitCode = new List<DropDownListDataModel>();
-    #endregion
-
-    string sourceObjectJson = "{}";
-    string targetObjectJson = "{}";
-
-    protected override async Task OnInitializedAsync()
-    {
-        patientAdapterModel = await PatientService.GetAsync(Code);
-        patientData.FromJson(patientAdapterModel.JsonData);
-        InitData(true);
-    }
-
-    void InitData(bool isFirst = true)
-    {
-        header = patientData.臨床資料.其他治療藥物;
-        if (isFirst)
-        {
-            data = header.Items.FirstOrDefault();
-            RefreshVisitCode();
-            RefreshDropDwonVisitCode();
-            var itemx = ListVisitCode.FirstOrDefault(x => x.Key == data?.VisitCode.Id);
-            if (itemx != null)
-                SelectVisitCode = itemx;
-        }
-        else
-        {
-            if (SelectVisitCode != null)
-            {
-                data = header.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
-            }
-        }
-    }
-
-    void OnChangeEditMode()
-    {
-        editMode = !editMode;
-
-        sourceObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療藥物);
-    }
-
-    async Task OnSave()
-    {
-        patientAdapterModel.JsonData = patientData.ToJson();
-        await PatientService.UpdateAsync(patientAdapterModel);
-        editMode = false;
-
-        targetObjectJson = JsonConvert.SerializeObject(patientData.臨床資料.其他治療藥物);
-
-        #region 更新操作日誌
-        MyUserAdapterModel myUserAdapterModel = await AuthenticationStateHelper
-        .GetUserInformation(authStateProvider);
-
-        await OperationHistoryTraceService.AddAsync(OperationHistoryTraceAdapterModel.Build(myUserAdapterModel.Name, patientData.臨床資訊.SubjectNo, MagicObjectHelper.OperationCategory追蹤資料其他治療藥物, "-", "-"), sourceObjectJson, targetObjectJson, MagicObjectHelper.OperationCategory追蹤資料其他治療藥物);
-        #endregion
-    }
-
-    async Task OnCancel()
-    {
-        patientData.FromJson(patientAdapterModel.JsonData);
-        InitData(false);
-        editMode = false;
-    }
-
-    async Task OnAddAsync()
-    {
-        data.Items.Add(new OtherMedicationItem());
-        await OnSave();
-    }
-
-    async Task OnDeleteAsync(OtherMedicationItem item)
-    {
-        // Assuming we need to remove the last item for deletion
-        if (data.Items.Count > 0)
-        {
-            data.Items.Remove(item);
-            await OnSave();
-        }
-    }
-
-
-    #region 針對 VisitCode 的方法
-    private async Task OnVisitCodeChanged(ChangeEventArgs<DropDownListDataModel, DropDownListDataModel> args)
-    {
-        if (args.Value != null)
-        {
-            var item = header.Items.FirstOrDefault(x => x.VisitCode.Id == args.Value.Key);
-            if (item != null)
-            {
-                data = item;
-            }
-        }
-    }
-
-    void RefreshVisitCode(bool reset = true)
-    {
-        #region VisitCode
-        {
-            ListVisitCode.Clear();
-            if (data != null)
-            {
-
-            }
-            foreach (var nodeItem in header.Items)
-            {
-                ListVisitCode.Add(new DropDownListDataModel()
-                    {
-                        Key = nodeItem.VisitCode.Id,
-                        Name = nodeItem.VisitCode.VisitCodeTitle,
-                    });
-            }
-            VisitCodeHelper.Sort(ListVisitCode);
-            if (reset)
-            {
-                SelectVisitCode = null;
-            }
-        }
-        #endregion
-    }
-    void RefreshDropDwonVisitCode()
-    {
-        // 重置選擇項目
-        SelectVisitCode = null;
-
-        // 手動刷新 DropDownList 元件
-        if (VisitCodeDropDown != null)
-        {
-            InvokeAsync(() => VisitCodeDropDown.RefreshDataAsync());
-        }
-    }
-    #endregion
 }

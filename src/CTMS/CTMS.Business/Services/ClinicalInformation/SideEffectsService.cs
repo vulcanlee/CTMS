@@ -158,8 +158,9 @@ public class SideEffectsService
         if (bloodTest == null)
             return;
 
-        TestItem檢驗項目 testItem = bloodTest.抽血檢驗血液
-            .FirstOrDefault(x => x.項目名稱 == WhiteBloodCell白血球);
+        TestItem檢驗項目 testItem = FindItemByName(bloodTest.抽血檢驗血液, WhiteBloodCell白血球);
+        if (testItem == null)
+            return;
 
         GradeItemSideEffectsItem sideEffectsItem =
                 hematologicSideEffects.WhiteBloodCell白血球;
@@ -194,12 +195,12 @@ public class SideEffectsService
         if (bloodTest == null)
             return;
 
-        TestItem檢驗項目 testItemWhiteBloodCell白血球 = bloodTest.抽血檢驗血液
-            .FirstOrDefault(x => x.項目名稱 == WhiteBloodCell白血球);
-        TestItem檢驗項目 testItemNeutrophilCount絕對嗜中性白血球數 = bloodTest.抽血檢驗血液
-            .FirstOrDefault(x => x.項目名稱 == NeutrophilCount絕對嗜中性白血球數);
-        TestItem檢驗項目 testItemNeutrophilCount帶狀性中性球 = bloodTest.抽血檢驗血液
-            .FirstOrDefault(x => x.項目名稱 == NeutrophilCount帶狀性中性球);
+        TestItem檢驗項目 testItemWhiteBloodCell白血球 = FindItemByName(bloodTest.抽血檢驗血液, WhiteBloodCell白血球);
+        TestItem檢驗項目 testItemNeutrophilCount絕對嗜中性白血球數 = FindItemByName(bloodTest.抽血檢驗血液, NeutrophilCount絕對嗜中性白血球數);
+        TestItem檢驗項目 testItemNeutrophilCount帶狀性中性球 = FindItemByName(bloodTest.抽血檢驗血液, NeutrophilCount帶狀性中性球);
+
+        if (testItemWhiteBloodCell白血球 == null || testItemNeutrophilCount絕對嗜中性白血球數 == null)
+            return;
 
         double valueWhiteBloodCell白血球 = testItemWhiteBloodCell白血球.檢驗數值.ToDouble();
         double valuePercentSeg = testItemNeutrophilCount絕對嗜中性白血球數.檢驗數值.ToDouble();
@@ -234,8 +235,9 @@ public class SideEffectsService
         if (bloodTest == null)
             return;
 
-        TestItem檢驗項目 testItem = bloodTest.抽血檢驗血液
-            .FirstOrDefault(x => x.項目名稱 == HemoglobinHb血色素);
+        TestItem檢驗項目 testItem = FindItemByName(bloodTest.抽血檢驗血液, HemoglobinHb血色素);
+        if (testItem == null)
+            return;
 
         GradeItemSideEffectsItem sideEffectsItem =
                 hematologicSideEffects.HemoglobinHb血色素;
@@ -257,8 +259,9 @@ public class SideEffectsService
         if (bloodTest == null)
             return;
 
-        TestItem檢驗項目 testItem = bloodTest.抽血檢驗血液
-            .FirstOrDefault(x => x.項目名稱 == PlateletCount血小板);
+        TestItem檢驗項目 testItem = FindItemByName(bloodTest.抽血檢驗血液, PlateletCount血小板);
+        if (testItem == null)
+            return;
 
         GradeItemSideEffectsItem sideEffectsItem =
                 hematologicSideEffects.PlateletCount血小板;
@@ -462,6 +465,11 @@ public class SideEffectsService
         }
 
         #endregion
+    }
+
+    private static TestItem檢驗項目? FindItemByName(List<TestItem檢驗項目> items, string standardName)
+    {
+        return items.FirstOrDefault(x => BloodTestItemNameUnitHelper.NormalizeItemName(x.項目名稱) == standardName);
     }
 }
 

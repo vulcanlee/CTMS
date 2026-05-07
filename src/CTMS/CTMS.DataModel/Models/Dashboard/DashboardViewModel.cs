@@ -14,7 +14,7 @@ public class DashboardViewModel
     // 3. 中右：分期統計 (Bar Chart)
     public List<CancerStageStat> StageStats { get; set; } = new();
 
-    // 4. 左下：卵巢癌 / 內膜癌分佈 (Stacked Bar Chart)
+    // 4. 左下：卵巢癌 / 內膜癌分佈 (Donut/Pie Chart)
     public CancerTypeDistribution CancerTypeStats { get; set; } = new();
 
     // 5. 右下：完成率分佈 (Pie Chart)
@@ -23,7 +23,7 @@ public class DashboardViewModel
     public void ComputeCompletion()
     {
         CompletionStats.CompletedCount = Summary.TotalCases;
-        CompletionStats.IncompleteCount = Summary.TargetCases-Summary.TotalCases;
+        CompletionStats.IncompleteCount = Summary.TargetCases - Summary.TotalCases;
 
         Summary.CompletionRatePercent = Summary.CompletionRate == 0 ? "0" : $"{(Summary.CompletionRate / Summary.TargetCases * 100):F2}";
         Summary.CompletionRateGrowthPercent = Summary.CompletionRateGrowth == 0 ? "0" : $"{(Summary.CompletionRateGrowth / Summary.TargetCases * 100):F2}";
@@ -60,9 +60,14 @@ public class DashboardSummary
     // 卡片 4: 分析報告
     public int AnalysisReportCount { get; set; }
 
+    // 卡片 5-7: 第二排摘要統計
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
+    public int HighRiskCount { get; set; }
+
     #region Method
     public string GetHospitalNamesDisplay() => string.Join("、", HospitalNames); // 用於顯示醫院名稱的輔助方法
-    public string GetMonthlyGrowthDescription() => $"+{MonthlyGrowthRate} 本月新增{NewCasesThisMonth}例"; 
+    public string GetMonthlyGrowthDescription() => $"+{MonthlyGrowthRate} 本月新增{NewCasesThisMonth}例";
     public string GetCompletionRateDisplay() => $"{CompletionRate:F1}%";
     public string GetCompletionRateDescription() => $"+{CompletionRateGrowth:F1}%)";
     #endregion
@@ -75,8 +80,8 @@ public class HospitalCaseStat
 {
     public string HospitalName { get; set; }
     public int CaseCount { get; set; }
-    public int AiCount { get; set; }
-    public int ControlCount { get; set; }
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
 }
 
 /// <summary>
@@ -86,22 +91,24 @@ public class CancerStageStat
 {
     public string StageName { get; set; }
     public int Count { get; set; }
-    public int AiCount { get; set; }
-    public int ControlCount { get; set; }
+    public int ExperimentalGroupCount { get; set; }
+    public int ControlGroupCount { get; set; }
 }
 
 /// <summary>
-/// 癌症類型分佈，各癌別含 AI組 / 對照組 (Stacked Bar Chart)
+/// 癌症類型分佈 (卵巢癌 vs 內膜癌)
 /// </summary>
 public class CancerTypeDistribution
 {
-    public int OvarianAiCount { get; set; }
-    public int OvarianControlCount { get; set; }
-    public int EndometrialAiCount { get; set; }
-    public int EndometrialControlCount { get; set; }
+    public int OvarianCancerCount { get; set; }
+    public int EndometrialCancerCount { get; set; }
+    public int OvarianCancerExperimentalGroupCount { get; set; }
+    public int OvarianCancerControlGroupCount { get; set; }
+    public int EndometrialCancerExperimentalGroupCount { get; set; }
+    public int EndometrialCancerControlGroupCount { get; set; }
 
-    public int OvarianCancerCount => OvarianAiCount + OvarianControlCount;
-    public int EndometrialCancerCount => EndometrialAiCount + EndometrialControlCount;
+    // 方便計算總數或百分比的唯讀屬性
+    public int Total => OvarianCancerCount + EndometrialCancerCount;
 }
 
 /// <summary>

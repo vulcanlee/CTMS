@@ -316,11 +316,11 @@ public class PatientCsvExportService
                 {
                     var item = otMed.Items[i];
                     int slot = i + 1;
-                    dict[$"OTMed_{slot}_Drug"]          = item.Drug ?? "";
-                    dict[$"OTMed_{slot}_TreatmentDate"] = item.TreatmentDate?.ToString("yyyy-MM-dd") ?? "";
-                    dict[$"OTMed_{slot}_Dose"]          = item.dose ?? "";
-                    dict[$"OTMed_{slot}_RouteCode"]     = item.RouteCode ?? "";
-                    dict[$"OTMed_{slot}_UnitCode"]      = item.UnitCode ?? "";
+                    dict[$"OTMed_{slot}_Drug"]          = item.Pharmacy_Name ?? "";
+                    dict[$"OTMed_{slot}_TreatmentDate"] = FormatDateString(item.Order_Effect_Date);
+                    dict[$"OTMed_{slot}_Dose"]          = item.Totally_Dosage_Unit ?? "";
+                    dict[$"OTMed_{slot}_RouteCode"]     = item.Usage_Code ?? "";
+                    dict[$"OTMed_{slot}_UnitCode"]      = item.Dosage_Unit ?? "";
                 }
             }
         }
@@ -330,19 +330,7 @@ public class PatientCsvExportService
             var otImg = m.其他治療影像.Items.FirstOrDefault(x => x.VisitCode.CompareTo(vc));
             if (otImg != null)
             {
-                var img = otImg.Item;
-                dict["OTImg_ChestXRay"]     = img.ChestXRay ?? "";
-                dict["OTImg_ChestXRayDate"] = img.ChestXRayDate?.ToString("yyyy-MM-dd") ?? "";
-                dict["OTImg_LeadEKG12"]     = img.LeadEKG12 ?? "";
-                dict["OTImg_LeadEKG12Date"] = img.LeadEKG12Date?.ToString("yyyy-MM-dd") ?? "";
-                dict["OTImg_ChestCT"]       = img.ChestCT ?? "";
-                dict["OTImg_ChestCTDate"]   = img.ChestCTDate?.ToString("yyyy-MM-dd") ?? "";
-                dict["OTImg_AbdCT"]         = img.AbdCT ?? "";
-                dict["OTImg_AbdCTDate"]     = img.AbdCTDate?.ToString("yyyy-MM-dd") ?? "";
-                dict["OTImg_BrainMRI"]      = img.BrainMRI ?? "";
-                dict["OTImg_BrainMRIDate"]  = img.BrainMRIDate?.ToString("yyyy-MM-dd") ?? "";
-                dict["OTImg_BoneScan"]      = img.BoneScan ?? "";
-                dict["OTImg_BoneScanDate"]  = img.BoneScanDate?.ToString("yyyy-MM-dd") ?? "";
+                PopulateOtherTreatmentImageColumns(dict, otImg.Items);
             }
         }
 
@@ -478,5 +466,16 @@ public class PatientCsvExportService
         if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
             return $"\"{value.Replace("\"", "\"\"")}\"";
         return value;
+    }
+
+    private class SurveyTemplate
+    {
+        [Newtonsoft.Json.JsonProperty("questions")]
+        public List<SurveyQuestionDto> Questions { get; set; } = new();
+    }
+    private class SurveyQuestionDto
+    {
+        [Newtonsoft.Json.JsonProperty("id")]
+        public string Id { get; set; } = "";
     }
 }
