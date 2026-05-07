@@ -1,4 +1,4 @@
-using CTMS.DataModel.Models.ClinicalInformation;
+﻿using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Share.Helpers;
 using System.Text;
 
@@ -222,10 +222,11 @@ public class PatientCsvExportService
             {
                 var key = ResolveColumnKey(血液欄位, item.項目名稱);
                 var value = item.檢驗數值 ?? "";
+                var unit = ResolveItemUnit(item);
                 // 同一次 visit 可能拆成多筆資料，這裡合併後優先保留有值的那筆。
                 if (!string.IsNullOrEmpty(value) || !dict.ContainsKey($"Blood_{key}_Value"))
                 {
-                    dict[$"Blood_{key}_Unit"] = ExtractUnit(item.項目名稱);
+                    dict[$"Blood_{key}_Unit"] = unit;
                     dict[$"Blood_{key}_Value"] = value;
                     dict[$"Blood_{key}_SamplingDate"] = item.SamplingDate?.ToString("yyyy-MM-dd") ?? "";
                 }
@@ -241,10 +242,11 @@ public class PatientCsvExportService
             {
                 var key = ResolveColumnKey(生化欄位, item.項目名稱);
                 var value = item.檢驗數值 ?? "";
+                var unit = ResolveItemUnit(item);
                 // 同一次 visit 可能拆成多筆資料，這裡合併後優先保留有值的那筆。
                 if (!string.IsNullOrEmpty(value) || !dict.ContainsKey($"Biochem_{key}_Value"))
                 {
-                    dict[$"Biochem_{key}_Unit"] = ExtractUnit(item.項目名稱);
+                    dict[$"Biochem_{key}_Unit"] = unit;
                     dict[$"Biochem_{key}_Value"] = value;
                     dict[$"Biochem_{key}_SamplingDate"] = item.SamplingDate?.ToString("yyyy-MM-dd") ?? "";
                 }
@@ -443,6 +445,13 @@ public class PatientCsvExportService
         return match.Success ? match.Groups[1].Value : "";
     }
 
+    private static string ResolveItemUnit(TestItem檢驗項目 item)
+    {
+        if (!string.IsNullOrWhiteSpace(item.單位))
+            return item.單位.Trim();
+        return ExtractUnit(item.項目名稱);
+    }
+
     private static string ExtractChineseName(string? itemName)
     {
         if (string.IsNullOrWhiteSpace(itemName)) return "Unknown";
@@ -466,6 +475,85 @@ public class PatientCsvExportService
         if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
             return $"\"{value.Replace("\"", "\"\"")}\"";
         return value;
+    }
+
+    private static string FormatDateString(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return DateTime.TryParse(value, out var date)
+            ? date.ToString("yyyy-MM-dd")
+            : value;
+    }
+
+    private static void PopulateOtherTreatmentImageColumns(
+        Dictionary<string, string> dict,
+        List<OtherTreatmentImageItem> items)
+    {
+        foreach (var item in items)
+        {
+            var target = ResolveOtherTreatmentImageTarget(item.OrderName);
+            if (target == null)
+            {
+                continue;
+            }
+
+            var (valueKey, dateKey) = target.Value;
+            if (!dict.ContainsKey(valueKey))
+            {
+                dict[valueKey] = item.ReportText ?? item.OrderName ?? string.Empty;
+            }
+
+            if (!dict.ContainsKey(dateKey))
+            {
+                dict[dateKey] = FormatDateString(item.ExecuteTime);
+            }
+        }
+    }
+
+    private static (string ValueKey, string DateKey)? ResolveOtherTreatmentImageTarget(string? orderName)
+    {
+        if (string.IsNullOrWhiteSpace(orderName))
+        {
+            return null;
+        }
+
+        var normalized = orderName.Trim().ToUpperInvariant();
+
+        if (normalized.Contains("CXR") || normalized.Contains("X-RAY") || normalized.Contains("XRAY"))
+        {
+            return ("OTImg_ChestXRay", "OTImg_ChestXRayDate");
+        }
+
+        if (normalized.Contains("EKG") || normalized.Contains("ECG"))
+        {
+            return ("OTImg_LeadEKG12", "OTImg_LeadEKG12Date");
+        }
+
+        if (normalized.Contains("BRAIN") && normalized.Contains("MRI"))
+        {
+            return ("OTImg_BrainMRI", "OTImg_BrainMRIDate");
+        }
+
+        if (normalized.Contains("BONE"))
+        {
+            return ("OTImg_BoneScan", "OTImg_BoneScanDate");
+        }
+
+        if (normalized.Contains("ABD") && normalized.Contains("CT"))
+        {
+            return ("OTImg_AbdCT", "OTImg_AbdCTDate");
+        }
+
+        if (normalized.Contains("CHEST") && normalized.Contains("CT"))
+        {
+            return ("OTImg_ChestCT", "OTImg_ChestCTDate");
+        }
+
+        return null;
     }
 
     private class SurveyTemplate
