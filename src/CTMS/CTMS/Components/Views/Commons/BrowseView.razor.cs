@@ -366,7 +366,7 @@ public partial class BrowseView
 
         var stream = new MemoryStream(csvBytes);
         using var streamRef = new DotNetStreamReference(stream: stream);
-        var fileName = $"CTMS單一比_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+        var fileName = $"CTMS單一筆_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
         await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
     }
 
