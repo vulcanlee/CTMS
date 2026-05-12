@@ -39,6 +39,7 @@ public class PatientSingleRowCsvExportService
             dict["SubjectNo"]                   = 臨床資訊.SubjectNo ?? "";
             dict["Hospital"]                    = ResolveHospital(臨床資訊.SubjectNo);
             dict["收案日期"]                    = 臨床資訊.收案日期.ToString("yyyy-MM-dd");
+            dict["退出日期"]                    = 臨床資訊.退出日期?.ToString("yyyy-MM-dd") ?? "";
             dict["ECorOC"]                      = 臨床資訊.ECorOC ?? "";
             dict["CancerType"]                  = 臨床資訊.CancerType ?? "";
             dict["Age"]                         = 臨床資訊.Age ?? "";
@@ -197,6 +198,7 @@ public class PatientSingleRowCsvExportService
             new("SubjectNo",              "病人編號"),
             new("Hospital",               "醫院"),
             new("收案日期",               "收案日期"),
+            new("退出日期",               "退出日期"),
             new("ECorOC",                 "癌別"),
             new("CancerType",             "癌症類型"),
             new("Age",                    "年齡"),

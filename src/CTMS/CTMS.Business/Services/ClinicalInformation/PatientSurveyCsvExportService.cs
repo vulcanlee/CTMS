@@ -14,8 +14,8 @@ public class PatientSurveyCsvExportService
     private const string SV_WHOQOL = "WHOQOL";
     private const string SV_個人史 = "個人史";
     private const string SV_家族史 = "家族史";
-    private const string SV_生活品質 = "生活品質";
-    private const string SV_健康 = "健康";
+    private const string SV_生活品質 = "CIPN";
+    private const string SV_健康 = "EQ5D";
 
     private record ColumnDef(string Key, string Header);
 
