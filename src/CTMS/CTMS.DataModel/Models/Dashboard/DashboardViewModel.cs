@@ -64,6 +64,8 @@ public class DashboardSummary
     public int ExperimentalGroupCount { get; set; }
     public int ControlGroupCount { get; set; }
     public int HighRiskCount { get; set; }
+    public int HighRiskExperimentalGroupCount { get; set; }
+    public int HighRiskControlGroupCount { get; set; }
 
     #region Method
     public string GetHospitalNamesDisplay() => string.Join("、", HospitalNames); // 用於顯示醫院名稱的輔助方法

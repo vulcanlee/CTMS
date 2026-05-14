@@ -59,6 +59,8 @@ public class DashboardService
         Dashboard.Summary.ExperimentalGroupCount = 0;
         Dashboard.Summary.ControlGroupCount = 0;
         Dashboard.Summary.HighRiskCount = 0;
+        Dashboard.Summary.HighRiskExperimentalGroupCount = 0;
+        Dashboard.Summary.HighRiskControlGroupCount = 0;
         #endregion
 
         #endregion
@@ -202,6 +204,15 @@ public class DashboardService
                 if (patientData.臨床資訊?.RiskAssessmentResult?.風險程度 == "高風險")
                 {
                     Dashboard.Summary.HighRiskCount++;
+
+                    if (patient.組別 == MagicObjectHelper.組別實驗組英文)
+                    {
+                        Dashboard.Summary.HighRiskExperimentalGroupCount++;
+                    }
+                    else if (patient.組別 == MagicObjectHelper.組別對照組英文)
+                    {
+                        Dashboard.Summary.HighRiskControlGroupCount++;
+                    }
                 }
                 #endregion
 
