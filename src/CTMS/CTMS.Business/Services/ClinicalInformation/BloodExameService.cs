@@ -88,6 +88,12 @@ public class BloodExameService
             {
                 foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("CA19-9".ToLower()));
             }
+            else if ((bloodApiModelItem.OrderName.ToLower() == "glu random".ToLower()) ||
+                (bloodApiModelItem.OrderName.ToLower() == "glu ac".ToLower()) ||
+                (bloodApiModelItem.OrderName.ToLower() == "glu pc".ToLower()))
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("glucose".ToLower()));
+            }
             else
             {
                 if(itemName.ToLower() == "HbA1c".ToLower())
