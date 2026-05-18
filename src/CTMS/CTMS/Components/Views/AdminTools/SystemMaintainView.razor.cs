@@ -135,6 +135,24 @@ public partial class SystemMaintainView
         }
     }
 
+    public async Task OnWhooqol問卷缺少數量的修正()
+    {
+        var ok = await modalService.ConfirmAsync(new ConfirmOptions
+        {
+            Title = "再次確認",
+            Content = "確定要修正這個 Whooqol問卷缺少數量的需求嗎？",
+            OkText = "是",
+            CancelText = "取消",
+            OkButtonProps = new ButtonProps { Danger = true },
+            MaskClosable = false
+        });
+
+        if (ok)
+        {
+            await systemMaintainServices.Fix_20260518_Whooqol問卷缺少數量的修正();
+        }
+    }
+
     public async Task OnFillBloodTestUnits()
     {
         var ok = await modalService.ConfirmAsync(new ConfirmOptions

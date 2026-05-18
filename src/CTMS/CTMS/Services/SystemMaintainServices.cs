@@ -1,4 +1,4 @@
-using AntDesign;
+﻿using AntDesign;
 using CTMS.AdapterModels;
 using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models;
@@ -13,17 +13,20 @@ public class SystemMaintainServices
     private readonly PatientService patientService;
     private readonly NotificationService notificationService;
     private readonly BloodExameService bloodExameService;
+    private readonly SurveyService surveyService;
     string logMessage = string.Empty;
 
     public SystemMaintainServices(ILogger<SystemMaintainServices> logger,
         PatientService patientService,
         NotificationService notificationService,
-        BloodExameService bloodExameService)
+        BloodExameService bloodExameService,
+        SurveyService surveyService)
     {
         this.logger = logger;
         this.patientService = patientService;
         this.notificationService = notificationService;
         this.bloodExameService = bloodExameService;
+        this.surveyService = surveyService;
     }
 
     public async Task Fix_20260326_成大抽血生化_eGFR參考區間修正()
@@ -86,6 +89,82 @@ public class SystemMaintainServices
         }
 
         logMessage = $"完成執行 Fix_20260326_成大抽血生化_eGFR參考區間修正，共有 {totalCount} 筆";
+        logger.LogInformation(logMessage);
+        OpenNotification(logMessage, NotificationType.Success);
+    }
+
+    public async Task Fix_20260518_Whooqol問卷缺少數量的修正()
+    {
+        PatientData patientData = new();
+        int pageSize = 10;
+        int pageIndex = 1;
+        int totalCount = 0;
+
+        logMessage = $"開始執行 Fix_20260518_Whooqol問卷缺少數量的修正";
+        logger.LogInformation(logMessage);
+        OpenNotification(logMessage, NotificationType.Warning);
+
+        Survey問卷 survey = new();
+        surveyService.Read(survey);
+
+        for (int idx = pageIndex; idx < 100; idx++)
+        {
+            DataRequest dataRequest = new DataRequest()
+            {
+                Skip = (idx - 1) * pageSize,
+                Take = pageSize,
+            };
+
+            var result = await patientService.GetAsync(dataRequest);
+            List<PatientAdapterModel> patientAdapterModelts = result.Result.ToList();
+
+            if (patientAdapterModelts == null || patientAdapterModelts.Count == 0)
+            {
+                break;
+            }
+
+            foreach (PatientAdapterModel patientAdapterModel in patientAdapterModelts)
+            {
+                patientData = new();
+                patientData.FromJson(patientAdapterModel.JsonData);
+
+                bool needUpdate = false;
+                foreach (var itemNode in patientData.臨床資料.SurveyWhooqol問卷.Items)
+                {
+                    if(itemNode.Questions.Count == 13)
+                    {
+                        needUpdate = true;
+                        int startIndex = 13;
+                        for (int i = startIndex; i < survey.whooqol問卷.Questions.Count; i++)
+                        {
+                            var question = survey.whooqol問卷.Questions[i];
+                            itemNode.Questions.Add(new Question
+                            {
+                                Id = question.Id,
+                                Type = question.Type,
+                                Text = question.Text,
+                                Answer = string.Empty,
+                                IsVisible = question.IsVisible,
+                                Options = question.Options,
+                                VisibilityCondition = question.VisibilityCondition
+                            });
+                        }
+                    }
+                }
+
+                if (needUpdate)
+                {
+                    patientAdapterModel.JsonData = patientData.ToJson();
+                    await patientService.UpdateAsync(patientAdapterModel);
+                    logMessage = $"已修正患者 {patientData.臨床資訊.SubjectNo} 的 Whooqol問卷缺少數量";
+                    OpenNotification(logMessage, NotificationType.Info);
+                    totalCount++;
+                    await Task.Delay(200);
+                }
+            }
+        }
+
+        logMessage = $"完成執行 Fix_20260518_Whooqol問卷缺少數量的修正，共有 {totalCount} 筆";
         logger.LogInformation(logMessage);
         OpenNotification(logMessage, NotificationType.Success);
     }
