@@ -90,11 +90,19 @@ public class BloodExameService
             }
             else
             {
-                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(itemName.ToLower()));
+                if(itemName.ToLower() == "HbA1c".ToLower())
+                {
+                    var bar = 0;
+                }
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(bloodApiModelItem.OrderName.ToLower()));
             }
 
             if (foundItem != null)
             {
+                if(bloodExame.IndexOf(foundItem) ==5)
+                {
+                    var bar = 0;
+                }   
                 foundItem.檢驗數值 = bloodApiModelItem.TestValue;
                 foundItem.單位 = bloodApiModelItem.Unit;
                 foundItem.參考區間 = bloodApiModelItem.RefData;
