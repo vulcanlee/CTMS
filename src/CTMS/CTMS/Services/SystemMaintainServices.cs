@@ -1,5 +1,6 @@
 ﻿using AntDesign;
 using CTMS.AdapterModels;
+using CTMS.Business.Helpers;
 using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
@@ -14,19 +15,22 @@ public class SystemMaintainServices
     private readonly NotificationService notificationService;
     private readonly BloodExameService bloodExameService;
     private readonly SurveyService surveyService;
+    private readonly SubjectNoHelper subjectNoHelper;
     string logMessage = string.Empty;
 
     public SystemMaintainServices(ILogger<SystemMaintainServices> logger,
         PatientService patientService,
         NotificationService notificationService,
         BloodExameService bloodExameService,
-        SurveyService surveyService)
+        SurveyService surveyService,
+        SubjectNoHelper subjectNoHelper)
     {
         this.logger = logger;
         this.patientService = patientService;
         this.notificationService = notificationService;
         this.bloodExameService = bloodExameService;
         this.surveyService = surveyService;
+        this.subjectNoHelper = subjectNoHelper;
     }
 
     public async Task Fix_20260326_成大抽血生化_eGFR參考區間修正()
@@ -131,7 +135,7 @@ public class SystemMaintainServices
                 bool needUpdate = false;
                 foreach (var itemNode in patientData.臨床資料.SurveyWhooqol問卷.Items)
                 {
-                    if(itemNode.Questions.Count == 13)
+                    if (itemNode.Questions.Count == 13)
                     {
                         needUpdate = true;
                         int startIndex = 13;
@@ -157,6 +161,120 @@ public class SystemMaintainServices
                     patientAdapterModel.JsonData = patientData.ToJson();
                     await patientService.UpdateAsync(patientAdapterModel);
                     logMessage = $"已修正患者 {patientData.臨床資訊.SubjectNo} 的 Whooqol問卷缺少數量";
+                    OpenNotification(logMessage, NotificationType.Info);
+                    totalCount++;
+                    await Task.Delay(200);
+                }
+            }
+        }
+
+        logMessage = $"完成執行 Fix_20260518_Whooqol問卷缺少數量的修正，共有 {totalCount} 筆";
+        logger.LogInformation(logMessage);
+        OpenNotification(logMessage, NotificationType.Success);
+    }
+
+    public async Task Fix_20260518_奇美與郭綜合抽血項目修正()
+    {
+        PatientData patientData = new();
+        int pageSize = 10;
+        int pageIndex = 1;
+        int totalCount = 0;
+
+        logMessage = $"開始執行 Fix_20260518_奇美與郭綜合抽血項目修正";
+        logger.LogInformation(logMessage);
+        OpenNotification(logMessage, NotificationType.Warning);
+
+        Survey問卷 survey = new();
+        surveyService.Read(survey);
+
+        for (int idx = pageIndex; idx < 100; idx++)
+        {
+            DataRequest dataRequest = new DataRequest()
+            {
+                Skip = (idx - 1) * pageSize,
+                Take = pageSize,
+            };
+
+            var result = await patientService.GetAsync(dataRequest);
+            List<PatientAdapterModel> patientAdapterModelts = result.Result.ToList();
+
+            if (patientAdapterModelts == null || patientAdapterModelts.Count == 0)
+            {
+                break;
+            }
+
+            foreach (PatientAdapterModel patientAdapterModel in patientAdapterModelts)
+            {
+                patientData = new();
+                patientData.FromJson(patientAdapterModel.JsonData);
+
+                bool needUpdate = false;
+
+                var hospital = subjectNoHelper.GetHospital(patientData.臨床資訊.SubjectNo);
+                if (hospital == MagicObjectHelper.prefix奇美醫院 || hospital == MagicObjectHelper.prefix郭綜合醫院)
+                {
+                    var blood血液Source = new BloodTest抽血檢驗血液Node();
+                    var blood生化Source = new BloodTest抽血檢驗生化Node();
+                    bloodExameService.Read血液Node(blood血液Source, patientData.臨床資訊.SubjectNo);
+                    bloodExameService.Read生化Node(blood生化Source, patientData.臨床資訊.SubjectNo);
+
+                    #region 血液
+                    foreach (var blood血液Nodes in patientData.臨床資料.抽血檢驗血液.Items)
+                    {
+                        foreach (var bloodNode in blood血液Source.抽血檢驗血液)
+                        {
+                            if (!(blood血液Nodes.抽血檢驗血液.Exists(bd => bd.項目名稱.ToLower() == bloodNode.項目名稱.ToLower() && bd.單位.ToLower() == bloodNode.單位.ToLower())))
+                            {
+                                TestItem檢驗項目 testItem = new TestItem檢驗項目
+                                {
+                                    項目名稱 = bloodNode.項目名稱,
+                                    單位 = bloodNode.單位,
+                                    參考區間 = bloodNode.參考區間,
+                                    參考區間開始 = bloodNode.參考區間開始,
+                                    參考區間結束 = bloodNode.參考區間結束,
+                                    參考區間類型 = bloodNode.參考區間類型,
+                                    檢驗數值 = string.Empty,
+                                    SamplingDate = null,
+                                    TextClassName = MagicObjectHelper.正常檢驗數計類別
+                                };
+                                blood血液Nodes.抽血檢驗血液.Add(testItem);
+                                needUpdate = true;  
+                            }
+                        }
+                    }
+                    #endregion
+                    #region 生化
+                    foreach (var blood生化Nodes in patientData.臨床資料.抽血檢驗生化.Items)
+                    {
+                        foreach (var bloodNode in blood生化Source.抽血檢驗生化)
+                        {
+                            if (!(blood生化Nodes.抽血檢驗生化.Exists(bd => bd.項目名稱.ToLower() == bloodNode.項目名稱.ToLower() && bd.單位.ToLower() == bloodNode.單位.ToLower())))
+                            {
+                                TestItem檢驗項目 testItem = new TestItem檢驗項目
+                                {
+                                    項目名稱 = bloodNode.項目名稱,
+                                    單位 = bloodNode.單位,
+                                    參考區間 = bloodNode.參考區間,
+                                    參考區間開始 = bloodNode.參考區間開始,
+                                    參考區間結束 = bloodNode.參考區間結束,
+                                    參考區間類型 = bloodNode.參考區間類型,
+                                    檢驗數值 = string.Empty,
+                                    SamplingDate = null,
+                                    TextClassName = MagicObjectHelper.正常檢驗數計類別
+                                };
+                                blood生化Nodes.抽血檢驗生化.Add(testItem);
+                                needUpdate = true;
+                            }
+                        }
+                    }
+                    #endregion
+                }
+
+                if (needUpdate)
+                {
+                    patientAdapterModel.JsonData = patientData.ToJson();
+                    await patientService.UpdateAsync(patientAdapterModel);
+                    logMessage = $"已修正患者 {patientData.臨床資訊.SubjectNo} 的 奇美與郭綜合抽血項目";
                     OpenNotification(logMessage, NotificationType.Info);
                     totalCount++;
                     await Task.Delay(200);

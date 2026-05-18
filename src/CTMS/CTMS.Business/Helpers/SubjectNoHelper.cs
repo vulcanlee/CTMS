@@ -40,10 +40,10 @@ public class SubjectNoHelper
                 filenamePostfix = "";
                 break;
             case MagicObjectHelper.prefix奇美醫院:
-                filenamePostfix = "2";
+                filenamePostfix = "1";
                 break;
             case MagicObjectHelper.prefix郭綜合醫院:
-                filenamePostfix = "1";
+                filenamePostfix = "2";
                 break;
         }
 

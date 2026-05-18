@@ -153,6 +153,24 @@ public partial class SystemMaintainView
         }
     }
 
+    public async Task On奇美與郭綜合抽血項目修正()
+    {
+        var ok = await modalService.ConfirmAsync(new ConfirmOptions
+        {
+            Title = "再次確認",
+            Content = "確定要修正這個 奇美與郭綜合抽血項目修正 的需求嗎？",
+            OkText = "是",
+            CancelText = "取消",
+            OkButtonProps = new ButtonProps { Danger = true },
+            MaskClosable = false
+        });
+
+        if (ok)
+        {
+            await systemMaintainServices.Fix_20260518_奇美與郭綜合抽血項目修正();
+        }
+    }
+
     public async Task OnFillBloodTestUnits()
     {
         var ok = await modalService.ConfirmAsync(new ConfirmOptions
