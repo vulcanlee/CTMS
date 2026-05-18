@@ -293,7 +293,7 @@ public class SurveyTabDisplayHelper
         SurveyTabDisplayItemModel.CircleIcon = Icons.SetCircleColor(SurveyTabDisplayItemModel.CompletionPercent);
         #endregion
 
-        #region 生活品質
+        #region 生活品質 EQ5D
         SurveyTabDisplayItemModel = surveyTabDisplayModel.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName生活品質);
         Survey生活品質問卷Node survey生活品質問卷Node = Survey生活品質問卷.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
 
@@ -318,7 +318,7 @@ public class SurveyTabDisplayHelper
         SurveyTabDisplayItemModel.CircleIcon = Icons.SetCircleColor(SurveyTabDisplayItemModel.CompletionPercent);
         #endregion
 
-        #region 健康
+        #region 健康 CIPN
         SurveyTabDisplayItemModel = surveyTabDisplayModel.Items.FirstOrDefault(x => x.SurveyName == MagicObjectHelper.SurveyName健康);
         Survey健康問卷Node survey健康問卷Node = Survey健康問卷.Items.FirstOrDefault(x => x.VisitCode.Id == SelectVisitCode.Key);
         if (survey健康問卷Node != null)

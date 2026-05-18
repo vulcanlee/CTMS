@@ -107,7 +107,7 @@ public class VisitCodeCollectionHelper
         }
         #endregion
 
-        #region Survey生活品質問卷
+        #region Survey生活品質問卷 EQ5D
         foreach (var nodeItem in main臨床資料.Survey生活品質問卷.Items)
         {
             var item = visitCodes.FirstOrDefault(x => x.Key == nodeItem.VisitCode.Id);
@@ -120,7 +120,7 @@ public class VisitCodeCollectionHelper
         }
         #endregion
 
-        #region Survey健康問卷
+        #region Survey健康問卷 CIPN
         foreach (var nodeItem in main臨床資料.Survey健康問卷.Items)
         {
             var item = visitCodes.FirstOrDefault(x => x.Key == nodeItem.VisitCode.Id);
