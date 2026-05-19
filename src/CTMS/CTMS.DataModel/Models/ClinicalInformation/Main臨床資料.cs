@@ -63,6 +63,10 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                 CheckVisitCode(VisitCodeSetModel, DataTabeEnums.Survey個人史問卷, item.VisitCode);
             foreach (var item in Survey家族史問卷.Items)
                 CheckVisitCode(VisitCodeSetModel, DataTabeEnums.Survey家族史問卷, item.VisitCode);
+            foreach (var item in Survey生活品質問卷.Items)
+                CheckVisitCode(VisitCodeSetModel, DataTabeEnums.Survey生活品質問卷, item.VisitCode);
+            foreach (var item in Survey健康問卷.Items)
+                CheckVisitCode(VisitCodeSetModel, DataTabeEnums.Survey健康問卷, item.VisitCode);
             foreach (var item in HematologicSideEffects血液副作用.Items)
                 CheckVisitCode(VisitCodeSetModel, DataTabeEnums.HematologicSideEffects血液副作用, item.VisitCode);
             foreach (var item in SurveySideEffects副作用1.Items)
@@ -142,6 +146,12 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                             break;
                         case DataTabeEnums.Survey家族史問卷:
                             node.CheckedSurvey家族史問卷 = true;
+                            break;
+                        case DataTabeEnums.Survey健康問卷:
+                            node.CheckedSurvey健康問卷 = true;
+                            break;
+                        case DataTabeEnums.Survey生活品質問卷:
+                            node.CheckedSurvey生活品質問卷 = true;
                             break;
                         case DataTabeEnums.HematologicSideEffects血液副作用:
                             node.CheckedHematologicSideEffects血液副作用 = true;
