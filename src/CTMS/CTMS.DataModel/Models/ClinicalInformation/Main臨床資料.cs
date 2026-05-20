@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CTMS.DataModel.Models.ClinicalInformation
 {
@@ -206,6 +207,10 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                 RemoveVisitCodeItem(DataTabeEnums.Survey個人史問卷, VisitCodeModel);
             foreach (var item in Survey家族史問卷.Items.ToList())
                 RemoveVisitCodeItem(DataTabeEnums.Survey家族史問卷, VisitCodeModel);
+            foreach (var item in Survey健康問卷.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey健康問卷, VisitCodeModel);
+            foreach (var item in Survey生活品質問卷.Items.ToList())
+                RemoveVisitCodeItem(DataTabeEnums.Survey生活品質問卷, VisitCodeModel);
             foreach (var item in HematologicSideEffects血液副作用.Items.ToList())
                 RemoveVisitCodeItem(DataTabeEnums.HematologicSideEffects血液副作用, VisitCodeModel);
             foreach (var item in SurveySideEffects副作用1.Items.ToList())
@@ -356,6 +361,26 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                                 if (item != null)
                                 {
                                     Survey家族史問卷.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey生活品質問卷:
+                            {
+                                var item = Survey生活品質問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey生活品質問卷.Items.Remove(item);
+                                }
+                            }
+                            break;
+                        case DataTabeEnums.Survey健康問卷:
+                            {
+                                var item = Survey健康問卷.Items
+                                    .FirstOrDefault(x => x.VisitCode.CompareTo(visitCodeModel));
+                                if (item != null)
+                                {
+                                    Survey健康問卷.Items.Remove(item);
                                 }
                             }
                             break;
