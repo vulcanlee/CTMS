@@ -94,13 +94,13 @@ public class BloodExameService
             {
                 foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("glucose".ToLower()));
             }
-            else
+            else if (itemName.ToLower() == "HbA1c".ToLower())
             {
-                if(itemName.ToLower() == "HbA1c".ToLower())
-                {
-                    var bar = 0;
-                }
                 foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(bloodApiModelItem.OrderName.ToLower()));
+            }
+            else 
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(itemName.ToLower()));
             }
 
             if (foundItem != null)
