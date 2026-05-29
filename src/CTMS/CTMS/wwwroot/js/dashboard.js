@@ -160,8 +160,8 @@ window.initDashboardCharts = function (viewModel) {
     const cancerTypeMaxValue = Math.max(...cancerTypeTotals, 0) * 1.2 || 1;
 
     const completionData = [
-        viewModel?.completionStats?.completedCount || 907,
-        viewModel?.completionStats?.incompleteCount || 255
+        viewModel?.completionStats?.completedCount ?? 907,
+        viewModel?.completionStats?.incompleteCount ?? 255
     ];
 
     // Hospital Bar Chart
