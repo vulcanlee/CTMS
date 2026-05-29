@@ -100,7 +100,12 @@ public class BloodExameService
             }
             else 
             {
-                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(itemName.ToLower()));
+                if(itemName.ToLower() == "Hb".ToLower())
+                {
+                    //foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("GPT".ToLower()));
+                }
+                else
+                    foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains(itemName.ToLower()));
             }
 
             if (foundItem != null)
