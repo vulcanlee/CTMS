@@ -80,6 +80,14 @@ public class BloodExameService
             {
                 foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower() == itemName.ToLower());
             }
+            else if (itemName.ToLower() == "LDL-C".ToLower())
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("LDL".ToLower()));
+            }
+            else if (itemName.ToLower() == "HDL-C".ToLower())
+            {
+                foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("HDL".ToLower()));
+            }
             else if (itemName.ToLower() == "ca 125".ToLower())
             {
                 foundItem = bloodExame?.FirstOrDefault(x => x.項目名稱.ToLower().Contains("CA125".ToLower()));
