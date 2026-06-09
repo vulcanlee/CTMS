@@ -337,6 +337,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
     margin-bottom: 24px;
 }
 
@@ -348,6 +350,7 @@
 .chart-legend {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
     font-size: 15px;
 }
 
@@ -363,20 +366,34 @@
     border-radius: 50%;
 }
 
+.dot-experimental,
 .dot-teal {
     background: #4caf50;
 }
 
+.dot-control,
 .dot-coral {
     background: #ff6b6b;
 }
 
-.dot-yellow {
-    background: #ffc107;
+.dot-completed {
+    background: #ff6b6b;
 }
 
-.dot-blue {
-    background: #42a5f5;
+.dot-incomplete {
+    background: #4caf50;
+}
+
+.dot-experimental + span,
+.dot-teal + span {
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.dot-control + span,
+.dot-coral + span {
+    color: #ff6b6b;
+    font-weight: 600;
 }
 
 .chart-container {

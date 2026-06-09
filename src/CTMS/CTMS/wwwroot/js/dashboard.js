@@ -1,4 +1,14 @@
 ﻿// Chart.js default settings (global scope so toggleTheme can access it)
+const GROUP_COLORS = {
+    experimental: '#4caf50',
+    control: '#ff6b6b'
+};
+
+const COMPLETION_COLORS = {
+    completed: '#ff6b6b',
+    incomplete: '#4caf50'
+};
+
 function updateChartDefaults() {
     // 取得 id 為 dashboard-container 的元素
     const dashboardContainer = document.getElementById('dashboard-container');
@@ -174,14 +184,14 @@ window.initDashboardCharts = function (viewModel) {
                 {
                     label: '實驗組',
                     data: new Array(hospitalLabels.length).fill(0),
-                    backgroundColor: '#4caf50',
+                    backgroundColor: GROUP_COLORS.experimental,
                     borderRadius: 8,
                     barThickness: 80
                 },
                 {
                     label: '對照組',
                     data: new Array(hospitalLabels.length).fill(0),
-                    backgroundColor: '#ff6b6b',
+                    backgroundColor: GROUP_COLORS.control,
                     borderRadius: 8,
                     barThickness: 80
                 }
@@ -261,14 +271,14 @@ window.initDashboardCharts = function (viewModel) {
                 {
                     label: '實驗組',
                     data: new Array(stageLabels.length).fill(0),
-                    backgroundColor: '#4caf50',
+                    backgroundColor: GROUP_COLORS.experimental,
                     borderRadius: 8,
                     barThickness: 70
                 },
                 {
                     label: '對照組',
                     data: new Array(stageLabels.length).fill(0),
-                    backgroundColor: '#ff6b6b',
+                    backgroundColor: GROUP_COLORS.control,
                     borderRadius: 8,
                     barThickness: 70
                 }
@@ -348,14 +358,14 @@ window.initDashboardCharts = function (viewModel) {
                 {
                     label: '實驗組',
                     data: new Array(cancerTypeLabels.length).fill(0),
-                    backgroundColor: '#4caf50',
+                    backgroundColor: GROUP_COLORS.experimental,
                     borderRadius: 8,
                     barThickness: 70
                 },
                 {
                     label: '對照組',
                     data: new Array(cancerTypeLabels.length).fill(0),
-                    backgroundColor: '#ff6b6b',
+                    backgroundColor: GROUP_COLORS.control,
                     borderRadius: 8,
                     barThickness: 70
                 }
@@ -432,7 +442,7 @@ window.initDashboardCharts = function (viewModel) {
             labels: ['已完成', '未完成'],
             datasets: [{
                 data: [0, 0],
-                backgroundColor: ['#ff6b6b', '#4caf50'],
+                backgroundColor: [COMPLETION_COLORS.completed, COMPLETION_COLORS.incomplete],
                 borderWidth: 0
             }]
         },
