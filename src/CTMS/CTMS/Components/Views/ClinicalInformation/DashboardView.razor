@@ -132,19 +132,15 @@
         <div class="charts-grid">
             <div class="chart-card">
                 <div class="chart-header">
-                    <div class="chart-title">醫院個數</div>
+                    <div class="chart-title">醫院統計</div>
                     <div class="chart-legend">
                         <div class="legend-item">
-                            <div class="legend-dot dot-teal"></div>
-                            <span>成大</span>
+                            <div class="legend-dot dot-experimental dot-teal"></div>
+                            <span>實驗組</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-dot dot-coral"></div>
-                            <span>奇美</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot dot-yellow"></div>
-                            <span>郭綜合</span>
+                            <div class="legend-dot dot-control dot-coral"></div>
+                            <span>對照組</span>
                         </div>
                     </div>
                 </div>
@@ -158,20 +154,12 @@
                     <div class="chart-title">分期統計</div>
                     <div class="chart-legend">
                         <div class="legend-item">
-                            <div class="legend-dot dot-teal"></div>
-                            <span>1期</span>
+                            <div class="legend-dot dot-experimental dot-teal"></div>
+                            <span>實驗組</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-dot dot-coral"></div>
-                            <span>2期</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot dot-yellow"></div>
-                            <span>3期</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot dot-blue"></div>
-                            <span>4期</span>
+                            <div class="legend-dot dot-control dot-coral"></div>
+                            <span>對照組</span>
                         </div>
                     </div>
                 </div>
@@ -184,19 +172,27 @@
         <div class="bottom-grid">
             <div class="chart-card">
                 <div class="chart-header">
-                    <div class="chart-title">卵巢癌 / 內膜癌</div>
+                    <div class="chart-title">癌別統計</div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot dot-experimental dot-teal"></div>
+                            <span>實驗組</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot dot-control dot-coral"></div>
+                            <span>對照組</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="chart-container" style="height: 240px;">
                     <canvas id="cancerTypeChart"></canvas>
                 </div>
                 <div class="pie-stats">
                     <div class="pie-stat-item">
-                        <div class="pie-stat-dot dot-coral"></div>
                         <span class="pie-stat-label">卵巢癌</span>
                         <span class="pie-stat-value">@DashboardService.Dashboard.CancerTypeStats.OvarianCancerCount 例</span>
                     </div>
                     <div class="pie-stat-item">
-                        <div class="pie-stat-dot dot-teal"></div>
                         <span class="pie-stat-label">內膜癌</span>
                         <span class="pie-stat-value">@DashboardService.Dashboard.CancerTypeStats.EndometrialCancerCount 例</span>
                     </div>
@@ -212,12 +208,12 @@
                 </div>
                 <div class="pie-stats">
                     <div class="pie-stat-item">
-                        <div class="pie-stat-dot dot-coral"></div>
+                        <div class="pie-stat-dot dot-completed dot-coral"></div>
                         <span class="pie-stat-label">已完成</span>
                         <span class="pie-stat-value">@DashboardService.Dashboard.CompletionStats.CompletedCount 例</span>
                     </div>
                     <div class="pie-stat-item">
-                        <div class="pie-stat-dot dot-teal"></div>
+                        <div class="pie-stat-dot dot-incomplete dot-teal"></div>
                         <span class="pie-stat-label">未完成</span>
                         <span class="pie-stat-value">@DashboardService.Dashboard.CompletionStats.IncompleteCount 例</span>
                     </div>
