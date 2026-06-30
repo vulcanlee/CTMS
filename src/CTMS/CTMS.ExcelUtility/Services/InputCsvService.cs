@@ -50,6 +50,10 @@ public class InputCsvService
                 case "smd":
                     InputCsvModel.Total_SMD = value;
                     break;
+                case "total.smg":
+                case "smg":
+                    InputCsvModel.Total_SMG = value;
+                    break;
                 case "total.imata":
                 case "imata":
                     InputCsvModel.Total_ImatA = value;

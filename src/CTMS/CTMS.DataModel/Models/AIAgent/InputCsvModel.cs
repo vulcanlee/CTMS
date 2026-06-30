@@ -18,6 +18,7 @@ public class InputCsvModel
     public string body_weight_kg { get; set; }
     public string Vertebral_Body_Area_cm2 { get; set; }
     public string Total_SMD { get; set; }
+    public string Total_SMG { get; set; }
     public string Total_ImatA { get; set; }
     public string Total_LamaA { get; set; }
     public string Total_NamaA { get; set; }
