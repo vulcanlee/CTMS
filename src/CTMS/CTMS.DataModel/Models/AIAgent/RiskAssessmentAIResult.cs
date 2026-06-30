@@ -46,6 +46,10 @@ public class RiskAssessmentAIResult
     /// </summary>
     public string TotalNamaA { get; set; }
     /// <summary>
+    ///  Excel (X13)    Skeletal Muscle Gauge    cm²*HU   骨骼肌指標    由肌肉面積與肌肉密度計算得出
+    /// </summary>
+    public string TotalSMG { get; set; }
+    /// <summary>
     ///  Excel (B13)    Visceral Adipose Tissue Area    cm²   內臟脂肪面積，由影像自動分割
     /// </summary>
     public string VatA { get; set; }

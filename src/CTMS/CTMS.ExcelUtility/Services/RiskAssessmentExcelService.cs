@@ -83,6 +83,7 @@ public class RiskAssessmentExcelService
             result.TotalImatA = worksheet.Cells["I13"].Text;
             result.TotalLamaA = worksheet.Cells["N13"].Text;
             result.TotalNamaA = worksheet.Cells["S13"].Text;
+            result.TotalSMG = worksheet.Cells["G13"].Text;
             result.VatA = worksheet.Cells["B31"].Text;
             result.SatA = worksheet.Cells["G31"].Text;
             result.腰圍ACcm = worksheet.Cells["B36"].Text;

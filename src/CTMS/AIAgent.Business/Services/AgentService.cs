@@ -481,7 +481,7 @@ namespace AIAgent.Services
 
                 if (patientAIInfo.癌別 == "EC")
                 {
-                    sb.AppendLine("ID,Age,Tumor.Grade,body.height.cm,body.weight.kg,Vertebral.Body.Area.cm2,Total.SMD,Total.ImatA,Total.LamaA,Total.NamaA,VatA,SatA");
+                    sb.AppendLine("ID,Age,Tumor.Grade,body.height.cm,body.weight.kg,Vertebral.Body.Area.cm2,Total.SMD,Total.ImatA,Total.LamaA,Total.NamaA,VatA,SatA,Total.SMG");
                     sb.AppendLine(string.Join(",", new string[] {
                     riskResult.ID,
                     riskResult.Age.ToLower().Replace("y",""),
@@ -494,12 +494,13 @@ namespace AIAgent.Services
                     riskResult.TotalLamaA,
                     riskResult.TotalNamaA,
                     riskResult.VatA,
-                    riskResult.SatA
+                    riskResult.SatA,
+                    riskResult.TotalSMG
                     }.Select(v => v?.Trim() ?? "")));
                 }
                 else
                 {
-                    sb.AppendLine("ID,Body.Height.cm,Body.Weight.kg,SMA,SMD,ImatA,LamaA,NamaA,MyosteatosisA,VatA,SatA");
+                    sb.AppendLine("ID,Body.Height.cm,Body.Weight.kg,SMA,SMD,ImatA,LamaA,NamaA,MyosteatosisA,VatA,SatA,Total.SMG");
                     sb.AppendLine(string.Join(",", new string[] {
                         riskResult.ID,
                         // Body.Height.cm
@@ -520,8 +521,10 @@ namespace AIAgent.Services
                         (riskResult.TotalImatA.ToFloat()+riskResult.TotalLamaA.ToFloat()).ToString(),
                         // VatA 內臟脂肪面積 Visceral Adipose Tissue Area                                                                                  
                         riskResult.VatA,
-                        // SatA 皮下脂肪面積 Subcutaneous Adipose Tissue Area      
-                        riskResult.SatA
+                        // SatA 皮下脂肪面積 Subcutaneous Adipose Tissue Area
+                        riskResult.SatA,
+                        // Total.SMG 骨骼肌綜合指標 Skeletal Muscle Gauge
+                        riskResult.TotalSMG
                     }.Select(v => v?.Trim() ?? "")));
                 }
 
