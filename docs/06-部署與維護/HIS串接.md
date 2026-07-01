@@ -1,4 +1,4 @@
-# 檢驗檢查報告:
+﻿# 檢驗檢查報告:
 * Method: http://hisweb.hosp.ncku/HISService/LIS/WService/basic/BusinessLogic.svc
 
 * Function: 

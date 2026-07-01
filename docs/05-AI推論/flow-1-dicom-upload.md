@@ -1,4 +1,4 @@
-# CTMS AI 推論流程一：上傳 DICOM 後直接推論
+﻿# CTMS AI 推論流程一：上傳 DICOM 後直接推論
 
 ## 文件目的
 
