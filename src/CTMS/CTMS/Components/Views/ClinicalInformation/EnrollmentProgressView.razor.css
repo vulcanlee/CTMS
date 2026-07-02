@@ -1,0 +1,102 @@
+.enrollment-container {
+    min-height: 100vh;
+    padding: 30px 40px;
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #2a2a2a;
+    color: #fff;
+}
+
+.enrollment-card {
+    background: #3a3a3a;
+    border-radius: 12px;
+    padding: 28px;
+}
+
+.enrollment-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.enrollment-loading {
+    font-size: 20px;
+    color: #999;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.enrollment-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 16px;
+}
+
+.enrollment-table th,
+.enrollment-table td {
+    border: 1px solid #555;
+    padding: 8px 4px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.label-col {
+    background: #2d2d2d;
+    font-weight: 700;
+    white-space: nowrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 90px;
+}
+
+.hospital-header {
+    background: #1f4e4c;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.cancer-header {
+    background: #29403f;
+    font-weight: 500;
+}
+
+.stage-header {
+    background: #2d2d2d;
+    font-weight: 500;
+}
+
+.count-cell {
+    background: #333;
+    font-size: 18px;
+}
+
+.subtotal-cell {
+    background: #29403f;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.total-cell {
+    background: #1f4e4c;
+    font-size: 34px;
+    font-weight: 700;
+    color: #20b2aa;
+    padding: 12px;
+}
+
+.milestone-cell {
+    background: #333;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.total-label,
+.milestone-label {
+    font-size: 15px;
+}
+
+.enrollment-footnote {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #999;
+}

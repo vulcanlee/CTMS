@@ -206,6 +206,8 @@ namespace CTMS
 
                 builder.Services.AddScoped<DashboardService>();
 
+                builder.Services.AddScoped<EnrollmentProgressService>();
+
                 builder.Services.AddScoped<SystemMaintainServices>();
 
                 builder.Services.AddTransient<RolePermissionService>();

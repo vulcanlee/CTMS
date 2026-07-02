@@ -1,0 +1,105 @@
+<div class="enrollment-container">
+    <div class="enrollment-card">
+        <div class="enrollment-title">收案進度</div>
+
+        @if (isLoaded == false)
+        {
+            <div class="enrollment-loading">統計中…</div>
+        }
+        else
+        {
+            var progress = EnrollmentProgressService.Progress;
+
+            <table class="enrollment-table">
+                <thead>
+                    <tr>
+                        <th rowspan="3" class="label-col">① 分層</th>
+                        <th class="label-col">1.醫院</th>
+                        @foreach (var hospital in progress.Hospitals)
+                        {
+                            <th colspan="8" class="hospital-header">@(hospital.HospitalName)醫院</th>
+                        }
+                    </tr>
+                    <tr>
+                        <th class="label-col">2.癌別</th>
+                        @foreach (var hospital in progress.Hospitals)
+                        {
+                            foreach (var cancer in hospital.Cancers)
+                            {
+                                <th colspan="4" class="cancer-header">@cancer.CancerName</th>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <th class="label-col">3.期別</th>
+                        @foreach (var hospital in progress.Hospitals)
+                        {
+                            foreach (var cancer in hospital.Cancers)
+                            {
+                                foreach (var stage in cancer.Stages)
+                                {
+                                    <th class="stage-header">@stage.StageName</th>
+                                }
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th rowspan="2" class="label-col">② 分組</th>
+                        <th class="label-col">對照組</th>
+                        @foreach (var hospital in progress.Hospitals)
+                        {
+                            foreach (var cancer in hospital.Cancers)
+                            {
+                                foreach (var stage in cancer.Stages)
+                                {
+                                    <td class="count-cell">@(stage.ControlCount == 0 ? "" : stage.ControlCount.ToString())</td>
+                                }
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <th class="label-col">實驗組</th>
+                        @foreach (var hospital in progress.Hospitals)
+                        {
+                            foreach (var cancer in hospital.Cancers)
+                            {
+                                foreach (var stage in cancer.Stages)
+                                {
+                                    <td class="count-cell">@(stage.ExperimentalCount == 0 ? "" : stage.ExperimentalCount.ToString())</td>
+                                }
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="label-col">小計收案數</th>
+                        @foreach (var hospital in progress.Hospitals)
+                        {
+                            <td colspan="8" class="subtotal-cell">@hospital.Subtotal 人</td>
+                        }
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="label-col total-label">總計收案數<br />(至@(AsOfDate))</th>
+                        <td colspan="24" class="total-cell">@progress.TotalCount 人</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="label-col milestone-label">啟動期中分析<br />(116.01)</th>
+                        <td colspan="24" class="milestone-cell">206人</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="label-col milestone-label">啟動期末分析<br />(116.07)</th>
+                        <td colspan="24" class="milestone-cell">294人</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @if (progress.UnclassifiedCount > 0)
+            {
+                <div class="enrollment-footnote">
+                    註：另有 @progress.UnclassifiedCount 筆已收案且已分組之個案，因醫院/癌別/期別資料未填而未列入表格。
+                </div>
+            }
+        }
+    </div>
+</div>
