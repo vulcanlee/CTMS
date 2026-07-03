@@ -119,6 +119,10 @@
         public const string 奇美抽血檢驗生化File = "抽血檢驗生化1.json";
         public const string 郭綜合抽血檢驗血液File = "抽血檢驗血液2.json";
         public const string 郭綜合抽血檢驗生化File = "抽血檢驗生化2.json";
+        public const string 高榮抽血檢驗血液File = "抽血檢驗血液3.json";
+        public const string 高榮抽血檢驗生化File = "抽血檢驗生化3.json";
+        public const string 嘉長抽血檢驗血液File = "抽血檢驗血液4.json";
+        public const string 嘉長抽血檢驗生化File = "抽血檢驗生化4.json";
         public const string RandomListDefaultFile = "RandomList.xlsx";
         public const string RandomListRuntimeFile = "RandomListRuntime.xlsx";
         public const string RandomListRuntimeJsonFile = "RandomListRuntime.json";
@@ -131,6 +135,10 @@
         public const string Sheet奇美Advance = "奇美Advance";
         public const string Sheet郭綜合Early = "郭綜合Early";
         public const string Sheet郭綜合Advance = "郭綜合Advance";
+        public const string Sheet高榮Early = "高榮Early";
+        public const string Sheet高榮Advance = "高榮Advance";
+        public const string Sheet嘉長Early = "嘉長Early";
+        public const string Sheet嘉長Advance = "嘉長Advance";
         public const string Sheet預計收案人數 = "預計收案人數";
 
         public const string RandomEarly = "Early";
@@ -138,9 +146,13 @@
         public const string prefix成大醫院 = "NCKUH";
         public const string prefix奇美醫院 = "CHIMEIH";
         public const string prefix郭綜合醫院 = "KGH";
+        public const string prefix高雄榮總醫院 = "KSVGH";
+        public const string prefix嘉義長庚醫院 = "CYCGMH";
         public const string PrefixSheetName成大醫院 = "成大";
         public const string PrefixSheetName奇美醫院 = "奇美";
         public const string PrefixSheetName郭綜合醫院 = "郭綜合";
+        public const string PrefixSheetName高雄榮總醫院 = "高榮";
+        public const string PrefixSheetName嘉義長庚醫院 = "嘉長";
         public const string OC = "OC";
         public const string EC = "EC";
         public const string NA = "NA";

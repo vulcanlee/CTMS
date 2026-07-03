@@ -340,11 +340,9 @@ public class PatientSingleRowCsvExportService
 
     private static string ResolveHospital(string? subjectNo)
     {
+        // 依 prefix 反查為「院區群組層級」：柳營奇美匯出顯示「奇美醫院」為現階段預期行為。
         if (subjectNo == null) return "";
-        if (subjectNo.Contains(MagicObjectHelper.prefix奇美醫院))   return "奇美醫院";
-        if (subjectNo.Contains(MagicObjectHelper.prefix郭綜合醫院)) return "郭綜合醫院";
-        if (subjectNo.Contains(MagicObjectHelper.prefix成大醫院))   return "成大醫院";
-        return "";
+        return HospitalRegistry.GetOwnerBySubjectNo(subjectNo)?.DisplayName ?? "";
     }
 
     public static string EscapeCsv(string? value)

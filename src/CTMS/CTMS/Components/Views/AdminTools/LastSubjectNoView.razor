@@ -15,24 +15,16 @@
 @inject SubjectNoGeneratorService SubjectNoGeneratorService
 
 <div>
-    <div class="m-2">
-        <p>NCKUH成大</p>
-        <div>
-            <SfNumericTextBox TValue="int" @bind-Value="@NCKUH成大"></SfNumericTextBox>
+    @foreach (var owner in HospitalRegistry.PrefixOwners)
+    {
+        var key = owner.CounterKey;
+        <div class="m-2">
+            <p>@key</p>
+            <div>
+                <SfNumericTextBox TValue="int" @bind-Value="@Edit[key]"></SfNumericTextBox>
+            </div>
         </div>
-    </div>
-    <div class="m-2">
-        <p>CHIMEIH奇美</p>
-        <div>
-            <SfNumericTextBox TValue="int" @bind-Value="@CHIMEIH奇美"></SfNumericTextBox>
-        </div>
-    </div>
-    <div class="m-2">
-        <p>KGH郭綜合</p>
-        <div>
-            <SfNumericTextBox TValue="int" @bind-Value="@KGH郭綜合"></SfNumericTextBox>
-        </div>
-    </div>
+    }
     <div class="m-2">
         <button class="btn btn-primary" @onclick="OnSaveAsync">儲存修改</button>
     </div>
@@ -54,16 +46,13 @@
 
     ConfirmBoxModel ConfirmMessageBox { get; set; } = new ConfirmBoxModel();
     MessageBoxModel MessageBox { get; set; } = new MessageBoxModel();
-    public int NCKUH成大 { get; set; } = 0;
-    public int CHIMEIH奇美 { get; set; } = 0;
-    public int KGH郭綜合 { get; set; } = 0;
+    Dictionary<string, int> Edit { get; set; } =
+        HospitalRegistry.PrefixOwners.ToDictionary(x => x.CounterKey, _ => 0);
 
     protected override async Task OnInitializedAsync()
     {
         await SubjectNoGeneratorService.InitialAsync();
-        NCKUH成大 = SubjectNoGeneratorService.SubjectNoGeneratorModel.NCKUH成大;
-        CHIMEIH奇美 = SubjectNoGeneratorService.SubjectNoGeneratorModel.CHIMEIH奇美;
-        KGH郭綜合 = SubjectNoGeneratorService.SubjectNoGeneratorModel.KGH郭綜合;
+        Edit = new(SubjectNoGeneratorService.SubjectNoGeneratorModel.Counters);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -83,9 +72,10 @@
         result = await task;
         if (result)
         {
-            SubjectNoGeneratorService.SubjectNoGeneratorModel.NCKUH成大 = NCKUH成大;
-            SubjectNoGeneratorService.SubjectNoGeneratorModel.CHIMEIH奇美 = CHIMEIH奇美;
-            SubjectNoGeneratorService.SubjectNoGeneratorModel.KGH郭綜合 = KGH郭綜合;
+            foreach (var kv in Edit)
+            {
+                SubjectNoGeneratorService.SubjectNoGeneratorModel.Counters[kv.Key] = kv.Value;
+            }
             await SubjectNoGeneratorService.SubjectNoGeneratorModel.SaveAsync();
         }
     }

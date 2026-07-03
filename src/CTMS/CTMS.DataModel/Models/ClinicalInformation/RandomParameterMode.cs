@@ -41,17 +41,11 @@ namespace CTMS.DataModel.Models.ClinicalInformation
                     EarlyOrAdvance = "Early";
             }
 
-            if (SubjectNo.Contains(MagicObjectHelper.prefix奇美醫院))
+            // 依 prefix 反查為「院區群組層級」：柳營奇美視為奇美，抽奇美的隨機表。
+            var owner = HospitalRegistry.GetOwnerBySubjectNo(SubjectNo);
+            if (owner != null)
             {
-                Hospital = MagicObjectHelper.prefix奇美醫院;
-            }
-            else if (SubjectNo.Contains(MagicObjectHelper.prefix郭綜合醫院))
-            {
-                Hospital = MagicObjectHelper.prefix郭綜合醫院;
-            }
-            else if (SubjectNo.Contains(MagicObjectHelper.prefix成大醫院))
-            {
-                Hospital = MagicObjectHelper.prefix成大醫院;
+                Hospital = owner.Prefix;
             }
         }
     }

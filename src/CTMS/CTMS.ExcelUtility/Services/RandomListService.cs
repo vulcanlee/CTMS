@@ -12,7 +12,6 @@ public class RandomListService
     #region 讀取 Excel 內的資料
     public async Task InitialAsync()
     {
-        string filenameDefault = Path.Combine("Data", MagicObjectHelper.RandomListDefaultFile);
         string filenameRuntime = Path.Combine("Data", MagicObjectHelper.RandomListRuntimeJsonFile);
 
         if (File.Exists(filenameRuntime) == false)
@@ -23,10 +22,26 @@ public class RandomListService
         else
         {
             await RandomList.ReadAsync();
+
+            // 自癒式補讀：runtime 快取建立後才新增的醫院，只從 xlsx 補讀該院分頁並附加，
+            // 不動既有醫院已落地的隨機分配結果（不可刪快取重建，會清空已分配的隨機碼）。
+            var missingOwners = HospitalRegistry.PrefixOwners
+                .Where(o => RandomList.Items.Any(i => i.Hospital == o.Prefix) == false)
+                .ToList();
+            if (missingOwners.Count > 0)
+            {
+                ReadExcel(missingOwners);
+                await RandomList.SaveAsync();
+            }
         }
     }
 
     public void ReadExcel()
+    {
+        ReadExcel(HospitalRegistry.PrefixOwners.ToList());
+    }
+
+    private void ReadExcel(IReadOnlyCollection<HospitalDefinition> owners)
     {
         using (ExcelEngine excelEngine = new ExcelEngine())
         {
@@ -42,18 +57,11 @@ public class RandomListService
             {
                 IWorkbook workbook = application.Workbooks.Open(sampleFile);
 
-                ReadSheet(workbook, MagicObjectHelper.Sheet成大Early,
-                    MagicObjectHelper.prefix成大醫院, MagicObjectHelper.RandomEarly);
-                ReadSheet(workbook, MagicObjectHelper.Sheet成大Advance,
-                    MagicObjectHelper.prefix成大醫院, MagicObjectHelper.RandomAdvance);
-                ReadSheet(workbook, MagicObjectHelper.Sheet奇美Early,
-                    MagicObjectHelper.prefix奇美醫院, MagicObjectHelper.RandomEarly);
-                ReadSheet(workbook, MagicObjectHelper.Sheet奇美Advance,
-                    MagicObjectHelper.prefix奇美醫院, MagicObjectHelper.RandomAdvance);
-                ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Early,
-                    MagicObjectHelper.prefix郭綜合醫院, MagicObjectHelper.RandomEarly);
-                ReadSheet(workbook, MagicObjectHelper.Sheet郭綜合Advance,
-                    MagicObjectHelper.prefix郭綜合醫院, MagicObjectHelper.RandomAdvance);
+                foreach (var owner in owners)
+                {
+                    ReadSheet(workbook, owner.SheetEarly, owner.Prefix, MagicObjectHelper.RandomEarly);
+                    ReadSheet(workbook, owner.SheetAdvance, owner.Prefix, MagicObjectHelper.RandomAdvance);
+                }
             }
         }
     }

@@ -242,21 +242,7 @@ public class PatientService
             PatientData patientData = new();
 
             #region 依據院別，產生出 Name
-            string subjectNoPrefix = "";
-            switch (addNewPatientViewModel.院別)
-            {
-                case "成大醫院":
-                    subjectNoPrefix = MagicObjectHelper.prefix成大醫院;
-                    break;
-                case "奇美醫院":
-                    subjectNoPrefix = MagicObjectHelper.prefix奇美醫院;
-                    break;
-                case "郭綜合醫院":
-                    subjectNoPrefix = MagicObjectHelper.prefix郭綜合醫院;
-                    break;
-                default:
-                    break;
-            }
+            string subjectNoPrefix = HospitalRegistry.GetByDisplayName(addNewPatientViewModel.院別)?.Prefix ?? "";
 
             string newSubjectNo = await subjectNoGeneratorService.GenerateAsync(subjectNoPrefix);
             #endregion

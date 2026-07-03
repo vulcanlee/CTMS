@@ -11,52 +11,23 @@ public class SubjectNoHelper
 {
     public string GetHospital(string subjectNo)
     {
-        string Hospital = "未知";
-        if (subjectNo.Contains(MagicObjectHelper.prefix奇美醫院))
-        {
-            Hospital = MagicObjectHelper.prefix奇美醫院;
-        }
-        else if (subjectNo.Contains(MagicObjectHelper.prefix郭綜合醫院))
-        {
-            Hospital = MagicObjectHelper.prefix郭綜合醫院;
-        }
-        else if (subjectNo.Contains(MagicObjectHelper.prefix成大醫院))
-        {
-            Hospital = MagicObjectHelper.prefix成大醫院;
-        }
-        return Hospital;
+        // 依 prefix 反查為「院區群組層級」：共用 prefix 的分院（柳營奇美）視為其 prefix 擁有者（奇美）。
+        return HospitalRegistry.GetOwnerBySubjectNo(subjectNo)?.Prefix ?? "未知";
     }
 
     public string GetBloodFilename(string subjectNo, string bloodType)
     {
-        string hospital = GetHospital(subjectNo);
-        string filename = string.Empty;
-        string filenamePostfix = "";
-        string filenamePrefix = "";
-
-        switch(hospital)
-        {
-            case MagicObjectHelper.prefix成大醫院:
-                filenamePostfix = "";
-                break;
-            case MagicObjectHelper.prefix奇美醫院:
-                filenamePostfix = "1";
-                break;
-            case MagicObjectHelper.prefix郭綜合醫院:
-                filenamePostfix = "2";
-                break;
-        }
+        var owner = HospitalRegistry.GetOwnerBySubjectNo(subjectNo);
 
         if (bloodType == MagicObjectHelper.Blood抽血檢驗血液)
         {
-            filenamePrefix = "抽血檢驗血液";
-        }else if (bloodType == MagicObjectHelper.Blood抽血檢驗生化)
+            return owner?.BloodHematologyFile ?? MagicObjectHelper.成醫抽血檢驗血液File;
+        }
+        else if (bloodType == MagicObjectHelper.Blood抽血檢驗生化)
         {
-            filenamePrefix = "抽血檢驗生化";
+            return owner?.BloodBiochemistryFile ?? MagicObjectHelper.成醫抽血檢驗生化File;
         }
 
-        filename = $"{filenamePrefix}{filenamePostfix}.json";
-
-        return filename;
+        return ".json";
     }
 }

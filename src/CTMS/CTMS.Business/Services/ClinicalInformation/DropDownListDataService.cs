@@ -44,9 +44,10 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> Get院別()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
-            result.Add(new DropDownListDataModel() { Key = $"成大醫院", Name = $"成大醫院" });
-            result.Add(new DropDownListDataModel() { Key = $"奇美醫院", Name = $"奇美醫院" });
-            result.Add(new DropDownListDataModel() { Key = $"郭綜合醫院", Name = $"郭綜合醫院" });
+            foreach (var hospital in HospitalRegistry.All)
+            {
+                result.Add(new DropDownListDataModel() { Key = hospital.DisplayName, Name = hospital.DisplayName });
+            }
             return result;
         }
 

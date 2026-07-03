@@ -1,13 +1,16 @@
-﻿using CTMS.Share.Helpers;
+using CTMS.Share.Helpers;
 using System.Text;
 
 namespace CTMS.DataModel.Models.ClinicalInformation;
 
 public class SubjectNoGeneratorModel
 {
-    public int NCKUH成大 { get; set; } = 0;
-    public int CHIMEIH奇美 { get; set; } = 0;
-    public int KGH郭綜合 { get; set; } = 0;
+    /// <summary>
+    /// 各院流水號計數，鍵為 HospitalRegistry 的 CounterKey（如 "NCKUH成大"）。
+    /// 序列化結果與舊版固定屬性的 JSON 形狀完全相同，既有資料檔可直接讀入。
+    /// </summary>
+    public Dictionary<string, int> Counters { get; set; } =
+        HospitalRegistry.PrefixOwners.ToDictionary(x => x.CounterKey, _ => 0);
 
     public async Task ReadAsync()
     {
@@ -19,12 +22,14 @@ public class SubjectNoGeneratorModel
                 using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
                 {
                     string json = await reader.ReadToEndAsync();
-                    var item = FromJson(json);
-                    this.NCKUH成大 = item.NCKUH成大;
-                    this.CHIMEIH奇美 = item.CHIMEIH奇美;
-                    this.KGH郭綜合 = item.KGH郭綜合;
+                    Counters = FromJson(json);
                 }
             }
+        }
+
+        foreach (var owner in HospitalRegistry.PrefixOwners)
+        {
+            Counters.TryAdd(owner.CounterKey, 0);
         }
     }
 
@@ -52,12 +57,12 @@ public class SubjectNoGeneratorModel
         {
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
         };
-        return System.Text.Json.JsonSerializer.Serialize(this, options);
+        return System.Text.Json.JsonSerializer.Serialize(Counters, options);
     }
 
-    public SubjectNoGeneratorModel FromJson(string json)
+    public Dictionary<string, int> FromJson(string json)
     {
-        var data = System.Text.Json.JsonSerializer.Deserialize<SubjectNoGeneratorModel>(json);
-        return data;
+        var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, int>>(json);
+        return data ?? new();
     }
 }

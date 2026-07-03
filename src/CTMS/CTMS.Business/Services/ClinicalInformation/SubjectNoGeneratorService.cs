@@ -33,26 +33,15 @@ public class SubjectNoGeneratorService
 
     public async Task<string> GenerateAsync(string site)
     {
-        string subjectNo = string.Empty;
         await SubjectNoGeneratorModel.ReadAsync();
-        switch (site)
+        var owner = HospitalRegistry.GetOwnerByPrefix(site);
+        if (owner == null)
         {
-            case MagicObjectHelper.prefix成大醫院:
-                SubjectNoGeneratorModel.NCKUH成大++;
-                subjectNo = $"{MagicObjectHelper.prefix成大醫院}{SubjectNoGeneratorModel.NCKUH成大:0000}";
-                break;
-            case MagicObjectHelper.prefix奇美醫院:
-                SubjectNoGeneratorModel.CHIMEIH奇美++;
-                subjectNo = $"{MagicObjectHelper.prefix奇美醫院}{SubjectNoGeneratorModel.CHIMEIH奇美:0000}";
-                break;
-            case MagicObjectHelper.prefix郭綜合醫院:
-                SubjectNoGeneratorModel.KGH郭綜合++;
-                subjectNo = $"{MagicObjectHelper.prefix郭綜合醫院}{SubjectNoGeneratorModel.KGH郭綜合:0000}";
-                break;
-            default:
-                logger.LogError($"不支援的院區代碼 {site} !");
-                throw new Exception($"不支援的院區代碼 {site} !");
+            logger.LogError($"不支援的院區代碼 {site} !");
+            throw new Exception($"不支援的院區代碼 {site} !");
         }
+        SubjectNoGeneratorModel.Counters[owner.CounterKey]++;
+        string subjectNo = $"{owner.Prefix}{SubjectNoGeneratorModel.Counters[owner.CounterKey]:0000}";
         await SubjectNoGeneratorModel.SaveAsync();
         return subjectNo;
     }
