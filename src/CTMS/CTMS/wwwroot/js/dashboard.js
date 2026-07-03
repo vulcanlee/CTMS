@@ -139,9 +139,9 @@ window.initDashboardCharts = function (viewModel) {
     updateChartDefaults();
 
     // 從 ViewModel 提取數據，如果沒有提供則使用默認值
-    const hospitalLabels = viewModel?.hospitalStats?.map(h => h.hospitalName) || ['成大', '奇美', '郭綜合'];
-    const experimentalHospitalData = viewModel?.hospitalStats?.map(h => h.experimentalGroupCount ?? 0) || [210, 185, 150];
-    const controlHospitalData = viewModel?.hospitalStats?.map(h => h.controlGroupCount ?? 0) || [192, 164, 135];
+    const hospitalLabels = viewModel?.hospitalStats?.map(h => h.hospitalName) || ['成大', '奇美', '郭綜合', '高榮', '嘉長'];
+    const experimentalHospitalData = viewModel?.hospitalStats?.map(h => h.experimentalGroupCount ?? 0) || [210, 185, 150, 0, 0];
+    const controlHospitalData = viewModel?.hospitalStats?.map(h => h.controlGroupCount ?? 0) || [192, 164, 135, 0, 0];
     const hospitalTotals = hospitalLabels.map((_, index) =>
         (experimentalHospitalData[index] || 0) + (controlHospitalData[index] || 0)
     );

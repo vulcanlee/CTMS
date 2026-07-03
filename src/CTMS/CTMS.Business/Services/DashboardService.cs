@@ -31,12 +31,9 @@ public class DashboardService
         #region 儀錶板初始化
         #region Row 1
         #region 合作醫院
-        Dashboard.Summary.HospitalNames = new List<string>
-        {
-            MagicObjectHelper.PrefixSheetName成大醫院,
-            MagicObjectHelper.PrefixSheetName奇美醫院,
-            MagicObjectHelper.PrefixSheetName郭綜合醫院,
-        };
+        Dashboard.Summary.HospitalNames = HospitalRegistry.PrefixOwners
+            .Select(x => x.ShortName)
+            .ToList();
         Dashboard.Summary.PartnerHospitalCount = Dashboard.Summary.HospitalNames.Count;
         #endregion
 
@@ -67,30 +64,15 @@ public class DashboardService
 
         #region Row 2
         #region 醫院個數
-        Dashboard.HospitalStats = new List<HospitalCaseStat>
-        {
-            new HospitalCaseStat
+        Dashboard.HospitalStats = HospitalRegistry.PrefixOwners
+            .Select(x => new HospitalCaseStat
             {
-                HospitalName = MagicObjectHelper.PrefixSheetName成大醫院,
+                HospitalName = x.ShortName,
                 CaseCount = 0,
                 ExperimentalGroupCount = 0,
                 ControlGroupCount = 0
-            },
-            new HospitalCaseStat
-            {
-                HospitalName = MagicObjectHelper.PrefixSheetName奇美醫院,
-                CaseCount = 0,
-                ExperimentalGroupCount = 0,
-                ControlGroupCount = 0
-            },
-            new HospitalCaseStat
-            {
-                HospitalName = MagicObjectHelper.PrefixSheetName郭綜合醫院,
-                CaseCount = 0,
-                ExperimentalGroupCount = 0,
-                ControlGroupCount = 0
-            },
-        };
+            })
+            .ToList();
         #endregion
 
         #region 分期統計
@@ -328,22 +310,9 @@ public class DashboardService
             return null;
         }
 
-        if (hospital.Contains(MagicObjectHelper.PrefixSheetName成大醫院))
-        {
-            return MagicObjectHelper.PrefixSheetName成大醫院;
-        }
-
-        if (hospital.Contains(MagicObjectHelper.PrefixSheetName奇美醫院))
-        {
-            return MagicObjectHelper.PrefixSheetName奇美醫院;
-        }
-
-        if (hospital.Contains(MagicObjectHelper.PrefixSheetName郭綜合醫院))
-        {
-            return MagicObjectHelper.PrefixSheetName郭綜合醫院;
-        }
-
-        return null;
+        // 精確比對 DisplayName 後歸戶到 prefix 擁有者短名（柳營奇美醫院 → 奇美）；
+        // 「高雄榮民總醫院」不含短名「高榮」，不能只靠 Contains 比對。
+        return HospitalRegistry.NormalizeToOwnerShortName(hospital);
     }
 }
 

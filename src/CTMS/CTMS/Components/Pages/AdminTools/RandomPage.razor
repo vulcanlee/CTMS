@@ -29,56 +29,25 @@ else
 
         <div class="page-body">
             <MudTabs PanelClass="pa-6" AlwaysShowScrollButtons="true">
-                <MudTabPanel Text="成大 EC Early">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
-                                ECorOC="@MagicObjectHelper.EC" Hospital="@MagicObjectHelper.prefix成大醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="成大 OC Early">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
-                                ECorOC="@MagicObjectHelper.OC" Hospital="@MagicObjectHelper.prefix成大醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="成大 EC Advance">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
-                                ECorOC="@MagicObjectHelper.EC" Hospital="@MagicObjectHelper.prefix成大醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="成大 OC Advance">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
-                                ECorOC="@MagicObjectHelper.OC" Hospital="@MagicObjectHelper.prefix成大醫院" />
-                </MudTabPanel>
-
-                <MudTabPanel Text="奇美 EC Early">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
-                                ECorOC="@MagicObjectHelper.EC" Hospital="@MagicObjectHelper.prefix奇美醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="奇美 OC Early">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
-                                ECorOC="@MagicObjectHelper.OC" Hospital="@MagicObjectHelper.prefix奇美醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="奇美 EC Advance">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
-                                ECorOC="@MagicObjectHelper.EC" Hospital="@MagicObjectHelper.prefix奇美醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="奇美 OC Advance">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
-                                ECorOC="@MagicObjectHelper.OC" Hospital="@MagicObjectHelper.prefix奇美醫院" />
-                </MudTabPanel>
-
-                <MudTabPanel Text="郭綜合 EC Early">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
-                                ECorOC="@MagicObjectHelper.EC" Hospital="@MagicObjectHelper.prefix郭綜合醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="郭綜合 OC Early">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
-                                ECorOC="@MagicObjectHelper.OC" Hospital="@MagicObjectHelper.prefix郭綜合醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="郭綜合 EC Advance">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
-                                ECorOC="@MagicObjectHelper.EC" Hospital="@MagicObjectHelper.prefix郭綜合醫院" />
-                </MudTabPanel>
-                <MudTabPanel Text="郭綜合 OC Advance">
-                    <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
-                                ECorOC="@MagicObjectHelper.OC" Hospital="@MagicObjectHelper.prefix郭綜合醫院" />
-                </MudTabPanel>
+                @foreach (var hospital in HospitalRegistry.PrefixOwners)
+                {
+                    <MudTabPanel Text="@($"{hospital.ShortName} EC Early")">
+                        <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
+                                    ECorOC="@MagicObjectHelper.EC" Hospital="@hospital.Prefix" />
+                    </MudTabPanel>
+                    <MudTabPanel Text="@($"{hospital.ShortName} OC Early")">
+                        <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomEarly"
+                                    ECorOC="@MagicObjectHelper.OC" Hospital="@hospital.Prefix" />
+                    </MudTabPanel>
+                    <MudTabPanel Text="@($"{hospital.ShortName} EC Advance")">
+                        <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
+                                    ECorOC="@MagicObjectHelper.EC" Hospital="@hospital.Prefix" />
+                    </MudTabPanel>
+                    <MudTabPanel Text="@($"{hospital.ShortName} OC Advance")">
+                        <RandomView EarlyOrAdvance="@MagicObjectHelper.RandomAdvance"
+                                    ECorOC="@MagicObjectHelper.OC" Hospital="@hospital.Prefix" />
+                    </MudTabPanel>
+                }
                 <MudTabPanel Text="最後自動編號">
                     <LastSubjectNoView/>
                 </MudTabPanel>
