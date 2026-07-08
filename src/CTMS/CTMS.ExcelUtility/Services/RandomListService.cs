@@ -57,13 +57,34 @@ public class RandomListService
             {
                 IWorkbook workbook = application.Workbooks.Open(sampleFile);
 
+                // 尚未提供隨機表分頁的醫院（已加入 HospitalRegistry 但還沒補上 xlsx 分頁）直接略過，
+                // 避免單一缺頁丟例外而中斷整份讀取與 App 啟動；日後補上該分頁即自動生效。
+                var existingSheets = new HashSet<string>();
+                foreach (IWorksheet sheet in workbook.Worksheets)
+                {
+                    existingSheets.Add(sheet.Name);
+                }
+
                 foreach (var owner in owners)
                 {
-                    ReadSheet(workbook, owner.SheetEarly, owner.Prefix, MagicObjectHelper.RandomEarly);
-                    ReadSheet(workbook, owner.SheetAdvance, owner.Prefix, MagicObjectHelper.RandomAdvance);
+                    ReadSheetIfExists(workbook, existingSheets, owner.SheetEarly, owner.Prefix, MagicObjectHelper.RandomEarly);
+                    ReadSheetIfExists(workbook, existingSheets, owner.SheetAdvance, owner.Prefix, MagicObjectHelper.RandomAdvance);
                 }
             }
         }
+    }
+
+    private void ReadSheetIfExists(IWorkbook workbook, HashSet<string> existingSheets,
+        string sheetName, string hospital, string EarlyOrAdvance)
+    {
+        if (existingSheets.Contains(sheetName) == false)
+        {
+            System.Diagnostics.Trace.TraceWarning(
+                $"RandomList.xlsx 缺少分頁「{sheetName}」（{hospital}），已略過；補上該分頁後隨機表即自動生效。");
+            return;
+        }
+
+        ReadSheet(workbook, sheetName, hospital, EarlyOrAdvance);
     }
 
     private void ReadSheet(IWorkbook workbook, string sheetName,
