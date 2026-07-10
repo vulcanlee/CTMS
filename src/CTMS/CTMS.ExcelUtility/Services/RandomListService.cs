@@ -36,6 +36,24 @@ public class RandomListService
         }
     }
 
+    /// <summary>
+    /// 將指定 prefix 擁有者的隨機清單以 xlsx 分頁「移除後重建」，其餘醫院不受影響。
+    /// 用於維護：高榮/嘉長隨機表比照奇美完全複製後，強制以更新後的 xlsx 覆蓋 runtime
+    /// （自癒補讀只補「完全缺少」的院，無法覆蓋已存在的舊資料，故需此方法）。
+    /// 注意：會清掉被指定院既有的 SubjectNo 配號，僅適用於尚未配號的院別。
+    /// 回傳重建後這些院的項目筆數。
+    /// </summary>
+    public async Task<int> RebuildOwnersFromExcelAsync(params string[] prefixes)
+    {
+        await RandomList.ReadAsync();
+        var set = new HashSet<string>(prefixes);
+        RandomList.Items.RemoveAll(i => set.Contains(i.Hospital));
+        var owners = HospitalRegistry.PrefixOwners.Where(o => set.Contains(o.Prefix)).ToList();
+        ReadExcel(owners);
+        await RandomList.SaveAsync();
+        return RandomList.Items.Count(i => set.Contains(i.Hospital));
+    }
+
     public void ReadExcel()
     {
         ReadExcel(HospitalRegistry.PrefixOwners.ToList());

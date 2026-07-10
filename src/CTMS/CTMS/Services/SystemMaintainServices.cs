@@ -5,6 +5,7 @@ using CTMS.Business.Services.ClinicalInformation;
 using CTMS.DataModel.Models;
 using CTMS.DataModel.Models.ClinicalInformation;
 using CTMS.Share.Helpers;
+using SyncExcel.Services;
 
 namespace CTMS.Services;
 
@@ -16,6 +17,7 @@ public class SystemMaintainServices
     private readonly BloodExameService bloodExameService;
     private readonly SurveyService surveyService;
     private readonly SubjectNoHelper subjectNoHelper;
+    private readonly RandomListService randomListService;
     string logMessage = string.Empty;
 
     public SystemMaintainServices(ILogger<SystemMaintainServices> logger,
@@ -23,7 +25,8 @@ public class SystemMaintainServices
         NotificationService notificationService,
         BloodExameService bloodExameService,
         SurveyService surveyService,
-        SubjectNoHelper subjectNoHelper)
+        SubjectNoHelper subjectNoHelper,
+        RandomListService randomListService)
     {
         this.logger = logger;
         this.patientService = patientService;
@@ -31,6 +34,27 @@ public class SystemMaintainServices
         this.bloodExameService = bloodExameService;
         this.surveyService = surveyService;
         this.subjectNoHelper = subjectNoHelper;
+        this.randomListService = randomListService;
+    }
+
+    /// <summary>
+    /// 高榮/嘉長隨機表比照奇美（完全複製）：以更新後的 RandomList.xlsx（其高榮/嘉長分頁已為奇美複本）
+    /// 移除並重建 runtime 中 KSVGH / CYCGMH 兩院的隨機清單，其餘院既有配號不受影響。
+    /// 供升級舊系統或修正既有 mulberry32 舊序列時，由管理者一次性手動執行（自癒補讀無法覆蓋已存在資料）。
+    /// </summary>
+    public async Task Fix_20260710_高榮嘉長隨機表比照奇美()
+    {
+        logMessage = "開始執行 高榮/嘉長隨機表比照奇美（複製）";
+        logger.LogInformation(logMessage);
+        OpenNotification(logMessage, NotificationType.Warning);
+
+        int count = await randomListService.RebuildOwnersFromExcelAsync(
+            MagicObjectHelper.prefix高雄榮總醫院,
+            MagicObjectHelper.prefix嘉義長庚醫院);
+
+        logMessage = $"完成執行 高榮/嘉長隨機表比照奇美（複製），已重建 {count} 筆（KSVGH + CYCGMH）";
+        logger.LogInformation(logMessage);
+        OpenNotification(logMessage, NotificationType.Success);
     }
 
     public async Task Fix_20260326_成大抽血生化_eGFR參考區間修正()

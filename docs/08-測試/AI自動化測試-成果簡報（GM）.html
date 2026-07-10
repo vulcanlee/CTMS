@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>導入 AI 自動化測試 — 成果簡報（GM）</title>
+<style>
+  :root{
+    --bg:#000; --ink:#f5f5f7; --muted:#86868b; --line:#2a2a2c;
+    --accent:#2997ff; --gold:#f5b83d; --pass:#30d158;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--bg); color:var(--ink); overflow:hidden;
+    font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC","Hiragino Sans GB",sans-serif;
+    -webkit-font-smoothing:antialiased; letter-spacing:.01em;
+  }
+  .deck{position:fixed; inset:0;}
+  .slide{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    justify-content:center; align-items:center; text-align:center;
+    padding:8vmin 10vmin; opacity:0; visibility:hidden;
+    transform:translateY(24px) scale(.99); transition:opacity .5s ease, transform .5s ease;
+    background:radial-gradient(120% 90% at 50% 0%, #101013 0%, #000 60%);
+  }
+  .slide.active{opacity:1; visibility:visible; transform:none;}
+  .slide.active .rise{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;}
+  .slide.active .rise:nth-child(2){animation-delay:.08s;}
+  .slide.active .rise:nth-child(3){animation-delay:.16s;}
+  .slide.active .rise:nth-child(4){animation-delay:.24s;}
+  @keyframes rise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+
+  .eyebrow{color:var(--accent); font-weight:700; font-size:clamp(13px,1.6vmin,20px);
+    letter-spacing:.28em; text-transform:uppercase; margin-bottom:3vmin;}
+  h1{font-size:clamp(38px,9vmin,120px); font-weight:800; line-height:1.05; letter-spacing:-.01em;}
+  h2{font-size:clamp(30px,6.6vmin,86px); font-weight:800; line-height:1.14; letter-spacing:-.01em;}
+  .quote{font-size:clamp(30px,7vmin,92px); font-weight:800; line-height:1.22; letter-spacing:-.005em;}
+  .quote .em{color:var(--gold);}
+  .big{font-size:clamp(120px,34vmin,460px); font-weight:900; line-height:.9; letter-spacing:-.03em;
+    background:linear-gradient(180deg,#fff 0%, #cfe6ff 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .big.pass{background:linear-gradient(180deg,#fff 0%, #9af0b8 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .sub{color:var(--muted); font-size:clamp(17px,2.7vmin,34px); font-weight:500; line-height:1.55; margin-top:3.5vmin; max-width:22em;}
+  .sub b{color:var(--ink); font-weight:700;}
+  .meta{color:var(--muted); font-size:clamp(14px,2vmin,24px); margin-top:5vmin; letter-spacing:.06em;}
+
+  .pills{display:flex; flex-wrap:wrap; gap:1.6vmin 2vmin; justify-content:center; margin-top:2vmin;}
+  .pill{border:1px solid var(--line); border-radius:999px; padding:1.4vmin 3vmin;
+    font-size:clamp(16px,2.6vmin,30px); font-weight:700; color:var(--ink);}
+  .flow{display:flex; flex-wrap:wrap; gap:2.4vmin; justify-content:center; align-items:center; margin-top:1vmin;}
+  .step{font-size:clamp(18px,3vmin,38px); font-weight:800;}
+  .arrow{color:var(--accent); font-size:clamp(18px,3vmin,38px); font-weight:800;}
+  .num{color:var(--gold); font-weight:900; margin-right:.4em;}
+
+  /* talent section marker */
+  .kicker{color:var(--gold); font-weight:700; letter-spacing:.28em; font-size:clamp(13px,1.6vmin,20px);
+    text-transform:uppercase; margin-bottom:3vmin;}
+
+  /* chrome */
+  .bar{position:fixed; left:0; top:0; height:3px; background:var(--accent); width:0; transition:width .4s ease; z-index:5;}
+  .count{position:fixed; right:3vmin; bottom:2.4vmin; color:#6b6b70; font-size:14px; letter-spacing:.1em; z-index:5;
+    font-variant-numeric:tabular-nums;}
+  .hint{position:fixed; left:3vmin; bottom:2.4vmin; color:#4a4a4f; font-size:13px; z-index:5;}
+  .nav{position:fixed; inset:0; display:flex; z-index:3;}
+  .nav div{flex:1; cursor:pointer;}
+  @media print{
+    body{overflow:visible;}
+    .slide{position:relative; opacity:1!important; visibility:visible!important; transform:none!important;
+      height:100vh; page-break-after:always; break-after:page;}
+    .bar,.count,.hint,.nav{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="bar" id="bar"></div>
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide">
+    <div class="eyebrow rise">成果報告 · 呈總經理</div>
+    <h1 class="rise">導入 AI 自動化測試</h1>
+    <div class="meta rise">AI 臨床試驗管理平臺（CTMS）　v1.1.226　·　2026 / 07 / 08</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide">
+    <h2 class="rise">每一次改版，<br>我們都在重來一遍。</h2>
+    <div class="sub rise">工程師手動把每個功能重新點過一遍，<br>只為了確認——沒出錯。</div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide">
+    <div class="eyebrow rise">人工測試的代價</div>
+    <div class="pills rise">
+      <span class="pill">耗時</span><span class="pill">重複</span><span class="pill">易漏</span>
+      <span class="pill">難重現</span><span class="pill">沒有佐證</span>
+    </div>
+    <div class="sub rise">改版愈頻繁，負擔愈重。</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide">
+    <h2 class="quote rise">如果，<br>把這件事<span class="em">交給 AI</span> 呢？</h2>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide">
+    <div class="eyebrow rise">我們讓 AI 做四件事</div>
+    <div class="flow rise">
+      <span class="step">讀懂系統</span><span class="arrow">→</span>
+      <span class="step">寫測試</span><span class="arrow">→</span>
+      <span class="step">親自操作瀏覽器</span><span class="arrow">→</span>
+      <span class="step">產出報告</span>
+    </div>
+    <div class="sub rise">工程師，從「親手點每一項」<br>升級為「<b>審閱 AI 的結果</b>」。</div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide">
+    <div class="eyebrow rise">實例</div>
+    <h2 class="rise">新增三家合作醫院</h2>
+    <div class="pills rise">
+      <span class="pill">高雄榮民總醫院</span><span class="pill">嘉義長庚</span><span class="pill">柳營奇美</span>
+    </div>
+    <div class="sub rise">涵蓋院別選單、醫療數據儀表板、隨機分組表、收案編號。</div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide">
+    <div class="big rise">52<span style="font-size:.34em;font-weight:800;color:#86868b;"> 秒</span></div>
+    <div class="sub rise">一次完整驗證。<br>人工，要 <b>30–60 分鐘</b>。</div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide">
+    <div class="big pass rise">13 <span style="font-size:.34em;font-weight:800;color:#86868b;">項</span></div>
+    <div class="sub rise"><b>全數通過</b>。<br>1 登入 ＋ 12 項功能／內容驗證。</div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide">
+    <div class="eyebrow rise">而且</div>
+    <h2 class="rise">一鍵重跑</h2>
+    <div class="flow rise" style="margin-top:3vmin;">
+      <span class="step" style="font-size:clamp(15px,2.3vmin,28px);">備份</span><span class="arrow">→</span>
+      <span class="step" style="font-size:clamp(15px,2.3vmin,28px);">啟動</span><span class="arrow">→</span>
+      <span class="step" style="font-size:clamp(15px,2.3vmin,28px);">測試</span><span class="arrow">→</span>
+      <span class="step" style="font-size:clamp(15px,2.3vmin,28px);">還原</span><span class="arrow">→</span>
+      <span class="step" style="font-size:clamp(15px,2.3vmin,28px);">開報告</span>
+    </div>
+    <div class="sub rise">每一步截圖存證 · 可無限次重跑 · <b>不影響正式資料</b>。</div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide">
+    <div class="eyebrow rise">意外之喜</div>
+    <h2 class="rise">AI 主動發現<br>一項既有缺口。</h2>
+    <div class="sub rise">某統計頁未納入新醫院——<br>在客訴之前，先一步<b>止血</b>。</div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide">
+    <div class="eyebrow rise">效益</div>
+    <div class="pills rise">
+      <span class="pill">省時省力</span><span class="pill">品質更穩</span>
+      <span class="pill">交付有據</span><span class="pill">可複製</span>
+    </div>
+    <div class="sub rise">同一套方法，能套用到公司其他每一個專案。</div>
+  </section>
+
+  <!-- 12 transition -->
+  <section class="slide">
+    <h2 class="quote rise">真正的問題，<br>不是 AI 會不會。<br>是——<span class="em">誰能駕馭它。</span></h2>
+  </section>
+
+  <!-- 13 section header -->
+  <section class="slide">
+    <div class="kicker rise">The People</div>
+    <h2 class="rise">要駕馭 AI 做出這件事，<br>需要什麼樣的人？</h2>
+  </section>
+
+  <!-- 14 -->
+  <section class="slide">
+    <h2 class="rise"><span class="num">①</span>會問對問題</h2>
+    <div class="sub rise">把模糊的「幫我測一下」，<br>拆成一個個<b>可驗證的目標</b>。</div>
+    <div class="meta rise">問題問得對，AI 才做得對。</div>
+  </section>
+
+  <!-- 15 -->
+  <section class="slide">
+    <h2 class="rise"><span class="num">②</span>審閱，而不是盲信</h2>
+    <div class="sub rise">看得懂 AI 的結果，<br>也<b>敢推翻</b>它。</div>
+    <div class="meta rise">AI 會犯錯；判斷對錯的，是人。</div>
+  </section>
+
+  <!-- 16 -->
+  <section class="slide">
+    <h2 class="rise"><span class="num">③</span>系統性思維</h2>
+    <div class="sub rise">懂系統的全貌，<br>也懂資料保護與邊界。</div>
+    <div class="meta rise">知道要測什麼，更知道不能弄壞什麼。</div>
+  </section>
+
+  <!-- 17 -->
+  <section class="slide">
+    <h2 class="rise"><span class="num">④</span>對品質偏執</h2>
+    <div class="sub rise">不接受「看起來過了」。</div>
+    <div class="meta rise">要的是「有截圖、可重現」的證明。</div>
+  </section>
+
+  <!-- 18 -->
+  <section class="slide">
+    <h2 class="rise"><span class="num">⑤</span>把 AI 當協作夥伴</h2>
+    <div class="sub rise">引導、迭代、來回對話——<br>而不是一次下令。</div>
+    <div class="meta rise">最好的成果，來自一場好的合作。</div>
+  </section>
+
+  <!-- 19 closing quote -->
+  <section class="slide">
+    <h2 class="quote rise">工具，只會愈來愈聰明。<br>真正稀缺的，<br>是<span class="em">知道該叫它做什麼</span>的人。</h2>
+  </section>
+
+  <!-- 20 next steps -->
+  <section class="slide">
+    <div class="eyebrow rise">後續建議</div>
+    <div class="pills rise">
+      <span class="pill">逐步推廣至其他專案</span>
+      <span class="pill">納入改版標準流程</span>
+      <span class="pill">每次交付附客觀驗收證明</span>
+    </div>
+    <div class="sub rise">謝謝。</div>
+  </section>
+
+</div>
+
+<div class="count" id="count"></div>
+<div class="hint">← → 翻頁 · F 全螢幕</div>
+<div class="nav"><div id="prev"></div><div id="next"></div></div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const bar=document.getElementById('bar'), count=document.getElementById('count');
+  let i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    bar.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    location.hash=i+1;
+  }
+  function next(){show(i+1);} function prev(){show(i-1);}
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home')show(0);
+    else if(e.key==='End')show(slides.length-1);
+    else if(e.key.toLowerCase()==='f'){
+      if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();
+    }
+  });
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  const start=parseInt(location.hash.replace('#',''))||1;
+  show(start-1);
+</script>
+</body>
+</html>

@@ -189,6 +189,24 @@ public partial class SystemMaintainView
         }
     }
 
+    public async Task On高榮嘉長隨機表比照奇美()
+    {
+        var ok = await modalService.ConfirmAsync(new ConfirmOptions
+        {
+            Title = "再次確認",
+            Content = "將以奇美排列完全覆蓋高榮／嘉長的隨機表（移除後重建，兩院尚未配號）。確定要執行嗎？",
+            OkText = "是",
+            CancelText = "取消",
+            OkButtonProps = new ButtonProps { Danger = true },
+            MaskClosable = false
+        });
+
+        if (ok)
+        {
+            await systemMaintainServices.Fix_20260710_高榮嘉長隨機表比照奇美();
+        }
+    }
+
     private static WcfCallResult BuildWcfCallResult(string methodName, XmlElement[]? schemaElements, XmlElement? diffgramElement)
     {
         var rawXml = BuildRawXml(schemaElements, diffgramElement);
