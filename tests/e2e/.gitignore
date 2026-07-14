@@ -1,5 +1,6 @@
 node_modules/
 playwright-report/
+playwright-report-spec/
 test-results/
 blob-report/
 .auth/

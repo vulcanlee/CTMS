@@ -48,7 +48,7 @@ Playwright 全域設定，重點：
 - `projects`：先跑 `setup`（登入），再跑 `chromium`（套用登入狀態 `storageState`）。
 
 ### `.gitignore`
-排除不進版控的產物：`node_modules/`、`playwright-report/`、`test-results/`、
+排除不進版控的產物：`node_modules/`、`playwright-report/`、`playwright-report-spec/`（篩選跑的報告）、`test-results/`、
 `.auth/`（登入狀態）、`.data-backup/`（資料備份）、`app-run*.log`、`screenshots/`（前後截圖）。
 
 ---
@@ -100,7 +100,7 @@ Playwright 全域設定，重點：
 串起「保護資料 → 跑測試 → 還原」的完整流程：
 1. **備份** `BackendDB.db`、`Data\SubjectNoGenerator.json`、`Data\RandomListRuntime.json`（含 SQLite 的 `-wal`/`-shm` 側車檔）。
 2. **建置並啟動** App（`dotnet build` 後 `dotnet run --no-build`），輪詢直到就緒。
-3. 執行 `npx playwright test`（`-Headed` 時加 `--headed`）。
+3. 執行 `npx playwright test`（`-Headed` 時加 `--headed`；`-Spec` 時只跑符合關鍵字的測試檔，且報告改寫入 `playwright-report-spec/`）。
 4. **先關閉 App**（釋放 SQLite 檔鎖）**再還原**資料（`finally` 確保無論成敗都執行）。
 5. 開啟 HTML 報告。
 
@@ -108,18 +108,22 @@ Playwright 全域設定，重點：
 - `-Headed`（預設開）：有頭模式，看得到瀏覽器操作。`-Headed:$false` 走無頭。
 - `-ShowReport`（預設開）：結束後開啟 HTML 報告。
 - `-KeepData`（預設關）：**跳過還原**，讓測試建立的病患**留在資料庫**（重啟 App 後看得到）。
+- `-Spec`（預設無）：只跑檔名符合此關鍵字的測試檔（如 `-Spec random-workflow`）。此時報告寫入 `playwright-report-spec/`，
+  **不會覆蓋**正式的 `playwright-report/index.html`（最後一次「全部測試」的結果），開報告時也會自動開篩選那份。
 
 ```powershell
-pwsh scripts\Run-E2E.ps1                # 看操作 + 開報告 + 跑完還原資料
-pwsh scripts\Run-E2E.ps1 -Headed:$false # 無頭快跑
-pwsh scripts\Run-E2E.ps1 -KeepData      # 保留測試病患進資料庫
+pwsh scripts\Run-E2E.ps1                        # 看操作 + 開報告 + 跑完還原資料（全部測試）
+pwsh scripts\Run-E2E.ps1 -Headed:$false         # 無頭快跑
+pwsh scripts\Run-E2E.ps1 -KeepData              # 保留測試病患進資料庫
+pwsh scripts\Run-E2E.ps1 -Spec random-workflow  # 只跑 random-workflow；報告另存不覆蓋全套
 ```
 
 ---
 
 ## 產出與資料安全
 
-- **測試報告**：`tests/e2e/playwright-report/index.html`（含每測試前後截圖、trace、影片）。
+- **測試報告**：`tests/e2e/playwright-report/index.html`（含每測試前後截圖、trace、影片）。此為「全部測試」的正式報告；
+  用 `-Spec` 篩選跑時另存於 `tests/e2e/playwright-report-spec/index.html`，不覆蓋正式那份。
 - **前後截圖檔**：`tests/e2e/screenshots/`。
 - **驗收報告**：`docs/08-測試/驗收報告-新增三家醫院.html`。
 - **資料保護**：測試會寫入共用資料庫，預設跑完自動還原（含刪除 SQLite WAL/SHM，避免「database disk image is malformed」）。

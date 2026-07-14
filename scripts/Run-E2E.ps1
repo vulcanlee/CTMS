@@ -25,6 +25,13 @@
     Skip the restore step so the patients created by the tests REMAIN in
     BackendDB.db (visible after you restart the app). Default: off (data restored).
 
+.PARAMETER Spec
+    Run only the test files whose name matches this keyword (Playwright test
+    filename filter), e.g. -Spec random-workflow. When set, the HTML report is
+    written to playwright-report-spec\ instead of playwright-report\, so the
+    canonical playwright-report\index.html (last full-suite run) is never
+    overwritten by a filtered run. Default: unset (run all tests).
+
 .EXAMPLE
     pwsh scripts\Run-E2E.ps1
     pwsh scripts\Run-E2E.ps1 -Headed:$false   # headless (faster, no window)
@@ -34,7 +41,9 @@
 param(
     [switch]$Headed = $true,
     [switch]$ShowReport = $true,
-    [switch]$KeepData
+    [switch]$KeepData,
+    # 只跑符合此關鍵字的測試檔（Playwright test 檔名過濾），例如 -Spec random-workflow
+    [string]$Spec
 )
 
 $ErrorActionPreference = 'Stop'
@@ -123,6 +132,11 @@ try {
     try {
         $pwArgs = @('playwright', 'test')
         if ($Headed) { $pwArgs += '--headed' }
+        if ($Spec) {
+            # 篩選跑：把 HTML 報告導到另一個資料夾，避免覆蓋正式的全套報告
+            $env:PLAYWRIGHT_HTML_OUTPUT_DIR = 'playwright-report-spec'
+            $pwArgs += $Spec
+        }
         & npx @pwArgs
         $testExit = $LASTEXITCODE
     } finally {
@@ -151,7 +165,13 @@ if ($testExit -eq 0) {
 
 if ($ShowReport) {
     Push-Location $E2EDir
-    try { & npx playwright show-report } finally { Pop-Location }
+    try {
+        if ($Spec) {
+            & npx playwright show-report playwright-report-spec
+        } else {
+            & npx playwright show-report
+        }
+    } finally { Pop-Location }
 }
 
 exit $testExit
