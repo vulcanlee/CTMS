@@ -32,12 +32,9 @@ public class EnrollmentProgressService
     {
         Progress = new EnrollmentProgressViewModel();
 
-        var hospitalNames = new List<string>
-        {
-            MagicObjectHelper.PrefixSheetName成大醫院,
-            MagicObjectHelper.PrefixSheetName郭綜合醫院,
-            MagicObjectHelper.PrefixSheetName奇美醫院,
-        };
+        var hospitalNames = HospitalRegistry.PrefixOwners
+            .Select(x => x.ShortName)
+            .ToList();
 
         foreach (var hospitalName in hospitalNames)
         {
@@ -135,22 +132,9 @@ public class EnrollmentProgressService
             return null;
         }
 
-        if (hospital.Contains(MagicObjectHelper.PrefixSheetName成大醫院))
-        {
-            return MagicObjectHelper.PrefixSheetName成大醫院;
-        }
-
-        if (hospital.Contains(MagicObjectHelper.PrefixSheetName奇美醫院))
-        {
-            return MagicObjectHelper.PrefixSheetName奇美醫院;
-        }
-
-        if (hospital.Contains(MagicObjectHelper.PrefixSheetName郭綜合醫院))
-        {
-            return MagicObjectHelper.PrefixSheetName郭綜合醫院;
-        }
-
-        return null;
+        // 精確比對 DisplayName 後歸戶到 prefix 擁有者短名（柳營奇美醫院 → 奇美）；
+        // 「高雄榮民總醫院」不含短名「高榮」，不能只靠 Contains 比對。
+        return HospitalRegistry.NormalizeToOwnerShortName(hospital);
     }
 
     private static string? GetCancerName(string? cancerType)

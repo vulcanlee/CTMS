@@ -1,25 +1,30 @@
 import { test, expect } from './fixtures';
 
 /**
- * 【已知缺口】收案進度統計頁 /EnrollmentProgress 目前仍硬編碼只有 3 家
- * （成大 / 郭綜合 / 奇美），EnrollmentProgressService 未改用 HospitalRegistry，
- * 因此高榮、嘉長不會出現在此頁。
- *
- * 本測試斷言「現況」——僅 3 家表頭——以在報告中明確標記此缺口，
- * 供團隊決定是否補修（把 EnrollmentProgressService registry 化）。
+ * 收案進度統計頁 /EnrollmentProgress 已改用 HospitalRegistry.PrefixOwners
+ * 與 NormalizeToOwnerShortName，醫院欄位與儀表板同一套歸戶邏輯：
+ *   - 表頭為 5 家 prefix 擁有者（成大 / 奇美 / 郭綜合 / 高榮 / 嘉長），順序同 registry。
+ *   - 柳營奇美不單獨成欄，其病例併入奇美。
+ * 表頭文字為「短名 + 醫院」（EnrollmentProgressView.razor 既有樣板）。
  * 內容在 prerender（OnInitializedAsync 設 isLoaded=true）即產出，不需等 circuit。
  */
-test.describe('收案進度 /EnrollmentProgress（已知缺口：僅硬編碼 3 家）', () => {
-  test('表頭僅成大/郭綜合/奇美，不含高榮、嘉長', async ({ page }) => {
-    test.info().annotations.push({ type: '操作步驟', description: '前往 /EnrollmentProgress → 確認表頭僅成大/郭綜合/奇美三家（高榮、嘉長尚未納入，屬已知後續優化項）' });
+test.describe('收案進度 /EnrollmentProgress（registry 化，5 家）', () => {
+  test('表頭為成大/奇美/郭綜合/高榮/嘉長五家', async ({ page }) => {
+    test.info().annotations.push({ type: '操作步驟', description: '前往 /EnrollmentProgress → 確認表頭為 5 家（成大、奇美、郭綜合、高榮、嘉長），順序同 HospitalRegistry' });
     await page.goto('/EnrollmentProgress');
     await expect(page.locator('.enrollment-table')).toBeVisible();
 
     const headers = page.locator('th.hospital-header');
-    await expect(headers).toHaveText(['成大醫院', '郭綜合醫院', '奇美醫院']);
+    await expect(headers).toHaveText([
+      '成大醫院', '奇美醫院', '郭綜合醫院', '高榮醫院', '嘉長醫院',
+    ]);
+  });
 
-    // 明確記錄缺口：新醫院不出現在此頁
-    await expect(page.locator('th.hospital-header', { hasText: '高' })).toHaveCount(0);
-    await expect(page.locator('th.hospital-header', { hasText: '嘉' })).toHaveCount(0);
+  test('柳營奇美不單獨成欄（併入奇美）', async ({ page }) => {
+    test.info().annotations.push({ type: '操作步驟', description: '前往 /EnrollmentProgress → 確認沒有「柳營」欄位，柳營奇美病例歸戶至奇美' });
+    await page.goto('/EnrollmentProgress');
+    await expect(page.locator('.enrollment-table')).toBeVisible();
+
+    await expect(page.locator('th.hospital-header', { hasText: '柳營' })).toHaveCount(0);
   });
 });
