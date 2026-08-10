@@ -1,4 +1,12 @@
 ﻿# 檢驗檢查報告:
+
+- 文件用途：成大 HIS 檢驗報告介面的位址與函式簽章原始紀錄
+- 主要讀者：維運與部署人員
+- 對應系統版本：未核對（沿用建立時內容）
+- 最後核對日期：未核對
+- 編碼：UTF-8（繁體中文，含 BOM）
+
+---
 * Method: http://hisweb.hosp.ncku/HISService/LIS/WService/basic/BusinessLogic.svc
 
 * Function: 
