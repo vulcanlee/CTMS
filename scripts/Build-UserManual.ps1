@@ -58,6 +58,29 @@ $sections = @(
                 ForEach-Object { "docs/12-畫面欄位參考/$($_.Name)" })
         )
     }
+    @{ Title = '功能模組篇：每個功能背後的邏輯'; Files = @(
+            'docs/04-功能模組/個案管理.md'
+            'docs/04-功能模組/儀表板.md'
+            'docs/04-功能模組/收案進度統計.md'
+            'docs/04-功能模組/臨床資訊與病史.md'
+            'docs/04-功能模組/治療紀錄.md'
+            'docs/04-功能模組/抽血檢驗.md'
+            'docs/04-功能模組/副作用與CTCAE分級.md'
+            'docs/04-功能模組/問卷收集.md'
+            'docs/04-功能模組/追蹤資料與縱向影像.md'
+            'docs/04-功能模組/AI風險評估與骨骼肌分析.md'
+            'docs/04-功能模組/簽核確認.md'
+            'docs/04-功能模組/DICOM影像處理.md'
+            'docs/04-功能模組/受試者編號與隨機分組.md'
+            'docs/04-功能模組/使用者與權限管理.md'
+            'docs/04-功能模組/資料匯入匯出.md'
+            'docs/04-功能模組/操作歷程與稽核.md'
+            'docs/05-AI推論/overview.md'
+            'docs/05-AI推論/flow-1-dicom-upload.md'
+            'docs/05-AI推論/flow-2-manual-annotation.md'
+            'docs/05-AI推論/AIAgent背景服務.md'
+        )
+    }
     @{ Title = '技術篇：資料怎麼被處理與紀錄'; Files = @(
             'docs/02-架構/開發慣例與限制速查.md'
             'docs/02-架構/啟動與初始化.md'
@@ -127,6 +150,29 @@ foreach ($sec in $sections) {
 }
 $out.Add('---')
 $out.Add('')
+
+# 未收錄清單：讓「哪些內容不在本檔」變成明寫的事實，而不是靜默的缺口
+$includedPaths = New-Object System.Collections.Generic.HashSet[string]
+foreach ($e in $entries) { [void]$includedPaths.Add($e.Full) }
+$notIncluded = @()
+foreach ($f in (Get-ChildItem $docsRoot -Filter *.md -File -Recurse | Sort-Object FullName)) {
+    if ($f.Name -eq 'README.md') { continue }
+    if ($f.FullName -eq $outPath) { continue }
+    if ($includedPaths.Contains($f.FullName)) { continue }
+    $rel = [IO.Path]::GetRelativePath($docsRoot, $f.FullName) -replace '\\', '/'
+    if ($rel -like 'Prompts/*' -or $rel -like 'superpowers/*') { continue }
+    $notIncluded += $rel
+}
+if ($notIncluded) {
+    $out.Add('## 本檔未收錄的文件')
+    $out.Add('')
+    $out.Add('下列文件留在 `docs/` 各分類內，**沒有**組裝進本檔（多為歷史紀錄、測試報告與擴充指南）。這份清單由腳本自動產生，不會漏列。')
+    $out.Add('')
+    foreach ($rel in $notIncluded) { $out.Add("- [$rel]($rel)") }
+    $out.Add('')
+    $out.Add('---')
+    $out.Add('')
+}
 
 $currentSection = ''
 foreach ($e in $entries) {
