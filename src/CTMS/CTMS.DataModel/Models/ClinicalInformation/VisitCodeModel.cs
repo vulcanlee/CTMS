@@ -16,6 +16,10 @@ namespace CTMS.DataModel.Models.ClinicalInformation
         public DateTime? AssessmentDate { get; set; }
         public string Timeline { get; set; }
         public int CycleMonth { get; set; }
+        /// <summary>
+        /// 預設空殼序號（1~21），用來區分內容相同的預設 Visit Code；手動新增與舊資料皆為 0
+        /// </summary>
+        public int PresetIndex { get; set; }
 
         public VisitCodeModel Clone()
         {
@@ -33,12 +37,14 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             {
                 return this.AssessmentDate.Value.Date == other.AssessmentDate.Value.Date &&
                        this.Timeline == other.Timeline &&
-                       this.CycleMonth == other.CycleMonth;
+                       this.CycleMonth == other.CycleMonth &&
+                       this.PresetIndex == other.PresetIndex;
             }
             else
             {
                 return this.Timeline == other.Timeline &&
-                       this.CycleMonth == other.CycleMonth;
+                       this.CycleMonth == other.CycleMonth &&
+                       this.PresetIndex == other.PresetIndex;
             }
         }
 

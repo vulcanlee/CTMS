@@ -89,6 +89,16 @@ public partial class VisitCodeDialog
             if (VisitCodeMode == "Edit")
             {
                 await GetData();
+
+                // 尚未存檔的 Visit Code（例如預設空殼、剛新增的）只需保留在對話框中，按確認後才一併存檔
+                VisitCodeSetModel savedVisitCodes = new();
+                patientData.臨床資料.CollectVisitCode(savedVisitCodes);
+                if (!savedVisitCodes.VisitCodes.Any(x => x.CompareTo(VisitCodeBackup)))
+                {
+                    ShowVisitCodeEditorDialog = false;
+                    return;
+                }
+
                 patientData.臨床資料.ReplaceVisitCode(VisitCodeBackup, visitCodeModel);
 
                 patientData.SyncData();
@@ -139,6 +149,16 @@ public partial class VisitCodeDialog
         {
             sourceObjectJson = JsonConvert.SerializeObject(data);
             await GetData();
+
+            // 尚未存檔的 Visit Code 只需從對話框移除
+            VisitCodeSetModel savedVisitCodes = new();
+            patientData.臨床資料.CollectVisitCode(savedVisitCodes);
+            if (!savedVisitCodes.VisitCodes.Any(x => x.CompareTo(itemVisitCode)))
+            {
+                data.RemoveVisitCode(itemVisitCode);
+                return;
+            }
+
             patientData.臨床資料.RemoveVisitCode(itemVisitCode);
 
             patientData.SyncData();

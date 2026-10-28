@@ -836,6 +836,8 @@ public partial class BasicClinical2View
 
         sourceObjectJson = JsonConvert.SerializeObject(VisitCodeSetModel);
 
+        VisitCodeSetModel.AddPresetVisitCodes();
+
         ShowVisitCodeDialog = true;
     }
 

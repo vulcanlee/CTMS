@@ -54,8 +54,42 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             if (visitCodeModel != null && !VisitCodes.Any(x => x.CompareTo(visitCodeModel)))
             {
                 VisitCodes.Add(visitCodeModel);
-                Nodes.Add(new VisitCodeSetNodeModel());
+                // 新增的 Visit Code 預設勾選抽血檢驗血液、抽血檢驗生化與血液副作用
+                Nodes.Add(new VisitCodeSetNodeModel()
+                {
+                    Checked抽血檢驗血液 = true,
+                    Checked抽血檢驗生化 = true,
+                    CheckedHematologicSideEffects血液副作用 = true,
+                });
                 Expanded.Add(false);
+            }
+        }
+
+        /// <summary>
+        /// 尚無任何 Visit Code 時，預設建立 21 個 Baseline 空殼，日期與 Cycle 留給研究助理自行填寫
+        /// </summary>
+        public void AddPresetVisitCodes()
+        {
+            if (VisitCodes.Count > 0)
+                return;
+            for (int i = 1; i <= 21; i++)
+            {
+                AddVisitCode(new VisitCodeModel()
+                {
+                    Timeline = MagicObjectHelper.TimelineBaseline,
+                    PresetIndex = i,
+                });
+            }
+        }
+
+        public void RemoveVisitCode(VisitCodeModel visitCodeModel)
+        {
+            int index = GetVisitCodeIndex(visitCodeModel);
+            if (index >= 0)
+            {
+                VisitCodes.RemoveAt(index);
+                Nodes.RemoveAt(index);
+                Expanded.RemoveAt(index);
             }
         }
 

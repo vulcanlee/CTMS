@@ -456,7 +456,7 @@ namespace CTMS.DataModel.Models.ClinicalInformation
             VisitCodeSetModel VisitCodeSetModel = new();
             CollectVisitCode(VisitCodeSetModel);
             var foundTarget = VisitCodeSetModel.VisitCodes
-                .FirstOrDefault(x => x.CompareTo(target));
+                .FirstOrDefault(x => x.CompareTo(target) && !x.CompareTo(source));
             if (foundTarget != null)
                 return;
 

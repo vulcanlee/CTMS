@@ -2,8 +2,8 @@
 
 - 文件用途：Visit Code（回診次別）的資料結構、標題組成規則，以及它與各類臨床資料的關聯
 - 主要讀者：開發者與 AI 助手
-- 對應系統版本：1.1.230
-- 最後核對日期：2026/08/10
+- 對應系統版本：1.1.235
+- 最後核對日期：2026/10/28
 - 編碼：UTF-8（繁體中文，含 BOM）
 
 ---
@@ -20,6 +20,7 @@
 | `AssessmentDate` | `DateTime?` | 評估／回診日期，**可為 null** |
 | `Timeline` | `string` | 時間點標籤，例如 `Baseline`、`FU1(3M)`（可選值見下表） |
 | `CycleMonth` | `int` | 週期數 |
+| `PresetIndex` | `int` | 預設空殼序號（1～21），用來區分內容相同的預設 Visit Code；手動新增與舊資料皆為 `0`（見第七節） |
 
 ### `Timeline` 的可選值
 
@@ -46,8 +47,8 @@ A: {AssessmentDate:yyyy-MM-dd} B: {Timeline} C: Cycle {CycleMonth}
 
 | 情況 | 比對依據 |
 | --- | --- |
-| 兩邊都有 `AssessmentDate` | 日期（只比日期部分）＋ `Timeline` ＋ `CycleMonth` |
-| 任一邊沒有日期 | 只比 `Timeline` ＋ `CycleMonth` |
+| 兩邊都有 `AssessmentDate` | 日期（只比日期部分）＋ `Timeline` ＋ `CycleMonth` ＋ `PresetIndex` |
+| 任一邊沒有日期 | 只比 `Timeline` ＋ `CycleMonth` ＋ `PresetIndex` |
 
 🔴 **`CompareTo` 完全不看 `Id`。** 所以「內容相同但 `Id` 不同」的兩筆會被判定為相同，而畫面上的資料關聯**卻是用 `Id` 找的**（`header.Items.FirstOrDefault(x => x.VisitCode.Id == 選中的 Key)`）。這兩套判定不一致，是重複回診資料最可能的來源。
 
@@ -95,3 +96,15 @@ Patient.JsonData
 | 2 | 🔴 Visit Code 以複本形式散在各類資料中 | 改一處不會全部同步 |
 | 3 | ⚠️ 選錯 Visit Code 不會有任何警告 | 資料會安靜地存到別次回診 |
 | 4 | ⚠️ `AssessmentDate` 可為 null | 標題會出現空的 `A: `，排序與比對行為不同 |
+| 5 | ⚠️ 預設空殼的標題都相同 | 研究助理還沒修改日期／Cycle 前，各頁籤下拉會出現 21 個 `A:  B: Baseline C: Cycle 0`，只能靠順序分辨 |
+
+## 七、預設 21 個空殼
+
+在[基本臨床資料](../12-畫面欄位參考/基本臨床資料.md)按「Visit Code」開啟對話框時，如果這位受試者**還沒有任何 Visit Code**，`VisitCodeSetModel.AddPresetVisitCodes()` 會先建立 21 個空殼：
+
+- `Timeline` = `Baseline`，日期與 Cycle 留空，`PresetIndex` 依序為 1～21。
+- 每個空殼都**預設勾選**抽血檢驗血液、抽血檢驗生化、HematologicSideEffects血液副作用。其他項目仍可自由勾選或取消。
+- 手動按「新增」加入的 Visit Code（`AddVisitCode`），也一樣預設勾選這 3 項。
+- 按「確認」後才會存檔：`Main臨床資料HelperService.SyncData` 會替勾選的項目各建一筆空紀錄。按「取消」則不存，下次開啟會重新產生。
+- 對話框裡尚未存檔的 Visit Code，按「修改」或「刪除」只會改動對話框內容，不會關閉對話框。已存檔的則照舊直接寫回資料庫。
+- `ReplaceVisitCode` 檢查「修改後是否與其他 Visit Code 重複」時，會排除被修改的那一個本身。所以只補日期、不改 Cycle 也能存。
