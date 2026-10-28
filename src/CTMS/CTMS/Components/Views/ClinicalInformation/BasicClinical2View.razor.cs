@@ -430,6 +430,11 @@ public partial class BasicClinical2View
             ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT子宮內膜癌EndometrialCancer();
             ListAJCC_P_StageT = DropDownListDataService.GetAJCC_CP_StageT子宮內膜癌EndometrialCancer();
         }
+        else if (patientData.臨床資訊.ECorOC == "OC")
+        {
+            ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT卵巢癌OvarianCancer();
+            ListAJCC_P_StageT = DropDownListDataService.GetAJCC_CP_StageT卵巢癌OvarianCancer();
+        }
         else
         {
             ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT();

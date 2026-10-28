@@ -154,11 +154,14 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> GetFIGO癌症分期卵巢癌OvarianCancer()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"I", Name = $"I" });
             result.Add(new DropDownListDataModel() { Key = $"IA", Name = $"IA" });
             result.Add(new DropDownListDataModel() { Key = $"IB", Name = $"IB" });
+            result.Add(new DropDownListDataModel() { Key = $"IC", Name = $"IC" });
             result.Add(new DropDownListDataModel() { Key = $"IC1", Name = $"IC1" });
             result.Add(new DropDownListDataModel() { Key = $"IC2", Name = $"IC2" });
             result.Add(new DropDownListDataModel() { Key = $"IC3", Name = $"IC3" });
+            result.Add(new DropDownListDataModel() { Key = $"II", Name = $"II" });
             result.Add(new DropDownListDataModel() { Key = $"IIA", Name = $"IIA" });
             result.Add(new DropDownListDataModel() { Key = $"IIB", Name = $"IIB" });
             result.Add(new DropDownListDataModel() { Key = $"IIIA1(i)", Name = $"IIIA1(i)" });
@@ -232,6 +235,29 @@ namespace CTMS.Business.Services.ClinicalInformation
             result.Add(new DropDownListDataModel() { Key = $"T2a", Name = $"T2a" });
             result.Add(new DropDownListDataModel() { Key = $"T2a1", Name = $"T2a1" });
             result.Add(new DropDownListDataModel() { Key = $"T2a2", Name = $"T2a2" });
+            result.Add(new DropDownListDataModel() { Key = $"T2b", Name = $"T2b" });
+            result.Add(new DropDownListDataModel() { Key = $"T3", Name = $"T3" });
+            result.Add(new DropDownListDataModel() { Key = $"T3a", Name = $"T3a" });
+            result.Add(new DropDownListDataModel() { Key = $"T3b", Name = $"T3b" });
+            result.Add(new DropDownListDataModel() { Key = $"T4", Name = $"T4" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetAJCC_CP_StageT卵巢癌OvarianCancer()
+        {
+            //TX, T0, T1, T1a, T1b, T1c, T1c1, T1c2, T1c3, T2, T2a, T2b, T3, T3a, T3b, T4
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"TX", Name = $"TX" });
+            result.Add(new DropDownListDataModel() { Key = $"T0", Name = $"T0" });
+            result.Add(new DropDownListDataModel() { Key = $"T1", Name = $"T1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1a", Name = $"T1a" });
+            result.Add(new DropDownListDataModel() { Key = $"T1b", Name = $"T1b" });
+            result.Add(new DropDownListDataModel() { Key = $"T1c", Name = $"T1c" });
+            result.Add(new DropDownListDataModel() { Key = $"T1c1", Name = $"T1c1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1c2", Name = $"T1c2" });
+            result.Add(new DropDownListDataModel() { Key = $"T1c3", Name = $"T1c3" });
+            result.Add(new DropDownListDataModel() { Key = $"T2", Name = $"T2" });
+            result.Add(new DropDownListDataModel() { Key = $"T2a", Name = $"T2a" });
             result.Add(new DropDownListDataModel() { Key = $"T2b", Name = $"T2b" });
             result.Add(new DropDownListDataModel() { Key = $"T3", Name = $"T3" });
             result.Add(new DropDownListDataModel() { Key = $"T3a", Name = $"T3a" });
