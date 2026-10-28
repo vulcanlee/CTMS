@@ -125,12 +125,15 @@ namespace CTMS.Business.Services.ClinicalInformation
         public List<DropDownListDataModel> GetFIGO癌症分期子宮內膜癌EndometrialCancer()
         {
             List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"I", Name = $"I" });
             result.Add(new DropDownListDataModel() { Key = $"IA", Name = $"IA" });
             result.Add(new DropDownListDataModel() { Key = $"IB", Name = $"IB" });
             result.Add(new DropDownListDataModel() { Key = $"IC", Name = $"IC" });
+            result.Add(new DropDownListDataModel() { Key = $"II", Name = $"II" });
             result.Add(new DropDownListDataModel() { Key = $"IIA", Name = $"IIA" });
             result.Add(new DropDownListDataModel() { Key = $"IIB", Name = $"IIB" });
             result.Add(new DropDownListDataModel() { Key = $"IIC", Name = $"IIC" });
+            result.Add(new DropDownListDataModel() { Key = $"III", Name = $"III" });
             result.Add(new DropDownListDataModel() { Key = $"IIIA", Name = $"IIIA" });
             result.Add(new DropDownListDataModel() { Key = $"IIIB", Name = $"IIIB" });
             result.Add(new DropDownListDataModel() { Key = $"IIIC1", Name = $"IIIC1" });
@@ -205,6 +208,31 @@ namespace CTMS.Business.Services.ClinicalInformation
             result.Add(new DropDownListDataModel() { Key = $"T1a", Name = $"T1a" });
             result.Add(new DropDownListDataModel() { Key = $"T1b", Name = $"T1b" });
             result.Add(new DropDownListDataModel() { Key = $"T2", Name = $"T2" });
+            result.Add(new DropDownListDataModel() { Key = $"T3", Name = $"T3" });
+            result.Add(new DropDownListDataModel() { Key = $"T3a", Name = $"T3a" });
+            result.Add(new DropDownListDataModel() { Key = $"T3b", Name = $"T3b" });
+            result.Add(new DropDownListDataModel() { Key = $"T4", Name = $"T4" });
+            return result;
+        }
+
+        public List<DropDownListDataModel> GetAJCC_CP_StageT子宮內膜癌EndometrialCancer()
+        {
+            //TX, T0, T1, T1a, T1a1, T1a2, T1b, T1b1, T1b2, T2, T2a, T2a1, T2a2, T2b, T3, T3a, T3b, T4
+            List<DropDownListDataModel> result = new List<DropDownListDataModel>();
+            result.Add(new DropDownListDataModel() { Key = $"TX", Name = $"TX" });
+            result.Add(new DropDownListDataModel() { Key = $"T0", Name = $"T0" });
+            result.Add(new DropDownListDataModel() { Key = $"T1", Name = $"T1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1a", Name = $"T1a" });
+            result.Add(new DropDownListDataModel() { Key = $"T1a1", Name = $"T1a1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1a2", Name = $"T1a2" });
+            result.Add(new DropDownListDataModel() { Key = $"T1b", Name = $"T1b" });
+            result.Add(new DropDownListDataModel() { Key = $"T1b1", Name = $"T1b1" });
+            result.Add(new DropDownListDataModel() { Key = $"T1b2", Name = $"T1b2" });
+            result.Add(new DropDownListDataModel() { Key = $"T2", Name = $"T2" });
+            result.Add(new DropDownListDataModel() { Key = $"T2a", Name = $"T2a" });
+            result.Add(new DropDownListDataModel() { Key = $"T2a1", Name = $"T2a1" });
+            result.Add(new DropDownListDataModel() { Key = $"T2a2", Name = $"T2a2" });
+            result.Add(new DropDownListDataModel() { Key = $"T2b", Name = $"T2b" });
             result.Add(new DropDownListDataModel() { Key = $"T3", Name = $"T3" });
             result.Add(new DropDownListDataModel() { Key = $"T3a", Name = $"T3a" });
             result.Add(new DropDownListDataModel() { Key = $"T3b", Name = $"T3b" });

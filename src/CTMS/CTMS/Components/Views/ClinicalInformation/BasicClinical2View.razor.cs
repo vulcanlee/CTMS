@@ -272,11 +272,7 @@ public partial class BasicClinical2View
 
         #region FIGOListAJCC_C_StageT
         {
-            ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT();
-            var item = ListAJCC_C_StageT.FirstOrDefault(x =>
-                x.Key == patientData.臨床資訊.AJCCClinicalStageT);
-            if (item != null)
-                SelectAJCC_C_StageT = item;
+            RefreshAJCC_StageT();
         }
         #endregion
 
@@ -307,16 +303,6 @@ public partial class BasicClinical2View
                 x.Key == patientData.臨床資訊.AJCCPathologicalStage);
             if (item != null)
                 SelectAJCC_P_Stage = item;
-        }
-        #endregion
-
-        #region FIGOListAJCC_C_StageT
-        {
-            ListAJCC_P_StageT = DropDownListDataService.GetAJCC_CP_StageT();
-            var item = ListAJCC_P_StageT.FirstOrDefault(x =>
-                x.Key == patientData.臨床資訊.AJCCPathologicalStageT);
-            if (item != null)
-                SelectAJCC_P_StageT = item;
         }
         #endregion
 
@@ -435,6 +421,29 @@ public partial class BasicClinical2View
             if (item != null)
                 SelectFIGO癌症分期 = item;
         }
+    }
+
+    void RefreshAJCC_StageT()
+    {
+        if (patientData.臨床資訊.ECorOC == "EC")
+        {
+            ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT子宮內膜癌EndometrialCancer();
+            ListAJCC_P_StageT = DropDownListDataService.GetAJCC_CP_StageT子宮內膜癌EndometrialCancer();
+        }
+        else
+        {
+            ListAJCC_C_StageT = DropDownListDataService.GetAJCC_CP_StageT();
+            ListAJCC_P_StageT = DropDownListDataService.GetAJCC_CP_StageT();
+        }
+
+        var itemC = ListAJCC_C_StageT.FirstOrDefault(x =>
+            x.Key == patientData.臨床資訊.AJCCClinicalStageT);
+        if (itemC != null)
+            SelectAJCC_C_StageT = itemC;
+        var itemP = ListAJCC_P_StageT.FirstOrDefault(x =>
+            x.Key == patientData.臨床資訊.AJCCPathologicalStageT);
+        if (itemP != null)
+            SelectAJCC_P_StageT = itemP;
     }
 
     void Refresh組織型態Detail()
@@ -639,6 +648,7 @@ public partial class BasicClinical2View
         patientData.臨床資訊.ECorOC = args.Value.Key;
         patientData.臨床資訊.CalculateCancerType();
         RefreshFIGO癌症分期();
+        RefreshAJCC_StageT();
         if (patientData.臨床資訊.ECorOC == MagicObjectHelper.OC)
         {
             var type1 = List組織型態.FirstOrDefault(x => x.Key == MagicObjectHelper.TypeI);
