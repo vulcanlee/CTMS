@@ -10,6 +10,7 @@
 @inject OperationHistoryTraceService OperationHistoryTraceService
 
 @inject NavigationManager NavigationManager
+@inject TestingServerHelper TestingServerHelper
 @attribute [ExcludeFromInteractiveRouting]
 <style>
 
@@ -31,7 +32,7 @@
 <PageTitle>身分驗證</PageTitle>
 
 <div class="login-container">
-    <div class="app-title">AI 臨床試驗管理平臺</div>
+    <div class="app-title">@TestingServerHelper.GetSystemTitle(NavigationManager)</div>
     <div class="login-card">
         <div class="login-header">
             使用者登入
@@ -77,7 +78,7 @@
         </EditForm>
 
         @* <div class="social-login">
-                    <h3 class="app-title">AI 臨床試驗管理平臺</h3>
+                    <h3 class="app-title">@TestingServerHelper.GetSystemTitle(NavigationManager)</h3>
                     <div class="social-icons">
                         <a href="#" class="social-login__icon fab fa-instagram"></a>
                         <a href="#" class="social-login__icon fab fa-facebook"></a>

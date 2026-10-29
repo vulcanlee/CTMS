@@ -4,6 +4,7 @@
 @using CTMS.DataModel.Models.Systems
 @layout NoFooterLayout
 @inject NavigationManager NavigationManager
+@inject TestingServerHelper TestingServerHelper
 @inject ILogger<RegisterPage> Logger
 @inject RegisterModelService RegisterModelService
 
@@ -26,7 +27,7 @@
 <PageTitle>帳號申請</PageTitle>
 
 <div class="register-container">
-    <div class="app-title">AI 臨床試驗管理平臺</div>
+    <div class="app-title">@TestingServerHelper.GetSystemTitle(NavigationManager)</div>
     <div class="register-card">
         <div class="register-header">
             帳號申請

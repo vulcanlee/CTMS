@@ -66,6 +66,8 @@
         #endregion
 
         #region AI 臨床試驗管理平臺
+        public const string SystemTitleDefault = "AI 臨床試驗管理平臺";
+        public const string SystemTitleGLP1 = "GLP-1臨床試驗管理平台";
         public static readonly string 角色明細之專案清單管理功能名稱 = "角色明細之專案清單";
         public const string CheckBoxIcon = "mdi-checkbox-marked-outline";
         public const string CheckBoxBlankIcon = "mdi-checkbox-blank-outline";
