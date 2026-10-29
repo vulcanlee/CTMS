@@ -10,6 +10,7 @@
 
 @inject PatientService PatientService
 @inject NavigationManager NavigationManager
+@inject TestingServerHelper TestingServerHelper
 @inject CurrentUserService CurrentUserService
 @inject AuthenticationStateHelper AuthenticationStateHelper
 @inject AuthenticationStateProvider authStateProvider
@@ -18,7 +19,7 @@
     <div class="header">
         <div>
             <div class="d-flex align-items-start">
-                <h1 style="margin: 0; flex-grow: 1;">AI 臨床試驗管理平臺 帳號申請</h1>
+                <h1 style="margin: 0; flex-grow: 1;">@TestingServerHelper.GetSystemTitle(NavigationManager) 帳號申請</h1>
             </div>
         </div>
     </div>
