@@ -30,14 +30,14 @@ public class TestingServerHelper
     }
 
     /// <summary>
-    /// 依站台 port 決定系統標題：1111 站台為 GLP-1，其餘維持預設
+    /// 依站台 port 決定系統標題：1111（正式）與 2222（測試）站台為 GLP-1，其餘維持預設
     /// </summary>
     public string GetSystemTitle(NavigationManager navigationManager)
     {
         if (navigationManager != null)
         {
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
-            if (uri.ToString().Contains(":1111/"))
+            if (uri.ToString().Contains(":1111/") || uri.ToString().Contains(":2222/"))
             {
                 return MagicObjectHelper.SystemTitleGLP1;
             }
